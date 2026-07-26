@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(python3 -)",
+      "Bash(mkdir -p /Users/jody/Documents/Hackathon/martahuta-app/src/data)",
+      "Bash(python3 /private/tmp/claude-501/-Users-jody-Documents-Hackathon/bc4c05de-5a79-4954-a252-29afd01d772b/scratchpad/gen_seed.py /Users/jody/Documents/Hackathon/martahuta-app/src/data)",
+      "Bash(node scripts/validate_palette.js \"#2a78d6,#eb6834,#1baf7a\" --mode light --surface \"#fcfcfb\" --pairs all)",
+      "Bash(node scripts/validate_palette.js \"#3987e5,#d95926,#199e70\" --mode dark --surface \"#1a1a19\" --pairs all)",
+      "Bash(npm install *)",
+      "Bash(python3 -c ' *)",
+      "Bash(lsof -ti:3100)",
+      "Bash(xargs -r kill -9)",
+      "Bash(npm run *)",
+      "Bash(nohup npm run start)",
+      "Bash(curl -s -o /dev/null --max-time 2 http://localhost:3100/api/health)",
+      "Bash(break)",
+      "Bash(node shoot.mjs \"http://localhost:3100/\" shots/satelit.png --wait=8000 --h=1050 --click=Satelit)",
+      "Bash(node shoot.mjs \"http://localhost:3100/\" shots/luring.png --wait=8000 --h=1050 \"--click=Uji mode luring\")",
+      "Bash(node shoot.mjs \"http://localhost:3100/destinasi/geosite-sipinsur\" shots/rapor.png --wait=6000 --h=1400)",
+      "Bash(docker --version)",
+      "Bash(docker compose *)",
+      "Bash(nginx -v)",
+      "Bash(sudo -n true)",
+      "Bash(systemctl is-active *)",
+      "Bash(mkdir -p /home/jodi/Hackathon/martahuta-app/public)",
+      "Bash(touch /home/jodi/Hackathon/martahuta-app/public/.gitkeep)",
+      "Bash(mkdir -p /home/jodi/Hackathon/martahuta-app/nginx)",
+      "Bash(sysctl net.ipv4.ip_unprivileged_port_start)",
+      "Bash(curl -s --max-time 10 https://ifconfig.me)",
+      "Bash(ip -4 addr show)",
+      "Bash(ip route *)",
+      "Bash(curl -s -I --max-time 10 http://180.252.174.114/)",
+      "Bash(curl -s -I --max-time 10 -H \"Host: martahuta.jodypangaribuan.my.id\" http://180.252.174.114:8080/)",
+      "Bash(curl -s -I --max-time 8 http://192.168.1.1/)",
+      "Bash(curl -4 -s --max-time 10 https://ifconfig.me)",
+      "Bash(curl -4 -s --max-time 10 https://ipv4.icanhazip.com)",
+      "Bash(ip -4 -o addr show)"
+    ]
+  }
+}

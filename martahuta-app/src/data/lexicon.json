@@ -1,0 +1,88 @@
+{
+ "aspects": {
+  "kebersihan": {
+   "label": "Kebersihan",
+   "icon": "🧹",
+   "pattern": "sampah|kotor|jorok|bau busuk|bau\\b|bersih|kebersihan|kumuh",
+   "severity": -0.272,
+   "isFriction": true
+  },
+  "harga_pungli": {
+   "label": "Harga & Pungutan",
+   "icon": "💰",
+   "pattern": "pungli|pungutan|dipalak|mahal|retribusi|karcis|bayar lagi|serba bayar|harga tiket|htm",
+   "severity": -1.205,
+   "isFriction": true
+  },
+  "toilet_sanitasi": {
+   "label": "Toilet & Sanitasi",
+   "icon": "🚻",
+   "pattern": "toilet|wc\\b|kamar mandi|sanitasi|air mati|mck",
+   "severity": -0.564,
+   "isFriction": true
+  },
+  "parkir": {
+   "label": "Parkir",
+   "icon": "🅿️",
+   "pattern": "parkir|parkiran",
+   "severity": -0.295,
+   "isFriction": true
+  },
+  "akses_jalan": {
+   "label": "Akses Jalan",
+   "icon": "🛣️",
+   "pattern": "jalan rusak|jalanan rusak|akses jalan|berlubang|jalan sempit|jalan berbatu|akses menuju|jalan menuju",
+   "severity": -0.21,
+   "isFriction": true
+  },
+  "ramah_keluarga": {
+   "label": "Ramah Keluarga & Lansia",
+   "icon": "👨‍👩‍👧",
+   "pattern": "anak|balita|lansia|orang tua|stroller|difabel|kursi roda|keluarga",
+   "severity": -0.038,
+   "isFriction": true
+  },
+  "halal_muslim": {
+   "label": "Halal & Muslim-Friendly",
+   "icon": "🕌",
+   "pattern": "halal|muslim|babi|b2\\b|bpk\\b|saksang|non halal|nonhalal",
+   "severity": -0.063,
+   "isFriction": true
+  },
+  "rumah_ibadah": {
+   "label": "Rumah Ibadah",
+   "icon": "🛐",
+   "pattern": "mushola|musholla|masjid|sholat|shalat|gereja|tempat ibadah",
+   "severity": 0.07,
+   "isFriction": true
+  },
+  "jam_operasional": {
+   "label": "Jam Operasional",
+   "icon": "🕐",
+   "pattern": "sudah tutup|udah tutup|tutup jam|jam buka|belum buka|masih tutup|tutup lebih awal",
+   "severity": -0.841,
+   "isFriction": true
+  },
+  "keamanan_sikap": {
+   "label": "Keamanan & Sikap Warga",
+   "icon": "🛡️",
+   "pattern": "preman|tidak aman|gak aman|dimarahi|di marahi|marah|maling|copet|kehilangan|galak|kasar",
+   "severity": -2.543,
+   "isFriction": true
+  },
+  "pemandangan": {
+   "label": "Pemandangan",
+   "icon": "🏞️",
+   "pattern": "pemandangan|view|indah|cantik|bagus banget|panorama|sunset|sunrise|asri|sejuk",
+   "severity": 0.185,
+   "isFriction": false
+  }
+ },
+ "samples": [
+  "Tempatnya bagus tapi kamar mandinya udah pakai air danau minta bayar lagi, terus parkirnya 10 ribu padahal di luar.",
+  "Pantainya bersih, pemandangan indah sekali, anak-anak puas main air. Cuma warung makannya monoton.",
+  "Harga tiket naik 10x lipat dari sebelumnya, tidak ada perubahan apa pun di dalam lokasi wisata.",
+  "Tidak ada yang jual warung makanan nasi dan lauk, semua jualan cuma kopi dan gorengan, warung muslim pun tidak jualan.",
+  "Toilet airnya mati, sayang sekali padahal tempatnya bagus dan pemandangannya luar biasa."
+ ]
+}

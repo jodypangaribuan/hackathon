@@ -1,0 +1,8 @@
+<!-- Favicon: App Router otomatis memasang file src/app/icon.svg.
+     Motif: kaldera Danau Toba dengan Pulau Samosir di tengah. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="MARTAHUTA">
+  <rect width="32" height="32" rx="7" fill="#0d0d0d"/>
+  <ellipse cx="16" cy="16.5" rx="10" ry="7.5" fill="#2a78d6"/>
+  <ellipse cx="16" cy="16.5" rx="6.2" ry="4.4" fill="#0d0d0d" opacity=".35"/>
+  <ellipse cx="16" cy="16" rx="3.4" ry="4.6" fill="#0ca30c" transform="rotate(-18 16 16)"/>
+</svg>

@@ -1,8 +1,0 @@
-node_modules
-.next
-.git
-.DS_Store
-README.md
-# Token tunnel tidak boleh ikut ke dalam image.
-.env
-.env.example

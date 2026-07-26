@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(lsof -iTCP:3000 -sTCP:LISTEN)"
-    ]
-  }
-}

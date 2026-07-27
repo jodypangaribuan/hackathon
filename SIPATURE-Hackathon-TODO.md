@@ -1,0 +1,564 @@
+# SIPATURE Hackathon TODO
+
+## Preliminary Round dan Final Round
+
+Checklist eksekusi dari raw dataset hingga demo final. Centang hanya jika output dan quality gate terpenuhi.
+
+## Timeline
+
+| Tahap | Tanggal | Target |
+| --- | --- | --- |
+| Preliminary | 13 Juli–2 Agustus 2026, 20:00 WIB | Analisis, model, evaluasi, laporan, video, source |
+| Pengumuman finalis | 12–14 Agustus 2026 | Persiapan final tetap berjalan |
+| Technical Meeting Final | 18 Agustus 2026 | Konfirmasi deployment dan aturan |
+| Final | 21–22 Agustus 2026 | Produk, DGX deployment, presentasi, demo |
+| Batas lockdown | 22 Agustus 2026, 12:00 WIB | Produk final stabil |
+
+## Peran Tim
+
+| Peran | Tanggung jawab |
+| --- | --- |
+| Data/ML Lead | EDA, cleaning, annotation, training, evaluasi, inference |
+| Product/Engineering Lead | API, SIPATURE, integrasi model, Docker, DGX |
+| Research/Presentation Lead | validasi problem, laporan, visualisasi, Responsible AI, pitch |
+
+Semua anggota wajib memahami problem, data, model, metrics, limitation, arsitektur, dan demo.
+
+---
+
+# A. Preliminary Round
+
+## A1. Administrasi dan Scope Lock
+
+- [ ] Verifikasi tim, ketua, maksimal tiga anggota, dan eligibility.
+- [ ] Catat deadline resmi 2 Agustus 2026 pukul 20:00 WIB.
+- [ ] Tetapkan deadline internal minimal 12 jam lebih awal.
+- [ ] Pastikan submission tidak mencantumkan institusi pendidikan.
+- [ ] Kunci nama solusi: SIPATURE.
+- [ ] Validasi narasi nama dengan penutur Batak Toba.
+- [ ] Kunci problem: ulasan belum menjadi keputusan operasional.
+- [ ] Kunci user: pengelola destinasi dan BPODT/pemerintah daerah.
+- [ ] Kunci output: evidence-backed early warning dan intervention priority.
+- [ ] Kunci exclusions: chatbot, RAG, booking, marketplace, CV, causal prediction.
+- [ ] Pilih satu demo case utama, satu backup, satu failure case.
+
+**Output:** project charter satu halaman.
+
+**Gate:** semua anggota dapat menjelaskan SIPATURE dalam 30 detik secara konsisten.
+
+## A2. Repositori dan Reproducibility
+
+- [ ] Buat struktur `ml/`, `docs/`, dan `sipature-app/`.
+- [ ] Buat `.gitignore` untuk secrets, cache, model besar, dan restricted data.
+- [ ] Pin dependencies setelah environment stabil.
+- [ ] Tetapkan random seed dan config YAML/JSON.
+- [ ] Pisahkan notebook eksplorasi dan script produksi.
+- [ ] Buat entry point cleaning, split, training, evaluation, inference, aggregation.
+- [ ] Siapkan Google Drive `data/models/predictions/metrics/figures/reports`.
+- [ ] Simpan intermediate output, bukan hanya notebook state.
+- [ ] Dokumentasikan perintah menjalankan ulang pipeline.
+
+**Gate:** anggota lain dapat menjalankan data inventory dari README.
+
+## A3. Data Inventory dan EDA
+
+- [ ] Daftar seluruh CSV, fungsi, encoding, separator, schema, dan hash.
+- [ ] Hitung rows, columns, missing values, duplicates, dan entities.
+- [ ] Catat format rating, tanggal, koordinat, dan abnormal values.
+- [ ] Hitung total reviews, textual reviews, dan rating-only.
+- [ ] Buat data dictionary dan known-issues register.
+- [ ] Plot rating distribution dan review length.
+- [ ] Plot review volume per destination.
+- [ ] Analisis unigram, bigram, trigram, bahasa, negasi, contrast markers.
+- [ ] Identifikasi generic reviews, repeated text, spam, outliers, freshness.
+- [ ] Plot volume vs rating dan candidate complaint rate.
+- [ ] Audit metadata: type, status, fee, hours, facilities.
+- [ ] Validasi coordinates dan geographic outliers.
+- [ ] Hitung nearby services dan service density.
+- [ ] Audit popularity, rating, platform, recency, dan coverage bias.
+- [ ] Dokumentasikan keputusan taxonomy/model yang berasal dari EDA.
+
+**Output:** inventory, dictionary, known issues, EDA notebook/report, figures, coverage map.
+
+**Gate:** setiap visual memiliki pertanyaan, temuan, implikasi, dan tindakan.
+
+## A4. Cleaning dan Entity Resolution
+
+- [ ] Decode UTF-8 BOM; hapus embedded headers dan technical empty columns.
+- [ ] Normalisasi NFKC, whitespace, rating decimal-comma, dan tanggal relatif.
+- [ ] Pertahankan punctuation, negasi, typo, dan mixed language.
+- [ ] Quarantine invalid ratings/rows; jangan dibuang diam-diam.
+- [ ] Hapus exact technical duplicates.
+- [ ] Buat `duplicate_group_id` untuk repeated/near duplicates.
+- [ ] Pisahkan text pool dan rating-only pool.
+- [ ] Simpan raw dan normalized fields beserta provenance.
+- [ ] Tambahkan unit tests dan data-cleaning funnel.
+- [ ] Normalisasi nama untuk entity resolution.
+- [ ] Blocking berdasarkan nama, area, category, coordinates.
+- [ ] Hitung name/address similarity dan coordinate distance.
+- [ ] Definisikan auto-match, manual-review, no-match thresholds.
+- [ ] Review ambiguous pairs; buat canonical `destination_id`.
+- [ ] Hitung pairwise precision/recall/F1 dan false-merge rate.
+
+**Output:** clean data, quarantine, canonical destinations, entity links, metrics.
+
+**Gate:** deterministic output; tidak ada false merge kritis; semua training review punya destination ID valid.
+
+## A5. Taxonomy dan Annotation
+
+- [ ] Audit support tiap candidate aspect.
+- [ ] Kunci taxonomy MVP, polarity, dan severity.
+- [ ] Definisikan in/out scope dan positive/negative/neutral examples.
+- [ ] Dokumentasikan negation, sarcasm, implicit complaint, multi-aspect boundaries.
+- [ ] Dokumentasikan severity boundaries.
+- [ ] Kunci JSONL schema tanpa reviewer identity.
+- [ ] Stratified sample berdasarkan destination, rating, length, type, language, recency.
+- [ ] Oversample complaints dan rare aspects.
+- [ ] Pilot 100–150 reviews oleh semua annotator.
+- [ ] Hitung Jaccard dan per-label/polarity/severity agreement.
+- [ ] Revisi guideline; ulangi pilot jika perlu.
+- [ ] Double-annotate 15–20%; single-annotate sisanya.
+- [ ] Adjudicate disagreement dan simpan annotation version.
+- [ ] Audit schema, IDs, label support, polarity/severity constraints.
+- [ ] Plot label distribution dan aspect co-occurrence.
+- [ ] Bekukan gold dataset.
+
+**Target:** ideal 1.500–2.500; minimum 1.000–1.200 reviews.
+
+**Gate:** Aspect kappa >=0.70; Polarity >=0.75; Severity >=0.60 atau taxonomy disederhanakan.
+
+## A6. Leakage-Safe Split dan Baselines
+
+- [ ] Split 70/15/15 berdasarkan destination, bukan review.
+- [ ] Jaga near-duplicate groups dalam split sama.
+- [ ] Pastikan rare labels muncul di validation/test.
+- [ ] Simpan seed, destination lists, distributions, hashes.
+- [ ] Kunci test set dan larang tuning terhadap test.
+- [ ] Implement keyword baseline: lexicon, negation, contrast, intensity, severity.
+- [ ] Evaluasi keyword pada locked split.
+- [ ] Uji TF-IDF word unigram/bigram dan char n-gram 3–5.
+- [ ] Train One-vs-Rest Logistic Regression dengan class weighting.
+- [ ] Tune config/threshold hanya pada validation.
+- [ ] Evaluasi test setelah config terkunci.
+- [ ] Simpan models, vectorizer, config, metrics, latency, error cases.
+
+**Gate:** tidak ada destination/duplicate leakage; kedua baseline dievaluasi pada split sama.
+
+## A7. IndoBERT Training
+
+- [ ] Pilih model ID; dokumentasikan lisensi, tokenizer, dan size.
+- [ ] Aktifkan Colab GPU; simpan environment versions.
+- [ ] Pilih max length berdasarkan review-length EDA.
+- [ ] Train multilabel aspect classifier dengan BCE class weighting.
+- [ ] Simpan best checkpoint berdasarkan validation Macro F1.
+- [ ] Train aspect-conditioned polarity classifier.
+- [ ] Train severity classifier hanya jika support memadai.
+- [ ] Uji focal loss/oversampling satu per satu jika diperlukan.
+- [ ] Simpan model, tokenizer, config, logs, thresholds, hashes.
+- [ ] Plot train/validation loss dan F1 per epoch.
+- [ ] Plot learning curve jika waktu cukup.
+- [ ] Uji model reload dan offline inference.
+
+**Gate:** artifact dapat di-load ulang dan menghasilkan schema valid tanpa external API.
+
+## A8. Calibration, Test Evaluation, Error Analysis
+
+- [ ] Cari detection threshold per aspect pada validation.
+- [ ] Cari high-precision alert threshold.
+- [ ] Uji probability calibration.
+- [ ] Bekukan config dan thresholds.
+- [ ] Evaluasi locked test tepat sekali.
+- [ ] Hitung Aspect Macro/Micro/per-label F1 dan Precision@Alert.
+- [ ] Hitung polarity Macro F1/confusion matrix.
+- [ ] Hitung severity Macro F1/high-severity precision.
+- [ ] Hitung ECE/Brier Score dan latency.
+- [ ] Bandingkan Keyword vs TF-IDF vs IndoBERT.
+- [ ] Audit 50 FP, 50 FN, semua high-severity errors, rare/mixed-language cases.
+- [ ] Kelompokkan negation, implicit, typo, sarcasm, boundary, context, annotation errors.
+- [ ] Dokumentasikan reputationally harmful errors dan residual risks.
+
+**Gate:** metrics terikat pada data/model/config hashes; target dan actual results berbeda label.
+
+## A9. Inference, Aggregation, dan Priority Engine
+
+- [ ] Batch infer semua textual reviews memakai locked model.
+- [ ] Simpan probabilities, labels, version, timestamp, provenance.
+- [ ] Hubungkan ke canonical destination.
+- [ ] Pilih verbatim high-confidence evidence; hapus reviewer identity.
+- [ ] Terapkan duplicate, freshness, severity weights.
+- [ ] Hitung mention, negative, severe counts/rates.
+- [ ] Terapkan Bayesian smoothing dan data-sufficiency rules.
+- [ ] Hitung component/overall health; missing bukan nilai baik.
+- [ ] Hitung transparent priority dari severity, frequency, confidence, persistence, exposure, gap, feasibility.
+- [ ] Renormalisasi bobot jika feature missing.
+- [ ] Map issue ke field verification dan candidate intervention.
+- [ ] Buat 20–30 expert-reviewed destination cases.
+- [ ] Hitung evidence correctness, unsupported alerts, intervention relevance.
+- [ ] Hitung NDCG/rank correlation jika expert ranking tersedia.
+- [ ] Jalankan sensitivity analysis bobot.
+
+**Gate:** setiap top alert punya evidence, confidence, data status, dan explanation.
+
+## A10. Preliminary Product
+
+- [ ] Integrasikan real batch output ke SIPATURE.
+- [ ] Tampilkan model version dan generated time.
+- [ ] Overview: coverage, issues, priorities.
+- [ ] Map: sufficient/low/insufficient data dan filters.
+- [ ] Detail: evidence, metadata conflicts, confidence.
+- [ ] Queue: reasons, ranking, recommended verification.
+- [ ] Simulator: assumptions dan non-causal warning.
+- [ ] Analyzer: real model atau label baseline jelas.
+- [ ] Pastikan desktop/mobile, offline map, loading/error/empty states.
+- [ ] Pastikan reviewer identity tidak tampil.
+- [ ] Tambahkan model limitations dan Responsible AI.
+
+## A11. Laporan, Visual, dan Video
+
+- [ ] Laporan memuat latar belakang, analisis masalah, desain/indikator, implementasi, modelling, evaluasi, hasil, deklarasi AI.
+- [ ] Jelaskan data, cleaning, entity resolution, annotation, split, model, metrics.
+- [ ] Jelaskan error analysis, bias, privacy, limitations, license, external data.
+- [ ] Gunakan visual: cleaning funnel, rating/label distributions, co-occurrence heatmap.
+- [ ] Gunakan visual: model comparison, per-label F1/support, PR curves.
+- [ ] Gunakan visual: confusion matrix, reliability diagram, coverage map.
+- [ ] Gunakan visual: evidence correctness dan expert/model ranking jika tersedia.
+- [ ] Pastikan PDF <25 MB dan tanpa identitas institusi.
+- [ ] Video 5–10 menit: problem -> data -> pipeline -> evaluation -> product chain.
+- [ ] Tampilkan actual metrics, failure case, dan limitation.
+- [ ] Jangan tampilkan wajah atau institusi.
+- [ ] Upload publik dan uji link incognito.
+
+## A12. Source dan Submission Gate
+
+- [ ] README quick start, environment, data placement, pipeline commands.
+- [ ] Notebook order, artifact instructions, evaluation/app commands.
+- [ ] Architecture, dictionary, known issues, annotation guide, model card.
+- [ ] Responsible AI dan third-party license notices.
+- [ ] Hapus secrets, tokens, caches, PII, dan unnecessary model files.
+- [ ] Test ZIP pada clean environment.
+- [ ] Siapkan `[NamaTim] - LaporanAnalisis.pdf` (<25 MB).
+- [ ] Siapkan link `[NamaTim] - Demo` publik.
+- [ ] Siapkan `Product.zip` lengkap.
+- [ ] Uji nama file, links, ZIP, metrics traceability.
+- [ ] Submit sebelum deadline internal; simpan receipt.
+
+---
+
+# B. Persiapan Menuju Final
+
+- [ ] Backup immutable preliminary submission.
+- [ ] Catat technical debt dan demo failures.
+- [ ] Lanjutkan improvement tanpa mengubah reported preliminary results.
+- [ ] Prioritaskan fitur berdasarkan impact/effort; tunda non-core features.
+- [ ] Siapkan offline package sebelum pengumuman.
+- [ ] Pada Technical Meeting: konfirmasi DGX OS/CUDA/driver/runtime/network.
+- [ ] Konfirmasi dependency/download policy, deployment, health check, dan ports.
+- [ ] Konfirmasi display, presentasi 10 menit, Q&A 10 menit.
+- [ ] Konfirmasi penggunaan preliminary artifacts selama lockdown.
+- [ ] Dokumentasikan jawaban resmi panitia.
+
+---
+
+# C. Final Round
+
+## C1. Scope dan Production Model
+
+- [ ] Kunci chain: review -> model -> signal -> evidence -> priority -> verification.
+- [ ] Kunci main/backup demo cases dan mandatory features.
+- [ ] Tetapkan internal freeze sebelum batas lockdown.
+- [ ] Export local model, tokenizer, thresholds, labels, hashes.
+- [ ] Buat inference fixtures, batch CLI, real-time endpoint.
+- [ ] Validasi empty/invalid/long input dan latency logs tanpa PII.
+- [ ] Uji CPU fallback dan reload setelah restart.
+
+## C2. API, Data, dan Workflow
+
+- [ ] Implement `/health`, `/predict-review`, `/destinations`, `/destinations/{id}`.
+- [ ] Implement `/interventions`, `/simulate`, `/model-card`.
+- [ ] Tambahkan schema validation, bounded payload, consistent errors, timeout/retry.
+- [ ] Load destinations, signals, evidence, interventions ke DB/SQLite.
+- [ ] Simpan model version, provenance, alert status, rejection reason.
+- [ ] Jangan simpan reviewer identity.
+- [ ] Siapkan reproducible seed dan JSON/SQLite fallback.
+
+## C3. Product Integration
+
+- [ ] Hapus mock values atau tandai jelas.
+- [ ] Dashboard metrics berasal dari model output.
+- [ ] Semua alerts membuka valid evidence.
+- [ ] Confidence, sufficiency, freshness, missing data konsisten.
+- [ ] Map layers/filters berfungsi.
+- [ ] Detail menampilkan evidence dan metadata conflicts.
+- [ ] Queue sortable/filterable dan status dapat diubah.
+- [ ] Simulator menampilkan assumptions/non-causal warning.
+- [ ] Analyzer menggunakan packaged model.
+- [ ] Uji loading/error/empty states, desktop/mobile, keyboard basic.
+
+## C4. Responsible AI Gate
+
+- [ ] Reviewer identity tidak muncul di UI/API/log.
+- [ ] Evidence verbatim dan memiliki provenance.
+- [ ] Gunakan istilah reported issue/early-warning signal.
+- [ ] Jangan klaim destination polluted/dangerous/clean tanpa verifikasi.
+- [ ] Low-support alerts disembunyikan atau berlabel insufficient.
+- [ ] Popularity bias, freshness, intended use, limitations, misuse risks tersedia.
+- [ ] Human verification tampil pada recommendation.
+- [ ] Rejected alert workflow tersedia.
+
+## C5. Docker dan DGX B200
+
+- [ ] Buat reproducible Dockerfile dengan compatible CUDA base.
+- [ ] Pin Node/Python dependencies.
+- [ ] Jangan download model saat startup.
+- [ ] Bundle/mount model dan tokenizer lokal.
+- [ ] Konfigurasi GPU runtime dan health checks.
+- [ ] Test `docker compose up --build`, cold start, restart, ports, networking.
+- [ ] Deploy ke DGX dan verifikasi GPU detection.
+- [ ] Jalankan inference fixtures dan route smoke tests.
+- [ ] Dokumentasikan deployment dan rollback commands.
+
+## C6. Performance dan Reliability
+
+- [ ] Ukur model/API p50 dan p95 latency.
+- [ ] Ukur page load, memory, GPU memory.
+- [ ] Uji repeated, malformed, dan long requests.
+- [ ] Uji map tile, API, dan DB failures beserta fallback.
+- [ ] Siapkan precomputed demo data.
+- [ ] Pastikan demo berjalan tanpa internet eksternal.
+
+## C7. Evidence dan Demo Audit
+
+- [ ] Cocokkan semua demo evidence dengan source rows.
+- [ ] Hapus reviewer identity.
+- [ ] Manual-check predictions pada main/backup cases.
+- [ ] Verifikasi metadata conflicts, priority formula, intervention mapping.
+- [ ] Siapkan satu rejected/false-positive alert untuk human oversight.
+
+## C8. Presentasi dan Live Demo
+
+- [ ] 0:00–1:00 problem/urgency.
+- [ ] 1:00–2:00 dataset insight/hidden complaints.
+- [ ] 2:00–3:30 pipeline/leakage prevention.
+- [ ] 3:30–4:30 actual evaluation/baseline improvement.
+- [ ] 4:30–8:00 live demo end-to-end.
+- [ ] 8:00–9:00 impact/pilot/sustainability.
+- [ ] 9:00–10:00 Responsible AI/limitations/closing.
+- [ ] Latihan <10 menit; diagram terbaca; tanpa identitas institusi.
+- [ ] Demo: high-rated destination -> hidden issue -> evidence -> ranking -> verification -> simulator -> regional map.
+- [ ] Latih offline flow dan backup recording.
+
+## C9. Q&A dan Pilot
+
+- [ ] Siapkan jawaban: mengapa bukan sentiment dashboard atau LLM/RAG.
+- [ ] Siapkan jawaban annotation/agreement, leakage, Macro F1, imbalance, calibration.
+- [ ] Siapkan jawaban entity resolution, priority validation, reputational harm.
+- [ ] Siapkan jawaban simulator non-causal, failures, scale, DGX, sustainability.
+- [ ] Pilot plan: 5–10 diverse destinations.
+- [ ] Expert blind review sebelum melihat model ranking.
+- [ ] Field verification top alerts; catat confirmed/rejected/uncertain.
+- [ ] Metrics: verification rate, time-to-verification, intervention adoption, time saved.
+- [ ] Jangan menjanjikan revenue/visitor growth pada prototype.
+
+## C10. Final Gate
+
+- [ ] Produk berjalan di DGX; health checks hijau.
+- [ ] Main dan backup demo siap; external dependencies offline.
+- [ ] Metrics traceable; evidence dan Responsible AI audits selesai.
+- [ ] Presentasi/Q&A rehearsed; slide PDF dan backup recording siap.
+- [ ] Runbook dan artifact backup tersedia.
+- [ ] Freeze sebelum deadline; setelah freeze hanya perbaiki blocker.
+
+---
+
+# D. Rubric Alignment Gate
+
+## D1. Kebaruan dan Problem Framing — 20
+
+- [ ] Decision gap spesifik dan didukung EDA.
+- [ ] Perbedaan dari sentiment dashboard/chatbot jelas.
+- [ ] Complete review-to-intervention chain terbukti.
+- [ ] Scope sempit, koheren, dan tidak mengikuti tren tanpa alasan.
+
+## D2. Dampak dan Relevansi — 20
+
+- [ ] Target user dan beneficiary jelas.
+- [ ] Manfaat operasional terukur.
+- [ ] Pilot dan KPI realistis.
+- [ ] Dampak lokal Toba eksplisit.
+- [ ] Rekomendasi dapat ditindaklanjuti dan diverifikasi.
+
+## D3. Kualitas Teknis AI dan Data — 20
+
+- [ ] Cleaning/entity resolution reproducible.
+- [ ] Annotation dan agreement terukur.
+- [ ] Leakage-safe split dan locked test.
+- [ ] Keyword/TF-IDF/IndoBERT comparison.
+- [ ] Actual metrics, calibration, latency, error analysis.
+- [ ] Robust offline demo dan model card.
+
+## D4. Kelayakan dan Keberlanjutan — 15
+
+- [ ] Scope realistis untuk hackathon.
+- [ ] Docker/DGX deployment berhasil.
+- [ ] Batch-first architecture dan offline fallback tersedia.
+- [ ] Pilot, feedback loop, dan resource plan tersedia.
+- [ ] Future roadmap tidak bergantung pada klaim yang belum terbukti.
+
+## D5. Pemanfaatan Data Toba — 15
+
+- [ ] Reviews dipakai sebagai model input utama.
+- [ ] Metadata, facilities, hours, transport terintegrasi.
+- [ ] Coordinates dipakai untuk geospatial analytics.
+- [ ] Cleaning, entity links, evidence, provenance dapat diaudit.
+- [ ] Data eksternal hanya enrichment dan lisensinya terdokumentasi.
+
+## D6. Komunikasi, Demo, Dokumentasi — 10
+
+- [ ] Narasi ringkas dan konsisten.
+- [ ] Diagram evaluasi terbaca dan berisi hasil aktual.
+- [ ] Demo end-to-end stabil.
+- [ ] README, model card, Responsible AI, limitations lengkap.
+- [ ] Semua anggota siap Q&A.
+
+---
+
+# E. Go/No-Go Criteria
+
+## E1. Preliminary Go
+
+- [ ] Gold annotation dan split valid.
+- [ ] Minimal Keyword dan TF-IDF dievaluasi.
+- [ ] IndoBERT memiliki actual metrics atau statusnya dijelaskan jujur.
+- [ ] Evidence tidak difabrikasi.
+- [ ] Laporan, video, source, dan dokumentasi lengkap.
+- [ ] Tidak ada institusi, PII, atau secrets.
+- [ ] Submission artifacts diuji oleh anggota lain.
+
+## E2. Final Go
+
+- [ ] Model terhubung ke aplikasi atau fallback berlabel jelas.
+- [ ] Produk berjalan offline pada target infrastructure.
+- [ ] Main demo chain berfungsi penuh.
+- [ ] Semua demo alerts memiliki evidence/provenance.
+- [ ] Responsible AI gate terpenuhi.
+- [ ] Presentasi dan Q&A siap.
+
+## E3. No-Go Conditions
+
+- [ ] Jangan klaim metric yang belum diukur.
+- [ ] Jangan tampilkan evidence generatif/fabrikasi.
+- [ ] Jangan sebut simulator sebagai causal prediction.
+- [ ] Jangan sebut keyword baseline sebagai trained IndoBERT.
+- [ ] Jangan gunakan test set untuk tuning.
+- [ ] Jangan membutuhkan internet/model download saat startup final.
+- [ ] Jangan tampilkan reviewer identity atau institusi peserta.
+
+---
+
+# F. Final Artifact Inventory
+
+## F1. Data dan EDA
+
+- [ ] Project charter.
+- [ ] Data inventory dan dictionary.
+- [ ] Known issues dan external-data register.
+- [ ] EDA notebook/report dan figures.
+- [ ] Cleaning pipeline dan funnel.
+- [ ] Clean/quarantine datasets.
+- [ ] Canonical destinations dan entity links.
+- [ ] Entity-resolution metrics.
+
+## F2. Annotation dan Model
+
+- [ ] Taxonomy dan annotation guideline.
+- [ ] Sampling manifest.
+- [ ] Gold annotation JSONL.
+- [ ] Agreement dan annotation-audit report.
+- [ ] Split manifest dan data hashes.
+- [ ] Keyword artifact/metrics.
+- [ ] TF-IDF model/vectorizer/metrics.
+- [ ] IndoBERT model/tokenizer/config.
+- [ ] Thresholds dan calibration artifacts.
+- [ ] Locked test metrics dan diagrams.
+- [ ] Error analysis dan model card.
+
+## F3. Intelligence Engine dan Product
+
+- [ ] Review predictions.
+- [ ] Destination signals dan health components.
+- [ ] Intervention queue dan formula/config.
+- [ ] Evidence provenance table.
+- [ ] Expert/system evaluation.
+- [ ] SIPATURE source code.
+- [ ] API source/schema/docs.
+- [ ] Dockerfiles/compose/runbook.
+- [ ] Offline model/data/map fallback.
+- [ ] Smoke/performance test results.
+
+## F4. Submission dan Presentation
+
+- [ ] Laporan Analisis PDF.
+- [ ] Preliminary demo video/link.
+- [ ] Product source ZIP.
+- [ ] Slide pitch/final presentation.
+- [ ] Demo script dan backup recording.
+- [ ] Responsible AI document.
+- [ ] Pilot and impact plan.
+- [ ] Q&A answer bank.
+
+---
+
+# G. Daily Team Tracker
+
+Gunakan tabel ini setiap hari. Tambahkan baris, bukan mengganti history.
+
+| Tanggal | Fokus | PIC | Output target | Status | Blocker | Keputusan |
+| --- | --- | --- | --- | --- | --- | --- |
+| YYYY-MM-DD | Contoh: Entity resolution | Nama | `entity_links.parquet` | Not started | - | - |
+
+Status yang diperbolehkan:
+
+```text
+Not started | In progress | Blocked | Review | Done
+```
+
+## Daily Stand-up Checklist
+
+- [ ] Apa yang selesai sejak update terakhir?
+- [ ] Output artifact mana yang benar-benar dibuat?
+- [ ] Metric/quality gate mana yang sudah lolos?
+- [ ] Apa blocker saat ini?
+- [ ] Keputusan apa yang dibutuhkan hari ini?
+- [ ] Apakah scope perlu dipotong untuk melindungi core chain?
+- [ ] Apakah ada angka/claim baru yang belum dapat ditelusuri?
+- [ ] Apakah backup terbaru tersedia?
+
+## End-of-Day Checklist
+
+- [ ] Commit code/config/documentation yang stabil.
+- [ ] Backup artifact besar ke lokasi yang disepakati.
+- [ ] Catat model/data/config hashes.
+- [ ] Perbarui tracker dan known issues.
+- [ ] Catat eksperimen gagal, bukan hanya hasil terbaik.
+- [ ] Tentukan satu prioritas tertinggi hari berikutnya.
+
+---
+
+# H. Core Success Statement
+
+SIPATURE dianggap berhasil jika tim dapat membuktikan rantai berikut dengan data dan hasil aktual:
+
+```text
+Raw review
+-> cleaned and linked data
+-> human-verified labels
+-> trained and evaluated model
+-> calibrated prediction
+-> destination signal
+-> verbatim evidence
+-> explainable priority
+-> human verification
+-> candidate intervention
+```
+
+Jumlah fitur bukan indikator utama. Akurasi, keterlacakan, explainability, dampak operasional, Responsible AI, dan kualitas demo adalah prioritas.

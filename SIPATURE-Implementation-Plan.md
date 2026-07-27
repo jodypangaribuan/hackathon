@@ -633,7 +633,260 @@ Kerjakan: EDA, reproducible cleaning, conservative entity resolution, guideline,
 
 Tunda: knowledge graph penuh, agentic workflow, RAG, fine-grained severity jika data tipis, real-time crowding, login, notification engine, dan complex workflow DB.
 
-## 26. Artefak Akhir dan Definition of Done
+## 26. Evaluation Metrics dan Diagram
+
+Evaluasi SIPATURE dilakukan pada lima lapisan: kualitas annotation, model review-level, data engineering, intervention ranking, dan system-level decision support. Accuracy tunggal tidak cukup karena label tidak seimbang dan keluaran sistem digunakan untuk menentukan prioritas verifikasi.
+
+### 26.1 Aspect Detection Metrics
+
+Task aspect detection bersifat multilabel. Gunakan:
+
+| Metrik | Fungsi | Prioritas |
+| --- | --- | --- |
+| Macro F1 | Memberi bobot sama pada semua aspek, termasuk label langka | Utama |
+| Micro F1 | Performa total seluruh keputusan label | Utama |
+| Per-label Precision | Ketepatan prediksi untuk setiap aspek | Utama |
+| Per-label Recall | Coverage aspek sebenarnya | Utama |
+| Per-label F1 | Keseimbangan precision dan recall tiap aspek | Utama |
+| Precision@Alert | Ketepatan pada threshold early warning | Sangat penting |
+| Hamming Loss | Proporsi keputusan label yang salah | Pendukung |
+| Exact Match Ratio | Proporsi review dengan seluruh set label tepat | Pendukung |
+
+Macro F1 harus menjadi headline metric karena aspek langka seperti sanitasi atau keselamatan tidak boleh tertutup oleh label dominan.
+
+### 26.2 Polarity Metrics
+
+Untuk kelas `positive | negative | neutral`:
+
+- Macro F1.
+- Per-class precision, recall, dan F1.
+- Balanced accuracy.
+- Confusion matrix.
+- Per-aspect polarity F1.
+
+### 26.3 Severity Metrics
+
+Untuk kelas ordinal `low | medium | high`:
+
+- Macro F1.
+- High-severity precision dan recall.
+- Confusion matrix.
+- Weighted Cohen's kappa.
+- Ordinal MAE dengan representasi `low=0`, `medium=1`, `high=2`.
+
+High-severity precision menjadi metric utama karena false high-severity alert berpotensi merugikan reputasi destinasi.
+
+### 26.4 Entity Resolution Metrics
+
+- Pairwise precision, recall, dan F1.
+- False-merge rate.
+- Unresolved-match rate.
+- Jumlah ambiguous pairs dan manually reviewed pairs.
+
+Prioritaskan precision dan false-merge rate. Salah menggabungkan dua destinasi lebih berbahaya daripada membiarkan match ambigu belum selesai.
+
+### 26.5 Intervention Ranking Metrics
+
+- NDCG@5 dan NDCG@10.
+- Precision@5 dan Precision@10.
+- Recall@K.
+- Mean Average Precision.
+- Spearman rank correlation.
+- Kendall's tau.
+
+Ground truth ranking dibuat dari penilaian stakeholder atau expert-reviewed destination cases.
+
+### 26.6 Calibration Metrics
+
+- Expected Calibration Error.
+- Brier Score.
+- Reliability diagram.
+- Precision-recall curve per label.
+
+Calibration memvalidasi apakah confidence model dapat dipercaya oleh pengguna aplikasi.
+
+### 26.7 Diagram Evaluasi Model
+
+#### A. Model Comparison Grouped Bar Chart
+
+Bandingkan Keyword, TF-IDF, dan IndoBERT pada Macro F1, Micro F1, Alert Precision, dan latency. Diagram ini membuktikan nilai tambah model kompleks terhadap baseline sederhana.
+
+#### B. Per-Label Metrics Bar Chart
+
+Horizontal bar chart precision, recall, F1, dan support untuk setiap aspek. Support wajib ditampilkan agar label dengan data sedikit tidak disalahartikan.
+
+#### C. Precision-Recall Curve
+
+Buat untuk aspek utama: sanitation, waste, cleanliness, access, dan safety. Tandai detection threshold, alert threshold, dan operating point. PR curve lebih sesuai daripada ROC curve untuk label imbalanced.
+
+#### D. Multilabel Confusion Matrix Grid
+
+Tampilkan matrix `TP/FP/FN/TN` per aspek atau heatmap precision/recall/F1 lintas aspek. Jangan memakai satu multiclass confusion matrix untuk task multilabel.
+
+#### E. Polarity Confusion Matrix
+
+Matrix 3x3 untuk actual vs predicted positive, negative, dan neutral.
+
+#### F. Severity Confusion Matrix
+
+Matrix ordinal low, medium, high. Soroti kesalahan berat seperti actual high yang diprediksi low.
+
+#### G. Reliability Diagram
+
+Plot predicted confidence vs observed correctness dengan diagonal perfect calibration.
+
+#### H. Threshold vs Precision/Recall/F1
+
+Plot threshold pada sumbu X dan precision, recall, F1 pada sumbu Y untuk menjelaskan pemilihan threshold per aspek.
+
+#### I. Learning Curve
+
+Plot ukuran training set vs train/validation Macro F1. Diagram membantu menentukan apakah model memerlukan lebih banyak annotation atau perbaikan arsitektur.
+
+#### J. Training Curve
+
+Plot train/validation loss dan Macro F1 per epoch untuk mendeteksi overfitting dan menentukan early stopping.
+
+### 26.8 Diagram Evaluasi Annotation dan EDA
+
+#### A. Annotation Agreement Bar Chart
+
+Tampilkan Cohen's kappa/Krippendorff's alpha untuk aspect, polarity, severity, dan jika memungkinkan per label.
+
+#### B. Label Distribution
+
+Stacked bar jumlah positive, negative, neutral per aspek. Diagram menjelaskan class imbalance dan alasan penggunaan Macro F1/class weighting.
+
+#### C. Aspect Co-Occurrence Heatmap
+
+Tampilkan pasangan aspek yang sering muncul bersama, misalnya sanitation-cleanliness, waste-cleanliness, access-parking, scenery-comfort. Diagram mendukung pemilihan multilabel classification.
+
+#### D. Rating Distribution
+
+Bar chart rating 1-5. Gunakan untuk menjelaskan dominasi rating positif dan mengapa keluhan perlu dicari pada minoritas data.
+
+#### E. Review Length Distribution
+
+Histogram token/karakter untuk memilih maximum sequence length IndoBERT dan mengukur truncation rate.
+
+#### F. Error Category Bar Chart
+
+Tampilkan jumlah error karena negation, implied complaint, typo, mixed language, aspect boundary, sarcasm, insufficient context, dan annotation disagreement.
+
+### 26.9 Diagram Evaluasi Data Engineering
+
+#### A. Missing Values Heatmap
+
+Tampilkan missing rate untuk review text, coordinates, facilities, operating hours, fee, dan status per dataset.
+
+#### B. Data Cleaning Funnel
+
+```text
+raw records
+-> valid schema
+-> after exact deduplication
+-> textual reviews
+-> linked canonical destinations
+-> annotation candidates
+-> model inference records
+```
+
+Funnel memperlihatkan penggunaan data secara nyata dan alasan record dikeluarkan.
+
+#### C. Entity Resolution Evaluation Chart
+
+Grouped bar pairwise precision/recall/F1 dengan annotation jumlah false merges dan ambiguous matches.
+
+#### D. Geographic Coverage Map
+
+Peta sufficient data, low confidence, no textual review, missing coordinates, dan high-priority alerts.
+
+#### E. Review Coverage Distribution
+
+Histogram jumlah review berteks per destinasi. Tambahkan garis threshold kategori insufficient, low, medium, dan high confidence.
+
+### 26.10 Diagram Evaluasi Decision Support
+
+#### A. Expert vs Model Ranking Scatter Plot
+
+Plot model priority rank vs expert priority rank. Laporkan Spearman dan Kendall correlation. Titik dekat diagonal menunjukkan agreement tinggi.
+
+#### B. NDCG@K Comparison Chart
+
+Bandingkan Keyword, TF-IDF, dan IndoBERT ranking menggunakan NDCG@5 dan NDCG@10.
+
+#### C. Evidence Correctness Stacked Bar
+
+Kategori human evaluation: Supported, Partially Supported, Unsupported. Headline metrics: evidence correctness rate dan unsupported alert rate.
+
+#### D. Intervention Relevance Chart
+
+Kategori: Relevant, Needs Revision, Not Relevant, ditampilkan keseluruhan dan per aspek.
+
+#### E. Time-Saved Box Plot
+
+Bandingkan waktu manual review inspection dengan SIPATURE-assisted inspection. Laporkan median, IQR, dan persentase penghematan waktu. Jangan membuat angka sebelum user study dilakukan.
+
+#### F. Alert Verification Funnel
+
+```text
+alerts generated
+-> sufficient evidence
+-> verification planned
+-> field verified
+-> intervention planned
+-> resolved/rejected
+```
+
+#### G. Priority Component Waterfall
+
+Untuk satu destination case, tampilkan kontribusi severity, frequency, confidence, persistence, exposure, facility gap, dan feasibility terhadap Priority Score. Diagram ini mendukung explainability.
+
+#### H. Before/After Scenario Chart
+
+Bandingkan current score dan scenario score per component. Beri label permanen bahwa hasil adalah scenario estimate, bukan causal prediction.
+
+### 26.11 Diagram Minimum untuk Submission
+
+Jika waktu terbatas, prioritaskan 10 visual berikut:
+
+1. Data cleaning funnel.
+2. Rating dan label distribution.
+3. Aspect co-occurrence heatmap.
+4. Model comparison grouped bar chart.
+5. Per-label F1 + support chart.
+6. Precision-recall curve label utama.
+7. Polarity/severity confusion matrix.
+8. Reliability diagram.
+9. Expert vs model ranking atau NDCG@K chart.
+10. Evidence correctness + unsupported alert chart.
+
+Tambahkan geographic coverage map untuk demo produk dan learning curve jika ruang laporan cukup.
+
+### 26.12 Pemetaan ke Rubrik Del AI Hackathon
+
+Rencana evaluasi ini sesuai dengan ketentuan kompetisi:
+
+| Rubrik | Bukti SIPATURE |
+| --- | --- |
+| Kebaruan dan problem framing, 20 | Evaluasi rantai review-to-intervention, bukan dashboard sentimen umum |
+| Dampak dan relevansi, 20 | Ranking agreement, intervention relevance, time saved, alert verification rate |
+| Kualitas teknis AI/data, 20 | Baseline comparison, Macro/Micro F1, per-label metrics, calibration, entity-resolution metrics, leakage-safe split |
+| Kelayakan dan keberlanjutan, 15 | Latency, offline deployment, workflow verification, pilot metrics |
+| Pemanfaatan data Toba, 15 | Cleaning funnel, coverage map, metadata integration, evidence provenance, facility-gap analysis |
+| Komunikasi/demo/dokumentasi, 10 | Diagram evaluasi, model card, error analysis, evidence-backed demo |
+
+Kesesuaian dokumen kompetisi:
+
+- Preliminary menilai kualitas analisis, interpretasi, visualisasi, dan dampak rekomendasi.
+- Video demo wajib menjelaskan eksekusi dan performa/evaluasi model.
+- Submission wajib menjelaskan pemanfaatan dataset, pendekatan AI, dan evaluasi model.
+- Rubrik teknis meminta performa berdasarkan metrik kuantitatif yang relevan.
+- Responsible AI meminta dasar rekomendasi, keterbatasan, bias, privasi, dan risiko misuse.
+
+Catatan penting: semua chart harus memakai hasil aktual dari locked test set atau human evaluation. Target, asumsi simulator, dan hasil aktual harus diberi label berbeda.
+
+## 27. Artefak Akhir dan Definition of Done
 
 Artefak:
 

@@ -1,0 +1,24 @@
+# Deployment satu perintah untuk DGX B200:
+#   docker compose up -d --build
+#   curl http://<dgx-host>:3000/api/health
+#
+# Catatan: aplikasi ini murni membaca data precomputed, jadi tidak butuh GPU.
+# Bila lapisan IndoBERT sudah masuk, tambahkan service kedua "inference"
+# dengan `deploy.resources.reservations.devices` untuk GPU.
+
+services:
+  web:
+    build: .
+    image: sipature-app:demo
+    container_name: martahuta-web
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s

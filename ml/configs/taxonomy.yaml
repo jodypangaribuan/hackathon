@@ -1,28 +1,104 @@
-taxonomy_version: "0.1.0-draft"
+taxonomy_version: "1.0.0-rc1"
+status: pilot_locked
+language: id
+multilabel: true
 polarity_labels: [positive, negative, neutral]
 severity_labels: [low, medium, high]
 
 aspects:
-  environmental:
-    - cleanliness
-    - waste
-    - sanitation
-    - crowding
-  infrastructure:
-    - access
-    - parking
-    - public_facilities
-  visitor_experience:
-    - scenery
-    - comfort
-    - safety
-    - price_transparency
-  operations:
-    - staff_service
-    - maintenance
-    - opening_hours
+  environmental: [cleanliness, waste, sanitation, crowding]
+  infrastructure: [access, parking, public_facilities]
+  visitor_experience: [scenery, comfort, safety, price_transparency]
+  operations: [staff_service, maintenance, opening_hours]
+
+aspect_definitions:
+  cleanliness:
+    group: environmental
+    definition: Kebersihan umum area, permukaan, kamar, meja, atau lingkungan layanan.
+    seed_terms: [bersih, kotor, jorok, kumuh, bau, serangga, laba-laba]
+    rare_sampling: false
+  waste:
+    group: environmental
+    definition: Sampah, limbah, plastik, atau pengelolaan/pembuangan sampah.
+    seed_terms: [sampah, limbah, plastik, berserakan, tempat sampah]
+    rare_sampling: true
+  sanitation:
+    group: environmental
+    definition: Toilet, WC, kamar mandi, MCK, air bersih, drainase, atau kondisi sanitasi.
+    seed_terms: [toilet, wc, kamar mandi, mck, sanitasi, air mati, air bersih]
+    rare_sampling: true
+  crowding:
+    group: environmental
+    definition: Kepadatan, antrean, atau keramaian yang memengaruhi pengalaman/operasi.
+    seed_terms: [ramai, padat, penuh sesak, antre, antri, berdesakan]
+    rare_sampling: true
+  access:
+    group: infrastructure
+    definition: Jalan, rute, transport access, medan, penunjuk arah, atau kemudahan mencapai lokasi.
+    seed_terms: [akses, jalan, rusak, berlubang, terjal, berbatu, petunjuk arah]
+    rare_sampling: false
+  parking:
+    group: infrastructure
+    definition: Ketersediaan, kapasitas, keamanan, biaya, atau pengelolaan parkir.
+    seed_terms: [parkir, parkiran, lahan parkir]
+    rare_sampling: true
+  public_facilities:
+    group: infrastructure
+    definition: Fasilitas publik selain sanitasi/parkir, termasuk tempat duduk, gazebo, penerangan, aksesibilitas, dan tempat ibadah.
+    seed_terms: [fasilitas, gazebo, kursi, tempat duduk, penerangan, lampu, mushola, masjid, gereja, difabel, kursi roda]
+    rare_sampling: true
+  scenery:
+    group: visitor_experience
+    definition: Pemandangan, panorama, keindahan alam/visual, sunrise, atau sunset.
+    seed_terms: [pemandangan, panorama, view, indah, cantik, sunrise, sunset, asri]
+    rare_sampling: false
+  comfort:
+    group: visitor_experience
+    definition: Kenyamanan fisik/atmosfer yang tidak lebih spesifik pada fasilitas, crowding, atau safety.
+    seed_terms: [nyaman, panas, sejuk, bising, tenang, pengap]
+    rare_sampling: false
+  safety:
+    group: visitor_experience
+    definition: Risiko cedera, kriminalitas, ancaman, kondisi berbahaya, atau rasa aman.
+    seed_terms: [aman, bahaya, berbahaya, rawan, licin, preman, maling, copet]
+    rare_sampling: true
+  price_transparency:
+    group: visitor_experience
+    definition: Kejelasan/kewajaran relatif biaya, tiket, pungutan, perubahan harga, atau biaya tidak diinformasikan.
+    seed_terms: [harga, tarif, tiket, pungli, pungutan, mahal, biaya, retribusi, karcis]
+    rare_sampling: false
+  staff_service:
+    group: operations
+    definition: Sikap, respons, komunikasi, kecepatan, atau profesionalitas staf/petugas/pengelola.
+    seed_terms: [pelayanan, petugas, staf, staff, ramah, kasar, lambat, responsif]
+    rare_sampling: false
+  maintenance:
+    group: operations
+    definition: Kondisi perawatan, kerusakan, keusangan, atau fasilitas/objek terbengkalai.
+    seed_terms: [terawat, tidak terawat, perawatan, rusak, usang, terbengkalai]
+    rare_sampling: true
+  opening_hours:
+    group: operations
+    definition: Kesesuaian informasi dan realisasi jam/hari buka atau tutup.
+    seed_terms: [jam buka, jam operasional, tutup, belum buka, sudah tutup, masih tutup, buka 24 jam]
+    rare_sampling: true
 
 constraints:
   multilabel: true
   severity_only_when_polarity: negative
+  nonnegative_severity_must_be_null: true
+  unique_aspect_per_review: true
+  empty_labels_allowed: true
   require_human_verified_gold_labels: true
+  candidate_suggestions_are_not_labels: true
+
+agreement_gates:
+  aspect_jaccard: 0.70
+  polarity_agreement: 0.75
+  severity_weighted_kappa: 0.60
+
+sampling:
+  pilot_size: 120
+  main_size: 1200
+  double_annotation_rate: 0.20
+  seed: 42

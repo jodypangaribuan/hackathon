@@ -86,5 +86,49 @@
   "22_canonical_destination_composition.png": {
     "sha256": "ca159e8e1c1fe461bd72ef99fe6a4a120a449de0b52390bb6a8415af533f97e1",
     "size_bytes": 83054
+  },
+  "23_annotation_candidate_support.png": {
+    "sha256": "8edb5e934b6d2496b091ac062c79783392e7eabdfa05db65473a2246ab88da83",
+    "size_bytes": 142014
+  },
+  "24_pilot_sampling_stratification.png": {
+    "sha256": "6559c5235a9cac590ad199535456565f993f1ebf80c71540be9cfdb2b3113b5d",
+    "size_bytes": 297912
+  },
+  "25_main_annotation_assignments.png": {
+    "sha256": "f7a4c1edee7154da9988bc0eff9e5fd9a9cc9f654b9c1aae7d9114d16c9b28c1",
+    "size_bytes": 110080
+  },
+  "26_taxonomy_group_composition.png": {
+    "sha256": "4c97a80f20393958a9e9962b553e158f95a3ec83db3043e1929f790af26b6aed",
+    "size_bytes": 98941
+  },
+  "27_candidate_aspect_cooccurrence.png": {
+    "sha256": "068fbc6cfa337c5d728e1b5d7efa004f8dd58e003f76de1b92c740ea6cdbe79c",
+    "size_bytes": 263412
+  },
+  "28_main_destination_coverage.png": {
+    "sha256": "80aa59631b666166325a30f84f4942fb28623c25404e944ed33ff3ee1ac0a576",
+    "size_bytes": 71749
+  },
+  "29_silver_aspect_distribution.png": {
+    "sha256": "2244a9868531f51448168b2e370cd7bf9343b18dcd3ed1e6da392ee61076651f",
+    "size_bytes": 148096
+  },
+  "30_silver_polarity_severity.png": {
+    "sha256": "b71bc4f878e1e8108ef068a06af15e95b36db8bb52663281b4d5dd321b41e9ec",
+    "size_bytes": 112615
+  },
+  "31_silver_aspect_cooccurrence.png": {
+    "sha256": "7dc06a7fc47ae66188d700751cf0b8598b0d9e76e8217865ee5b114ca231f768",
+    "size_bytes": 261088
+  },
+  "32_silver_status_distribution.png": {
+    "sha256": "ffb6eba2c183a3c00d5162cef52ccec9ba15d53e0f1cef1b02ddc19e2cfc53d1",
+    "size_bytes": 95535
+  },
+  "33_silver_pass_agreement.png": {
+    "sha256": "b7304e9b67661a17ad4778cc58ec2d694ee064b275f77857152b630dab10c680",
+    "size_bytes": 64650
   }
 }

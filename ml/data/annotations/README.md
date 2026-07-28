@@ -1,15 +1,16 @@
 # Annotation Data
 
-Human annotation workspace and versioned gold labels.
+Restricted AI-assisted silver annotation workspace. Optional human/gold artifacts use separate versions and are not part of the active A5 run.
 
-Expected outputs:
+Active outputs:
 
 ```text
-sampling_candidates_v1.jsonl
-pilot_annotations_v1.jsonl
-adjudication_log_v1.jsonl
-gold_annotations_v1.jsonl
-annotation_manifest_v1.json
+silver-v1.0.0.jsonl
+silver-v1.0.0.manifest.json
+silver-disagreement-queue.jsonl
+silver-pass-strict.jsonl
+silver-pass-balanced.jsonl
+silver-pass-recall.jsonl
 ```
 
-Do not store reviewer names or personal identifiers. Labels suggested by rules or an LLM are never gold until verified by a human annotator.
+Do not store reviewer names or personal identifiers. These outputs are weak-supervision silver labels, not human annotations or gold labels. Vote agreement is not calibrated probability or inter-annotator agreement.

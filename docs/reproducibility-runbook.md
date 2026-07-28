@@ -91,7 +91,7 @@ Every notebook ends with:
 | Inventory | `reports/data_inventory.*`, known issues |
 | Cleaning | `data/interim/*.parquet`, cleaning manifest, quarantine |
 | Entity resolution | `data/processed/*`, entity-link manifest |
-| Annotation | sampling/gold/adjudication JSONL, agreement report |
+| Annotation | sampling/silver JSONL, disagreement queue, validation summary, manifest |
 | Split | train/validation/test JSONL, locked split manifest |
 | Baselines | model/vectorizer, validation/test metrics, config |
 | IndoBERT | best checkpoint, tokenizer, training state/logs |
@@ -114,6 +114,9 @@ sipature-ml run inventory --dataset-dir ../Datasets
 sipature-ml run eda --dataset-dir ../Datasets
 sipature-ml run clean --dataset-dir ../Datasets
 sipature-ml run resolve-entities
+sipature-ml annotation-sample
+sipature-ml silver-annotate
+sipature-ml silver-validate data/annotations/silver-v1.0.0.jsonl
 sipature-ml run clean
 sipature-ml run resolve-entities
 sipature-ml run sample-annotations

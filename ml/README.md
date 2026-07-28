@@ -5,7 +5,7 @@ Reproducible data and model pipeline for SIPATURE. Colab notebooks orchestrate e
 ## Pipeline stages
 
 ```text
-raw CSV -> ingest -> clean -> entity resolution -> annotation sampling
+raw CSV -> ingest -> clean -> entity resolution -> annotation sampling/silver labels
 -> destination-group split -> keyword/TF-IDF baselines -> IndoBERT
 -> threshold calibration -> locked test evaluation -> batch inference
 -> destination aggregation -> intervention priority -> app export
@@ -19,7 +19,7 @@ raw CSV -> ingest -> clean -> entity resolution -> annotation sampling
 | `data/raw/` | Immutable organizer input snapshots or Drive mount instructions |
 | `data/interim/` | Cleaned but not canonical data |
 | `data/processed/` | Canonical destinations/reviews and model-ready data |
-| `data/annotations/` | Samples, gold labels, adjudication records |
+| `data/annotations/` | Restricted samples, silver labels, uncertainty queue; optional human artifacts |
 | `data/splits/` | Locked train/validation/test manifests |
 | `notebooks/` | Ordered Colab workflow |
 | `src/sipature_ml/` | Importable pipeline package |
@@ -36,6 +36,8 @@ make inventory DATASET_DIR=../Datasets
 make eda DATASET_DIR=../Datasets
 make clean-data DATASET_DIR=../Datasets
 make resolve-entities
+make annotation-sample
+make silver-annotate
 ```
 
 Python 3.10 or newer is required. Google Colab's current Python runtime is compatible.

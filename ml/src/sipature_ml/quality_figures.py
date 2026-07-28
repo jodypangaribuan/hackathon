@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+import ast
 import json
 from pathlib import Path
 
 import matplotlib
+import numpy as np
 import pandas as pd
+import yaml
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -118,4 +121,188 @@ def generate_quality_figures(
     (report_dir / "quality_figure_summary.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
+    return outputs
+
+
+def generate_annotation_figures(
+    annotation_dir: Path,
+    report_dir: Path,
+    figure_dir: Path,
+) -> list[str]:
+    """Generate sampling figures; label figures require completed human annotations."""
+
+    figure_dir.mkdir(parents=True, exist_ok=True)
+    support = pd.read_csv(report_dir / "annotation_candidate_support.csv")
+    pilot = pd.read_csv(annotation_dir / "pilot_sampling_audit.csv")
+    assignments = pd.read_csv(annotation_dir / "annotation_assignments.csv")
+    outputs: list[str] = []
+    blue, orange, green, purple = "#2A78D6", "#EB6834", "#1BAF7A", "#7C6BC4"
+
+    def save(name: str, fig: plt.Figure) -> None:
+        _save(fig, figure_dir / name)
+        outputs.append(name)
+
+    sorted_support = support.sort_values("clean_pool_candidate_support")
+    fig, ax = plt.subplots(figsize=(10, 7))
+    ax.barh(sorted_support["aspect"], sorted_support["clean_pool_candidate_support"], color=blue, label="Clean pool")
+    ax.barh(sorted_support["aspect"], sorted_support["main_candidate_support"], color=orange, label="Main sample")
+    _style(ax, "Candidate Aspect Support dan Main Sample")
+    ax.set_xlabel("Review dengan minimal satu seed term")
+    ax.legend(frameon=False)
+    save("23_annotation_candidate_support.png", fig)
+
+    dimensions = ["source_kind", "rating_band", "length_band", "language_marker", "recency_band"]
+    fig, axes = plt.subplots(2, 3, figsize=(15, 9))
+    for ax, dimension in zip(axes.flat, dimensions, strict=False):
+        counts = pilot[dimension].value_counts().sort_values(ascending=False)
+        bars = ax.bar(counts.index.astype(str), counts.values, color=green)
+        ax.bar_label(bars, padding=3, fontsize=7)
+        ax.set_title(dimension.replace("_", " ").title(), fontweight="bold")
+        ax.tick_params(axis="x", rotation=25)
+        ax.spines[["top", "right"]].set_visible(False)
+    axes.flat[-1].axis("off")
+    fig.suptitle("Stratifikasi Pilot Annotation", x=0.04, ha="left", fontsize=17, fontweight="bold")
+    fig.tight_layout(rect=[0, 0, 1, 0.95])
+    save("24_pilot_sampling_stratification.png", fig)
+
+    main_assignments = assignments.loc[assignments["phase"] == "main"]
+    per_annotator = main_assignments.groupby("annotator_id").size()
+    double_count = main_assignments.loc[main_assignments["is_double_annotated"], "review_id"].nunique()
+    single_count = main_assignments.loc[~main_assignments["is_double_annotated"], "review_id"].nunique()
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+    bars = axes[0].bar(per_annotator.index, per_annotator.values, color=[blue, orange, green])
+    axes[0].bar_label(bars, padding=4)
+    axes[0].set_title("Task per Annotator", fontweight="bold")
+    axes[0].spines[["top", "right"]].set_visible(False)
+    bars = axes[1].bar(["Single", "Double"], [single_count, double_count], color=[purple, green])
+    axes[1].bar_label(bars, padding=4)
+    axes[1].set_title("Main Review Coverage", fontweight="bold")
+    axes[1].spines[["top", "right"]].set_visible(False)
+    fig.suptitle("Rencana Assignment Main Annotation", x=0.04, ha="left", fontsize=17, fontweight="bold")
+    fig.tight_layout(rect=[0, 0, 1, 0.93])
+    save("25_main_annotation_assignments.png", fig)
+
+    taxonomy = yaml.safe_load((Path(__file__).resolve().parents[2] / "configs" / "taxonomy.yaml").read_text())
+    group_counts = {group: len(aspects) for group, aspects in taxonomy["aspects"].items()}
+    fig, ax = plt.subplots(figsize=(8, 5))
+    bars = ax.bar(group_counts.keys(), group_counts.values(), color=[green, blue, orange, purple])
+    ax.bar_label(bars, padding=4)
+    _style(ax, "Komposisi Taxonomy MVP")
+    ax.tick_params(axis="x", rotation=15)
+    ax.set_ylabel("Jumlah aspek")
+    save("26_taxonomy_group_composition.png", fig)
+
+    main = pd.read_csv(annotation_dir / "main_sampling_audit.csv")
+    aspect_names = support["aspect"].tolist()
+    cooccurrence = pd.DataFrame(0, index=aspect_names, columns=aspect_names, dtype=int)
+    for raw_aspects in main["candidate_aspects"]:
+        aspects = ast.literal_eval(raw_aspects) if isinstance(raw_aspects, str) else []
+        for left in aspects:
+            for right in aspects:
+                if left in cooccurrence.index and right in cooccurrence.columns:
+                    cooccurrence.loc[left, right] += 1
+    fig, ax = plt.subplots(figsize=(10, 9))
+    image = ax.imshow(cooccurrence.values, cmap="Oranges", aspect="auto")
+    ax.set_xticks(range(len(aspect_names)), aspect_names, rotation=55, ha="right")
+    ax.set_yticks(range(len(aspect_names)), aspect_names)
+    ax.set_title("Candidate Aspect Co-occurrence pada Main Sample", loc="left", fontsize=15, fontweight="bold", pad=16)
+    fig.colorbar(image, ax=ax, label="Jumlah review")
+    save("27_candidate_aspect_cooccurrence.png", fig)
+
+    destination_counts = main.groupby("destination_id")["review_id"].size()
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.hist(destination_counts, bins=range(1, int(destination_counts.max()) + 2), color=blue, align="left")
+    _style(ax, "Coverage Destination pada Main Sample")
+    ax.set_xlabel("Review per destination")
+    ax.set_ylabel("Jumlah destination")
+    save("28_main_destination_coverage.png", fig)
+    return outputs
+
+
+def generate_silver_figures(
+    annotation_dir: Path,
+    figure_dir: Path,
+) -> list[str]:
+    """Generate aggregate figures from AI-assisted silver annotations."""
+
+    figure_dir.mkdir(parents=True, exist_ok=True)
+    records = [
+        json.loads(line)
+        for line in (annotation_dir / "silver-v1.0.0.jsonl").read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    main_ids = set(pd.read_csv(annotation_dir / "main_sampling_audit.csv")["review_id"])
+    main = [record for record in records if record["review_id"] in main_ids]
+    outputs: list[str] = []
+    blue, orange, green, red, gray, purple = "#2A78D6", "#EB6834", "#1BAF7A", "#D03B3B", "#898781", "#7C6BC4"
+
+    def save(name: str, fig: plt.Figure) -> None:
+        _save(fig, figure_dir / name)
+        outputs.append(name)
+
+    aspect_counts: dict[str, int] = {}
+    polarity_counts: dict[str, int] = {}
+    severity_counts: dict[str, int] = {}
+    status_counts: dict[str, int] = {}
+    for record in main:
+        status_counts[record["silver_status"]] = status_counts.get(record["silver_status"], 0) + 1
+        for label in record["labels"]:
+            aspect_counts[label["aspect"]] = aspect_counts.get(label["aspect"], 0) + 1
+            polarity_counts[label["polarity"]] = polarity_counts.get(label["polarity"], 0) + 1
+            if label["severity"]:
+                severity_counts[label["severity"]] = severity_counts.get(label["severity"], 0) + 1
+
+    aspect_series = pd.Series(aspect_counts).sort_values()
+    fig, ax = plt.subplots(figsize=(9, 7))
+    bars = ax.barh(aspect_series.index, aspect_series.values, color=blue)
+    ax.bar_label(bars, padding=4)
+    _style(ax, "Distribusi Aspect Silver pada Main Sample")
+    ax.set_xlabel("Jumlah silver labels")
+    save("29_silver_aspect_distribution.png", fig)
+
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+    polarity_order = [item for item in ["positive", "negative", "neutral"] if item in polarity_counts]
+    bars = axes[0].bar(polarity_order, [polarity_counts[item] for item in polarity_order], color=[green, red, gray])
+    axes[0].bar_label(bars, padding=4)
+    axes[0].set_title("Polarity", fontweight="bold")
+    axes[0].spines[["top", "right"]].set_visible(False)
+    severity_order = [item for item in ["low", "medium", "high"] if item in severity_counts]
+    bars = axes[1].bar(severity_order, [severity_counts[item] for item in severity_order], color=[orange, purple, red])
+    axes[1].bar_label(bars, padding=4)
+    axes[1].set_title("Negative Severity", fontweight="bold")
+    axes[1].spines[["top", "right"]].set_visible(False)
+    fig.suptitle("Distribusi Polarity dan Severity Silver", x=0.04, ha="left", fontsize=17, fontweight="bold")
+    fig.tight_layout(rect=[0, 0, 1, 0.93])
+    save("30_silver_polarity_severity.png", fig)
+
+    aspects = sorted(aspect_counts)
+    cooccurrence = pd.DataFrame(0, index=aspects, columns=aspects, dtype=int)
+    for record in main:
+        present = {label["aspect"] for label in record["labels"]}
+        for left in present:
+            for right in present:
+                cooccurrence.loc[left, right] += 1
+    fig, ax = plt.subplots(figsize=(10, 9))
+    image = ax.imshow(cooccurrence.values, cmap="Blues", aspect="auto")
+    ax.set_xticks(range(len(aspects)), aspects, rotation=55, ha="right")
+    ax.set_yticks(range(len(aspects)), aspects)
+    ax.set_title("Silver Aspect Co-occurrence", loc="left", fontsize=15, fontweight="bold", pad=16)
+    fig.colorbar(image, ax=ax, label="Jumlah review")
+    save("31_silver_aspect_cooccurrence.png", fig)
+
+    status_series = pd.Series(status_counts).sort_values(ascending=False)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    bars = ax.bar(status_series.index, status_series.values, color=[green, orange, gray])
+    ax.bar_label(bars, padding=4)
+    _style(ax, "Status Silver Annotation pada Main Sample")
+    ax.tick_params(axis="x", rotation=15)
+    save("32_silver_status_distribution.png", fig)
+
+    agreements = [record["pass_agreement"] for record in main]
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.hist(agreements, bins=np.linspace(0, 1, 13), color=purple)
+    _style(ax, "Distribusi AI Pass Agreement")
+    ax.set_xlabel("Mean pairwise aspect-set Jaccard")
+    ax.set_ylabel("Review")
+    save("33_silver_pass_agreement.png", fig)
     return outputs

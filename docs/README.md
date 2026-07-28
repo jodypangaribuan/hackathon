@@ -7,7 +7,7 @@ Authoritative documentation index for the data, model, product, evaluation, and 
 | `data-dictionary.md` | Field definitions, types, examples, missing-value semantics | Data/ML | Draft |
 | `data-inventory.md` | Source files, semantic row/schema notes, mappings, and restricted fields | Data/ML | Complete v0.1 |
 | `known-data-issues.md` | Known defects, impact, handling, residual risk | Data/ML | Draft |
-| `annotation-guideline.md` | Taxonomy and human-labeling rules | Data/ML + Research | Draft |
+| `annotation-guideline.md` | Taxonomy boundaries used by silver labeling; also supports optional human review | Data/ML + Research | RC1 |
 | `model-card.md` | Intended use, metrics, limitations, license, risks | Data/ML | Draft |
 | `responsible-ai.md` | Privacy, bias, human oversight, misuse safeguards | Research | Draft |
 | `app-integration-contract.md` | ML-to-Next.js export and versioning contract | ML + Engineering | Draft |
@@ -17,6 +17,8 @@ Authoritative documentation index for the data, model, product, evaluation, and 
 | `reproducibility-runbook.md` | Environment, Drive, commands, checkpoints, and locked-test runbook | Data/ML | Active |
 | `eda-report.md` | Current EDA findings with report-ready figures and source-data references | Data/ML | Complete v0.1 |
 | `cleaning-entity-resolution-report.md` | Cleaning funnel, canonical linkage, reviewed metrics, and report figures | Data/ML | Complete v0.1 |
+| `taxonomy-annotation-report.md` | Taxonomy RC1, sampling, AI-assisted silver labels, consistency, audit, and limitations | Data/ML | Complete silver v1.0.0 |
+| `annotation-runbook.md` | Active silver generation/validation plus optional future human workflow | Data/ML | Active |
 
 Related planning documents at workspace root:
 

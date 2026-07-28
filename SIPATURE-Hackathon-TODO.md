@@ -106,26 +106,28 @@ Semua anggota wajib memahami problem, data, model, metrics, limitation, arsitekt
 
 ## A5. Taxonomy dan Annotation
 
-- [ ] Audit support tiap candidate aspect.
-- [ ] Kunci taxonomy MVP, polarity, dan severity.
-- [ ] Definisikan in/out scope dan positive/negative/neutral examples.
-- [ ] Dokumentasikan negation, sarcasm, implicit complaint, multi-aspect boundaries.
-- [ ] Dokumentasikan severity boundaries.
-- [ ] Kunci JSONL schema tanpa reviewer identity.
-- [ ] Stratified sample berdasarkan destination, rating, length, type, language, recency.
-- [ ] Oversample complaints dan rare aspects.
-- [ ] Pilot 100–150 reviews oleh semua annotator.
-- [ ] Hitung Jaccard dan per-label/polarity/severity agreement.
-- [ ] Revisi guideline; ulangi pilot jika perlu.
-- [ ] Double-annotate 15–20%; single-annotate sisanya.
-- [ ] Adjudicate disagreement dan simpan annotation version.
-- [ ] Audit schema, IDs, label support, polarity/severity constraints.
-- [ ] Plot label distribution dan aspect co-occurrence.
-- [ ] Bekukan gold dataset.
+- [x] Audit boundary-aware seed candidate support tiap aspect pada 12.234 clean textual reviews; tandai hasil sebagai sampling evidence, bukan label.
+- [x] Kunci taxonomy MVP `1.0.0-rc1` untuk pilot: 14 aspects, polarity positive/negative/neutral, severity low/medium/high.
+- [x] Definisikan in/out scope dan positive/negative/neutral examples untuk seluruh 14 aspects.
+- [x] Dokumentasikan negation, contrast, sarcasm, implicit complaint, dan multi-aspect boundaries.
+- [x] Dokumentasikan severity low/medium/high berdasarkan textual operational impact, bukan rating.
+- [x] Kunci JSONL schema tanpa reviewer identity; opaque annotator IDs `A1`–`A3`.
+- [x] Buat deterministic stratified sample berdasarkan destination, rating, length, source type, language marker, dan recency.
+- [x] Oversample candidate complaints dan rare aspects dengan word/phrase-boundary matching.
+- [x] Generate AI-assisted weak-supervision labels melalui tiga deterministic rule passes (`strict`, `balanced`, `recall`) pada pilot 120 dan main 1.200 reviews.
+- [x] Terapkan consensus minimal 2/3 votes, simpan confidence sebagai vote agreement, dan pisahkan uncertainty ke `review_recommended`.
+- [x] Audit systematic errors pada negation, rumor/question, severity, serta boundaries access/maintenance, sanitation/cleanliness, crowding, opening hours, dan public facilities.
+- [x] Validasi 1.320 silver records terhadap schema: 0 invalid records; evidence wajib verbatim dan tanpa reviewer identity.
+- [x] Simpan 334-record disagreement queue; tidak diklaim sebagai human adjudication.
+- [x] Buat actual silver aspect, polarity, severity, co-occurrence, status, dan AI pass-consistency plots.
+- [x] Bekukan artifact `silver-1.0.0` dengan SHA-256 `8838930b046def5303c89efb4f018d9a5d8a77cc2b142fa25d4c445f4d9d2610`.
+- [x] Pertahankan human agreement/gold commands sebagai optional future upgrade; bukan jalur aktif dan tidak diklaim selesai.
 
 **Target:** ideal 1.500–2.500; minimum 1.000–1.200 reviews.
 
-**Gate:** Aspect kappa >=0.70; Polarity >=0.75; Severity >=0.60 atau taxonomy disederhanakan.
+**Output:** taxonomy RC1, guideline, silver schema, deterministic samples, three-pass silver dataset, disagreement queue, validator, provenance manifest, report, dan sebelas annotation/silver figures.
+
+**Gate:** terpenuhi untuk status silver — 1.320/1.320 records valid, mean AI pass agreement 0,8827, systematic rule audit selesai, dan uncertainty dipertahankan. Angka ini bukan inter-annotator agreement dan dataset bukan gold.
 
 ## A6. Leakage-Safe Split dan Baselines
 

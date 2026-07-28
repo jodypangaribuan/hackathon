@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sipature.local/schemas/annotation.schema.json",
+  "title": "SIPATURE human review annotation",
+  "type": "object",
+  "required": [
+    "review_id",
+    "destination_id",
+    "text",
+    "labels",
+    "annotator_id",
+    "annotation_version",
+    "annotation_status"
+  ],
+  "properties": {
+    "review_id": {"type": "string", "minLength": 1},
+    "destination_id": {"type": "string", "minLength": 1},
+    "text": {"type": "string", "minLength": 1},
+    "rating_context": {"type": ["number", "null"], "minimum": 0, "maximum": 5},
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["aspect", "polarity", "severity"],
+        "properties": {
+          "aspect": {
+            "enum": [
+              "cleanliness", "waste", "sanitation", "crowding", "access", "parking",
+              "public_facilities", "scenery", "comfort", "safety", "price_transparency",
+              "staff_service", "maintenance", "opening_hours"
+            ]
+          },
+          "polarity": {"enum": ["positive", "negative", "neutral"]},
+          "severity": {"type": ["string", "null"], "enum": ["low", "medium", "high", null]},
+          "evidence_text": {"type": ["string", "null"]},
+          "notes": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "annotator_id": {"type": "string", "pattern": "^A[1-9][0-9]*$"},
+    "annotation_version": {"const": "1.0.0-rc1"},
+    "annotation_status": {"enum": ["pending", "completed", "needs_adjudication", "adjudicated"]},
+    "review_notes": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

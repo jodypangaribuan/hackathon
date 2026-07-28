@@ -9,6 +9,7 @@
 | KDI-002 | Rating | Decimal comma and mixed types | `[N/%]` | Parsing error | Normalize + quarantine | Invalid edge cases | Open |
 | KDI-003 | Place name | No universal cross-file ID | `[N]` | Duplicate/split entities | Entity resolution | False merge | Open |
 | KDI-004 | Coordinates | Missing/invalid/outlier points | `[N/%]` | Incomplete map/gap analysis | Validate + insufficient state | Coverage bias | Open |
+| KDI-005 | Source manifest | Current `Datasets/` inventory has 14 CSV while the baseline corpus records `generatedFrom` 15 files | 1 discrepancy | Baseline output may use a different snapshot/input set | Compare archive, baseline script inputs, filenames, and hashes | Reproducibility mismatch until resolved | Open |
 | `[ID]` | `[SOURCE]` | `[DESCRIPTION]` | `[N]` | `[IMPACT]` | `[HANDLING]` | `[RISK]` | `[STATUS]` |
 
 Severity definitions:

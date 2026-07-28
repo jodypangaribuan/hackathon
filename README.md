@@ -14,6 +14,7 @@ SIPATURE is an evidence-based early-warning and intervention-priority system for
 | `SIPATURE-Implementation-Plan.md` | End-to-end technical plan |
 | `SIPATURE-Hackathon-TODO.md` | Preliminary/final execution tracker |
 | `SIPATURE-Laporan-Analisis-Template.md` | Eight-chapter report template |
+| `SIPATURE-Laporan-Analisis-Draft.md` | Evidence-backed report draft, updated as pipeline artifacts become available |
 
 ## Current Truth
 

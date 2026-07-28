@@ -30,10 +30,9 @@ raw CSV -> ingest -> clean -> entity resolution -> annotation sampling
 
 ```bash
 cd ml
-python3.10 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-pytest
+make setup
+make check
+make inventory DATASET_DIR=../Datasets
 ```
 
 Python 3.10 or newer is required. Google Colab's current Python runtime is compatible.
@@ -41,8 +40,20 @@ Python 3.10 or newer is required. Google Colab's current Python runtime is compa
 Install training dependencies only in Colab/GPU environments:
 
 ```bash
-pip install -e ".[train]"
+pip install -r requirements-colab.lock.txt
+pip install --no-deps -e .
 ```
+
+## Reproducible commands
+
+```bash
+make stages       # list the 14 declared stages
+make doctor       # print environment, package, Git, config metadata
+make snapshot     # persist the current run environment
+make inventory    # run the implemented source inventory stage
+```
+
+Full local/Colab instructions and intermediate checkpoint rules are in `../docs/reproducibility-runbook.md`.
 
 ## Rules
 

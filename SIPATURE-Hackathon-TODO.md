@@ -50,15 +50,15 @@ Semua anggota wajib memahami problem, data, model, metrics, limitation, arsitekt
 
 - [x] Buat struktur `ml/`, `docs/`, dan `sipature-app/` dengan package Python, config, contracts, tests, documentation index, dan app export boundary.
 - [x] Buat `.gitignore` untuk secrets, cache, model besar, dan restricted data; tambahkan Docker exclusions dan dokumentasikan warning untuk dataset yang sudah ter-track.
-- [ ] Pin dependencies setelah environment stabil.
-- [ ] Tetapkan random seed dan config YAML/JSON.
-- [ ] Pisahkan notebook eksplorasi dan script produksi.
-- [ ] Buat entry point cleaning, split, training, evaluation, inference, aggregation.
-- [ ] Siapkan Google Drive `data/models/predictions/metrics/figures/reports`.
-- [ ] Simpan intermediate output, bukan hanya notebook state.
-- [ ] Dokumentasikan perintah menjalankan ulang pipeline.
+- [x] Pin dependencies setelah environment stabil melalui `requirements-dev.lock.txt` dan `requirements-colab.lock.txt`; clean setup telah diverifikasi.
+- [x] Tetapkan seed 42, fungsi global seeding, dan config YAML untuk pipeline, taxonomy, split, training, serta scoring.
+- [x] Pisahkan notebook eksplorasi di `ml/notebooks/` dan script produksi pada package `ml/src/sipature_ml/`.
+- [x] Buat CLI entry point untuk cleaning, split, training, evaluation, inference, aggregation, prioritization, dan app export; inventory sudah diimplementasikan, stage lanjutan fail-fast sampai TODO terkait selesai.
+- [x] Siapkan bootstrap Google Drive `data/models/predictions/metrics/figures/reports` serta `runs/` untuk metadata eksekusi.
+- [x] Tetapkan kontrak penyimpanan intermediate output dan manifest per stage agar tidak bergantung pada notebook state.
+- [x] Dokumentasikan setup, Makefile, CLI, Colab, checkpoint, locked-test policy, dan perintah reproduksi di `docs/reproducibility-runbook.md`.
 
-**Gate:** anggota lain dapat menjalankan data inventory dari README.
+**Gate:** terpenuhi — clean Python 3.10 environment berhasil menjalankan lint, 13 tests, dan inventory terhadap 14 CSV dataset tanpa memodifikasi sumber.
 
 ## A3. Data Inventory dan EDA
 

@@ -5,7 +5,6 @@ from typing import Any
 
 import yaml
 
-
 ML_ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -22,5 +21,5 @@ def load_config(name: str) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as handle:
         value = yaml.safe_load(handle)
     if not isinstance(value, dict):
-        raise ValueError(f"Configuration must contain a mapping: {path}")
+        raise TypeError(f"Configuration must contain a mapping: {path}")
     return value

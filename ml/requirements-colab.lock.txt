@@ -1,0 +1,17 @@
+# Pinned Colab/GPU profile. Validate with `make doctor` at the start of every Colab run.
+# Keep CPU/data versions aligned with requirements-dev.lock.txt where possible.
+numpy==2.2.6
+pandas==2.3.3
+pyarrow==19.0.1
+scikit-learn==1.7.2
+scipy==1.15.3
+PyYAML==6.0.3
+RapidFuzz==3.14.5
+matplotlib==3.10.3
+seaborn==0.13.2
+torch==2.7.1
+transformers==4.53.2
+datasets==3.6.0
+accelerate==1.8.1
+evaluate==0.4.5
+sentencepiece==0.2.0

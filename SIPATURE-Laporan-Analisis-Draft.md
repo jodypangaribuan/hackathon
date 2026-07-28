@@ -29,7 +29,7 @@ SIPATURE dirancang sebagai sistem **Dashboard & Decision Support** yang menghubu
 
 Inventory dan EDA reproducible berhasil membaca 14 CSV pada direktori dataset saat ini tanpa read error. Dua file ulasan utama masing-masing berisi 12.691 dan 9.611 baris, sehingga berjumlah 22.302 record. EDA menemukan 12.280 review berteks (55,06%), 9.978 rating-only bersih, 44 record tanpa rating maupun teks, dan 83 exact duplicate excess rows. Dari 22.243 rating integer valid, 15.595 (70,11%) adalah bintang lima. Metadata wisata, restoran, dan hotel menyediakan 323 coordinate records. Hasil ini menunjukkan class/coverage imbalance dan kebutuhan untuk tidak mengandalkan accuracy atau rating rata-rata saja.
 
-Tahap saat ini telah menyelesaikan scope lock, struktur repositori, dependency lock, konfigurasi, provenance manifest, Google Drive bootstrap, inventory, EDA, cleaning, entity resolution, dan AI-assisted silver annotation. Keyword, TF-IDF, dan IndoBERT belum dievaluasi pada human gold annotation; karena itu Aspect Macro F1, Alert Precision, calibration, dan system-level metrics belum tersedia dan tidak diklaim pada draft ini.
+Tahap saat ini telah menyelesaikan scope lock, struktur repositori, dependency lock, konfigurasi, provenance manifest, Google Drive bootstrap, inventory, EDA, cleaning, entity resolution, AI-assisted silver annotation, leakage-safe split, serta keyword dan TF-IDF silver benchmark. IndoBERT belum dilatih dan tidak ada human-gold evaluation; karena itu baseline Macro F1 hanya dinyatakan sebagai agreement terhadap silver, sedangkan Alert Precision, calibration, dan system-level metrics belum tersedia.
 
 | Indikator Utama | Nilai | Status dan Sumber |
 | --- | ---: | --- |
@@ -46,6 +46,9 @@ Tahap saat ini telah menyelesaikan scope lock, struktur repositori, dependency l
 | Annotation sample | Pilot 120; main 1.200 | Aktual; taxonomy `1.0.0-rc1` |
 | AI-assisted silver annotation | 1.320 records | Aktual; 489 consensus, 334 review-recommended, 497 no-supported-aspect |
 | AI pass agreement | 0,8827 | Rule consistency; bukan inter-annotator agreement |
+| Locked split | 922 / 196 / 202 records | 187 / 40 / 40 destination; zero checked leakage |
+| Keyword Macro F1 | 0,9768 | Agreement terhadap locked silver test; circularity tinggi |
+| TF-IDF Macro/Micro F1 | 0,7201 / 0,8040 | Agreement terhadap locked silver test |
 | Aspect Macro F1 | Belum tersedia | Menunggu locked-test evaluation |
 | Alert Precision | Belum tersedia | Menunggu calibration/evaluation |
 | Evidence correctness | Belum tersedia | Menunggu human system evaluation |
@@ -549,8 +552,8 @@ Strategi ini mencegah pengembangan dashboard mendahului validasi data dan model,
 | EDA/cleaning | EDA report, clean/interim data, quarantine | Selesai v0.1 |
 | Entity resolution | Canonical destinations, links, metrics | Selesai v0.1 dengan human adjudication |
 | Annotation | Guideline, samples, silver labels, consistency audit | Silver v1.0.0 selesai; human gold tidak tersedia |
-| Modelling | Keyword, TF-IDF, IndoBERT artifacts | Belum dimulai pada pipeline baru |
-| Evaluation | Calibration, locked metrics, error analysis | Belum tersedia |
+| Modelling | Keyword, TF-IDF, IndoBERT artifacts | Keyword/TF-IDF A6 selesai; IndoBERT belum dimulai |
+| Evaluation | Locked metrics, latency, error analysis, calibration | Silver baseline metrics selesai; calibration belum tersedia |
 | Intelligence engine | Prediction, aggregation, priority export | Draft config; belum diimplementasikan |
 | Product | Next.js prototype dan integration contract | Prototype baseline tersedia |
 
@@ -558,7 +561,7 @@ Strategi ini mencegah pengembangan dashboard mendahului validasi data dan model,
 
 Kode data/model menggunakan package Python `sipature_ml` dengan Python 3.10+, exact dependency lock untuk development dan profile terpisah untuk Colab/GPU. Seed global ditetapkan 42 untuk Python, NumPy, dan PyTorch. Config pipeline, taxonomy, split, training, dan scoring disimpan dalam YAML dan dicatat hash-nya pada environment snapshot.
 
-CLI mendeklarasikan stage dari inventory/EDA sampai app export. Inventory, EDA, cleaning, entity resolution, sampling, silver generation/validation, dan aggregate silver figures sudah diimplementasikan; stage modelling lanjutan tetap fail-fast agar deklarasi command tidak dianggap sebagai hasil implementasi. Clean environment telah berhasil menjalankan lint dan 40 unit tests terhadap pipeline saat ini.
+CLI mendeklarasikan stage dari inventory/EDA sampai app export. Inventory, EDA, cleaning, entity resolution, sampling, silver generation/validation, leakage-safe split, keyword/TF-IDF baselines, dan aggregate figures sudah diimplementasikan; stage IndoBERT dan downstream tetap fail-fast. Clean environment telah berhasil menjalankan lint dan 46 unit tests terhadap pipeline saat ini.
 
 Intermediate artifact wajib ditulis ke disk/Google Drive dan memiliki manifest berisi source hash, config version, pipeline/model version, timestamp, dan row counts. Raw data, generated artifact, model weight, dan secret tidak dimasukkan ke public Git. Catatan khusus: dataset sudah ter-track sebelum policy dibuat dan memerlukan keputusan lisensi terpisah sebelum repository dipublikasikan.
 
@@ -652,11 +655,15 @@ Silver v1.0.0 berisi 1.320 records dan seluruhnya lulus schema validation. Statu
 
 ## 5.3 Leakage-Safe Split
 
-Config split menetapkan rasio 70% train, 15% validation, dan 15% test berdasarkan `destination_id`. Duplicate group harus berada dalam split sama. Test dikunci sebelum tuning. Split aktual belum tersedia. Silver labels dapat digunakan untuk weak-supervision experiments, tetapi tidak menggantikan gold test set untuk klaim generalization.
+Split `silver-split-1.0.0` membagi 267 destination IDs menjadi train 187, validation 40, dan locked test 40. Jumlah record adalah 922/196/202. Connected components menggabungkan destination yang berbagi technical duplicate group atau normalized exact repeated text. Audit menghasilkan nol overlap review ID, destination, technical duplicate group, dan repeated-text group. Dua puluh tiga repeated-text groups lintas destination dipertahankan dalam split sama. Seluruh 14 silver aspects muncul pada validation dan test.
+
+Technical `duplicate_group_id` unik pada seluruh 1.320 surviving silver records dan tidak memadai sebagai semantic near-duplicate detector. Karena itu normalized exact-text hash ditambahkan sebagai constraint konservatif; paraphrase semantik tetap menjadi residual risk. Split manifest menyimpan seed 42, destination lists, distributions, hashes, zero-leakage checks, dan status locked test.
 
 ## 5.4 Baseline dan Primary Model
 
-Keyword baseline akan memakai aspect lexicon, negation window, contrast marker, intensity, dan severity rules. TF-IDF menggunakan word unigram/bigram dan character n-gram 3–5 dengan One-vs-Rest Logistic Regression serta class weighting. IndoBERT menggunakan encoder dengan sigmoid multilabel head; polarity dan severity menggunakan aspect-conditioned input.
+Keyword baseline menggunakan aspect lexicon, local polarity cues, contrast marker, intensity, dan severity rules. TF-IDF membandingkan word unigram/bigram, character n-gram 3–5, serta combined representation pada validation. Combined word+character dipilih dengan validation Macro F1 0,8117, kemudian One-vs-Rest Logistic Regression menggunakan `class_weight=balanced`, `C=1.0`, dan `max_iter=2000`. Threshold per aspect dipilih hanya pada validation sebelum locked test dibaca.
+
+Pada 202 locked silver-test records, keyword menghasilkan Macro/Micro F1 0,9768/0,9783 dan TF-IDF 0,7201/0,8040. Keyword yang hampir sempurna terutama menunjukkan circularity karena baseline dan silver generator berbagi taxonomy lexicon; angka tersebut bukan real-world accuracy. TF-IDF memperoleh Exact Match 0,7079 dan latency 0,1101 ms/review. Performa paling lemah adalah `opening_hours` F1 0 dengan support 2, `crowding` 0,5000, dan `public_facilities` 0,6061.
 
 Model ID IndoBERT belum dipilih. Pemilihan harus mencatat lisensi, tokenizer, ukuran, maximum length, dan sumber pretraining. Config hyperparameter saat ini hanya rancangan awal: max length 192, batch size 16, gradient accumulation 2, learning rate 2e-5, weight decay 0,01, empat epoch, warmup 0,10, patience 2, dan FP16. Nilai ini belum diuji.
 
@@ -691,16 +698,30 @@ Entity resolution dinilai dengan pairwise precision, recall, F1, dan false-merge
 | Human annotation agreement | Belum tersedia | Tidak dilakukan pada jalur silver aktif |
 | AI pass agreement | 0,8827 | Mean pairwise aspect-set Jaccard tiga rule passes; bukan human agreement |
 | Entity Resolution F1 | 0,5965 pre-adjudication | 110 certain reviewed pairs; precision 0,9714, recall 0,4304 |
-| Keyword model metrics | Belum tersedia | Baseline lama belum dievaluasi pada locked split baru |
-| TF-IDF metrics | Belum tersedia | Model belum dilatih |
+| Keyword silver agreement | Macro/Micro F1 0,9768/0,9783 | Locked silver test; circular terhadap weak rules |
+| TF-IDF silver agreement | Macro/Micro F1 0,7201/0,8040 | Locked silver test; word+char selected on validation |
 | IndoBERT metrics | Belum tersedia | Model belum dipilih/dilatih |
 | Calibration | Belum tersedia | Validation predictions belum ada |
 | Ranking agreement | Belum tersedia | Expert cases belum dinilai |
 | Evidence correctness | Belum tersedia | Human evaluation belum dilakukan |
 
-Skor baseline aplikasi tidak dimasukkan sebagai hasil evaluasi karena belum berasal dari gold labels dan locked test. Draft laporan akan diperbarui secara bertahap saat artifact aktual tersedia.
+Skor baseline aplikasi tetap tidak dimasukkan sebagai hasil evaluasi karena berasal dari pipeline UI lama. A6 metrics berasal dari pipeline ML baru dan locked destination-grouped silver test, tetapi tetap bukan human-gold performance.
 
-### 6.2.1 Entity Resolution Evaluation
+### 6.2.1 Baseline Silver Benchmark
+
+![Baseline comparison](docs/figures/eda/34_baseline_silver_test_comparison.png)
+
+**Gambar 6.1. Keyword dan TF-IDF agreement terhadap locked silver test.** Keyword result harus dibaca sebagai rule-reconstruction ceiling, bukan bukti pemahaman bahasa.
+
+![Per-aspect F1](docs/figures/eda/35_baseline_per_aspect_f1.png)
+
+**Gambar 6.2. Per-aspect F1 pada locked silver test.** Rare-label estimates tidak stabil; `opening_hours` hanya memiliki support 2.
+
+![TF-IDF validation selection](docs/figures/eda/36_tfidf_validation_selection.png)
+
+**Gambar 6.3. TF-IDF representation selection pada validation.** Test tidak digunakan untuk pemilihan representation atau threshold.
+
+### 6.2.2 Entity Resolution Evaluation
 
 Evaluasi mencakup 114 reviewed pairs: 110 certain dan 4 uncertain. Sebelum adjudication diperoleh TP=34, FP=1, FN=45, dan TN=30. Precision tinggi dan recall rendah merupakan konsekuensi kebijakan konservatif yang lebih memilih unresolved daripada false merge.
 
@@ -715,11 +736,11 @@ Post-adjudication 1,0 hanya berlaku pada human-corrected reviewed pairs dan buka
 
 ![Entity confusion matrix](docs/figures/eda/21_entity_review_confusion_matrix.png)
 
-**Gambar 6.1. Confusion matrix reviewed pairs sebelum adjudication.**
+**Gambar 6.4. Confusion matrix reviewed pairs sebelum adjudication.**
 
 ## 6.3 Quality Assurance yang Sudah Dilakukan
 
-Fondasi pipeline telah melalui `ruff` lint dan 40 unit tests. Clean Python 3.10 environment berhasil menjalankan inventory, EDA, cleaning, entity resolution, annotation sampling, silver generation/validation, dan aggregate figures. Empat belas CSV dapat dibaca tanpa read error. Pengujian tersebut memvalidasi kontrak dan deterministic logic, bukan performa generalisasi model AI.
+Fondasi pipeline telah melalui `ruff` lint dan 46 unit tests. Clean Python 3.10 environment berhasil menjalankan inventory, EDA, cleaning, entity resolution, annotation sampling, silver generation/validation, grouped split, baseline training/evaluation, model serialization/reload, dan aggregate figures. Pengujian memvalidasi kontrak, deterministic logic, dan leakage invariants, bukan performa generalisasi terhadap human gold.
 
 ---
 
@@ -727,7 +748,7 @@ Fondasi pipeline telah melalui `ruff` lint dan 40 unit tests. Clean Python 3.10 
 
 ## 7.1 Hasil yang Sudah Tersedia
 
-Hasil aktual mencakup scope lock, repository architecture, reproducibility foundation, inventory, EDA, clean dataset, canonical entity links, reviewed entity metrics, AI-assisted silver labels, dan prototipe aplikasi baseline. Pipeline belum menghasilkan human gold labels, evaluated model predictions, atau priority queue final.
+Hasil aktual mencakup scope lock, repository architecture, reproducibility foundation, inventory, EDA, clean dataset, canonical entity links, reviewed entity metrics, AI-assisted silver labels, leakage-safe split, keyword/TF-IDF silver benchmark, dan prototipe aplikasi baseline. Pipeline belum menghasilkan human gold labels, IndoBERT predictions, atau priority queue final.
 
 Cleaning menghasilkan 22.169 clean records dan semuanya memiliki `destination_id`. Resolution menghasilkan 388 canonical IDs teknis: 322 metadata anchors dan 66 unresolved placeholders. Placeholder menjaga leakage-safe grouping tanpa mengklaim sebagai destinasi baru terverifikasi.
 
@@ -781,7 +802,10 @@ Ketiga kasus tersebut belum menjadi hasil final. Kutipan harus diverifikasi ulan
 - Exact auto-match evaluation baru mencakup sampel 30 pairs dan human review belum double-annotated.
 - Taxonomy RC1 belum diuji melalui human annotation agreement; silver rules dapat berbagi bias meskipun pass agreement tinggi.
 - Sebanyak 334/1.320 records tetap berstatus review-recommended dan belum diadjudikasi manusia.
-- Keyword, TF-IDF, dan IndoBERT belum dibandingkan pada locked split.
+- Keyword dan TF-IDF baru dibandingkan terhadap silver; IndoBERT belum tersedia dan tidak ada human-gold comparison.
+- Keyword-vs-silver score sangat circular karena shared taxonomy lexicon.
+- Semantic near-duplicate paraphrases belum dideteksi oleh exact repeated-text grouping.
+- Rare-label test estimates tidak stabil; `opening_hours` support hanya 2.
 - Confidence baseline belum merupakan calibrated model probability.
 - Priority weights belum divalidasi stakeholder atau sensitivity analysis.
 - Evidence correctness, ranking agreement, dan time saved belum diukur.
@@ -790,7 +814,7 @@ Ketiga kasus tersebut belum menjadi hasil final. Kutipan harus diverifikasi ulan
 
 ## 7.5 Implikasi Tahap Berikutnya
 
-Tahap berikutnya adalah A6 leakage-safe split dan weak-supervision baselines menggunakan silver v1.0.0. Model evaluation harus membedakan fit/evaluation terhadap silver dari klaim performa pada human gold; Macro F1 final dan Alert Precision tidak boleh diklaim tanpa test reference yang memadai. Human review tetap menjadi optional upgrade untuk disagreement queue dan high-risk alerts.
+Tahap berikutnya adalah A7 IndoBERT aspect training pada train/validation split yang sama. Locked silver test tidak boleh dipakai untuk checkpoint, hyperparameter, atau threshold selection. Perbandingan IndoBERT dengan baseline tetap harus disebut silver agreement sampai independent human-gold reference tersedia.
 
 ---
 
@@ -807,7 +831,7 @@ Model AI yang direncanakan dalam produk adalah IndoBERT untuk aspect detection, 
 | Komponen | Metode | Fungsi | Status |
 | --- | --- | --- | --- |
 | Aspect detection | Keyword + rating | Prototype UI signal | Baseline tersedia; belum tervalidasi |
-| Aspect detection | TF-IDF Logistic Regression | Classical ML baseline | Direncanakan |
+| Aspect detection | TF-IDF Logistic Regression | Classical ML baseline | A6 selesai; Macro F1 silver agreement 0,7201 |
 | Aspect detection | IndoBERT multilabel | Primary contextual classifier | Direncanakan |
 | Polarity/severity | Aspect-conditioned classifier | Review-level issue characterization | Direncanakan |
 | Priority ranking | Weighted deterministic formula | Decision-support ordering | Config draft; bukan AI prediction |

@@ -131,20 +131,20 @@ Semua anggota wajib memahami problem, data, model, metrics, limitation, arsitekt
 
 ## A6. Leakage-Safe Split dan Baselines
 
-- [ ] Split 70/15/15 berdasarkan destination, bukan review.
-- [ ] Jaga near-duplicate groups dalam split sama.
-- [ ] Pastikan rare labels muncul di validation/test.
-- [ ] Simpan seed, destination lists, distributions, hashes.
-- [ ] Kunci test set dan larang tuning terhadap test.
-- [ ] Implement keyword baseline: lexicon, negation, contrast, intensity, severity.
-- [ ] Evaluasi keyword pada locked split.
-- [ ] Uji TF-IDF word unigram/bigram dan char n-gram 3–5.
-- [ ] Train One-vs-Rest Logistic Regression dengan class weighting.
-- [ ] Tune config/threshold hanya pada validation.
-- [ ] Evaluasi test setelah config terkunci.
-- [ ] Simpan models, vectorizer, config, metrics, latency, error cases.
+- [x] Split 70/15/15 berdasarkan destination: 187/40/40 destination dan 922/196/202 records.
+- [x] Jaga technical duplicate dan normalized exact repeated-text groups dalam split sama; semantic paraphrase tetap residual risk.
+- [x] Pastikan seluruh 14 silver aspects muncul di validation/test.
+- [x] Simpan seed, destination lists, distributions, source/config/taxonomy hashes, output hashes, dan leakage checks.
+- [x] Kunci test set; runner memverifikasi hash dan menolak overwrite locked-test metrics.
+- [x] Implement keyword baseline independen: lexicon, local polarity, contrast, intensity, dan severity rules.
+- [x] Evaluasi keyword pada locked silver test: Macro F1 0,9768; ditandai circular terhadap silver rules.
+- [x] Uji TF-IDF word unigram/bigram, char n-gram 3–5, dan kombinasi pada validation.
+- [x] Train One-vs-Rest Logistic Regression dengan `class_weight=balanced`.
+- [x] Pilih word+char dan tune per-aspect thresholds hanya pada validation.
+- [x] Evaluasi locked silver test setelah config terkunci: TF-IDF Macro F1 0,7201; Micro F1 0,8040.
+- [x] Simpan reloadable model/vectorizer, configs, manifests, metrics, latency, aggregate error cases, report, dan tiga figures.
 
-**Gate:** tidak ada destination/duplicate leakage; kedua baseline dievaluasi pada split sama.
+**Gate:** terpenuhi untuk silver benchmark — 0 destination/technical-duplicate/repeated-text leakage; kedua baseline dievaluasi pada split yang sama. Hasil bukan human-gold performance.
 
 ## A7. IndoBERT Training
 

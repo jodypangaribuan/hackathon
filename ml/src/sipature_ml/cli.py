@@ -12,6 +12,7 @@ from .annotation import (
     validate_annotation_files,
     validate_silver_records,
 )
+from .baselines import run_baselines
 from .cleaning import run_cleaning
 from .colab import bootstrap_drive
 from .config import load_config
@@ -25,6 +26,7 @@ from .quality_figures import (
     generate_quality_figures,
     generate_silver_figures,
 )
+from .split import run_split
 from .stages import PIPELINE_ORDER, Stage
 
 
@@ -88,6 +90,19 @@ def build_parser() -> argparse.ArgumentParser:
     )
     silver_figures.add_argument("--annotation-dir", type=Path, default=PATHS.annotations)
     silver_figures.add_argument("--figure-dir", type=Path, required=True)
+
+    split = subparsers.add_parser("split-silver", help="Create locked leakage-safe silver splits")
+    split.add_argument("--processed-dir", type=Path, default=PATHS.processed)
+    split.add_argument("--annotation-dir", type=Path, default=PATHS.annotations)
+    split.add_argument("--split-dir", type=Path, default=PATHS.splits)
+    split.add_argument("--report-dir", type=Path, default=PATHS.artifacts / "reports")
+
+    baselines = subparsers.add_parser(
+        "train-baselines", help="Train and evaluate keyword/TF-IDF silver baselines"
+    )
+    baselines.add_argument("--split-dir", type=Path, default=PATHS.splits)
+    baselines.add_argument("--artifact-dir", type=Path, default=PATHS.artifacts)
+    baselines.add_argument("--figure-dir", type=Path, required=True)
 
     snapshot = subparsers.add_parser("snapshot-run", help="Write run environment metadata")
     snapshot.add_argument("--output", type=Path, required=True)
@@ -166,6 +181,16 @@ def main() -> int:
         figures = generate_silver_figures(args.annotation_dir, args.figure_dir)
         print(f"Generated {len(figures)} figures in {args.figure_dir}")
         return 0
+    if args.command == "split-silver":
+        result = run_split(
+            args.processed_dir, args.annotation_dir, args.split_dir, args.report_dir
+        )
+        print(json.dumps(result["distribution"], indent=2))
+        return 0
+    if args.command == "train-baselines":
+        result = run_baselines(args.split_dir, args.artifact_dir, args.figure_dir)
+        print(json.dumps(result, indent=2))
+        return 0
     if args.command == "snapshot-run":
         output = write_environment_snapshot(args.output)
         print(output)
@@ -203,6 +228,20 @@ def main() -> int:
         summary = run_entity_resolution(args.interim_dir, args.processed_dir, args.output_dir)
         print(args.output_dir / "entity_resolution_summary.json")
         print(f"Generated {len(summary['outputs'])} processed artifacts in {args.processed_dir}")
+        return 0
+    if args.command == "run" and args.stage == Stage.SPLIT.value:
+        result = run_split(
+            args.processed_dir, PATHS.annotations, PATHS.splits, args.output_dir
+        )
+        print(json.dumps(result["distribution"], indent=2))
+        return 0
+    if args.command == "run" and args.stage in {
+        Stage.TRAIN_KEYWORD.value,
+        Stage.TRAIN_TFIDF.value,
+        Stage.EVALUATE.value,
+    }:
+        result = run_baselines(PATHS.splits, PATHS.artifacts, args.figure_dir)
+        print(json.dumps(result, indent=2))
         return 0
     raise NotImplementedError(
         f"Stage '{args.stage}' is declared but not implemented. "

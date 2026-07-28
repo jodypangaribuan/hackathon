@@ -1,11 +1,19 @@
-experiment_version: "0.1.0-draft"
+experiment_version: "silver-baselines-1.0.0"
 seed: 42
+task: multilabel_aspect_detection
+reference_label_type: ai_assisted_weak_supervision_silver
 
 baselines:
   keyword: true
   tfidf:
     word_ngram_range: [1, 2]
     char_ngram_range: [3, 5]
+    char_analyzer: char_wb
+    min_df: 2
+    max_features_word: 30000
+    max_features_char: 40000
+    representations: [word, char, word_char]
+    c_values: [1.0]
     class_weight: balanced
     max_iter: 2000
 
@@ -25,4 +33,5 @@ indobert:
 thresholds:
   tune_per_label_on_validation: true
   default_detection: 0.50
+  candidates: [0.25, 0.35, 0.45, 0.50, 0.55, 0.65, 0.75]
   prioritize_alert_precision: true

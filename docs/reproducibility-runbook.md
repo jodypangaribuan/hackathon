@@ -117,6 +117,8 @@ sipature-ml run resolve-entities
 sipature-ml annotation-sample
 sipature-ml silver-annotate
 sipature-ml silver-validate data/annotations/silver-v1.0.0.jsonl
+sipature-ml split-silver
+sipature-ml train-baselines --figure-dir ../docs/figures/eda
 sipature-ml run clean
 sipature-ml run resolve-entities
 sipature-ml run sample-annotations
@@ -132,7 +134,7 @@ sipature-ml run prioritize
 sipature-ml run export-app
 ```
 
-Only `inventory` is implemented at the A2 stage. Other commands intentionally fail fast until their corresponding TODO is implemented and tested. Declaring a command is not evidence that its stage has been completed.
+Inventory, EDA, cleaning, entity resolution, silver annotation, A6 grouped split, and keyword/TF-IDF baseline commands are implemented and tested. IndoBERT and downstream commands intentionally fail fast until implemented. Declaring a command is not evidence that its stage has been completed.
 
 ## Run Identity
 

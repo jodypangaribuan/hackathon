@@ -130,5 +130,17 @@
   "33_silver_pass_agreement.png": {
     "sha256": "b7304e9b67661a17ad4778cc58ec2d694ee064b275f77857152b630dab10c680",
     "size_bytes": 64650
+  },
+  "34_baseline_silver_test_comparison.png": {
+    "sha256": "d7f0cce89f1dec504f2eb45addc106bee3fab82da4cd25528d94f0a5cdc3bcc4",
+    "size_bytes": 29199
+  },
+  "35_baseline_per_aspect_f1.png": {
+    "sha256": "3ded88b1c8fe93a74af5afac1e70c21b51b59d2d9fadef22f95734357b0a4d9a",
+    "size_bytes": 61991
+  },
+  "36_tfidf_validation_selection.png": {
+    "sha256": "55d52c2d4b8e163d85e8bda4d47199b81b3a014fb84df7e4e1cfcba817277a0d",
+    "size_bytes": 39244
   }
 }

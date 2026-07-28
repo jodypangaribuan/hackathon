@@ -3,7 +3,7 @@ VENV ?= .venv
 BIN := $(VENV)/bin
 DATASET_DIR ?= ../Datasets
 
-.PHONY: setup test lint check stages doctor inventory eda clean-data resolve-entities annotation-sample silver-annotate snapshot clean
+.PHONY: setup test lint check stages doctor inventory eda clean-data resolve-entities annotation-sample silver-annotate split-silver baselines snapshot clean
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -42,6 +42,12 @@ annotation-sample:
 
 silver-annotate:
 	$(BIN)/sipature-ml silver-annotate
+
+split-silver:
+	$(BIN)/sipature-ml split-silver
+
+baselines:
+	$(BIN)/sipature-ml train-baselines --figure-dir ../docs/figures/eda
 
 snapshot:
 	$(BIN)/sipature-ml snapshot-run --output artifacts/reports/run-environment.json

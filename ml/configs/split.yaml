@@ -1,6 +1,8 @@
-split_version: "0.1.0-draft"
+split_version: "silver-split-1.0.0"
 seed: 42
 group_column: destination_id
+annotation_file: silver-v1.0.0.jsonl
+canonical_reviews_file: canonical_reviews.parquet
 ratios:
   train: 0.70
   validation: 0.15
@@ -9,3 +11,9 @@ constraints:
   keep_duplicate_groups_together: true
   preserve_rare_labels_when_possible: true
   test_is_locked: true
+algorithm:
+  name: deterministic_grouped_multilabel_search
+  candidates: 500
+  missing_label_penalty: 25.0
+  record_balance_weight: 2.0
+  label_balance_weight: 4.0

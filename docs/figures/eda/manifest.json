@@ -1,66 +1,66 @@
 {
   "01_dataset_row_counts.png": {
-    "sha256": "56ad6228b8e2d2d3f945bc9010424ed8cbf5494584d11620136905d8478ba154",
-    "size_bytes": 184560
+    "sha256": "6a4f1d8eb17fed79d7ce46b4e06111b8e35632cbb2c3ede430ffa7724e7cfee3",
+    "size_bytes": 167636
   },
   "02_review_availability_funnel.png": {
-    "sha256": "b4824c3092cd9a2eb3ac52650381de742765d8e9b0bcf94b222c2142c5c4e6c6",
-    "size_bytes": 131349
+    "sha256": "d961bbdea4a9bd6adb238423a9e2e68b54a52d4ca4e1adff42310956f481500c",
+    "size_bytes": 115709
   },
   "03_rating_distribution.png": {
-    "sha256": "2b81444929096caaa0ab2709941492516e332ffad72afcc70ff67c1b9026ff98",
-    "size_bytes": 113446
+    "sha256": "d745d06ae371367b51958ca6724544f2319ddbaebbf56b023ce4421622e1978a",
+    "size_bytes": 101077
   },
   "04_review_text_length.png": {
-    "sha256": "60ffe988ef33478be5a91b6ae6deacc1a963c16e0801d2e10a7c57f0498845c1",
-    "size_bytes": 94731
+    "sha256": "a6241e46c914e17c4a2f1ba66ce24b5b2a61fa91a0ee624f7036b6d65c989d2f",
+    "size_bytes": 83456
   },
   "05_top_place_review_coverage.png": {
-    "sha256": "72376c811dbd0b2d58bbeb8eece85ab5c81e2a7d01e29aa56cfab879000663d5",
-    "size_bytes": 253016
+    "sha256": "6ad067071895ca3531f0a72228221a1c68af79858b29686b3ad0e223011965f9",
+    "size_bytes": 239358
   },
   "06_place_text_coverage_bands.png": {
-    "sha256": "1f20e584f549ce8accb026a14637fd1f61deeb0506e2f21c00d86fcd43bc3795",
-    "size_bytes": 90504
+    "sha256": "18d4a4d8935c5df8bd5acc36c70e820674b2b2df158cb1d22d231834f5efd17b",
+    "size_bytes": 78225
   },
   "07_candidate_aspect_prevalence.png": {
-    "sha256": "d89c8338be3319dc9da6f3aff907db3a5d0468c9e5cf12243f2f6f2da85e03fd",
-    "size_bytes": 156566
+    "sha256": "a80b1bde04335aed9fc49695e0d04a0df574b28ca6c9710063300007ac022ea1",
+    "size_bytes": 143830
   },
   "08_language_negation_markers.png": {
-    "sha256": "dc7c4f5575653553b02dd66bc71b566bd0e82ed190b19771dc4296214c52fa24",
-    "size_bytes": 148958
+    "sha256": "4f8460e0d36369afb0ad14c08c010852803d082c77c445c0dada829c357a77cd",
+    "size_bytes": 135691
   },
   "09_file_missing_cell_rates.png": {
-    "sha256": "95fef59e3ccf29aeb05301cbeab25b52759e4aaac119a16119249225939110b0",
-    "size_bytes": 204686
+    "sha256": "94b1eb93f9aaa2b8f1d962ca35ec392fdb9ac92f1324b1129724ccffb67e0e84",
+    "size_bytes": 187310
   },
   "10_metadata_completeness_heatmap.png": {
     "sha256": "6499d20aad1e51eed97d60e224a32c01e07eebab9a9c68c3965be565c4ff1b29",
     "size_bytes": 160363
   },
   "11_metadata_coordinate_distribution.png": {
-    "sha256": "6018230cee9b617463e90cd61d070bf67eedc3fae3307373d2304076da92b23d",
-    "size_bytes": 224903
+    "sha256": "948b3ac1aeecfedefbb7db9da32c790671e3d28d6d5f1fed3dbdd42da3a3d376",
+    "size_bytes": 207503
   },
   "12_review_quality_anomalies.png": {
-    "sha256": "340b9f9d64ef84bf580aa46585d5fb3243228a54532e1e70844d31b4bfc0d2e8",
-    "size_bytes": 124053
+    "sha256": "6a5992d76f4235e07b276cfc5ac2ceca8e5b69689257bd8812733eb574d72ff8",
+    "size_bytes": 108197
   },
   "13_top_review_ngrams.png": {
-    "sha256": "774b44e5347e325d92611d4b83d264846af8aa08d6564304172cefbab9a44703",
-    "size_bytes": 250902
+    "sha256": "c29df8fcfe4ef853635dc49a22af3180f593a55bc7d84e53f8ce6149ad67ad11",
+    "size_bytes": 233038
   },
   "14_review_time_field_availability.png": {
-    "sha256": "8c0c86645cea0fb33ad24cdf19c0b563e6a0a076c8e4f74de636685b276774b3",
-    "size_bytes": 139810
+    "sha256": "35bd7912f15bef84cc4c2805070f016177c66c02f0385495c93e3dab2f43a412",
+    "size_bytes": 123963
   },
   "15_volume_vs_candidate_complaint_rate.png": {
-    "sha256": "38066078e40c72da2d4b6a8c8d0eeec021aed75d55867da5bf64de4660e66591",
-    "size_bytes": 298711
+    "sha256": "6527047eb9e92ced82fa36457ab2d04529a12ef02a93185ff3674417a8b3ca1f",
+    "size_bytes": 282087
   },
   "16_nearby_service_density_5km.png": {
-    "sha256": "122ae8c470bed6b456bdda22ba12e7a39fccc65c2a657fef411b6505ed4c2050",
-    "size_bytes": 100605
+    "sha256": "75f8b8e1a4b9b413bdbd3e87830ba79a1ec0d1f392ebf2f35707380aadc87f19",
+    "size_bytes": 88651
   }
 }

@@ -393,10 +393,8 @@ def _save_figure(fig: plt.Figure, path: Path) -> None:
     plt.close(fig)
 
 
-def _style_axis(ax: plt.Axes, title: str, subtitle: str = "") -> None:
+def _style_axis(ax: plt.Axes, title: str) -> None:
     ax.set_title(title, loc="left", fontsize=15, fontweight="bold", pad=16)
-    if subtitle:
-        ax.text(0, 1.02, subtitle, transform=ax.transAxes, fontsize=9, color="#5c5c5c")
     ax.spines[["top", "right"]].set_visible(False)
     ax.grid(axis="y", color="#deded8", linewidth=0.7, alpha=0.7)
     ax.set_axisbelow(True)
@@ -430,7 +428,7 @@ def generate_figures(
     labels = plot_data["filename"].str.replace("Dataset HackathonTourism - IT DEL.xlsx - ", "", regex=False)
     bars = ax.barh(labels, plot_data["rows_physical_schema"], color=blue)
     ax.bar_label(bars, fmt="{:,.0f}", padding=4, fontsize=8)
-    _style_axis(ax, "Ukuran Dataset Berdasarkan Record CSV", "10 file dengan record terbanyak; hitungan sebelum semantic header cleaning")
+    _style_axis(ax, "Ukuran Dataset Berdasarkan Record CSV")
     ax.set_xlabel("Record (di luar header fisik)")
     save("01_dataset_row_counts.png", fig)
 
@@ -444,7 +442,7 @@ def generate_figures(
     fig, ax = plt.subplots(figsize=(9, 5))
     bars = ax.bar(funnel_labels, funnel_values, color=[blue, green, orange, gray, red])
     ax.bar_label(bars, labels=[f"{value:,}" for value in funnel_values], padding=4)
-    _style_axis(ax, "Funnel Ketersediaan Review", "Denominator: 22.302 record pada dua file review utama")
+    _style_axis(ax, "Funnel Ketersediaan Review")
     ax.tick_params(axis="x", rotation=18)
     save("02_review_availability_funnel.png", fig)
 
@@ -454,7 +452,7 @@ def generate_figures(
     fig, ax = plt.subplots(figsize=(8, 5))
     bars = ax.bar([str(star) for star in stars], values, color=[red, orange, "#FAB219", blue, green])
     ax.bar_label(bars, labels=[f"{value:,}\n({value / sum(values):.1%})" for value in values], padding=4)
-    _style_axis(ax, "Distribusi Rating Review", "Rating integer 1–5; decimal dan missing dilaporkan terpisah")
+    _style_axis(ax, "Distribusi Rating Review")
     ax.set_xlabel("Rating")
     ax.set_ylabel("Jumlah record")
     save("03_rating_distribution.png", fig)
@@ -468,7 +466,7 @@ def generate_figures(
     p95 = textual["text_words"].quantile(0.95)
     ax.axvline(median, color=red, linestyle="--", label=f"Median {median:.0f} kata")
     ax.axvline(p95, color=orange, linestyle="--", label=f"P95 {p95:.0f} kata")
-    _style_axis(ax, "Distribusi Panjang Review Berteks", "Nilai di atas P99 dicap untuk keterbacaan visual")
+    _style_axis(ax, "Distribusi Panjang Review Berteks")
     ax.set_xlabel("Jumlah kata")
     ax.set_ylabel("Review")
     ax.legend(frameon=False)
@@ -479,7 +477,7 @@ def generate_figures(
     fig, ax = plt.subplots(figsize=(10, 7))
     ax.barh(top["place_name"], top["total_reviews"], color="#d9d9d3", label="Semua review")
     ax.barh(top["place_name"], top["textual_reviews"], color=blue, label="Review berteks")
-    _style_axis(ax, "20 Tempat dengan Review Berteks Terbanyak", "Nama exact source; entity resolution belum diterapkan")
+    _style_axis(ax, "20 Tempat dengan Review Berteks Terbanyak")
     ax.set_xlabel("Jumlah review")
     ax.legend(frameon=False)
     save("05_top_place_review_coverage.png", fig)
@@ -492,7 +490,7 @@ def generate_figures(
     fig, ax = plt.subplots(figsize=(8, 5))
     bars = ax.bar(labels, band_counts.values, color=[red, orange, "#FAB219", blue, green])
     ax.bar_label(bars, padding=4)
-    _style_axis(ax, "Sebaran Coverage Teks per Nama Tempat", "Sebelum entity resolution; band bukan confidence final")
+    _style_axis(ax, "Sebaran Coverage Teks per Nama Tempat")
     ax.set_xlabel("Jumlah review berteks")
     ax.set_ylabel("Nama tempat exact")
     save("06_place_text_coverage_bands.png", fig)
@@ -502,7 +500,7 @@ def generate_figures(
     fig, ax = plt.subplots(figsize=(9, 6))
     bars = ax.barh(aspect_plot["aspect"], aspect_plot["review_count"], color=orange)
     ax.bar_label(bars, labels=[f"{value:,}" for value in aspect_plot["review_count"]], padding=4, fontsize=8)
-    _style_axis(ax, "Prevalensi Kandidat Aspek Berbasis Seed Keywords", "Eksplorasi support awal; bukan gold label atau hasil model")
+    _style_axis(ax, "Prevalensi Kandidat Aspek Berbasis Seed Keywords")
     ax.set_xlabel("Review berteks yang memuat minimal satu seed term")
     save("07_candidate_aspect_prevalence.png", fig)
 
@@ -513,7 +511,7 @@ def generate_figures(
     fig, ax = plt.subplots(figsize=(9, 5))
     bars = ax.bar(marker_labels, marker_values, color=[blue, green, orange, gray, red, "#7C6BC4"])
     ax.bar_label(bars, labels=[f"{value:,}" for value in marker_values], padding=4, fontsize=8)
-    _style_axis(ax, "Indikator Bahasa, Negasi, dan Kontras", "Heuristik marker kata; bukan language-identification model")
+    _style_axis(ax, "Indikator Bahasa, Negasi, dan Kontras")
     ax.tick_params(axis="x", rotation=20)
     save("08_language_negation_markers.png", fig)
 
@@ -523,7 +521,7 @@ def generate_figures(
     fig, ax = plt.subplots(figsize=(10, 7))
     bars = ax.barh(labels_missing, missing["missing_cell_rate"] * 100, color=red)
     ax.bar_label(bars, labels=[f"{value:.1%}" for value in missing["missing_cell_rate"]], padding=4, fontsize=8)
-    _style_axis(ax, "Proporsi Sel Kosong per File", "Berdasarkan schema fisik; embedded/multirow headers masih termasuk")
+    _style_axis(ax, "Proporsi Sel Kosong per File")
     ax.set_xlabel("Sel kosong (%)")
     save("09_file_missing_cell_rates.png", fig)
 
@@ -546,7 +544,6 @@ def generate_figures(
     for source, group in coordinates.groupby("source"):
         ax.scatter(group["longitude"], group["latitude"], s=22, alpha=0.72, label=source)
     ax.set_title("Sebaran Koordinat Metadata Pariwisata", loc="left", fontsize=15, fontweight="bold", pad=16)
-    ax.text(0, 1.02, "Titik WGS84 asumsi; basemap tidak digunakan agar reproducible/offline", transform=ax.transAxes, fontsize=9, color="#5c5c5c")
     ax.set_xlabel("Longitude")
     ax.set_ylabel("Latitude")
     ax.grid(color="#deded8", linewidth=0.7)
@@ -567,7 +564,7 @@ def generate_figures(
     fig, ax = plt.subplots(figsize=(8, 4.5))
     bars = ax.bar(duplicate_data["Category"], duplicate_data["Count"], color=[red, gray, orange])
     ax.bar_label(bars, padding=4)
-    _style_axis(ax, "Anomali Review yang Memerlukan Penanganan", "Record dipertahankan dengan provenance; belum dihapus oleh EDA")
+    _style_axis(ax, "Anomali Review yang Memerlukan Penanganan")
     ax.tick_params(axis="x", rotation=15)
     save("12_review_quality_anomalies.png", fig)
 
@@ -580,8 +577,7 @@ def generate_figures(
         axis.set_title(title, fontweight="bold")
         axis.spines[["top", "right"]].set_visible(False)
     fig.suptitle("Top N-gram Review Setelah Stopword Ringkas", x=0.05, ha="left", fontsize=16, fontweight="bold")
-    fig.text(0.05, 0.92, "Deskriptif; belum memakai normalization/lemmatization model", color="#5c5c5c")
-    fig.tight_layout(rect=[0, 0, 1, 0.90])
+    fig.tight_layout(rect=[0, 0, 1, 0.93])
     save("13_top_review_ngrams.png", fig)
 
     # 14. Freshness availability
@@ -593,7 +589,7 @@ def generate_figures(
     fig, ax = plt.subplots(figsize=(9, 5))
     bars = ax.bar(freshness_labels, freshness_values, color=[green, red, blue, orange])
     ax.bar_label(bars, labels=[f"{value:,}" for value in freshness_values], padding=4)
-    _style_axis(ax, "Ketersediaan Field Waktu Review", "Published-at masih relatif/multibahasa dan belum menjadi tanggal presisi")
+    _style_axis(ax, "Ketersediaan Field Waktu Review")
     ax.tick_params(axis="x", rotation=18)
     save("14_review_time_field_availability.png", fig)
 
@@ -609,7 +605,7 @@ def generate_figures(
         alpha=0.75,
     )
     ax.set_xscale("log")
-    _style_axis(ax, "Volume Teks vs Candidate Complaint Rate", "Hanya nama tempat dengan >=5 teks; seed retrieval bukan sentiment model")
+    _style_axis(ax, "Volume Teks vs Candidate Complaint Rate")
     ax.set_xlabel("Review berteks (log scale)")
     ax.set_ylabel("Candidate complaint rate (%)")
     fig.colorbar(points, ax=ax, label="Mean rating")
@@ -621,7 +617,7 @@ def generate_figures(
     ax.hist(clipped_services, bins=26, color=green, alpha=0.9)
     median_services = service_density["services_within_5km"].median()
     ax.axvline(median_services, color=red, linestyle="--", label=f"Median {median_services:.0f} layanan")
-    _style_axis(ax, "Kepadatan Hotel/Restoran dalam Radius 5 km", "139 wisata; nilai >50 dicap untuk keterbacaan")
+    _style_axis(ax, "Kepadatan Hotel/Restoran dalam Radius 5 km")
     ax.set_xlabel("Jumlah metadata hotel + restoran")
     ax.set_ylabel("Destinasi wisata")
     ax.legend(frameon=False)

@@ -3,3 +3,15 @@ node_modules
 .git
 .DS_Store
 README.md
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+service-account*.json
+secrets*.json
+coverage
+npm-debug.log*
+src/data/generated

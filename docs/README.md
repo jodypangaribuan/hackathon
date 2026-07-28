@@ -12,6 +12,7 @@ Authoritative documentation index for the data, model, product, evaluation, and 
 | `app-integration-contract.md` | ML-to-Next.js export and versioning contract | ML + Engineering | Draft |
 | `deployment-runbook.md` | Offline Docker/DGX deployment and rollback | Engineering | Draft |
 | `experiment-log.md` | Append-only experiment and decision history | Data/ML | Active |
+| `restricted-data-policy.md` | Git, secret, dataset, and artifact handling policy | Engineering + Data | Active |
 
 Related planning documents at workspace root:
 

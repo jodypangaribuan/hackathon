@@ -6,13 +6,28 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyd
+*.so
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
 .coverage
+.coverage.*
 htmlcov/
 .venv/
 venv/
+dist/
+build/
+*.egg-info/
+
+# Python / model caches and experiment trackers
+.cache/
+**/.cache/
+wandb/
+mlruns/
+runs/
+checkpoints/
+lightning_logs/
 
 # Notebooks
 .ipynb_checkpoints/
@@ -23,6 +38,16 @@ venv/
 !.env.example
 *.pem
 *.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+credentials.json
+service-account*.json
+secrets*.json
+*secret*.yaml
+*secret*.yml
+*.token
 
 # Generated ML data and artifacts (README/.gitkeep files remain tracked)
 ml/data/raw/*
@@ -42,15 +67,29 @@ ml/artifacts/reports/*
 # Large model/data formats
 *.bin
 *.ckpt
+*.h5
+*.hdf5
 *.onnx
+*.pkl
+*.pickle
 *.pt
 *.pth
 *.safetensors
 *.parquet
 *.arrow
 *.joblib
+*.npz
+*.npy
 
-# Existing source datasets stay local
+# Generated logs and local databases
+*.log
+*.sqlite
+*.sqlite3
+*.db
+
+# Organizer/restricted source datasets stay local. These patterns do not
+# untrack files that were already committed; see docs/restricted-data-policy.md.
+Datasets/
 Datasets.zip
 
 # Next.js generated files

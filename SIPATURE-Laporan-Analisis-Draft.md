@@ -29,7 +29,7 @@ SIPATURE dirancang sebagai sistem **Dashboard & Decision Support** yang menghubu
 
 Inventory dan EDA reproducible berhasil membaca 14 CSV pada direktori dataset saat ini tanpa read error. Dua file ulasan utama masing-masing berisi 12.691 dan 9.611 baris, sehingga berjumlah 22.302 record. EDA menemukan 12.280 review berteks (55,06%), 9.978 rating-only bersih, 44 record tanpa rating maupun teks, dan 83 exact duplicate excess rows. Dari 22.243 rating integer valid, 15.595 (70,11%) adalah bintang lima. Metadata wisata, restoran, dan hotel menyediakan 323 coordinate records. Hasil ini menunjukkan class/coverage imbalance dan kebutuhan untuk tidak mengandalkan accuracy atau rating rata-rata saja.
 
-Tahap saat ini telah menyelesaikan scope lock, struktur repositori, dependency lock, konfigurasi, provenance manifest, Google Drive bootstrap, dan inventory stage. Keyword, TF-IDF, dan IndoBERT belum dilatih pada gold annotation; karena itu Macro F1, Alert Precision, calibration, dan system-level metrics belum tersedia dan tidak diklaim pada draft ini.
+Tahap saat ini telah menyelesaikan scope lock, struktur repositori, dependency lock, konfigurasi, provenance manifest, Google Drive bootstrap, inventory, EDA, cleaning, dan entity resolution. Keyword, TF-IDF, dan IndoBERT belum dilatih pada gold annotation; karena itu Aspect Macro F1, Alert Precision, calibration, dan system-level metrics belum tersedia dan tidak diklaim pada draft ini.
 
 | Indikator Utama | Nilai | Status dan Sumber |
 | --- | ---: | --- |
@@ -38,6 +38,8 @@ Tahap saat ini telah menyelesaikan scope lock, struktur repositori, dependency l
 | Baris dua file review utama | 22.302 | Aktual; 12.691 + 9.611 pada inventory |
 | Review berteks | 12.280 (55,06%) | Aktual; EDA v0.1 |
 | Metadata coordinate records | 323 | Aktual; 139 wisata + 148 resto + 36 hotel |
+| Clean review records | 22.169 | Aktual; cleaning v0.1 |
+| Canonical IDs teknis | 388 | 322 metadata anchors + 66 unresolved placeholders |
 | Rating rata-rata | 4,4413 | Aktual; 22.251 rating valid |
 | Rating bintang lima | 15.595 (70,11%) | Aktual; denominator 22.243 rating integer |
 | Gold annotation | Belum tersedia | Menunggu annotation |
@@ -487,7 +489,7 @@ Semua komponen dinormalisasi 0–1. Jika komponen hilang, bobot yang tersedia di
 | Lapisan | Metric utama | Target awal | Hasil aktual |
 | --- | --- | ---: | --- |
 | Annotation | Aspect/Polarity/Severity agreement | 0,70 / 0,75 / 0,60 | Belum tersedia |
-| Entity resolution | Pairwise F1 dan false-merge rate | >=0,90 / serendah mungkin | Belum tersedia |
+| Entity resolution | Pairwise F1 dan false-merge rate | >=0,90 / serendah mungkin | 0,5965 / 0,0286 pre-adjudication reviewed pairs |
 | Aspect detection | Macro F1 | >=0,70 | Belum tersedia |
 | Aspect detection | Micro F1 | >=0,82 | Belum tersedia |
 | Early warning | High-severity Alert Precision | >=0,85 | Belum tersedia |
@@ -536,8 +538,8 @@ Strategi ini mencegah pengembangan dashboard mendahului validasi data dan model,
 | --- | --- | --- |
 | Scope dan repository | Charter, configs, contracts, locks, runbook | Selesai |
 | Inventory | Hash/schema/row-count inventory | Selesai untuk 14 CSV saat ini |
-| EDA/cleaning | EDA report, clean/interim data, quarantine | EDA selesai; cleaning belum dimulai |
-| Entity resolution | Canonical destinations, links, metrics | Belum dimulai |
+| EDA/cleaning | EDA report, clean/interim data, quarantine | Selesai v0.1 |
+| Entity resolution | Canonical destinations, links, metrics | Selesai v0.1 dengan human adjudication |
 | Annotation | Guideline final, gold labels, agreement | Draft guideline; labels belum ada |
 | Modelling | Keyword, TF-IDF, IndoBERT artifacts | Belum dimulai pada pipeline baru |
 | Evaluation | Calibration, locked metrics, error analysis | Belum tersedia |
@@ -548,7 +550,7 @@ Strategi ini mencegah pengembangan dashboard mendahului validasi data dan model,
 
 Kode data/model menggunakan package Python `sipature_ml` dengan Python 3.10+, exact dependency lock untuk development dan profile terpisah untuk Colab/GPU. Seed global ditetapkan 42 untuk Python, NumPy, dan PyTorch. Config pipeline, taxonomy, split, training, dan scoring disimpan dalam YAML dan dicatat hash-nya pada environment snapshot.
 
-CLI mendeklarasikan 15 stage dari inventory/EDA sampai app export. Inventory dan EDA sudah diimplementasikan; stage lanjutan fail-fast agar deklarasi command tidak dianggap sebagai hasil implementasi. Clean environment telah berhasil menjalankan lint, 16 unit tests, inventory, dan EDA terhadap dataset nyata.
+CLI mendeklarasikan 15 stage dari inventory/EDA sampai app export. Inventory, EDA, cleaning, dan entity resolution sudah diimplementasikan; stage lanjutan fail-fast agar deklarasi command tidak dianggap sebagai hasil implementasi. Clean environment telah berhasil menjalankan lint, 25 unit tests, dan seluruh stage tersebut terhadap dataset nyata.
 
 Intermediate artifact wajib ditulis ke disk/Google Drive dan memiliki manifest berisi source hash, config version, pipeline/model version, timestamp, dan row counts. Raw data, generated artifact, model weight, dan secret tidak dimasukkan ke public Git. Catatan khusus: dataset sudah ter-track sebelum policy dibuat dan memerlukan keputusan lisensi terpisah sebelum repository dipublikasikan.
 
@@ -604,11 +606,25 @@ Model dirancang sebagai tiga tugas terhubung:
 
 Pendekatan modular dipilih untuk MVP karena lebih mudah dievaluasi, di-debug, dan disederhanakan apabila support label tidak memadai.
 
-## 5.2 Data Preparation yang Direncanakan
+## 5.2 Data Preparation
 
-Cleaning akan mempertahankan raw text dan normalized text, melakukan Unicode NFKC/whitespace normalization, mempertahankan tanda baca/negasi/typo/mixed language, memvalidasi rating, memisahkan rating-only records, dan mencatat quarantine serta duplicate groups. Stemming dan stopword removal tidak digunakan untuk IndoBERT; perlakuannya akan diuji terpisah untuk TF-IDF.
+Cleaning mempertahankan raw text dan normalized text, melakukan Unicode NFKC/whitespace normalization, mempertahankan tanda baca/negasi/typo/mixed language, memvalidasi rating, memisahkan rating-only records, dan mencatat quarantine serta duplicate groups. Stemming dan stopword removal tidak digunakan untuk IndoBERT; perlakuannya akan diuji terpisah untuk TF-IDF.
 
-Entity resolution menggunakan normalized name, address similarity, coordinate distance, dan category agreement. Config draft menetapkan auto-match name similarity 0,90, manual-review boundary 0,75, serta batas jarak 200 meter untuk aturan tertentu. Unresolved match dipilih dibanding false merge.
+Dari 22.302 review-like records, 89 normalized technical duplicate excess dan 44 empty records dikeluarkan dengan provenance. Clean output berisi 22.169 records: 12.234 textual dan 9.935 rating-only. Identitas reviewer tidak disimpan pada processed layer.
+
+![Cleaning funnel](docs/figures/eda/17_cleaning_funnel.png)
+
+**Gambar 5.2. Cleaning funnel review.** Enam duplicate tambahan ditemukan setelah Unicode/whitespace normalization dibanding physical exact-row audit.
+
+Relative date parser menghasilkan 18.923 estimasi tanggal, sedangkan 3.100 record tidak memiliki scrape anchor dan 279 tidak memiliki published-at. Estimasi disimpan dengan precision/status dan tidak dianggap tanggal presisi.
+
+![Relative date parsing](docs/figures/eda/18_relative_date_parsing.png)
+
+**Gambar 5.3. Hasil parsing waktu review.**
+
+Entity resolution menggunakan kind blocking, normalized name, address similarity, dan human review. Review names tanpa address hanya di-auto-match jika exact dan unambiguous; fuzzy candidates masuk manual review. No-match/unresolved memperoleh placeholder ID terpisah agar tidak dipaksa merge. Sebanyak 323 metadata records menghasilkan 322 anchors setelah duplicate Bukit Tara Bunga diverifikasi.
+
+Human review mencakup seluruh 78 ambiguous candidates, seluruh 6 fuzzy auto-matches, dan sampel 30 exact auto-matches. Satu fuzzy false merge (`SAPADIA VILLA BALIGE III` terhadap `II`) dan satu exact-name collision berlokasi berbeda (`Bukit Simargulang Ombun`) dikoreksi.
 
 Annotation akan menggunakan stratified sampling dan human verification. Rules atau LLM hanya boleh memberi candidate label. Sebanyak 15–20% data direncanakan untuk double annotation dan seluruh disagreement pada subset tersebut akan di-adjudicate. Gold labels belum tersedia.
 
@@ -651,7 +667,7 @@ Entity resolution dinilai dengan pairwise precision, recall, F1, dan false-merge
 | Evaluasi | Status 28 Juli 2026 | Alasan |
 | --- | --- | --- |
 | Annotation agreement | Belum tersedia | Gold annotation belum dibuat |
-| Entity Resolution F1 | Belum tersedia | Matching belum diimplementasikan |
+| Entity Resolution F1 | 0,5965 pre-adjudication | 110 certain reviewed pairs; precision 0,9714, recall 0,4304 |
 | Keyword model metrics | Belum tersedia | Baseline lama belum dievaluasi pada locked split baru |
 | TF-IDF metrics | Belum tersedia | Model belum dilatih |
 | IndoBERT metrics | Belum tersedia | Model belum dipilih/dilatih |
@@ -661,9 +677,26 @@ Entity resolution dinilai dengan pairwise precision, recall, F1, dan false-merge
 
 Skor baseline aplikasi tidak dimasukkan sebagai hasil evaluasi karena belum berasal dari gold labels dan locked test. Draft laporan akan diperbarui secara bertahap saat artifact aktual tersedia.
 
+### 6.2.1 Entity Resolution Evaluation
+
+Evaluasi mencakup 114 reviewed pairs: 110 certain dan 4 uncertain. Sebelum adjudication diperoleh TP=34, FP=1, FN=45, dan TN=30. Precision tinggi dan recall rendah merupakan konsekuensi kebijakan konservatif yang lebih memilih unresolved daripada false merge.
+
+| Metric | Pre-adjudication | Post-adjudication reviewed pairs |
+| --- | ---: | ---: |
+| Pairwise Precision | 0,9714 | 1,0000 |
+| Pairwise Recall | 0,4304 | 1,0000 |
+| Pairwise F1 | 0,5965 | 1,0000 |
+| False-merge rate | 0,0286 | 0,0000 |
+
+Post-adjudication 1,0 hanya berlaku pada human-corrected reviewed pairs dan bukan generalization performance.
+
+![Entity confusion matrix](docs/figures/eda/21_entity_review_confusion_matrix.png)
+
+**Gambar 6.1. Confusion matrix reviewed pairs sebelum adjudication.**
+
 ## 6.3 Quality Assurance yang Sudah Dilakukan
 
-Fondasi pipeline telah melalui `ruff` lint dan 16 unit tests. Clean Python 3.10 environment berhasil di-install dari dependency lock serta menjalankan inventory dan EDA pada dataset nyata. Empat belas CSV dapat dibaca tanpa read error. Pengujian tersebut membuktikan reproducibility fondasi dan EDA, bukan performa model AI.
+Fondasi pipeline telah melalui `ruff` lint dan 25 unit tests. Clean Python 3.10 environment berhasil menjalankan inventory, EDA, cleaning, dan entity resolution. Empat belas CSV dapat dibaca tanpa read error. Pengujian tersebut belum membuktikan performa model AI.
 
 ---
 
@@ -671,7 +704,17 @@ Fondasi pipeline telah melalui `ruff` lint dan 16 unit tests. Clean Python 3.10 
 
 ## 7.1 Hasil yang Sudah Tersedia
 
-Hasil aktual saat ini mencakup scope lock, repository architecture, reproducibility foundation, inventory, EDA dengan 12 visual report-ready, dan prototipe aplikasi baseline. Pipeline baru belum menghasilkan clean canonical dataset, gold labels, predictions, atau priority queue final.
+Hasil aktual mencakup scope lock, repository architecture, reproducibility foundation, inventory, EDA, clean dataset, canonical entity links, reviewed entity metrics, dan prototipe aplikasi baseline. Pipeline belum menghasilkan gold labels, model predictions, atau priority queue final.
+
+Cleaning menghasilkan 22.169 clean records dan semuanya memiliki `destination_id`. Resolution menghasilkan 388 canonical IDs teknis: 322 metadata anchors dan 66 unresolved placeholders. Placeholder menjaga leakage-safe grouping tanpa mengklaim sebagai destinasi baru terverifikasi.
+
+![Review linkage coverage](docs/figures/eda/20_review_linkage_coverage.png)
+
+**Gambar 7.1. Coverage linkage pada clean review.**
+
+![Canonical composition](docs/figures/eda/22_canonical_destination_composition.png)
+
+**Gambar 7.2. Komposisi canonical IDs teknis.**
 
 ## 7.2 Prototipe Produk
 
@@ -685,8 +728,8 @@ Ketiga kasus tersebut belum menjadi hasil final. Kutipan harus diverifikasi ulan
 
 ## 7.4 Keterbatasan Saat Ini
 
-- Relative-date normalization, semantic duplicates, address consistency, dan source-specific complex schema cleaning belum diselesaikan.
-- Canonical destination dan entity-resolution metrics belum tersedia.
+- Relative dates tetap estimasi; source-specific wide-table unpivoting dan address consistency belum selesai.
+- Exact auto-match evaluation baru mencakup sampel 30 pairs dan human review belum double-annotated.
 - Taxonomy masih draft dan belum diuji melalui annotation agreement.
 - Keyword, TF-IDF, dan IndoBERT belum dibandingkan pada locked split.
 - Confidence baseline belum merupakan calibrated model probability.
@@ -697,7 +740,7 @@ Ketiga kasus tersebut belum menjadi hasil final. Kutipan harus diverifikasi ulan
 
 ## 7.5 Implikasi Tahap Berikutnya
 
-Tahap berikutnya adalah A4 cleaning dan entity resolution. EDA telah mereproduksi corpus utama, mengukur data quality awal, serta memberi dasar untuk source-specific loader, taxonomy candidate support, stratified annotation sampling, dan confidence/smoothing policy.
+Tahap berikutnya adalah A5 taxonomy dan annotation. EDA, cleaning, dan entity resolution menyediakan 12.234 clean textual reviews dengan stable destination grouping untuk sampling, annotation, dan leakage-safe split.
 
 ---
 
@@ -769,6 +812,8 @@ Seluruh hasil final akan berasal dari evaluasi aktual dengan protokol yang dijel
 | Corpus baseline | `sipature-app/src/data/corpus.json` |
 | EDA summary dan source tables | `ml/artifacts/reports/eda_*` |
 | EDA figures dan narrative | `docs/figures/eda/`, `docs/eda-report.md` |
+| Cleaning/entity results | `ml/artifacts/reports/cleaning_summary.json`, `entity_resolution_*.json` |
+| Cleaning/entity report | `docs/cleaning-entity-resolution-report.md`, figures `17_*`–`22_*` |
 | Pipeline/seed/evaluation policy | `ml/configs/pipeline.yaml` |
 | Taxonomy draft | `ml/configs/taxonomy.yaml` |
 | Priority draft | `ml/configs/scoring.yaml` |
@@ -782,8 +827,8 @@ Seluruh hasil final akan berasal dari evaluasi aktual dengan protokol yang dijel
 | Bagian laporan | Artifact yang diperlukan |
 | --- | --- |
 | EDA lanjutan | Semantic-cleaning-aware profile, relative dates, address validation |
-| Data cleaning | Clean data, quarantine, cleaning manifest |
-| Entity resolution | Entity links dan pairwise metrics |
+| Cleaning extension | Complex wide-table unpivoting dan address consistency audit |
+| Entity extension | Independent second review dan expanded exact-match sample |
 | Annotation | Gold JSONL, agreement, audit report |
 | Model | Keyword/TF-IDF/IndoBERT checkpoints/configs |
 | Evaluasi | Locked-test metrics, curves, matrices, calibration |

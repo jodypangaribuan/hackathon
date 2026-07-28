@@ -34,6 +34,8 @@ make setup
 make check
 make inventory DATASET_DIR=../Datasets
 make eda DATASET_DIR=../Datasets
+make clean-data DATASET_DIR=../Datasets
+make resolve-entities
 ```
 
 Python 3.10 or newer is required. Google Colab's current Python runtime is compatible.

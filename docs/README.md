@@ -16,6 +16,7 @@ Authoritative documentation index for the data, model, product, evaluation, and 
 | `restricted-data-policy.md` | Git, secret, dataset, and artifact handling policy | Engineering + Data | Active |
 | `reproducibility-runbook.md` | Environment, Drive, commands, checkpoints, and locked-test runbook | Data/ML | Active |
 | `eda-report.md` | Current EDA findings with report-ready figures and source-data references | Data/ML | Complete v0.1 |
+| `cleaning-entity-resolution-report.md` | Cleaning funnel, canonical linkage, reviewed metrics, and report figures | Data/ML | Complete v0.1 |
 
 Related planning documents at workspace root:
 

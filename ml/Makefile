@@ -3,7 +3,7 @@ VENV ?= .venv
 BIN := $(VENV)/bin
 DATASET_DIR ?= ../Datasets
 
-.PHONY: setup test lint check stages doctor inventory eda snapshot clean
+.PHONY: setup test lint check stages doctor inventory eda clean-data resolve-entities snapshot clean
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -30,6 +30,12 @@ inventory:
 
 eda:
 	$(BIN)/sipature-ml run eda --dataset-dir "$(DATASET_DIR)"
+
+clean-data:
+	$(BIN)/sipature-ml run clean --dataset-dir "$(DATASET_DIR)"
+
+resolve-entities:
+	$(BIN)/sipature-ml run resolve-entities
 
 snapshot:
 	$(BIN)/sipature-ml snapshot-run --output artifacts/reports/run-environment.json

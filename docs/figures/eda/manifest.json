@@ -62,5 +62,29 @@
   "16_nearby_service_density_5km.png": {
     "sha256": "75f8b8e1a4b9b413bdbd3e87830ba79a1ec0d1f392ebf2f35707380aadc87f19",
     "size_bytes": 88651
+  },
+  "17_cleaning_funnel.png": {
+    "sha256": "5768185f91ab6cd8e3e49e759691276810bdfd803883078f5b8337e6ba4afa10",
+    "size_bytes": 100994
+  },
+  "18_relative_date_parsing.png": {
+    "sha256": "ae96efce106660a12b21ac671c0fc12d06e8b296a497fc2d075ec56abc8185d0",
+    "size_bytes": 107133
+  },
+  "19_entity_link_status.png": {
+    "sha256": "8a15a8a87c1b5369ebc2b608c63f24ee2e4be935a4e49273cc058ff51f288c85",
+    "size_bytes": 128730
+  },
+  "20_review_linkage_coverage.png": {
+    "sha256": "e106193354b91e3dbd163c6bb1f47a2149be4de379faaf675e64f60906ba4841",
+    "size_bytes": 142994
+  },
+  "21_entity_review_confusion_matrix.png": {
+    "sha256": "f4467711cdbd3c5770bb1c670d5047e0e39378f61b4402d38bcb0225f921ef25",
+    "size_bytes": 81887
+  },
+  "22_canonical_destination_composition.png": {
+    "sha256": "ca159e8e1c1fe461bd72ef99fe6a4a120a449de0b52390bb6a8415af533f97e1",
+    "size_bytes": 83054
   }
 }

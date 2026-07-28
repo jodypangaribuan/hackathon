@@ -84,25 +84,25 @@ Semua anggota wajib memahami problem, data, model, metrics, limitation, arsitekt
 
 ## A4. Cleaning dan Entity Resolution
 
-- [ ] Decode UTF-8 BOM; hapus embedded headers dan technical empty columns.
-- [ ] Normalisasi NFKC, whitespace, rating decimal-comma, dan tanggal relatif.
-- [ ] Pertahankan punctuation, negasi, typo, dan mixed language.
-- [ ] Quarantine invalid ratings/rows; jangan dibuang diam-diam.
-- [ ] Hapus exact technical duplicates.
-- [ ] Buat `duplicate_group_id` untuk repeated/near duplicates.
-- [ ] Pisahkan text pool dan rating-only pool.
-- [ ] Simpan raw dan normalized fields beserta provenance.
-- [ ] Tambahkan unit tests dan data-cleaning funnel.
-- [ ] Normalisasi nama untuk entity resolution.
-- [ ] Blocking berdasarkan nama, area, category, coordinates.
-- [ ] Hitung name/address similarity dan coordinate distance.
-- [ ] Definisikan auto-match, manual-review, no-match thresholds.
-- [ ] Review ambiguous pairs; buat canonical `destination_id`.
-- [ ] Hitung pairwise precision/recall/F1 dan false-merge rate.
+- [x] Decode UTF-8 BOM pada loaders; buang technical empty/embedded-header rows dari canonical inputs yang digunakan dan catat complex wide tables untuk unpivot lanjutan.
+- [x] Normalisasi Unicode NFKC, whitespace/control characters, rating decimal-comma, dan relative date menjadi estimasi dengan precision/status.
+- [x] Pertahankan punctuation, negasi, typo, dan mixed language pada raw/normalized review text.
+- [x] Quarantine 103 invalid/unusual flags dengan provenance; 44 empty rows excluded dan 8 decimal ratings retained-with-warning.
+- [x] Hapus 89 normalized technical duplicate excess dari clean pool tanpa menghapus audit groups.
+- [x] Buat stable `duplicate_group_id` dan simpan duplicate-group artifact.
+- [x] Pisahkan 12.234 clean textual pool dan 9.935 clean rating-only pool.
+- [x] Simpan raw/normalized fields, source file/row, review ID, parse status, dan artifact hashes; processed output tidak menyimpan identitas reviewer.
+- [x] Tambahkan cleaning/entity unit tests dan cleaning/date figures tanpa subtitle internal.
+- [x] Normalisasi nama dengan NFKD, casefold, diacritic removal, punctuation/whitespace normalization.
+- [x] Blocking berdasarkan source kind; gunakan exact name, compatible category/kind, coordinates untuk anchor cluster, dan address evidence untuk supporting records.
+- [x] Hitung name/address similarity dan Haversine coordinate distance pada anchor clustering/proximity evidence.
+- [x] Definisikan exact auto-match, fuzzy name >=0,90 + address >=0,65 + margin >=0,08, manual-review name >=0,75, dan no-safe-candidate.
+- [x] Review seluruh 78 ambiguous candidates, 6 fuzzy auto-matches, 30 exact auto-match sample, dan anchor merge; buat 388 canonical IDs teknis.
+- [x] Hitung reviewed-pair precision 0,9714, recall 0,4304, F1 0,5965, false-merge rate 0,0286 sebelum adjudication; simpan post-adjudication scope secara terpisah.
 
-**Output:** clean data, quarantine, canonical destinations, entity links, metrics.
+**Output:** enam interim Parquet, tiga processed Parquet, quarantine/ambiguous/unresolved audits, `entity-review-v1.csv`, metrics JSON, `docs/cleaning-entity-resolution-report.md`, dan enam figures.
 
-**Gate:** deterministic output; tidak ada false merge kritis; semua training review punya destination ID valid.
+**Gate:** terpenuhi dengan residual risk terdokumentasi — deterministic artifacts, seluruh 22.169 clean reviews memiliki valid `destination_id`, dan tidak ada false merge yang diketahui pada seluruh fuzzy/ambiguous/anchor cases serta exact sample yang direview.
 
 ## A5. Taxonomy dan Annotation
 

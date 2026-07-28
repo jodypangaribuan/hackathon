@@ -3,7 +3,7 @@ VENV ?= .venv
 BIN := $(VENV)/bin
 DATASET_DIR ?= ../Datasets
 
-.PHONY: setup test lint check stages doctor inventory snapshot clean
+.PHONY: setup test lint check stages doctor inventory eda snapshot clean
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -27,6 +27,9 @@ doctor:
 
 inventory:
 	$(BIN)/sipature-ml run inventory --dataset-dir "$(DATASET_DIR)"
+
+eda:
+	$(BIN)/sipature-ml run eda --dataset-dir "$(DATASET_DIR)"
 
 snapshot:
 	$(BIN)/sipature-ml snapshot-run --output artifacts/reports/run-environment.json

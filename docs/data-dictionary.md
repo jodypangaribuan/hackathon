@@ -1,16 +1,20 @@
 # Data Dictionary
 
-**Dataset version:** `[VERSION]`  
-**Generated from:** `[SOURCE MANIFEST]`  
-**Last updated:** `[DATE]`
+**Dataset version:** `eda-v0.1.0`
+**Generated from:** `ml/artifacts/reports/eda_summary.json`
+**Last updated:** 28 Juli 2026
 
-> Complete this document from the data-inventory pipeline. Do not infer field meaning without source evidence.
+Field definitions below are the canonical contract proposed from inventory/EDA. Raw source values remain preserved; cleaning and entity-resolution outputs do not yet exist.
 
 ## Source Files
 
 | Source ID | Filename | Snapshot date | SHA-256 | Encoding | Purpose |
 | --- | --- | --- | --- | --- | --- |
-| `[ID]` | `[FILE]` | `[DATE]` | `[HASH]` | `[ENCODING]` | `[PURPOSE]` |
+| REV-WISATA | `wisata-v2.csv` | Snapshot source | See manifest | UTF-8 BOM | Attraction reviews |
+| REV-SERVICE | `resto-hotel-v2.csv` | Snapshot source | See manifest | UTF-8 BOM | Hotel/restaurant reviews |
+| META-WISATA | `wisata-metadata.csv` | Snapshot source | See manifest | UTF-8 BOM | Attraction metadata |
+| META-RESTO | `resto-metadata.csv` | Snapshot source | See manifest | UTF-8 BOM | Restaurant metadata |
+| META-HOTEL | `hotel-metadata.csv` | Snapshot source | See manifest | UTF-8 BOM | Hotel metadata |
 
 ## Canonical Review Schema
 
@@ -21,10 +25,15 @@
 | `raw_review_text` | string | Yes | Unmodified source text | `[TEXT]` | Rating-only record | Review CSV |
 | `normalized_review_text` | string | Yes | Deterministically normalized text | `[TEXT]` | Rating-only record | Pipeline |
 | `rating` | float | Yes | Normalized rating 0–5 | `4.5` | Source missing/invalid | Review CSV |
-| `published_at` | datetime | Yes | Normalized publication date | `[DATE]` | Unknown/unparseable | Review CSV |
+| `published_at_raw` | string | Yes | Original relative publication text | `2 tahun lalu` | Source missing | Review CSV |
+| `published_at_estimate` | date | Yes | Conservative estimate anchored to scrape date | `2023-07` | Missing/unparseable | Pipeline |
+| `published_at_precision` | enum | Yes | Precision/uncertainty of estimate | `month` | Unavailable | Pipeline |
+| `scraped_at` | date | Yes | Source scrape snapshot date | `2025-07-29` | Source missing | Review CSV |
 | `source_file` | string | No | Origin file | `[FILE]` | N/A | Pipeline |
 | `source_row_id` | string | No | Source row identity | `[ROW]` | N/A | Pipeline |
 | `duplicate_group_id` | string | Yes | Near/repeated duplicate group | `[ID]` | Unique/not grouped | Pipeline |
+| `review_kind` | enum | No | `text_and_rating`, `text_only`, `rating_only`, `empty_record` | `text_and_rating` | N/A | Pipeline |
+| `reviewer_name_raw_restricted` | string | Yes | Original display name, restricted access | `[REDACTED]` | Source missing | Review CSV |
 
 ## Canonical Destination Schema
 
@@ -37,6 +46,10 @@
 | `longitude` | float | Yes | WGS84 longitude | `99.07` | Not geolocated | Metadata |
 | `category` | string | Yes | Canonical place type | `wisata` | Unknown | Metadata |
 | `data_confidence` | enum | No | Data sufficiency state | `medium` | N/A | Aggregation |
+| `coordinate_raw` | string | Yes | Original coordinate pair | `2.35, 99.07` | Source missing | Metadata |
+| `coordinate_parse_status` | enum | No | Parse/region validation result | `valid` | N/A | Pipeline |
+| `status_raw` | string | Yes | Source operating status | `beroperasi` | Unknown | Metadata |
+| `facilities_raw` | string | Yes | Source facility text | `Toilet, parkir` | Unknown, not absent | Metadata/supporting data |
 
 ## Prediction and Signal Schema
 

@@ -15,10 +15,11 @@ dependencies = [
   "scikit-learn>=1.4,<2",
   "PyYAML>=6,<7",
   "rapidfuzz>=3.6,<4",
+  "matplotlib>=3.10,<4",
 ]
 
 [project.optional-dependencies]
-eda = ["jupyter>=1,<2", "matplotlib>=3.8,<4", "seaborn>=0.13,<1"]
+eda = ["jupyter>=1,<2", "seaborn>=0.13,<1"]
 train = [
   "torch>=2.2,<3",
   "transformers>=4.40,<5",

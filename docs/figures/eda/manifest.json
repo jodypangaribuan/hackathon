@@ -1,0 +1,66 @@
+{
+  "01_dataset_row_counts.png": {
+    "sha256": "56ad6228b8e2d2d3f945bc9010424ed8cbf5494584d11620136905d8478ba154",
+    "size_bytes": 184560
+  },
+  "02_review_availability_funnel.png": {
+    "sha256": "b4824c3092cd9a2eb3ac52650381de742765d8e9b0bcf94b222c2142c5c4e6c6",
+    "size_bytes": 131349
+  },
+  "03_rating_distribution.png": {
+    "sha256": "2b81444929096caaa0ab2709941492516e332ffad72afcc70ff67c1b9026ff98",
+    "size_bytes": 113446
+  },
+  "04_review_text_length.png": {
+    "sha256": "60ffe988ef33478be5a91b6ae6deacc1a963c16e0801d2e10a7c57f0498845c1",
+    "size_bytes": 94731
+  },
+  "05_top_place_review_coverage.png": {
+    "sha256": "72376c811dbd0b2d58bbeb8eece85ab5c81e2a7d01e29aa56cfab879000663d5",
+    "size_bytes": 253016
+  },
+  "06_place_text_coverage_bands.png": {
+    "sha256": "1f20e584f549ce8accb026a14637fd1f61deeb0506e2f21c00d86fcd43bc3795",
+    "size_bytes": 90504
+  },
+  "07_candidate_aspect_prevalence.png": {
+    "sha256": "d89c8338be3319dc9da6f3aff907db3a5d0468c9e5cf12243f2f6f2da85e03fd",
+    "size_bytes": 156566
+  },
+  "08_language_negation_markers.png": {
+    "sha256": "dc7c4f5575653553b02dd66bc71b566bd0e82ed190b19771dc4296214c52fa24",
+    "size_bytes": 148958
+  },
+  "09_file_missing_cell_rates.png": {
+    "sha256": "95fef59e3ccf29aeb05301cbeab25b52759e4aaac119a16119249225939110b0",
+    "size_bytes": 204686
+  },
+  "10_metadata_completeness_heatmap.png": {
+    "sha256": "6499d20aad1e51eed97d60e224a32c01e07eebab9a9c68c3965be565c4ff1b29",
+    "size_bytes": 160363
+  },
+  "11_metadata_coordinate_distribution.png": {
+    "sha256": "6018230cee9b617463e90cd61d070bf67eedc3fae3307373d2304076da92b23d",
+    "size_bytes": 224903
+  },
+  "12_review_quality_anomalies.png": {
+    "sha256": "340b9f9d64ef84bf580aa46585d5fb3243228a54532e1e70844d31b4bfc0d2e8",
+    "size_bytes": 124053
+  },
+  "13_top_review_ngrams.png": {
+    "sha256": "774b44e5347e325d92611d4b83d264846af8aa08d6564304172cefbab9a44703",
+    "size_bytes": 250902
+  },
+  "14_review_time_field_availability.png": {
+    "sha256": "8c0c86645cea0fb33ad24cdf19c0b563e6a0a076c8e4f74de636685b276774b3",
+    "size_bytes": 139810
+  },
+  "15_volume_vs_candidate_complaint_rate.png": {
+    "sha256": "38066078e40c72da2d4b6a8c8d0eeec021aed75d55867da5bf64de4660e66591",
+    "size_bytes": 298711
+  },
+  "16_nearby_service_density_5km.png": {
+    "sha256": "122ae8c470bed6b456bdda22ba12e7a39fccc65c2a657fef411b6505ed4c2050",
+    "size_bytes": 100605
+  }
+}

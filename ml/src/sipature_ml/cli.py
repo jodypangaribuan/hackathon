@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .colab import bootstrap_drive
 from .config import load_config
+from .eda import run_eda
 from .environment import build_environment_snapshot, write_environment_snapshot
 from .inventory import inventory_dataset, write_inventory
 from .paths import PATHS
@@ -30,6 +31,7 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("stage", choices=[stage.value for stage in Stage])
     run.add_argument("--dataset-dir", type=Path)
     run.add_argument("--output-dir", type=Path, default=PATHS.artifacts / "reports")
+    run.add_argument("--figure-dir", type=Path, default=PATHS.artifacts / "figures")
     return parser
 
 
@@ -64,6 +66,13 @@ def main() -> int:
         )
         for output in write_inventory(inventory, args.output_dir):
             print(output)
+        return 0
+    if args.command == "run" and args.stage == Stage.EDA.value:
+        if args.dataset_dir is None:
+            raise SystemExit("--dataset-dir is required for the eda stage")
+        summary = run_eda(args.dataset_dir, args.output_dir, args.figure_dir)
+        print(args.output_dir / "eda_summary.json")
+        print(f"Generated {len(summary['figures'])} figures in {args.figure_dir}")
         return 0
     raise NotImplementedError(
         f"Stage '{args.stage}' is declared but not implemented. "

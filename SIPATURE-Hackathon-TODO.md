@@ -62,25 +62,25 @@ Semua anggota wajib memahami problem, data, model, metrics, limitation, arsitekt
 
 ## A3. Data Inventory dan EDA
 
-- [ ] Daftar seluruh CSV, fungsi, encoding, separator, schema, dan hash.
-- [ ] Hitung rows, columns, missing values, duplicates, dan entities.
-- [ ] Catat format rating, tanggal, koordinat, dan abnormal values.
-- [ ] Hitung total reviews, textual reviews, dan rating-only.
-- [ ] Buat data dictionary dan known-issues register.
-- [ ] Plot rating distribution dan review length.
-- [ ] Plot review volume per destination.
-- [ ] Analisis unigram, bigram, trigram, bahasa, negasi, contrast markers.
-- [ ] Identifikasi generic reviews, repeated text, spam, outliers, freshness.
-- [ ] Plot volume vs rating dan candidate complaint rate.
-- [ ] Audit metadata: type, status, fee, hours, facilities.
-- [ ] Validasi coordinates dan geographic outliers.
-- [ ] Hitung nearby services dan service density.
-- [ ] Audit popularity, rating, platform, recency, dan coverage bias.
-- [ ] Dokumentasikan keputusan taxonomy/model yang berasal dari EDA.
+- [x] Daftar 14 CSV, fungsi, encoding `utf-8-sig`, separator, schema fisik/semantik, dan SHA-256.
+- [x] Hitung rows, columns, missing-cell rates, exact duplicates, exact place names, dan metadata entities.
+- [x] Catat mixed rating formats, relative/missing dates, coordinate format/shared points, dan abnormal/misplaced values.
+- [x] Hitung 22.302 review, 12.280 textual, 9.978 rating-only, 7 text-only, dan 44 empty records.
+- [x] Buat `docs/data-inventory.md`, perbarui data dictionary, dan perluas known-issues register.
+- [x] Plot rating distribution dan review length sebagai PNG 300 DPI.
+- [x] Plot top review volume dan coverage bands per exact place name.
+- [x] Analisis/plot unigram, bigram, trigram, heuristic language, negation, dan contrast markers.
+- [x] Identifikasi very-short/generic patterns, exact/repeated texts, candidate spam groups, outliers, dan freshness-field availability tanpa mengklaim spam terverifikasi.
+- [x] Plot volume vs candidate complaint rate dengan mean rating sebagai warna; retrieval diberi label bukan sentiment model.
+- [x] Audit metadata type, status, fee, hours, facilities, address, dan semantic contamination lintas sumber.
+- [x] Parse/validasi 323 coordinate records, regional envelope, 321 titik unik, dan shared-coordinate groups.
+- [x] Hitung Haversine nearby hotel/restoran dan service-density context dalam radius 5 km untuk 139 wisata.
+- [x] Audit popularity, rating, platform, recency, service-coverage, dan textual-coverage bias.
+- [x] Dokumentasikan keputusan loader, taxonomy sampling, max-length candidate, class imbalance, smoothing, dan data sufficiency dari EDA.
 
-**Output:** inventory, dictionary, known issues, EDA notebook/report, figures, coverage map.
+**Output:** `docs/data-inventory.md`, `docs/eda-report.md`, `docs/figures/eda/` (16 PNG), `ml/artifacts/reports/eda_*`, data dictionary, dan known-issues register.
 
-**Gate:** setiap visual memiliki pertanyaan, temuan, implikasi, dan tindakan.
+**Gate:** terpenuhi — 16 visual 300 DPI memiliki denominator/status/interpretasi dan source-data CSV; lint lulus dan 16 unit tests pass.
 
 ## A4. Cleaning dan Entity Resolution
 

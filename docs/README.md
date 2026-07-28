@@ -5,6 +5,7 @@ Authoritative documentation index for the data, model, product, evaluation, and 
 | Document | Purpose | Owner | Status |
 | --- | --- | --- | --- |
 | `data-dictionary.md` | Field definitions, types, examples, missing-value semantics | Data/ML | Draft |
+| `data-inventory.md` | Source files, semantic row/schema notes, mappings, and restricted fields | Data/ML | Complete v0.1 |
 | `known-data-issues.md` | Known defects, impact, handling, residual risk | Data/ML | Draft |
 | `annotation-guideline.md` | Taxonomy and human-labeling rules | Data/ML + Research | Draft |
 | `model-card.md` | Intended use, metrics, limitations, license, risks | Data/ML | Draft |
@@ -14,6 +15,7 @@ Authoritative documentation index for the data, model, product, evaluation, and 
 | `experiment-log.md` | Append-only experiment and decision history | Data/ML | Active |
 | `restricted-data-policy.md` | Git, secret, dataset, and artifact handling policy | Engineering + Data | Active |
 | `reproducibility-runbook.md` | Environment, Drive, commands, checkpoints, and locked-test runbook | Data/ML | Active |
+| `eda-report.md` | Current EDA findings with report-ready figures and source-data references | Data/ML | Complete v0.1 |
 
 Related planning documents at workspace root:
 

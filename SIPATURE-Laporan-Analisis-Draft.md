@@ -27,7 +27,7 @@ Dataset pariwisata Toba menyediakan ulasan, rating, metadata tempat, koordinat, 
 
 SIPATURE dirancang sebagai sistem **Dashboard & Decision Support** yang menghubungkan review dengan isu spesifik, confidence, bukti verbatim, prioritas verifikasi, dan kandidat intervensi. Pengguna utamanya adalah pengelola destinasi; pengguna sekundernya adalah BPODT, pemerintah daerah, dan perencana program pariwisata. SIPATURE tidak menggantikan inspeksi lapangan. Sistem ini ditujukan untuk membantu tim dengan sumber daya terbatas menentukan lokasi dan masalah yang perlu diperiksa lebih dahulu berdasarkan bukti.
 
-Inventory awal berhasil membaca 14 CSV pada direktori dataset saat ini tanpa read error. Dua file ulasan utama masing-masing berisi 12.691 dan 9.611 baris, sehingga berjumlah 22.302 record. Corpus baseline aplikasi mencatat 12.280 review berteks (55,06%), 320 tempat berkoordinat, rata-rata rating 4,441, dan dominasi 15.595 rating bintang lima (69,93%). Angka ini menunjukkan class imbalance dan kebutuhan untuk tidak mengandalkan accuracy atau rating rata-rata saja. Namun, corpus tersebut dihasilkan oleh pipeline keyword + rating lama dan belum merupakan hasil EDA serta model final yang direproduksi melalui pipeline baru.
+Inventory dan EDA reproducible berhasil membaca 14 CSV pada direktori dataset saat ini tanpa read error. Dua file ulasan utama masing-masing berisi 12.691 dan 9.611 baris, sehingga berjumlah 22.302 record. EDA menemukan 12.280 review berteks (55,06%), 9.978 rating-only bersih, 44 record tanpa rating maupun teks, dan 83 exact duplicate excess rows. Dari 22.243 rating integer valid, 15.595 (70,11%) adalah bintang lima. Metadata wisata, restoran, dan hotel menyediakan 323 coordinate records. Hasil ini menunjukkan class/coverage imbalance dan kebutuhan untuk tidak mengandalkan accuracy atau rating rata-rata saja.
 
 Tahap saat ini telah menyelesaikan scope lock, struktur repositori, dependency lock, konfigurasi, provenance manifest, Google Drive bootstrap, dan inventory stage. Keyword, TF-IDF, dan IndoBERT belum dilatih pada gold annotation; karena itu Macro F1, Alert Precision, calibration, dan system-level metrics belum tersedia dan tidak diklaim pada draft ini.
 
@@ -36,10 +36,10 @@ Tahap saat ini telah menyelesaikan scope lock, struktur repositori, dependency l
 | CSV pada inventory saat ini | 14 | Aktual; `ml/artifacts/reports/data_inventory.json` |
 | CSV dengan read error | 0 | Aktual; inventory stage |
 | Baris dua file review utama | 22.302 | Aktual; 12.691 + 9.611 pada inventory |
-| Review berteks | 12.280 (55,06%) | Baseline; `sipature-app/src/data/corpus.json` |
-| Tempat berkoordinat | 320 | Baseline; corpus aplikasi |
-| Rating rata-rata | 4,441 | Baseline; corpus aplikasi |
-| Rating bintang lima | 15.595 (69,93%) | Baseline; corpus aplikasi |
+| Review berteks | 12.280 (55,06%) | Aktual; EDA v0.1 |
+| Metadata coordinate records | 323 | Aktual; 139 wisata + 148 resto + 36 hotel |
+| Rating rata-rata | 4,4413 | Aktual; 22.251 rating valid |
+| Rating bintang lima | 15.595 (70,11%) | Aktual; denominator 22.243 rating integer |
 | Gold annotation | Belum tersedia | Menunggu annotation |
 | Aspect Macro F1 | Belum tersedia | Menunggu locked-test evaluation |
 | Alert Precision | Belum tersedia | Menunggu calibration/evaluation |
@@ -77,7 +77,7 @@ Dua file review terbesar adalah `wisata-v2.csv` dengan 12.691 baris dan `resto-h
 
 Inventory yang telah dilakukan masih berfokus pada struktur, hash, encoding, header, serta jumlah baris/kolom. Missing-value profiling, duplicate analysis, abnormal-value analysis, dan semantic schema audit akan dilakukan pada tahap A3.
 
-Terdapat discrepancy provenance yang harus diselesaikan: inventory direktori `Datasets/` saat ini berisi 14 CSV, sedangkan metadata corpus aplikasi lama menyatakan `generatedFrom` 15 file. Kemungkinan perbedaan snapshot atau input pipeline belum boleh diasumsikan. Daftar input pada script baseline, isi arsip sumber, dan hash snapshot harus dibandingkan sebelum angka coverage dinyatakan final.
+Metadata corpus aplikasi lama menyatakan `generatedFrom` 15 file, sedangkan direktori saat ini berisi 14 CSV dan satu `.DS_Store`. Hal ini mungkin menjelaskan perbedaan hitungan file, tetapi belum membuktikan pipeline lama memakai snapshot yang sama. Input script baseline dan hash sumber tetap harus direkonsiliasi sebelum corpus lama dipakai sebagai bukti final.
 
 ## 1.3 Kesenjangan Keputusan Operasional
 
@@ -216,34 +216,125 @@ Inventory stage menggunakan encoding `utf-8-sig`, membaca file secara streaming 
 
 Inventory menemukan file informasi dengan banyak nama kolom kosong dan schema yang lebar. Temuan ini mengindikasikan embedded/irregular spreadsheet structure yang harus diperiksa pada EDA dan cleaning. Profil missing values, duplicate rows, abnormal ratings, tanggal, dan coordinate outliers belum dihitung.
 
-## 2.6 Temuan Kuantitatif Awal dari Corpus Baseline
+## 2.6 EDA Review
 
-Corpus aplikasi lama mencatat 22.302 review, konsisten dengan jumlah baris dua file review utama. Dari jumlah tersebut, 12.280 atau 55,06% memiliki teks. Rating rata-rata tercatat 4,441 dan distribusi sangat tidak seimbang: 15.595 rating bintang lima (69,93%), 3.640 bintang empat, 1.397 bintang tiga, 476 bintang dua, dan 1.143 bintang satu.
+EDA baru mereproduksi 22.302 review-like records. Sebanyak 12.280 atau 55,06% memiliki teks, 9.978 merupakan rating-only bersih, 7 text-only, dan 44 tidak memiliki rating maupun teks. Terdapat 83 exact duplicate excess rows. Seluruh record dipertahankan pada EDA; keputusan deduplication/quarantine dilakukan pada cleaning dengan provenance.
+
+![Funnel ketersediaan review](docs/figures/eda/02_review_availability_funnel.png)
+
+**Gambar 2.1. Funnel ketersediaan review.** Review berteks menjadi candidate pool NLP, sedangkan rating-only tetap digunakan untuk coverage dan rating context.
+
+### 2.6.1 Distribusi Rating
+
+Dari 22.243 rating integer valid, distribusinya adalah 15.595 bintang lima (70,11%), 3.635 bintang empat (16,34%), 1.396 bintang tiga (6,28%), 475 bintang dua (2,14%), dan 1.142 bintang satu (5,13%). Terdapat 8 rating desimal yang tidak dibulatkan dan 51 missing/unparseable ratings. Rating rata-rata valid adalah 4,4413.
+
+![Distribusi rating](docs/figures/eda/03_rating_distribution.png)
+
+**Gambar 2.2. Distribusi rating integer review.** Dominasi bintang lima menunjukkan imbalance dan risiko rating-based polarity.
+
+### 2.6.2 Panjang Review
+
+Review berteks memiliki median 10 kata, kuartil pertama 4 kata, kuartil ketiga 23 kata, P95 55 kata, dan P99 120 kata. Sebanyak 2.530 review atau 20,60% memiliki maksimal tiga kata. Temuan ini mendukung max sequence length awal 192 token, tetapi keputusan final harus menggunakan truncation rate tokenizer model yang dipilih.
+
+![Distribusi panjang review](docs/figures/eda/04_review_text_length.png)
+
+**Gambar 2.3. Distribusi panjang review berteks.** Visual dicap pada P99 untuk menjaga keterbacaan.
+
+### 2.6.3 Coverage per Tempat
+
+Sebelum entity resolution terdapat 343 nama tempat exact. Median coverage adalah 14 review berteks dan maksimum 685. Sebanyak 18 nama tidak memiliki review berteks, 82 memiliki 1–4, 91 memiliki 5–19, 71 memiliki 20–49, dan 81 memiliki minimal 50 review berteks.
+
+![Band coverage tempat](docs/figures/eda/06_place_text_coverage_bands.png)
+
+**Gambar 2.4. Band coverage teks per nama tempat exact.** Band belum merupakan confidence final karena entitas belum di-resolve.
+
+### 2.6.4 Kandidat Aspek
+
+Seed-keyword retrieval menemukan support awal terbesar pada pemandangan (3.677 review), pelayanan (1.477), harga/pungutan (1.017), kebersihan (1.001), akses/jalan (557), parkir (426), dan sanitasi (336). Sampah, keamanan, perawatan, dan jam operasional memiliki 70–134 candidate reviews, sehingga membutuhkan oversampling saat annotation. Hasil ini bukan gold label dan tidak mengukur polarity.
+
+![Prevalensi kandidat aspek](docs/figures/eda/07_candidate_aspect_prevalence.png)
+
+**Gambar 2.5. Prevalensi kandidat aspek berdasarkan seed keywords.** Digunakan untuk sampling annotation, bukan model evaluation.
+
+### 2.6.5 Bahasa, Negasi, dan Kontras
+
+Marker heuristic menemukan 6.794 review dengan marker Indonesia, 1.401 Inggris, 146 campuran, dan 3.939 tidak teridentifikasi. Sebanyak 2.102 review (17,12%) memuat marker negasi dan 1.295 (10,55%) marker kontras. Ini memperkuat kebutuhan contextual model dan error analysis pada mixed clauses. Kategori bahasa bukan hasil language-identification model.
+
+![Indikator bahasa dan negasi](docs/figures/eda/08_language_negation_markers.png)
+
+**Gambar 2.6. Indikator bahasa, negasi, dan kontras berbasis marker kata.**
+
+### 2.6.6 N-gram dan Repeated Text
+
+N-gram dominan mencakup `danau toba`, `luar biasa`, `air terjun`, `makanan enak`, `kamar mandi`, dan `tiket masuk`. Pola ini menunjukkan campuran pengalaman destinasi dan layanan serta membantu menemukan candidate vocabulary untuk annotation guideline. EDA menemukan 1.037 repeated-text excess rows dan 103 kelompok repeated text substantif. Repetition belum disebut spam karena komentar generik yang sama dapat ditulis pengguna berbeda.
+
+![Top n-gram](docs/figures/eda/13_top_review_ngrams.png)
+
+**Gambar 2.7. Top unigram, bigram, dan trigram setelah stopword ringkas.**
+
+### 2.6.7 Freshness Field Availability
+
+Scrape date tersedia pada 19.059 record dan hilang pada 3.243. Published-at tersedia pada 22.023 record dan hilang pada 279, tetapi nilainya berupa relative multilingual text. Parsing tanggal akan menghasilkan estimasi/interval beserta precision flag, bukan tanggal presisi palsu.
+
+![Ketersediaan waktu review](docs/figures/eda/14_review_time_field_availability.png)
+
+**Gambar 2.8. Ketersediaan scrape date dan published-at.**
+
+### 2.6.8 Volume dan Candidate Complaint Rate
+
+Seed complaint retrieval menemukan 916 review. Pada nama tempat dengan minimal lima review berteks, candidate complaint rate bervariasi dan tidak memiliki hubungan sederhana dengan volume atau mean rating. Karena retrieval masih berbasis keyword, visual ini digunakan untuk sampling dan bias analysis, bukan sebagai ranking hasil akhir.
+
+![Volume vs complaint rate](docs/figures/eda/15_volume_vs_candidate_complaint_rate.png)
+
+**Gambar 2.9. Volume review berteks vs candidate complaint rate.**
 
 Temuan tersebut memiliki beberapa implikasi awal:
 
-1. Sekitar 44,94% record tidak memiliki teks dan tidak dapat menjadi contoh training NLP, tetapi masih dapat digunakan untuk konteks rating/coverage.
+1. Sekitar 44,94% record tidak memiliki teks dan tidak dapat menjadi contoh training NLP, tetapi rating-only records masih dapat digunakan untuk konteks rating/coverage.
 2. Dominasi bintang lima membuat accuracy dan rating-based sentiment berisiko menutupi kelas negatif.
 3. Macro F1, per-label metrics, class weighting, threshold calibration, dan high-severity precision lebih relevan daripada accuracy tunggal.
 4. Mixed-sentiment review tidak boleh diberi polaritas hanya berdasarkan rating keseluruhan.
 
-Angka corpus ini harus direproduksi melalui pipeline baru sebelum menjadi hasil final laporan.
+Seluruh source data EDA tersedia pada `ml/artifacts/reports/` dan narasi lengkap pada `docs/eda-report.md`.
 
 ## 2.7 EDA Metadata dan Geospasial
 
-Corpus baseline mencatat 320 tempat berkoordinat. Aplikasi saat ini sudah menyediakan peta, filter wilayah/jenis/aspek, fallback peta luring, dan konteks fasilitas terdekat. Namun, validasi coordinate range, duplicate points, geographic outliers, missing-coordinate rate, serta density/proximity calculation belum dijalankan melalui pipeline baru. Oleh karena itu, bagian ini belum memiliki hasil EDA final.
+Tiga metadata utama berisi 323 coordinate records: 139 wisata, 148 restoran, dan 36 hotel. Seluruh string koordinat berhasil diparse dan berada pada regional warning envelope latitude 1–4 dan longitude 97–101. Hanya terdapat 321 coordinate pairs unik; empat records terlibat pada shared-coordinate groups dan memerlukan audit nama/alamat. WGS84 masih merupakan asumsi terdokumentasi.
+
+![Sebaran koordinat](docs/figures/eda/11_metadata_coordinate_distribution.png)
+
+**Gambar 2.10. Sebaran coordinate records wisata, restoran, dan hotel.** Basemap tidak digunakan agar output reproducible dan luring.
+
+Kelengkapan field berbeda tajam. Nama, alamat, dan coordinate tersedia 100% pada tiga metadata utama. Namun, fasilitas tersedia pada 0% metadata wisata, 4,05% metadata restoran, dan 83,33% metadata hotel. Hours tersedia 100% untuk wisata, 0,68% untuk restoran, dan tidak memiliki field yang sebanding pada metadata hotel. Absence diperlakukan sebagai unknown, bukan fasilitas/jam tidak tersedia.
+
+![Kelengkapan metadata](docs/figures/eda/10_metadata_completeness_heatmap.png)
+
+**Gambar 2.11. Kelengkapan field metadata utama.** Gap mendukung integrasi lintas sumber dan state `Insufficient Data`.
+
+Schema fisik juga menunjukkan missingness tinggi pada `Info Seputar` (52,74%), `prompt` (42,86%), dan `resto-hotel-v2` (34,02%). Dua file pertama memiliki embedded/multirow headers, sehingga missingness tersebut tidak langsung dianggap data hilang sebelum semantic loader diterapkan.
+
+![Missingness file](docs/figures/eda/09_file_missing_cell_rates.png)
+
+**Gambar 2.12. Proporsi sel kosong per file berdasarkan schema fisik.**
+
+Proximity analysis berbasis Haversine menemukan bahwa 72 dari 139 wisata tidak memiliki metadata hotel/restoran dalam radius 5 km. Median jumlah layanan dalam radius adalah 0 dan median jarak ke metadata layanan terdekat adalah 5,374 km. Hasil ini menunjukkan gap coverage/proximity pada dataset, bukan bukti layanan nyata tidak tersedia.
+
+![Service density](docs/figures/eda/16_nearby_service_density_5km.png)
+
+**Gambar 2.13. Kepadatan metadata hotel/restoran dalam radius 5 km dari wisata.**
 
 ## 2.8 Bias dan Risiko Data
 
 | Risiko | Bukti awal | Dampak | Mitigasi yang dirancang |
 | --- | --- | --- | --- |
 | Popularity bias | Volume review tidak merata; distribusi per destinasi belum dihitung ulang | Tempat populer menghasilkan lebih banyak sinyal | Minimum support, Bayesian smoothing, confidence band |
-| Rating imbalance | 69,93% baseline corpus adalah bintang lima | Kelas negatif dapat tertutup | Macro F1, class weights, stratified annotation |
-| Missing review text | Hanya 55,06% baseline corpus memiliki teks | Coverage training tidak merata | Pisahkan text/rating-only dan tampilkan sufficiency |
+| Rating imbalance | 70,11% rating integer valid adalah bintang lima | Kelas negatif dapat tertutup | Macro F1, class weights, stratified annotation |
+| Missing review text | Hanya 55,06% record memiliki teks | Coverage training tidak merata | Pisahkan text/rating-only dan tampilkan sufficiency |
 | Platform bias | Review berasal dari pengguna platform digital | Tidak mewakili semua wisatawan | Nyatakan limitation; validasi lapangan |
-| Data staleness | Tanggal relatif/freshness belum diaudit | Alert mungkin tidak menggambarkan kondisi kini | Normalisasi tanggal, freshness display/weight |
+| Data staleness | 3.243 scrape date missing; published-at masih relatif | Alert mungkin tidak menggambarkan kondisi kini | Conservative date normalization, precision flag, freshness weight |
 | Entity ambiguity | Tidak ada cross-file ID universal | Evidence dapat terhubung ke tempat salah | Conservative matching dan false-merge audit |
-| Source snapshot mismatch | Inventory saat ini 14 CSV; corpus baseline menyebut 15 file | Hasil tidak sepenuhnya reproducible | Rekonsiliasi source manifest dan hashes |
+| Source snapshot mismatch | Inventory 14 CSV + `.DS_Store`; corpus baseline menyebut 15 file | Input pipeline lama belum pasti identik | Rekonsiliasi source manifest dan hashes |
+| Service coverage gap | 72/139 wisata tanpa metadata hotel/restoran dalam radius 5 km | Facility-gap dapat berlebihan | Label sebagai metadata gap; validasi eksternal/lapangan |
 | Reputational harm | False alert dapat dibaca sebagai vonis | Kerugian reputasi | Alert precision, evidence, neutral language, human verification |
 
 ## 2.9 Rumusan Masalah dan Hipotesis
@@ -445,7 +536,7 @@ Strategi ini mencegah pengembangan dashboard mendahului validasi data dan model,
 | --- | --- | --- |
 | Scope dan repository | Charter, configs, contracts, locks, runbook | Selesai |
 | Inventory | Hash/schema/row-count inventory | Selesai untuk 14 CSV saat ini |
-| EDA/cleaning | EDA report, clean/interim data, quarantine | Belum dimulai |
+| EDA/cleaning | EDA report, clean/interim data, quarantine | EDA selesai; cleaning belum dimulai |
 | Entity resolution | Canonical destinations, links, metrics | Belum dimulai |
 | Annotation | Guideline final, gold labels, agreement | Draft guideline; labels belum ada |
 | Modelling | Keyword, TF-IDF, IndoBERT artifacts | Belum dimulai pada pipeline baru |
@@ -457,7 +548,7 @@ Strategi ini mencegah pengembangan dashboard mendahului validasi data dan model,
 
 Kode data/model menggunakan package Python `sipature_ml` dengan Python 3.10+, exact dependency lock untuk development dan profile terpisah untuk Colab/GPU. Seed global ditetapkan 42 untuk Python, NumPy, dan PyTorch. Config pipeline, taxonomy, split, training, dan scoring disimpan dalam YAML dan dicatat hash-nya pada environment snapshot.
 
-CLI mendeklarasikan 14 stage dari inventory sampai app export. Pada tahap saat ini hanya inventory yang diimplementasikan; stage lain fail-fast agar deklarasi command tidak dianggap sebagai hasil implementasi. Clean environment telah berhasil menjalankan lint, 13 unit tests, dan inventory terhadap dataset nyata.
+CLI mendeklarasikan 15 stage dari inventory/EDA sampai app export. Inventory dan EDA sudah diimplementasikan; stage lanjutan fail-fast agar deklarasi command tidak dianggap sebagai hasil implementasi. Clean environment telah berhasil menjalankan lint, 16 unit tests, inventory, dan EDA terhadap dataset nyata.
 
 Intermediate artifact wajib ditulis ke disk/Google Drive dan memiliki manifest berisi source hash, config version, pipeline/model version, timestamp, dan row counts. Raw data, generated artifact, model weight, dan secret tidak dimasukkan ke public Git. Catatan khusus: dataset sudah ter-track sebelum policy dibuat dan memerlukan keputusan lisensi terpisah sebelum repository dipublikasikan.
 
@@ -572,7 +663,7 @@ Skor baseline aplikasi tidak dimasukkan sebagai hasil evaluasi karena belum bera
 
 ## 6.3 Quality Assurance yang Sudah Dilakukan
 
-Fondasi pipeline telah melalui `ruff` lint dan 13 unit tests. Clean Python 3.10 environment berhasil di-install dari dependency lock dan menjalankan inventory pada dataset nyata. Empat belas CSV dapat dibaca tanpa read error. Pengujian tersebut membuktikan reproducibility fondasi, bukan performa model AI.
+Fondasi pipeline telah melalui `ruff` lint dan 16 unit tests. Clean Python 3.10 environment berhasil di-install dari dependency lock serta menjalankan inventory dan EDA pada dataset nyata. Empat belas CSV dapat dibaca tanpa read error. Pengujian tersebut membuktikan reproducibility fondasi dan EDA, bukan performa model AI.
 
 ---
 
@@ -580,7 +671,7 @@ Fondasi pipeline telah melalui `ruff` lint dan 13 unit tests. Clean Python 3.10 
 
 ## 7.1 Hasil yang Sudah Tersedia
 
-Hasil aktual saat ini terbatas pada scope lock, repository architecture, reproducibility foundation, inventory file, dan prototipe aplikasi baseline. Inventory memperlihatkan 14 CSV dengan dua file review utama berjumlah 22.302 baris. Pipeline baru belum menghasilkan clean canonical dataset, gold labels, predictions, atau priority queue final.
+Hasil aktual saat ini mencakup scope lock, repository architecture, reproducibility foundation, inventory, EDA dengan 12 visual report-ready, dan prototipe aplikasi baseline. Pipeline baru belum menghasilkan clean canonical dataset, gold labels, predictions, atau priority queue final.
 
 ## 7.2 Prototipe Produk
 
@@ -594,7 +685,7 @@ Ketiga kasus tersebut belum menjadi hasil final. Kutipan harus diverifikasi ulan
 
 ## 7.4 Keterbatasan Saat Ini
 
-- Missing values, duplicates, languages, review lengths, recency, dan geospatial outliers belum dianalisis penuh.
+- Relative-date normalization, semantic duplicates, address consistency, dan source-specific complex schema cleaning belum diselesaikan.
 - Canonical destination dan entity-resolution metrics belum tersedia.
 - Taxonomy masih draft dan belum diuji melalui annotation agreement.
 - Keyword, TF-IDF, dan IndoBERT belum dibandingkan pada locked split.
@@ -602,11 +693,11 @@ Ketiga kasus tersebut belum menjadi hasil final. Kutipan harus diverifikasi ulan
 - Priority weights belum divalidasi stakeholder atau sensitivity analysis.
 - Evidence correctness, ranking agreement, dan time saved belum diukur.
 - Persona dan workflow belum divalidasi melalui wawancara.
-- Perbedaan 14 CSV pada snapshot saat ini dan klaim 15 file pada corpus baseline belum direkonsiliasi.
+- Input manifest pipeline baseline lama belum direkonsiliasi penuh dengan snapshot EDA saat ini.
 
 ## 7.5 Implikasi Tahap Berikutnya
 
-Tahap berikutnya adalah A3 Data Inventory dan EDA untuk mereproduksi corpus secara independen, menghitung data quality, dan mengunci keputusan taxonomy. Hasil A3 akan menggantikan angka baseline yang belum direproduksi serta menjadi dasar cleaning, entity resolution, dan annotation sampling.
+Tahap berikutnya adalah A4 cleaning dan entity resolution. EDA telah mereproduksi corpus utama, mengukur data quality awal, serta memberi dasar untuk source-specific loader, taxonomy candidate support, stratified annotation sampling, dan confidence/smoothing policy.
 
 ---
 
@@ -676,6 +767,8 @@ Seluruh hasil final akan berasal dari evaluasi aktual dengan protokol yang dijel
 | Scope, user, demo cases | `SIPATURE-Project-Charter.md` |
 | File count, rows, columns, hash | `ml/artifacts/reports/data_inventory.json` |
 | Corpus baseline | `sipature-app/src/data/corpus.json` |
+| EDA summary dan source tables | `ml/artifacts/reports/eda_*` |
+| EDA figures dan narrative | `docs/figures/eda/`, `docs/eda-report.md` |
 | Pipeline/seed/evaluation policy | `ml/configs/pipeline.yaml` |
 | Taxonomy draft | `ml/configs/taxonomy.yaml` |
 | Priority draft | `ml/configs/scoring.yaml` |
@@ -688,7 +781,7 @@ Seluruh hasil final akan berasal dari evaluasi aktual dengan protokol yang dijel
 
 | Bagian laporan | Artifact yang diperlukan |
 | --- | --- |
-| EDA lengkap | EDA notebook/report dan figures |
+| EDA lanjutan | Semantic-cleaning-aware profile, relative dates, address validation |
 | Data cleaning | Clean data, quarantine, cleaning manifest |
 | Entity resolution | Entity links dan pairwise metrics |
 | Annotation | Gold JSONL, agreement, audit report |

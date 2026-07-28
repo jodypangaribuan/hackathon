@@ -111,6 +111,7 @@ sipature-ml validate-config
 sipature-ml doctor
 sipature-ml snapshot-run --output artifacts/reports/run-environment.json
 sipature-ml run inventory --dataset-dir ../Datasets
+sipature-ml run eda --dataset-dir ../Datasets
 sipature-ml run clean
 sipature-ml run resolve-entities
 sipature-ml run sample-annotations

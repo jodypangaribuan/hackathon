@@ -33,6 +33,7 @@ cd ml
 make setup
 make check
 make inventory DATASET_DIR=../Datasets
+make eda DATASET_DIR=../Datasets
 ```
 
 Python 3.10 or newer is required. Google Colab's current Python runtime is compatible.
@@ -47,7 +48,7 @@ pip install --no-deps -e .
 ## Reproducible commands
 
 ```bash
-make stages       # list the 14 declared stages
+make stages       # list the 15 declared stages, including EDA
 make doctor       # print environment, package, Git, config metadata
 make snapshot     # persist the current run environment
 make inventory    # run the implemented source inventory stage

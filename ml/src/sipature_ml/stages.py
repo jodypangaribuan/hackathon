@@ -5,6 +5,7 @@ from enum import Enum
 
 class Stage(str, Enum):
     INVENTORY = "inventory"
+    EDA = "eda"
     CLEAN = "clean"
     RESOLVE_ENTITIES = "resolve-entities"
     SAMPLE_ANNOTATIONS = "sample-annotations"

@@ -1,0 +1,11 @@
+split_version: "0.1.0-draft"
+seed: 42
+group_column: destination_id
+ratios:
+  train: 0.70
+  validation: 0.15
+  test: 0.15
+constraints:
+  keep_duplicate_groups_together: true
+  preserve_rare_labels_when_possible: true
+  test_is_locked: true

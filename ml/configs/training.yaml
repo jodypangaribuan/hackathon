@@ -1,0 +1,28 @@
+experiment_version: "0.1.0-draft"
+seed: 42
+
+baselines:
+  keyword: true
+  tfidf:
+    word_ngram_range: [1, 2]
+    char_ngram_range: [3, 5]
+    class_weight: balanced
+    max_iter: 2000
+
+indobert:
+  model_id: "[SELECT_AND_RECORD_LICENSE_BEFORE_TRAINING]"
+  max_length: 192
+  batch_size: 16
+  gradient_accumulation_steps: 2
+  learning_rate: 0.00002
+  weight_decay: 0.01
+  epochs: 4
+  warmup_ratio: 0.10
+  early_stopping_patience: 2
+  mixed_precision: fp16
+  aspect_loss: weighted_bce
+
+thresholds:
+  tune_per_label_on_validation: true
+  default_detection: 0.50
+  prioritize_alert_precision: true

@@ -1,0 +1,22 @@
+scoring_version: "0.1.0-draft"
+
+severity_weights:
+  low: 1.0
+  medium: 1.5
+  high: 2.0
+
+priority_weights:
+  severity: 0.25
+  complaint_frequency: 0.20
+  model_confidence: 0.15
+  persistence: 0.15
+  visitor_exposure: 0.10
+  facility_gap: 0.10
+  feasibility: 0.05
+
+missing_data:
+  renormalize_available_weights: true
+  reduce_confidence: true
+  never_treat_missing_as_healthy: true
+
+labels: [Critical, High, Medium, Monitor, Insufficient Data]

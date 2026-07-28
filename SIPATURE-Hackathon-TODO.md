@@ -48,7 +48,7 @@ Semua anggota wajib memahami problem, data, model, metrics, limitation, arsitekt
 
 ## A2. Repositori dan Reproducibility
 
-- [ ] Buat struktur `ml/`, `docs/`, dan `sipature-app/`.
+- [x] Buat struktur `ml/`, `docs/`, dan `sipature-app/` dengan package Python, config, contracts, tests, documentation index, dan app export boundary.
 - [ ] Buat `.gitignore` untuk secrets, cache, model besar, dan restricted data.
 - [ ] Pin dependencies setelah environment stabil.
 - [ ] Tetapkan random seed dan config YAML/JSON.

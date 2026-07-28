@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sipature.local/schemas/review-prediction.schema.json",
+  "title": "SIPATURE review prediction",
+  "type": "object",
+  "required": ["review_id", "destination_id", "model_version", "predictions"],
+  "properties": {
+    "review_id": { "type": "string", "minLength": 1 },
+    "destination_id": { "type": "string", "minLength": 1 },
+    "model_version": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "predictions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["aspect", "aspect_probability", "polarity"],
+        "properties": {
+          "aspect": { "type": "string" },
+          "aspect_probability": { "type": "number", "minimum": 0, "maximum": 1 },
+          "polarity": { "enum": ["positive", "negative", "neutral"] },
+          "polarity_probability": { "type": "number", "minimum": 0, "maximum": 1 },
+          "severity": { "type": ["string", "null"], "enum": ["low", "medium", "high", null] },
+          "severity_probability": { "type": ["number", "null"], "minimum": 0, "maximum": 1 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,61 @@
+# macOS / editors
+.DS_Store
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Generated ML data and artifacts (README/.gitkeep files remain tracked)
+ml/data/raw/*
+ml/data/interim/*
+ml/data/processed/*
+ml/data/annotations/*
+ml/data/splits/*
+ml/artifacts/models/*
+ml/artifacts/metrics/*
+ml/artifacts/figures/*
+ml/artifacts/reports/*
+!ml/data/**/README.md
+!ml/data/**/.gitkeep
+!ml/artifacts/**/README.md
+!ml/artifacts/**/.gitkeep
+
+# Large model/data formats
+*.bin
+*.ckpt
+*.onnx
+*.pt
+*.pth
+*.safetensors
+*.parquet
+*.arrow
+*.joblib
+
+# Existing source datasets stay local
+Datasets.zip
+
+# Next.js generated files
+sipature-app/.next/
+sipature-app/node_modules/
+sipature-app/tsconfig.tsbuildinfo
+sipature-app/src/data/generated/*
+!sipature-app/src/data/generated/README.md

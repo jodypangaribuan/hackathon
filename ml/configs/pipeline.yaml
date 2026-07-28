@@ -1,0 +1,30 @@
+project: sipature
+pipeline_version: "0.1.0"
+seed: 42
+
+paths:
+  raw: data/raw
+  interim: data/interim
+  processed: data/processed
+  annotations: data/annotations
+  splits: data/splits
+  artifacts: artifacts
+
+data:
+  source_encoding: utf-8-sig
+  preserve_raw_fields: true
+  quarantine_invalid_rows: true
+  remove_exact_duplicates: true
+  preserve_repeated_generic_reviews: true
+
+entity_resolution:
+  auto_match_name_similarity: 0.90
+  manual_review_name_similarity: 0.75
+  auto_match_max_distance_meters: 200
+  prefer_unresolved_over_false_merge: true
+
+evaluation:
+  group_key: destination_id
+  locked_test: true
+  primary_metric: macro_f1
+  alert_metric: high_precision

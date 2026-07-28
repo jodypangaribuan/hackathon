@@ -1,0 +1,28 @@
+taxonomy_version: "0.1.0-draft"
+polarity_labels: [positive, negative, neutral]
+severity_labels: [low, medium, high]
+
+aspects:
+  environmental:
+    - cleanliness
+    - waste
+    - sanitation
+    - crowding
+  infrastructure:
+    - access
+    - parking
+    - public_facilities
+  visitor_experience:
+    - scenery
+    - comfort
+    - safety
+    - price_transparency
+  operations:
+    - staff_service
+    - maintenance
+    - opening_hours
+
+constraints:
+  multilabel: true
+  severity_only_when_polarity: negative
+  require_human_verified_gold_labels: true

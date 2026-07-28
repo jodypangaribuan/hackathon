@@ -1,0 +1,80 @@
+Metadata-Version: 2.4
+Name: sipature-ml
+Version: 0.1.0
+Summary: Data and model pipeline for SIPATURE tourism early-warning intelligence
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy<3,>=1.26
+Requires-Dist: pandas<3,>=2.2
+Requires-Dist: pyarrow<20,>=15
+Requires-Dist: scikit-learn<2,>=1.4
+Requires-Dist: PyYAML<7,>=6
+Requires-Dist: rapidfuzz<4,>=3.6
+Provides-Extra: eda
+Requires-Dist: jupyter<2,>=1; extra == "eda"
+Requires-Dist: matplotlib<4,>=3.8; extra == "eda"
+Requires-Dist: seaborn<1,>=0.13; extra == "eda"
+Provides-Extra: train
+Requires-Dist: torch<3,>=2.2; extra == "train"
+Requires-Dist: transformers<5,>=4.40; extra == "train"
+Requires-Dist: datasets<4,>=2.18; extra == "train"
+Requires-Dist: accelerate<2,>=0.29; extra == "train"
+Requires-Dist: evaluate<1,>=0.4; extra == "train"
+Provides-Extra: dev
+Requires-Dist: pytest<9,>=8; extra == "dev"
+Requires-Dist: ruff<1,>=0.5; extra == "dev"
+
+# SIPATURE ML
+
+Reproducible data and model pipeline for SIPATURE. Colab notebooks orchestrate exploration and GPU training; importable Python modules contain reusable logic.
+
+## Pipeline stages
+
+```text
+raw CSV -> ingest -> clean -> entity resolution -> annotation sampling
+-> destination-group split -> keyword/TF-IDF baselines -> IndoBERT
+-> threshold calibration -> locked test evaluation -> batch inference
+-> destination aggregation -> intervention priority -> app export
+```
+
+## Layout
+
+| Path | Purpose |
+| --- | --- |
+| `configs/` | Versioned pipeline, taxonomy, split, training, scoring configs |
+| `data/raw/` | Immutable organizer input snapshots or Drive mount instructions |
+| `data/interim/` | Cleaned but not canonical data |
+| `data/processed/` | Canonical destinations/reviews and model-ready data |
+| `data/annotations/` | Samples, gold labels, adjudication records |
+| `data/splits/` | Locked train/validation/test manifests |
+| `notebooks/` | Ordered Colab workflow |
+| `src/sipature_ml/` | Importable pipeline package |
+| `tests/` | Unit/schema/leakage tests |
+| `artifacts/` | Models, metrics, figures, reports |
+
+## Local setup
+
+```bash
+cd ml
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+pytest
+```
+
+Install training dependencies only in Colab/GPU environments:
+
+```bash
+pip install -e ".[train]"
+```
+
+## Rules
+
+- Never edit organizer CSVs in place.
+- Never tune against the locked test split.
+- Every output must carry source/config/model version metadata.
+- Do not commit raw data, model weights, predictions, or secrets.
+- Do not call baseline outputs trained-model predictions.
+- The Next.js app consumes exported product data through `contracts/app-export.schema.json`.
+
+Current status: project structure and contracts exist; pipeline stages remain to be implemented and validated.

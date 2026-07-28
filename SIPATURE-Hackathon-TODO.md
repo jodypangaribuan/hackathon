@@ -31,18 +31,18 @@ Semua anggota wajib memahami problem, data, model, metrics, limitation, arsitekt
 ## A1. Administrasi dan Scope Lock
 
 - [ ] Verifikasi tim, ketua, maksimal tiga anggota, dan eligibility.
-- [ ] Catat deadline resmi 2 Agustus 2026 pukul 20:00 WIB.
-- [ ] Tetapkan deadline internal minimal 12 jam lebih awal.
-- [ ] Pastikan submission tidak mencantumkan institusi pendidikan.
-- [ ] Kunci nama solusi: SIPATURE.
+- [x] Catat deadline resmi 2 Agustus 2026 pukul 20:00 WIB.
+- [x] Tetapkan deadline internal minimal 12 jam lebih awal: 2 Agustus 2026 pukul 08:00 WIB.
+- [x] Pastikan submission tidak mencantumkan institusi pendidikan.
+- [x] Kunci nama solusi: SIPATURE.
 - [ ] Validasi narasi nama dengan penutur Batak Toba.
-- [ ] Kunci problem: ulasan belum menjadi keputusan operasional.
-- [ ] Kunci user: pengelola destinasi dan BPODT/pemerintah daerah.
-- [ ] Kunci output: evidence-backed early warning dan intervention priority.
-- [ ] Kunci exclusions: chatbot, RAG, booking, marketplace, CV, causal prediction.
-- [ ] Pilih satu demo case utama, satu backup, satu failure case.
+- [x] Kunci problem: ulasan belum menjadi keputusan operasional.
+- [x] Kunci user: pengelola destinasi dan BPODT/pemerintah daerah.
+- [x] Kunci output: evidence-backed early warning dan intervention priority.
+- [x] Kunci exclusions: chatbot, RAG, booking, marketplace, CV, causal prediction.
+- [x] Pilih demo utama `kawah-putih-dolok-tinggi-raja`, backup `bagus-bay-guest-house`, dan failure case `puncak-paralayang-sibodiala`.
 
-**Output:** project charter satu halaman.
+**Output:** `SIPATURE-Project-Charter.md`.
 
 **Gate:** semua anggota dapat menjelaskan SIPATURE dalam 30 detik secara konsisten.
 

@@ -27,6 +27,9 @@ import { levelOf, score } from "@/lib/format";
 import { ASPECT_LABEL } from "@/lib/format";
 import type { Basemap, MapPoint } from "./TobaMap";
 
+const TOBA_CENTER: L.LatLngExpression = [2.6, 98.85];
+const TOBA_ZOOM = 9;
+
 /** Ambil nilai token CSS. Menjaga satu sumber kebenaran di globals.css. */
 function readVar(name: string, fallback: string): string {
   if (typeof window === "undefined") return fallback;
@@ -101,6 +104,8 @@ export default function LeafletMap({
   // Handler terbaru disimpan di ref agar efek peta tidak perlu dibuat ulang.
   const selectRef = useRef(onSelect);
   selectRef.current = onSelect;
+  const selectedIdRef = useRef(selectedId);
+  selectedIdRef.current = selectedId;
   const failRef = useRef(onTileFailure);
   failRef.current = onTileFailure;
 
@@ -121,8 +126,8 @@ export default function LeafletMap({
     if (mapRef.current || !boxRef.current) return;
 
     const map = L.map(boxRef.current, {
-      center: [2.6, 98.85],
-      zoom: 9,
+      center: TOBA_CENTER,
+      zoom: TOBA_ZOOM,
       minZoom: 7,
       maxZoom: 18,
       zoomControl: true,
@@ -141,7 +146,40 @@ export default function LeafletMap({
     markersRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
 
+    const ResetViewControl = L.Control.extend({
+      options: { position: "bottomright" },
+      onAdd() {
+        const container = L.DomUtil.create(
+          "div",
+          "leaflet-bar mh-reset-view-control",
+        );
+        const button = L.DomUtil.create(
+          "button",
+          "mh-reset-view-button",
+          container,
+        );
+        button.type = "button";
+        button.title = "Kembali ke tampilan Danau Toba";
+        button.setAttribute("aria-label", "Kembali ke tampilan Danau Toba");
+        button.innerHTML =
+          '<svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle><path d="M12 2v4M12 18v4M2 12h4M18 12h4"></path></svg>';
+
+        L.DomEvent.disableClickPropagation(container);
+        L.DomEvent.disableScrollPropagation(container);
+        L.DomEvent.on(button, "click", () => {
+          if (selectedIdRef.current) {
+            selectRef.current?.(selectedIdRef.current);
+          }
+          map.flyTo(TOBA_CENTER, TOBA_ZOOM, { duration: 0.65 });
+        });
+
+        return container;
+      },
+    });
+    const resetViewControl = new ResetViewControl().addTo(map);
+
     return () => {
+      resetViewControl.remove();
       map.remove();
       mapRef.current = null;
       tileRef.current = null;

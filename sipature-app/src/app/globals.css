@@ -168,6 +168,57 @@ body {
   background: var(--surface-2) !important;
 }
 
+/* Kontrol kamera kembali ke cakupan awal Danau Toba. */
+.mh-reset-view-control {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin-bottom: 18px !important;
+  margin-right: 14px !important;
+}
+.mh-reset-view-button {
+  align-items: center;
+  background: var(--surface-1);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.18);
+  color: var(--series-1);
+  cursor: pointer;
+  display: flex;
+  height: 48px;
+  justify-content: center;
+  padding: 0;
+  transition:
+    background-color 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+  width: 48px;
+}
+.mh-reset-view-button:hover {
+  background: var(--surface-2);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.22);
+  transform: translateY(-1px);
+}
+.mh-reset-view-button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--series-1) 35%, transparent);
+  outline-offset: 2px;
+}
+.mh-reset-view-button:active {
+  transform: translateY(0) scale(0.96);
+}
+
+@media (max-width: 640px) {
+  .mh-reset-view-control {
+    margin-bottom: 12px !important;
+    margin-right: 10px !important;
+  }
+  .mh-reset-view-button {
+    height: 44px;
+    width: 44px;
+  }
+}
+
 /* Marker memakai simbol yang sama dengan legend, bukan circle generik Leaflet. */
 .mh-map-marker {
   align-items: center;

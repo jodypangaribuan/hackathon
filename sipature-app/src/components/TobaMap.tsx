@@ -1,8 +1,8 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { AspectKey, Confidence, PlaceKind, Priority } from "@/lib/types";
-import { LEVELS, num } from "@/lib/format";
+import { LEVELS, levelOf, num } from "@/lib/format";
 import { TriangleAlert } from "lucide-react";
 import TobaMapFallback from "./TobaMapFallback";
 
@@ -44,6 +44,29 @@ export default function TobaMap({
 }) {
   const [basemap, setBasemap] = useState<Basemap>("auto");
   const [offline, setOffline] = useState(false);
+  const [visibleLevels, setVisibleLevels] = useState(
+    () => new Set(LEVELS.map((level) => level.key)),
+  );
+  const visiblePoints = useMemo(
+    () => points.filter((point) => visibleLevels.has(levelOf(point.priority).key)),
+    [points, visibleLevels],
+  );
+
+  useEffect(() => {
+    if (selectedId && !visiblePoints.some((point) => point.id === selectedId)) {
+      onSelect?.(selectedId);
+    }
+  }, [selectedId, visiblePoints, onSelect]);
+
+  const toggleLevel = (key: (typeof LEVELS)[number]["key"]) => {
+    setVisibleLevels((current) => {
+      const next = new Set(current);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
   return (
     <div>
       <div
@@ -72,7 +95,42 @@ export default function TobaMap({
             >
               {label}
             </button>
-          ))}
+            ))}
+        </div>
+        <span
+          aria-hidden="true"
+          className="mx-0.5 hidden h-5 w-px sm:block"
+          style={{ background: "var(--hairline)" }}
+        />
+        <div
+          aria-label="Filter tingkat friksi"
+          className="flex min-w-0 flex-wrap items-center gap-1"
+          role="group"
+        >
+          {LEVELS.map((level) => {
+            const active = visibleLevels.has(level.key);
+            return (
+              <button
+                key={level.key}
+                type="button"
+                aria-pressed={active}
+                onClick={() => toggleLevel(level.key)}
+                className="inline-flex items-center gap-1 rounded-full border px-2 py-1 text-[11px] transition-opacity"
+                style={{
+                  background: active ? "var(--surface-2)" : "transparent",
+                  borderColor: active ? level.colorVar : "var(--hairline)",
+                  color: active ? "var(--text-primary)" : "var(--text-muted)",
+                  opacity: active ? 1 : 0.58,
+                }}
+                title={`${active ? "Sembunyikan" : "Tampilkan"} ${level.label}`}
+              >
+                <span aria-hidden="true" style={{ color: level.colorVar }}>
+                  {level.icon}
+                </span>
+                <span>{level.label}</span>
+              </button>
+            );
+          })}
         </div>
         {offline ? (
           <span className="inline-flex items-center gap-1.5 text-[11px] text-muted">
@@ -91,14 +149,14 @@ export default function TobaMap({
       <div className={`${heightClass} w-full`}>
         {offline ? (
           <TobaMapFallback
-            points={points}
+            points={visiblePoints}
             selectedId={selectedId}
             onSelect={onSelect}
             heightClass="h-full"
           />
         ) : (
           <LeafletMap
-            points={points}
+            points={visiblePoints}
             selectedId={selectedId}
             onSelect={onSelect}
             basemap={basemap}
@@ -120,8 +178,8 @@ export default function TobaMap({
           </span>
         ))}
         <span className="ml-auto text-[11px] text-muted">
-          Ukuran titik = jumlah review bersih · {num(points.length)} tempat
-          berkoordinat
+          Ukuran titik = jumlah review bersih · {num(visiblePoints.length)} dari{" "}
+          {num(points.length)} tempat berkoordinat
         </span>
       </div>
     </div>

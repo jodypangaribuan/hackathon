@@ -18,9 +18,11 @@ Ulasan wisata menyimpan informasi yang lebih rinci daripada *rating*. Sebuah tem
 
 SIPATURE dirancang sebagai ***dashboard*** **dan sistem pendukung keputusan**. Sistem membaca ulasan, mengelompokkan isu ke dalam 14 aspek, menunjukkan kutipan bukti, lalu membantu pengelola menyusun prioritas verifikasi. SIPATURE tidak menyatakan bahwa keluhan pasti benar dan tidak menggantikan pemeriksaan lapangan.
 
-*Pipeline* saat ini berhasil mengolah 22.302 *record* mentah menjadi 22.169 *record* bersih. Dari jumlah tersebut, 12.234 memiliki teks dan 9.935 hanya memiliki *rating*. Sebanyak 1.320 *review* berteks dipilih secara terstruktur untuk membuat label bantu atau ***silver labels***. Label ini digunakan untuk membangun dan membandingkan *baseline* *Keyword* serta TF-IDF pada pembagian data yang aman dari kebocoran destinasi.
+*Pipeline* saat ini berhasil mengolah 22.302 *record* mentah menjadi 22.169 *record* bersih. Dari jumlah tersebut, 12.234 memiliki teks dan 9.935 hanya memiliki *rating*. Sebanyak 1.320 *review* berteks dipilih secara terstruktur untuk membuat label bantu atau ***silver labels***. Label ini digunakan untuk membangun *baseline* *Keyword* dan TF-IDF serta melatih kandidat IndoBERT pada pembagian data yang aman dari kebocoran destinasi.
 
 Pada *locked silver test*, *Keyword* memperoleh *Macro F1* 0,9768 dan TF-IDF memperoleh 0,7201. Nilai ini hanya mengukur kesesuaian terhadap *silver labels*, bukan akurasi terhadap label manusia. Skor *Keyword* sangat tinggi karena memakai kosakata *taxonomy* yang juga berkaitan dengan proses pembentukan *silver labels*. Oleh karena itu, hasil tersebut diperlakukan sebagai batas pembanding, bukan bukti bahwa model telah memahami kondisi nyata.
+
+Kandidat IndoBERT telah dilatih hanya menggunakan *train* dan *validation*. Pada *validation*, deteksi 14 aspek memperoleh *Macro F1* 0,4012 dengan *threshold* sementara 0,50, sedangkan klasifikasi *polarity* berbasis aspek memperoleh *Macro F1* 0,7044. Angka tersebut belum dapat dibandingkan langsung dengan hasil *locked test* kedua *baseline*. *Calibration*, pemilihan *threshold* per aspek, dan evaluasi IndoBERT pada *locked test* tetap dipisahkan sebagai tahap berikutnya. Model *severity* tidak dipaksakan karena kelas `high` hanya memiliki 19 contoh *train*, di bawah batas metodologis minimum 20.
 
 ### Alur Data dari Awal hingga Produk
 
@@ -132,7 +134,7 @@ Manfaat yang diharapkan bagi pengelola adalah berkurangnya waktu untuk membaca *
 
 ## 1.6 Ruang Lingkup dan Batasan Awal
 
-Ruang lingkup preliminary berfokus pada pengolahan dataset panitia, pengembangan *taxonomy* aspek, pembuatan *silver labels*, pembangunan *baseline* *Keyword* dan TF-IDF, evaluasi *leakage-safe*, serta rancangan integrasi model dengan *dashboard*. Analisis utama menggunakan *review* berteks, sedangkan *rating-only* digunakan sebagai konteks volume, distribusi *rating*, dan kecukupan data. *Metadata* lokasi digunakan untuk menghubungkan *review* dengan destinasi dan mendukung penyajian geospasial.
+Ruang lingkup preliminary berfokus pada pengolahan dataset panitia, pengembangan *taxonomy* aspek, pembuatan *silver labels*, pembangunan *baseline* *Keyword* dan TF-IDF, pelatihan kandidat IndoBERT, evaluasi *leakage-safe*, serta rancangan integrasi model dengan *dashboard*. Analisis utama menggunakan *review* berteks, sedangkan *rating-only* digunakan sebagai konteks volume, distribusi *rating*, dan kecukupan data. *Metadata* lokasi digunakan untuk menghubungkan *review* dengan destinasi dan mendukung penyajian geospasial.
 
 SIPATURE tidak menilai kebenaran faktual sebuah keluhan, tidak menentukan sanksi, dan tidak mempublikasikan identitas *reviewer*. *Silver labels* yang digunakan pada tahap awal bukan *human-gold labels*, sehingga hasil evaluasi belum dapat disebut sebagai akurasi terhadap penilaian manusia. Selain itu, keterbatasan *metadata* tidak boleh ditafsirkan sebagai bukti bahwa fasilitas atau layanan tidak tersedia di dunia nyata. Batasan tersebut dijaga agar solusi tetap transparan, etis, dan dapat dipertanggungjawabkan.
 
@@ -593,9 +595,38 @@ TF-IDF mengubah teks menjadi pola kata dan potongan karakter. Tiga *representati
 
 `Word` memakai pola satu atau dua kata, `char` memakai potongan 3–5 karakter yang membantu menghadapi variasi ejaan, sedangkan `word_char` menggabungkan keduanya. Kombinasi memperoleh *Macro F1* *validation* tertinggi, yaitu 0,8117. *Locked test* tidak digunakan untuk memilih *representation* ini.
 
-## 5.7 Rencana Model Lanjutan
+## 5.7 Pelatihan Kandidat IndoBERT
 
-Tahap berikutnya adalah IndoBERT untuk mempelajari konteks bahasa Indonesia yang tidak selalu tertangkap *keyword* atau TF-IDF. IndoBERT hanya akan dipertahankan jika memberi peningkatan yang berarti dengan biaya komputasi yang masih layak. Model yang lebih kompleks tidak otomatis dianggap lebih baik.
+Kandidat model lanjutan menggunakan `indobenchmark/indobert-base-p1` pada revisi yang dikunci `c2cd0b51ddce6580eb35263b39b0a1e5fb0a39e2`. Model berlisensi MIT berdasarkan *metadata model card*, menggunakan arsitektur BERT dasar 12 lapisan dengan sekitar 124,5 juta parameter, serta `BertTokenizer` berbasis WordPiece. Pelatihan dilakukan pada Google Colab dengan GPU Tesla T4 menggunakan Python 3.12.13, PyTorch 2.7.1, dan Transformers 4.53.2.
+
+Model aspek menerima satu *review* dan menghasilkan 14 *logits* multilabel. Pelatihan menggunakan *weighted binary cross-entropy* agar aspek dengan *support* kecil tidak tertutup oleh kelas yang lebih sering. Model *polarity* dibentuk sebagai klasifikasi berbasis aspek: teks masukan memuat aspek yang sedang dinilai dan isi *review*, kemudian model memilih `positive`, `negative`, atau `neutral` menggunakan *weighted cross-entropy*. Pemilihan *checkpoint* hanya menggunakan *validation Macro F1* dan tidak membaca *locked test*.
+
+**Tabel 12. Hasil pelatihan IndoBERT pada *silver validation***
+
+| Tugas                         | *Epoch* pertama *Macro F1* | Terbaik *Macro F1* | *Best epoch* | *Validation loss* | Waktu *training* |
+| ----------------------------- | -------------------------: | -----------------: | -----------: | ----------------: | ---------------: |
+| Deteksi aspek multilabel      | 0,2822                     | 0,4012             | 4            | 0,7824            | 100,10 detik     |
+| *Aspect-conditioned polarity* | 0,6453                     | 0,7044             | 4            | 0,6962            | 126,55 detik     |
+
+**Interpretasi Tabel 12.** Kedua tugas meningkat hingga *epoch* keempat. Nilai aspek 0,4012 masih memakai *threshold* sementara 0,50 dan bukan hasil final karena setiap aspek dapat memerlukan batas keputusan berbeda. Nilai *polarity* 0,7044 dihitung pada pasangan aspek yang tersedia dalam *silver validation*. Semua angka pada tabel adalah *silver agreement* di *validation*, bukan performa terhadap *human-gold labels* dan bukan hasil *locked test*.
+
+![Riwayat pelatihan aspek IndoBERT](docs/evidence/indobert/20260801-1024_indobert-silver-v1/aspect-training-history.png)
+
+**Gambar 14. Riwayat *loss* dan *validation Macro F1* model aspek IndoBERT.**
+
+Kurva menunjukkan *training loss* dan *validation loss* menurun selama empat *epoch*, sementara *validation Macro F1* meningkat dari 0,2822 menjadi 0,4012. Hasil ini mendukung pemilihan *checkpoint* *epoch* keempat, tetapi belum menentukan *threshold* deteksi final.
+
+![Riwayat pelatihan polarity IndoBERT](docs/evidence/indobert/20260801-1024_indobert-silver-v1/polarity-training-history.png)
+
+**Gambar 15. Riwayat *loss* dan *validation Macro F1* model *polarity* IndoBERT.**
+
+*Validation Macro F1 polarity* meningkat dari 0,6453 menjadi 0,7044. *Validation loss* mulai mendatar dan sedikit meningkat pada *epoch* keempat, sedangkan F1 hanya naik tipis dari 0,7039 menjadi 0,7044. Karena itu, penambahan *epoch* belum memiliki dasar yang cukup sebelum dilakukan analisis kesalahan.
+
+Panjang masukan dikunci pada 192 token. Batas ini mencakup 896 dari 922 *review train* atau 97,18% dan 192 dari 196 *review validation* atau 97,96% tanpa pemotongan. Setelah pelatihan, model aspek dan *polarity* berhasil dimuat ulang sepenuhnya luring dengan `local_files_only=true`. Bentuk keluarannya masing-masing `[1, 14]` dan `[1, 3]`; 65 dari 65 hash *artifact* juga berhasil diverifikasi.
+
+Model *severity* tidak dilatih. Setiap kelas diwajibkan memiliki sedikitnya 20 contoh *train* dan 5 contoh *validation*, tetapi kelas `high` hanya memiliki 19 contoh *train* dan 6 contoh *validation*. Menurunkan batas hanya untuk menghasilkan *artifact* akan melemahkan metodologi. Oleh sebab itu, SIPATURE belum memiliki hasil atau klaim performa *severity*.
+
+Tahap selanjutnya adalah *temperature scaling* dan pemilihan *threshold* per aspek hanya pada *validation*. Setelah model, konfigurasi, suhu, dan *threshold* dibekukan, IndoBERT baru dievaluasi satu kali pada *locked test*. Pemisahan ini mencegah hasil *test* memengaruhi konfigurasi model.
 
 ---
 
@@ -603,13 +634,13 @@ Tahap berikutnya adalah IndoBERT untuk mempelajari konteks bahasa Indonesia yang
 
 ## 6.1 Protokol
 
-Kedua *baseline* dinilai pada *locked test* yang sama. *Macro F1* dipakai sebagai metrik utama karena semua aspek perlu diperhatikan, termasuk aspek langka. *Micro F1*, *Exact Match*, *Hamming Loss*, per-*aspect* F1, dan *latency* dilaporkan sebagai pelengkap.
+Kedua *baseline* telah dinilai pada *locked test* yang sama. *Macro F1* dipakai sebagai metrik utama karena semua aspek perlu diperhatikan, termasuk aspek langka. *Micro F1*, *Exact Match*, *Hamming Loss*, per-*aspect* F1, dan *latency* dilaporkan sebagai pelengkap. Hasil IndoBERT pada bagian sebelumnya masih merupakan hasil *validation* dan tidak dimasukkan ke perbandingan *locked test* sebelum proses *calibration* dan pembekuan konfigurasi selesai.
 
 *Config* dan *threshold* dipilih pada *train/validation*. *Locked-test metrics* tidak boleh ditimpa; eksperimen baru harus memakai versi baru.
 
 ## 6.2 Hasil *Locked Silver Test*
 
-**Tabel 12. Hasil *Keyword* dan TF-IDF pada *locked silver test***
+**Tabel 13. Hasil *Keyword* dan TF-IDF pada *locked silver test***
 
 | Metric                 | *Keyword* | TF-IDF *word*+char |
 | ---------------------- | ---------:| ------------------:|
@@ -619,11 +650,11 @@ Kedua *baseline* dinilai pada *locked test* yang sama. *Macro F1* dipakai sebaga
 | *Hamming Loss*         | 0,0039    | 0,0343             |
 | *Latency*, ms/*review* | 1,8953    | 0,1101             |
 
-**Interpretasi Tabel 12.** *Keyword* memiliki *agreement* paling tinggi terhadap *silver reference*, tetapi hasil ini sangat dipengaruhi oleh penggunaan kosakata *taxonomy* yang juga berkaitan dengan pembentukan *silver labels*. TF-IDF memiliki *agreement* lebih rendah, namun *inference* lebih cepat dan menjadi pembanding yang lebih berguna untuk model yang belajar dari pola data. Seluruh angka merupakan *silver agreement*, bukan *human-gold performance*.
+**Interpretasi Tabel 13.** *Keyword* memiliki *agreement* paling tinggi terhadap *silver reference*, tetapi hasil ini sangat dipengaruhi oleh penggunaan kosakata *taxonomy* yang juga berkaitan dengan pembentukan *silver labels*. TF-IDF memiliki *agreement* lebih rendah, namun *inference* lebih cepat dan menjadi pembanding yang lebih berguna untuk model yang belajar dari pola data. Seluruh angka merupakan *silver agreement*, bukan *human-gold performance*.
 
 ![*Baseline* comparison](docs/figures/eda/34_baseline_silver_test_comparison.png)
 
-**Gambar 14. Perbandingan *agreement* *baseline* terhadap *locked silver test*.**
+**Gambar 16. Perbandingan *agreement* *baseline* terhadap *locked silver test*.**
 
 Semakin tinggi batang, semakin sesuai prediksi dengan *silver reference*. *Keyword* tampak sangat tinggi karena menggunakan kosakata yang berkaitan erat dengan pembentukan *silver labels*. TF-IDF lebih rendah tetapi lebih berguna sebagai pembanding model yang belajar pola dari data. Angka ini bukan performa terhadap label manusia.
 
@@ -631,7 +662,7 @@ Semakin tinggi batang, semakin sesuai prediksi dengan *silver reference*. *Keywo
 
 TF-IDF lebih independen dari *runtime* *rules*, tetapi tetap belajar dari *silver targets*. Hasil per aspek menunjukkan keterbatasan pada kelas langka:
 
-**Tabel 13. Contoh hasil TF-IDF pada aspek dengan *support* terbatas**
+**Tabel 14. Contoh hasil TF-IDF pada aspek dengan *support* terbatas**
 
 | Aspek             | TF-IDF F1 | *Test* *support* |
 | ----------------- | ---------:| ----------------:|
@@ -641,11 +672,11 @@ TF-IDF lebih independen dari *runtime* *rules*, tetapi tetap belajar dari *silve
 | safety            | 0,6667    | 8                |
 | waste             | 0,9474    | 9                |
 
-**Interpretasi Tabel 13.** Nilai F1 harus dibaca bersama *support*. `opening_hours` memiliki F1 nol tetapi hanya dua contoh pada *test*, sehingga estimasinya belum stabil. `waste` memiliki F1 tinggi, namun *support* sembilan juga masih terbatas. Tabel ini mendukung perlunya tambahan *reference* yang lebih kuat dan evaluasi per aspek, bukan hanya satu nilai rata-rata.
+**Interpretasi Tabel 14.** Nilai F1 harus dibaca bersama *support*. `opening_hours` memiliki F1 nol tetapi hanya dua contoh pada *test*, sehingga estimasinya belum stabil. `waste` memiliki F1 tinggi, namun *support* sembilan juga masih terbatas. Tabel ini mendukung perlunya tambahan *reference* yang lebih kuat dan evaluasi per aspek, bukan hanya satu nilai rata-rata.
 
 ![Per-*aspect* F1](docs/figures/eda/35_baseline_per_aspect_f1.png)
 
-**Gambar 15. Per-*aspect* F1 pada *locked silver test*.**
+**Gambar 17. Per-*aspect* F1 pada *locked silver test*.**
 
 Setiap pasangan batang membandingkan *Keyword* dan TF-IDF untuk satu aspek. TF-IDF cukup kuat pada waste, scenery, comfort, dan staff service, tetapi lemah pada opening hours dan crowding. Perbedaan tersebut tidak boleh dibaca tanpa *support*: opening hours hanya memiliki dua contoh pada *test*, sehingga satu kesalahan saja sangat memengaruhi nilainya.
 
@@ -670,6 +701,9 @@ Hasil A6 mendukung tiga kesimpulan:
 - *Destination*/repeated-text-safe *split* telah dikunci.
 - *Keyword* dan TF-IDF telah dievaluasi pada *split* yang sama.
 - Model TF-IDF dapat disimpan, dimuat ulang, dan menghasilkan 14 *probabilities* per *review*.
+- Kandidat IndoBERT aspek dan *polarity* telah dilatih pada *train/validation*, disimpan, diverifikasi 65/65 hash, dan berhasil dimuat ulang secara luring.
+- IndoBERT memperoleh *validation Macro F1* 0,4012 untuk aspek dengan *threshold* sementara dan 0,7044 untuk *polarity* berbasis aspek.
+- Model *severity* tidak dilatih karena kelas `high` tidak melewati batas minimum *support train*.
 - *Prototype dashboard* telah memiliki *overview*, peta, *destination detail*, *intervention queue*, *analyzer*, dan *fallback* peta luring.
 
 ## 7.2 Apa yang Belum Boleh Diklaim
@@ -677,13 +711,15 @@ Hasil A6 mendukung tiga kesimpulan:
 - *Silver labels* bukan label manusia atau kondisi lapangan.
 - *Keyword* *Macro F1* 0,9768 bukan akurasi dunia nyata.
 - TF-IDF *Macro F1* 0,7201 belum membuktikan performa terhadap *human gold*.
+- IndoBERT *validation Macro F1* belum merupakan hasil *locked test* dan belum boleh dibandingkan sebagai hasil final dengan kedua *baseline*.
+- SIPATURE belum memiliki metrik *severity* karena tidak ada model yang lolos *support gate*.
 - *Priority* score belum divalidasi bersama *stakeholder*.
 - *Evidence* *correctness*, *Alert Precision*, ranking *agreement*, dan *time saved* belum diukur.
 - Data aplikasi saat ini belum merupakan hasil *full-corpus inference* dari model A6.
 
 ## 7.3 Hubungan Model dengan Produk
 
-Saat ini A6 membuktikan *pipeline training* dan *benchmark* pada subset berlabel. Setelah model akhir dikunci, model digunakan untuk melakukan *inference* terhadap 12.234 *review* berteks. Hasil tersebut kemudian digabungkan dengan 9.935 *rating-only records* sehingga konteks agregasi mencakup seluruh 22.169 *clean records*. Pada tingkat destinasi, sistem menyusun *evidence*, *data confidence*, dan *intervention priority* sebelum hasil dikirimkan ke *dashboard* SIPATURE.
+Saat ini A6 membuktikan *pipeline benchmark* pada subset berlabel, sedangkan A7 membuktikan bahwa kandidat IndoBERT aspek dan *polarity* dapat dilatih, disimpan, diverifikasi, serta dimuat ulang tanpa layanan eksternal. Setelah *calibration*, evaluasi A8, dan pemilihan model akhir selesai, model digunakan untuk melakukan *inference* terhadap 12.234 *review* berteks. Hasil tersebut kemudian digabungkan dengan 9.935 *rating-only records* sehingga konteks agregasi mencakup seluruh 22.169 *clean records*. Pada tingkat destinasi, sistem menyusun *evidence*, *data confidence*, dan *intervention priority* sebelum hasil dikirimkan ke *dashboard* SIPATURE.
 
 Alur ini mencegah angka evaluasi bercampur dengan *output* produksi. Data *training* menjawab “apakah model sesuai dengan *reference*?”, sedangkan *full-corpus inference* menjawab “isu apa yang dilaporkan pada seluruh data?”.
 
@@ -720,10 +756,11 @@ Keputusan operasional tetap memerlukan verifikasi manusia karena ulasan adalah l
 4. Laporan *cleaning* dan *entity resolution*: `docs/cleaning-entity-resolution-report.md`.
 5. Laporan *taxonomy* dan *silver annotation*: `docs/taxonomy-annotation-report.md`.
 6. Laporan *split* dan *baseline*: `docs/leakage-safe-split-baseline-report.md`.
-7. *Responsible AI*: `docs/responsible-ai.md`.
-8. *Reproducibility*: `docs/reproducibility-runbook.md`.
+7. Laporan pelatihan IndoBERT: `docs/indobert-training-report.md`.
+8. *Responsible AI*: `docs/responsible-ai.md`.
+9. *Reproducibility*: `docs/reproducibility-runbook.md`.
 
-**Tabel 14. Hubungan klaim laporan dengan *artifact* teknis**
+**Tabel 15. Hubungan klaim laporan dengan *artifact* teknis**
 
 | Klaim utama                 | *Artifact*                                             |
 | --------------------------- | ------------------------------------------------------ |
@@ -734,7 +771,9 @@ Keputusan operasional tetap memerlukan verifikasi manusia karena ulasan adalah l
 | Locked *split*              | `ml/data/splits/split_manifest_silver_v1.json`         |
 | *Baseline* *metrics*        | `ml/artifacts/metrics/*-silver-v1-test-metrics.json`   |
 | *Baseline* *error analysis* | `ml/artifacts/reports/baseline_silver_test_errors.csv` |
+| Pelatihan IndoBERT          | `docs/indobert-training-report.md`                     |
+| Bukti dan hash IndoBERT     | `docs/evidence/indobert/20260801-1024_indobert-silver-v1/` |
 
-**Interpretasi Tabel 14.** Setiap klaim kuantitatif utama memiliki *artifact* sumber yang dapat diperiksa. *Traceability* ini membedakan hasil aktual dari rencana dan memungkinkan reproduksi tanpa menaruh raw/*restricted* data langsung di laporan publik.
+**Interpretasi Tabel 15.** Setiap klaim kuantitatif utama memiliki *artifact* sumber yang dapat diperiksa. *Traceability* ini membedakan hasil aktual dari rencana dan memungkinkan reproduksi tanpa menaruh raw/*restricted* data langsung di laporan publik. Bobot IndoBERT yang besar tetap disimpan pada penyimpanan terkontrol, sedangkan bukti kecil dan hash verifikasi tersedia di repositori.
 
 > *Raw data*, *review-level annotation*, *split records*, model *artifact*, *metrics*, dan *error cases* bersifat *restricted* dan tidak dipublikasikan tanpa pemeriksaan lisensi serta privasi.

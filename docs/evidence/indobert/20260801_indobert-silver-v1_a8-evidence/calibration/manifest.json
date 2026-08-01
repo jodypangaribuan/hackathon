@@ -1,0 +1,10 @@
+{
+  "artifact_hashes": {
+    "calibration.json": "f7efc6525c2b7de9351b31257beb7455db7f3b1c7abe675a412038505123eadb",
+    "calibration.png": "16960431e85b9f15212e7d2a3cec2763ee2f771a428a4a3a49f0f26895fa6a99",
+    "validation-predictions.npz": "127c800b0597484e2a209537fc9c56de34644efbba6b8e4fca9fb151e085949c"
+  },
+  "calibration_sha256": "f7efc6525c2b7de9351b31257beb7455db7f3b1c7abe675a412038505123eadb",
+  "phase": "validation_calibration",
+  "test_read": false
+}

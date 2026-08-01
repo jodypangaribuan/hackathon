@@ -1,0 +1,10 @@
+{
+  "calibration_sha256": "f7efc6525c2b7de9351b31257beb7455db7f3b1c7abe675a412038505123eadb",
+  "completed_at": "2026-08-01T11:51:53.591558+00:00",
+  "split_manifest_sha256": "2044659130e0f2a80bc6c15bd75052ecce51c8a064f8c24ef8eb86d06110a2c0",
+  "started_at": "2026-08-01T11:51:46.585146+00:00",
+  "status": "completed",
+  "test_access_policy": "Do not rerun after failure; document a methodological incident.",
+  "test_inference_passes": 1,
+  "test_sha256": "edf650024fc2f74c5f3eea1bc04c3b909c52884849067987196fd8b795bb43ff"
+}

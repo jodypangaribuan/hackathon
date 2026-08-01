@@ -135,7 +135,7 @@ sipature-ml run prioritize
 sipature-ml run export-app
 ```
 
-Inventory through A6 is implemented and tested. A7 run `20260801-1024_indobert-silver-v1` trained aspect and polarity candidates on hash-verified train/validation data and passed offline reload; severity was skipped by its support gate. A8's strict two-phase implementation is ready, but calibration and locked-test execution remain pending. Follow `a8-calibration-evaluation-runbook.md`; implementing a command is not evidence that an unrecorded run completed.
+Inventory through A6 is implemented and tested. A7 run `20260801-1024_indobert-silver-v1` trained aspect and polarity candidates on hash-verified train/validation data and passed offline reload; severity was skipped by its support gate. A8 froze validation-only calibration and run `20260801_indobert-silver-v1_locked-test-v1` evaluated the locked silver test exactly once. The evaluation manifest SHA-256 is `d58fd1c17af3c0e0c5de2b118fc70072b5a8190b2bf999082f35d3003975fc88`; safe evidence is documented in `indobert-a8-evaluation-report.md`. Review-level errors remain restricted and their manual audit is pending.
 
 ## Run Identity
 

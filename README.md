@@ -19,7 +19,9 @@ SIPATURE is an evidence-based early-warning and intervention-priority system for
 ## Current Truth
 
 - The web application currently contains a keyword + rating baseline for UI demonstration.
-- Trained IndoBERT outputs and locked-test metrics do not exist yet.
+- A7 trained IndoBERT aspect and polarity candidates; A8 calibrated on validation and evaluated the locked silver test exactly once.
+- IndoBERT aspect Macro F1 was 0.5247, below TF-IDF 0.7201; IndoBERT polarity Macro F1 was 0.7459 on reference-annotated aspects.
+- Severity remains unavailable because the A7 class-support gate did not produce a model.
 - Do not present baseline scores as trained-model results.
 - ML outputs replace baseline app data only after schema, metric, evidence, and smoke-test gates pass.
 
@@ -37,4 +39,4 @@ pip install -e ".[dev]"
 pytest
 sipature-ml stages
 ```
-The A8 validation-calibration and locked-test evaluation workflow is implementation ready but has not been executed. See `docs/a8-calibration-evaluation-runbook.md`; no A8 result claims are available.
+A8 execution and safe aggregate evidence are documented in `docs/indobert-a8-evaluation-report.md`. Results are silver-label agreement, not human-gold performance; review-level predictions and error cases remain restricted.

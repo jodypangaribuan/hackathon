@@ -44,3 +44,16 @@ Append one section per experiment. Do not rewrite failed experiments.
 - Error analysis: Pending A8 threshold tuning and aggregate review of validation errors.
 - Decision: Keep as the A7 candidate and proceed to A8 calibration; do not open locked test yet.
 - Rationale and next action: Aspect loss and validation loss continued to decrease through epoch 4. Polarity validation loss flattened after epoch 3 while Macro F1 improved marginally. Severity was skipped because high support was 19 train, below the minimum of 20.
+
+### `20260801_indobert-silver-v1_locked-test-v1` — Frozen IndoBERT Calibration and One-Shot Evaluation
+
+- Date/owner: 1 August 2026 / SIPATURE ML pipeline.
+- Hypothesis: Validation-only temperature scaling and per-aspect thresholds allow the A7 contextual model to outperform the learned TF-IDF aspect baseline on the locked silver test.
+- Data/annotation/split version: `silver-1.0.0` / `silver-split-1.0.0`; 196 validation records for calibration and 202 locked-test records evaluated once.
+- Config and git commit: calibration config canonical SHA-256 `4531b2c101900450e3cc245934eee00725e29c2c6647746b9c2ad2fa084cf0ff`; commit `9eaca4f2780cdb88d2381fa558dd9bd445297c9b`.
+- Hardware/runtime: Google Colab Tesla T4, Python 3.12.13, PyTorch 2.7.1, Transformers 4.53.2.
+- Metrics artifact: `docs/evidence/indobert/20260801_indobert-silver-v1_a8-evidence/`; evaluation metrics SHA-256 `923a000e43c9f6528ac53a5c3b99827cfd0ed55ec38db5f3c9a2564f3db0f9da`.
+- Result: Validation tuning improved aspect Macro F1 from 0.4012 to 0.5535. Locked-test IndoBERT aspect Macro/Micro F1 was 0.5247/0.5241, below TF-IDF 0.7201/0.8040. Polarity Macro F1 was 0.7459 over 248 reference aspect instances. Overall micro Precision@Alert was 0.5886 over 175 predictions; ECE was 0.2021 and Brier 0.1258.
+- Error analysis: Review-level FP/FN records and deterministic 50-case queues remain restricted in controlled Drive storage; manual linguistic and reputational-risk coding is pending.
+- Decision: Reject the IndoBERT aspect head as the final aspect detector for this benchmark; keep TF-IDF as the current learned aspect candidate and retain IndoBERT polarity as a separate candidate.
+- Rationale and next action: The contextual aspect model underperformed TF-IDF while requiring more compute. Do not retune from locked-test results. Complete manual restricted error audit, then define the A9 production contract using TF-IDF aspect detection and an explicitly versioned polarity decision.

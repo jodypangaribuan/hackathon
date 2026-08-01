@@ -1,0 +1,48 @@
+{
+  "a7_manifest_sha256": "e9e2d8e5676a94a6b5ebcd01d4ac5a512bfa042ed90dc615bd480abf7f630d01",
+  "alert_target_met_labels": [
+    "cleanliness",
+    "parking",
+    "scenery",
+    "staff_service",
+    "waste"
+  ],
+  "alert_target_not_met_labels": [
+    "access",
+    "comfort",
+    "crowding",
+    "maintenance",
+    "opening_hours",
+    "price_transparency",
+    "public_facilities",
+    "safety",
+    "sanitation"
+  ],
+  "calibration_config_canonical_sha256": "4531b2c101900450e3cc245934eee00725e29c2c6647746b9c2ad2fa084cf0ff",
+  "calibration_directory": "/content/drive/MyDrive/SIPATURE/calibration/20260801_indobert-silver-v1_calibration-v1",
+  "calibration_id": "20260801_indobert-silver-v1_calibration-v1",
+  "calibration_manifest_sha256": "0fb30bf3170a62bc4a7e257d9fcf9393b42c78eee7239e80aa1c435dff878e3a",
+  "calibration_sha256": "f7efc6525c2b7de9351b31257beb7455db7f3b1c7abe675a412038505123eadb",
+  "current_training_config_sha256": "2dd885607b83313c61276f650b189125f52aa1a8d9b278c27fde5d8c81a053ea",
+  "frozen_at": "2026-08-01T11:43:49.067911+00:00",
+  "indobert_config_canonical_sha256": "7e3b2a62ac6e8cdccb75152f0271c762a01a5f9d9f9c2583b84c8b5aa842bd95",
+  "locked_test_policy": "No model, temperature, threshold, taxonomy, or configuration changes are allowed after this receipt.",
+  "split_manifest_sha256": "2044659130e0f2a80bc6c15bd75052ecce51c8a064f8c24ef8eb86d06110a2c0",
+  "status": "accepted_and_frozen_before_locked_test",
+  "temperature": 0.6,
+  "test_read": false,
+  "validation_metrics": {
+    "brier_after": 0.13877199324016595,
+    "brier_before": 0.1440880331928714,
+    "ece_after": 0.22529126900754612,
+    "ece_before": 0.2705768614228283,
+    "macro_f1_temporary_threshold_0_50": 0.4012246461923619,
+    "macro_f1_tuned_thresholds": 0.553546118292758,
+    "micro_f1_temporary_threshold_0_50": 0.4326450344149459,
+    "micro_f1_tuned_thresholds": 0.56957928802589,
+    "nll_after": 0.4235609447556627,
+    "nll_before": 0.4533156870788427,
+    "polarity_macro_f1": 0.7044036969463576
+  },
+  "validation_sha256": "7c2f5f911ea33c6854ad1adc21e41a58befb6b24b31cb5ef2b8e03b7b771477c"
+}

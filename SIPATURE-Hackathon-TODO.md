@@ -148,7 +148,7 @@ Semua anggota wajib memahami problem, data, model, metrics, limitation, arsitekt
 
 ## A7. IndoBERT Training
 
-Catatan 2026-08-01: run `20260801-1024_indobert-silver-v1` selesai pada Colab Tesla T4. Aspect dan polarity dilatih hanya pada train/validation dan lulus offline reload; severity dilewati karena kelas high memiliki 19 train, di bawah minimum 20. Locked test belum dibaca dan tetap menunggu A8.
+Catatan historis A7, 2026-08-01: run `20260801-1024_indobert-silver-v1` selesai pada Colab Tesla T4. Aspect dan polarity dilatih hanya pada train/validation dan lulus offline reload; severity dilewati karena kelas high memiliki 19 train, di bawah minimum 20. Pada saat A7 ditutup, locked test belum dibaca; eksekusi A8 berikutnya dicatat pada bagian di bawah.
 
 - [x] Pilih model ID; dokumentasikan lisensi, tokenizer, dan size.
 - [x] Aktifkan Colab GPU; simpan environment versions.
@@ -163,27 +163,27 @@ Catatan 2026-08-01: run `20260801-1024_indobert-silver-v1` selesai pada Colab Te
 - [ ] Plot learning curve jika waktu cukup.
 - [x] Uji model reload dan offline inference.
 
-**Gate:** terpenuhi untuk kandidat aspect dan polarity train/validation — artifact dapat di-load ulang tanpa external API. Severity belum memiliki artifact; kalibrasi, schema prediksi lengkap, dan locked-test metrics tetap berada pada A8.
+**Gate:** terpenuhi untuk kandidat aspect dan polarity train/validation — artifact dapat di-load ulang tanpa external API. Severity tidak memiliki artifact; kalibrasi dan locked-test metrics telah diselesaikan pada A8.
 
 ## A8. Calibration, Test Evaluation, Error Analysis
 
-Catatan 2026-08-01: implementasi dua fase, CLI, notebook, pengujian sintetis, dan runbook A8 telah disiapkan. Kalibrasi validation dan evaluasi locked test belum dijalankan; semua kotak berbasis hasil di bawah tetap tidak dicentang.
+Catatan 2026-08-01: kalibrasi validation dibekukan dan run `20260801_indobert-silver-v1_locked-test-v1` menyelesaikan locked test tepat satu kali (`test_inference_passes=1`). IndoBERT aspect memperoleh Macro/Micro F1 0,5247/0,5241, di bawah TF-IDF 0,7201/0,8040; polarity Macro F1 0,7459. Severity tetap tidak tersedia. Artifact FP/FN dan audit queue pada tingkat review tersimpan restricted, tetapi audit manual linguistik/reputasi belum selesai.
 
-- [ ] Cari detection threshold per aspect pada validation.
-- [ ] Cari high-precision alert threshold.
-- [ ] Uji probability calibration.
-- [ ] Bekukan config dan thresholds.
-- [ ] Evaluasi locked test tepat sekali.
-- [ ] Hitung Aspect Macro/Micro/per-label F1 dan Precision@Alert.
-- [ ] Hitung polarity Macro F1/confusion matrix.
-- [ ] Hitung severity Macro F1/high-severity precision.
-- [ ] Hitung ECE/Brier Score dan latency.
-- [ ] Bandingkan Keyword vs TF-IDF vs IndoBERT.
+- [x] Cari detection threshold per aspect pada validation.
+- [x] Cari high-precision alert threshold.
+- [x] Uji probability calibration.
+- [x] Bekukan config dan thresholds.
+- [x] Evaluasi locked test tepat sekali.
+- [x] Hitung Aspect Macro/Micro/per-label F1 dan Precision@Alert.
+- [x] Hitung polarity Macro F1/confusion matrix.
+- [x] Terapkan severity support gate; metric tidak tersedia karena tidak ada model.
+- [x] Hitung ECE/Brier Score dan latency.
+- [x] Bandingkan Keyword vs TF-IDF vs IndoBERT.
 - [ ] Audit 50 FP, 50 FN, semua high-severity errors, rare/mixed-language cases.
 - [ ] Kelompokkan negation, implicit, typo, sarcasm, boundary, context, annotation errors.
 - [ ] Dokumentasikan reputationally harmful errors dan residual risks.
 
-**Gate:** metrics terikat pada data/model/config hashes; target dan actual results berbeda label.
+**Gate:** evaluasi kuantitatif terpenuhi dan terikat pada data/model/config hashes; target dan hasil aktual berlabel terpisah. Gate audit manual belum terpenuhi sampai record FP/FN restricted, kategori linguistik, dan risiko reputasi diperiksa.
 
 ## A9. Inference, Aggregation, dan Priority Engine
 

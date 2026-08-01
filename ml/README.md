@@ -76,4 +76,4 @@ Full local/Colab instructions and intermediate checkpoint rules are in `../docs/
 - Do not call baseline outputs trained-model predictions.
 - The Next.js app consumes exported product data through `contracts/app-export.schema.json`.
 
-Current status: A1-A6 are complete. A7 run `20260801-1024_indobert-silver-v1` trained aspect and polarity candidates on Colab train/validation data and passed offline reload; severity was skipped by its support gate. A8 calibration/evaluation code, tests, CLI, notebook, and runbook are implementation ready, but calibration and locked-test execution remain pending. See `../docs/a8-calibration-evaluation-runbook.md`.
+Current status: A1-A8 quantitative stages are complete. A7 run `20260801-1024_indobert-silver-v1` trained aspect and polarity candidates and passed offline reload; severity was skipped by its support gate. A8 froze validation calibration and evaluated the locked silver test exactly once. IndoBERT aspect Macro F1 was 0.5247 versus TF-IDF 0.7201; polarity Macro F1 was 0.7459 on reference-annotated aspects. Manual restricted error coding remains pending. See `../docs/indobert-a8-evaluation-report.md`.

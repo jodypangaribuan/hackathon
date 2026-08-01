@@ -1,0 +1,272 @@
+{
+  "aspect": {
+    "latency": {
+      "milliseconds_per_record": 8.469313425741735,
+      "total_seconds": 1.7108013119998304
+    },
+    "macro_f1": 0.52472918092202,
+    "micro_f1": 0.5241379310344828,
+    "per_label": {
+      "access": {
+        "f1": 0.5306122448979592,
+        "precision": 0.41935483870967744,
+        "predicted_support": 31,
+        "recall": 0.7222222222222222,
+        "support": 18
+      },
+      "cleanliness": {
+        "f1": 0.5666666666666667,
+        "precision": 0.5,
+        "predicted_support": 34,
+        "recall": 0.6538461538461539,
+        "support": 26
+      },
+      "comfort": {
+        "f1": 0.3582089552238806,
+        "precision": 0.2553191489361702,
+        "predicted_support": 47,
+        "recall": 0.6,
+        "support": 20
+      },
+      "crowding": {
+        "f1": 0.5714285714285714,
+        "precision": 0.5,
+        "predicted_support": 8,
+        "recall": 0.6666666666666666,
+        "support": 6
+      },
+      "maintenance": {
+        "f1": 0.5517241379310345,
+        "precision": 0.42105263157894735,
+        "predicted_support": 19,
+        "recall": 0.8,
+        "support": 10
+      },
+      "opening_hours": {
+        "f1": 0.0,
+        "precision": 0.0,
+        "predicted_support": 12,
+        "recall": 0.0,
+        "support": 2
+      },
+      "parking": {
+        "f1": 0.8333333333333334,
+        "precision": 1.0,
+        "predicted_support": 15,
+        "recall": 0.7142857142857143,
+        "support": 21
+      },
+      "price_transparency": {
+        "f1": 0.5633802816901409,
+        "precision": 0.5128205128205128,
+        "predicted_support": 39,
+        "recall": 0.625,
+        "support": 32
+      },
+      "public_facilities": {
+        "f1": 0.36,
+        "precision": 0.28125,
+        "predicted_support": 32,
+        "recall": 0.5,
+        "support": 18
+      },
+      "safety": {
+        "f1": 0.5,
+        "precision": 0.75,
+        "predicted_support": 4,
+        "recall": 0.375,
+        "support": 8
+      },
+      "sanitation": {
+        "f1": 0.4642857142857143,
+        "precision": 0.35135135135135137,
+        "predicted_support": 37,
+        "recall": 0.6842105263157895,
+        "support": 19
+      },
+      "scenery": {
+        "f1": 0.5833333333333334,
+        "precision": 0.7241379310344828,
+        "predicted_support": 29,
+        "recall": 0.4883720930232558,
+        "support": 43
+      },
+      "staff_service": {
+        "f1": 0.5882352941176471,
+        "precision": 0.5555555555555556,
+        "predicted_support": 18,
+        "recall": 0.625,
+        "support": 16
+      },
+      "waste": {
+        "f1": 0.875,
+        "precision": 1.0,
+        "predicted_support": 7,
+        "recall": 0.7777777777777778,
+        "support": 9
+      }
+    },
+    "precision_at_alert": {
+      "overall_micro": {
+        "precision": 0.5885714285714285,
+        "predicted_support": 175
+      },
+      "per_label": {
+        "access": {
+          "precision": 0.45,
+          "predicted_support": 20,
+          "threshold": 0.85,
+          "validation_target_met": false
+        },
+        "cleanliness": {
+          "precision": 0.7142857142857143,
+          "predicted_support": 7,
+          "threshold": 0.9,
+          "validation_target_met": true
+        },
+        "comfort": {
+          "precision": 0.25,
+          "predicted_support": 16,
+          "threshold": 0.85,
+          "validation_target_met": false
+        },
+        "crowding": {
+          "precision": 0.5,
+          "predicted_support": 8,
+          "threshold": 0.8,
+          "validation_target_met": false
+        },
+        "maintenance": {
+          "precision": 0.5714285714285714,
+          "predicted_support": 14,
+          "threshold": 0.9,
+          "validation_target_met": false
+        },
+        "opening_hours": {
+          "precision": 0.0,
+          "predicted_support": 8,
+          "threshold": 0.65,
+          "validation_target_met": false
+        },
+        "parking": {
+          "precision": 1.0,
+          "predicted_support": 15,
+          "threshold": 0.9,
+          "validation_target_met": true
+        },
+        "price_transparency": {
+          "precision": 0.7368421052631579,
+          "predicted_support": 19,
+          "threshold": 0.85,
+          "validation_target_met": false
+        },
+        "public_facilities": {
+          "precision": 0.5555555555555556,
+          "predicted_support": 9,
+          "threshold": 0.9,
+          "validation_target_met": false
+        },
+        "safety": {
+          "precision": 0.75,
+          "predicted_support": 4,
+          "threshold": 0.85,
+          "validation_target_met": false
+        },
+        "sanitation": {
+          "precision": 0.4,
+          "predicted_support": 30,
+          "threshold": 0.8,
+          "validation_target_met": false
+        },
+        "scenery": {
+          "precision": 0.8888888888888888,
+          "predicted_support": 9,
+          "threshold": 0.9,
+          "validation_target_met": true
+        },
+        "staff_service": {
+          "precision": 1.0,
+          "predicted_support": 9,
+          "threshold": 0.95,
+          "validation_target_met": true
+        },
+        "waste": {
+          "precision": 1.0,
+          "predicted_support": 7,
+          "threshold": 0.95,
+          "validation_target_met": true
+        }
+      }
+    }
+  },
+  "baseline_comparison": {
+    "models": [
+      {
+        "macro_f1": 0.9767532595118802,
+        "micro_f1": 0.9783037475345168,
+        "model": "keyword-silver-v1",
+        "records": 202,
+        "reference_label_type": "ai_assisted_weak_supervision_silver",
+        "source": "/content/drive/MyDrive/SIPATURE/baseline-metrics/keyword-silver-v1-test-metrics.json",
+        "split_manifest_sha256": null,
+        "split_version": null
+      },
+      {
+        "macro_f1": 0.7200524598653073,
+        "micro_f1": 0.804040404040404,
+        "model": "tfidf-aspect-silver-v1",
+        "records": 202,
+        "reference_label_type": "ai_assisted_weak_supervision_silver",
+        "source": "/content/drive/MyDrive/SIPATURE/baseline-metrics/tfidf-silver-v1-test-metrics.json",
+        "split_manifest_sha256": null,
+        "split_version": null
+      }
+    ]
+  },
+  "baseline_figure_dir": null,
+  "calibration": {
+    "brier": 0.12582656832083053,
+    "ece": 0.20213223025866892,
+    "method": "positive_class_equal_width_flattened_multilabel"
+  },
+  "inference": {
+    "aspect_latency_seconds": 1.7108013119998304,
+    "device": "cuda",
+    "model_loading_excluded_from_inference_latency": true,
+    "model_loading_seconds": 1.634118122000018,
+    "polarity_latency_seconds": 2.1275180840000303
+  },
+  "phase": "locked_test_evaluation",
+  "polarity": {
+    "confusion_matrix": [
+      [
+        80,
+        10,
+        22
+      ],
+      [
+        8,
+        55,
+        13
+      ],
+      [
+        5,
+        4,
+        51
+      ]
+    ],
+    "labels": [
+      "positive",
+      "negative",
+      "neutral"
+    ],
+    "macro_f1": 0.7459128771731742,
+    "support": 248
+  },
+  "polarity_evaluation_basis": "gold_or_silver_annotated_aspects_not_predicted_aspects",
+  "reference_label_type": "ai_assisted_weak_supervision_silver",
+  "severity": {
+    "status": "unavailable_no_model"
+  },
+  "test_inference_passes": 1
+}

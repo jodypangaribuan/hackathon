@@ -1,0 +1,252 @@
+{
+  "a7_manifest_sha256": "e9e2d8e5676a94a6b5ebcd01d4ac5a512bfa042ed90dc615bd480abf7f630d01",
+  "a7_training_config_sha256": "fd5c68b78e7b284e79e404b9562058fb7502018fb9d832d1f6b93cde525b6e4e",
+  "alert_thresholds": {
+    "access": 0.85,
+    "cleanliness": 0.9,
+    "comfort": 0.85,
+    "crowding": 0.8,
+    "maintenance": 0.9,
+    "opening_hours": 0.65,
+    "parking": 0.9,
+    "price_transparency": 0.85,
+    "public_facilities": 0.9,
+    "safety": 0.85,
+    "sanitation": 0.8,
+    "scenery": 0.9,
+    "staff_service": 0.95,
+    "waste": 0.95
+  },
+  "alert_validation": {
+    "access": {
+      "precision": 0.46153846153846156,
+      "predicted_support": 13,
+      "recall": 0.3,
+      "target_met": false,
+      "threshold": 0.85
+    },
+    "cleanliness": {
+      "precision": 0.8,
+      "predicted_support": 5,
+      "recall": 0.13793103448275862,
+      "target_met": true,
+      "threshold": 0.9
+    },
+    "comfort": {
+      "precision": 0.42857142857142855,
+      "predicted_support": 14,
+      "recall": 0.3,
+      "target_met": false,
+      "threshold": 0.85
+    },
+    "crowding": {
+      "precision": 0.375,
+      "predicted_support": 8,
+      "recall": 0.5,
+      "target_met": false,
+      "threshold": 0.8
+    },
+    "maintenance": {
+      "precision": 0.7142857142857143,
+      "predicted_support": 7,
+      "recall": 0.35714285714285715,
+      "target_met": false,
+      "threshold": 0.9
+    },
+    "opening_hours": {
+      "precision": 0.2222222222222222,
+      "predicted_support": 9,
+      "recall": 0.6666666666666666,
+      "target_met": false,
+      "threshold": 0.65
+    },
+    "parking": {
+      "precision": 1.0,
+      "predicted_support": 13,
+      "recall": 0.7647058823529411,
+      "target_met": true,
+      "threshold": 0.9
+    },
+    "price_transparency": {
+      "precision": 0.5,
+      "predicted_support": 16,
+      "recall": 0.25806451612903225,
+      "target_met": false,
+      "threshold": 0.85
+    },
+    "public_facilities": {
+      "precision": 0.375,
+      "predicted_support": 8,
+      "recall": 0.2,
+      "target_met": false,
+      "threshold": 0.9
+    },
+    "safety": {
+      "precision": 0.16666666666666666,
+      "predicted_support": 6,
+      "recall": 0.25,
+      "target_met": false,
+      "threshold": 0.85
+    },
+    "sanitation": {
+      "precision": 0.5,
+      "predicted_support": 24,
+      "recall": 0.5217391304347826,
+      "target_met": false,
+      "threshold": 0.8
+    },
+    "scenery": {
+      "precision": 1.0,
+      "predicted_support": 11,
+      "recall": 0.34375,
+      "target_met": true,
+      "threshold": 0.9
+    },
+    "staff_service": {
+      "precision": 0.9090909090909091,
+      "predicted_support": 11,
+      "recall": 0.2564102564102564,
+      "target_met": true,
+      "threshold": 0.95
+    },
+    "waste": {
+      "precision": 1.0,
+      "predicted_support": 5,
+      "recall": 0.7142857142857143,
+      "target_met": true,
+      "threshold": 0.95
+    }
+  },
+  "calibration_config": {
+    "alert_minimum_precision": 0.8,
+    "alert_minimum_predictions": 5,
+    "ece_bins": 10,
+    "inference_batch_size": 32,
+    "method": "deterministic_bounded_temperature_grid",
+    "output_version": "indobert-evaluation-v1",
+    "require_cuda": true,
+    "temperature_grid_size": 181,
+    "temperature_max": 5.0,
+    "temperature_min": 0.5,
+    "threshold_candidates": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "version": "aspect-calibration-v1"
+  },
+  "calibration_config_canonical_sha256": "4531b2c101900450e3cc245934eee00725e29c2c6647746b9c2ad2fa084cf0ff",
+  "created_at": "2026-08-01T11:40:16.353792+00:00",
+  "current_training_config_sha256": "2dd885607b83313c61276f650b189125f52aa1a8d9b278c27fde5d8c81a053ea",
+  "detection_thresholds": {
+    "access": 0.75,
+    "cleanliness": 0.75,
+    "comfort": 0.65,
+    "crowding": 0.8,
+    "maintenance": 0.85,
+    "opening_hours": 0.55,
+    "parking": 0.9,
+    "price_transparency": 0.7,
+    "public_facilities": 0.7,
+    "safety": 0.85,
+    "sanitation": 0.7,
+    "scenery": 0.8,
+    "staff_service": 0.8,
+    "waste": 0.95
+  },
+  "indobert_config_canonical_sha256": "7e3b2a62ac6e8cdccb75152f0271c762a01a5f9d9f9c2583b84c8b5aa842bd95",
+  "inference": {
+    "aspect_latency_seconds": 2.158427174000053,
+    "device": "cuda",
+    "model_loading_excluded_from_inference_latency": true,
+    "model_loading_seconds": 1.8260830029998942,
+    "polarity_latency_seconds": 2.2785562740000387
+  },
+  "labels": [
+    "access",
+    "cleanliness",
+    "comfort",
+    "crowding",
+    "maintenance",
+    "opening_hours",
+    "parking",
+    "price_transparency",
+    "public_facilities",
+    "safety",
+    "sanitation",
+    "scenery",
+    "staff_service",
+    "waste"
+  ],
+  "model_hashes": {
+    "aspect/model/config.json": "953072ce4625fa8c32c1022904a1c9a18f15836e670b5a48fea7c7527b5f2557",
+    "aspect/model/model.safetensors": "52906dad616f585710fddc576a922c2efa6a10d813ac68af8444431e3f8df4d9",
+    "aspect/model/special_tokens_map.json": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+    "aspect/model/tokenizer_config.json": "0088a6f8bcdd4014184fb068b83ebb12896a9db2bb269a71f73de83fef24bceb",
+    "aspect/model/vocab.txt": "35cfc7be6dc3ec71102248722f352830a8fd89b5a5dadb83d70c2f7794ddbc11",
+    "polarity/model/config.json": "afa61f4fb24db810ec38bf2d41cfc3c3a0267219ab9fd3a35f9275671e3c419a",
+    "polarity/model/model.safetensors": "de30bf7f8f5dbb6b8faab20d9840b1fc5e1720dcb1c3b4e96aa4417795740f72",
+    "polarity/model/special_tokens_map.json": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+    "polarity/model/tokenizer_config.json": "0088a6f8bcdd4014184fb068b83ebb12896a9db2bb269a71f73de83fef24bceb",
+    "polarity/model/vocab.txt": "35cfc7be6dc3ec71102248722f352830a8fd89b5a5dadb83d70c2f7794ddbc11"
+  },
+  "output_version": "indobert-evaluation-v1",
+  "phase": "validation_calibration",
+  "split_manifest_sha256": "2044659130e0f2a80bc6c15bd75052ecce51c8a064f8c24ef8eb86d06110a2c0",
+  "temperature": 0.6,
+  "test_read": false,
+  "validation_calibration": {
+    "brier_after": 0.13877199324016595,
+    "brier_before": 0.1440880331928714,
+    "ece_after": 0.22529126900754612,
+    "ece_before": 0.2705768614228283,
+    "ece_semantics": "positive_class_equal_width_flattened_multilabel",
+    "nll_after": 0.4235609447556627,
+    "nll_before": 0.4533156870788427,
+    "temperature": 0.6
+  },
+  "validation_polarity": {
+    "confusion_matrix": [
+      [
+        72,
+        9,
+        26
+      ],
+      [
+        5,
+        73,
+        13
+      ],
+      [
+        10,
+        11,
+        41
+      ]
+    ],
+    "labels": [
+      "positive",
+      "negative",
+      "neutral"
+    ],
+    "macro_f1": 0.7044036969463576,
+    "support": 260
+  },
+  "validation_sha256": "7c2f5f911ea33c6854ad1adc21e41a58befb6b24b31cb5ef2b8e03b7b771477c",
+  "version": "aspect-calibration-v1"
+}

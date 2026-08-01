@@ -1,0 +1,35 @@
+{
+  "a7_manifest_sha256": "e9e2d8e5676a94a6b5ebcd01d4ac5a512bfa042ed90dc615bd480abf7f630d01",
+  "artifact_hashes": {
+    "aspect-per-label-f1.png": "9e7157d3c0a611504a0aadc6284303491f39d0004e828729de4a7b726e53380a",
+    "audit-fn.json": "5633e4077631764a772e7f44c28aadae4dd1cc4c69047d3c3330a8efc04325b2",
+    "audit-fp.json": "df627f91a80a43dce8c7926729e0446155292b488f857a31e804e60a3fa850d3",
+    "comparison.png": "b8c25243e0b698bbe63f8c776263fd70d91835a9d766c7863ebd0120e73ab80c",
+    "errors.csv": "d0316cffe087da2bc1cb04c3f914d9a9075635ef0d81b97b348ff0f14c829fe5",
+    "errors.json": "2e29e23d0d1bc1c538bcb74b54614eeb1c30ad23b0804bd11e7f9ff71f5a2e69",
+    "evaluation-state.json": "1b237b33f32b044fac0607c1c412292a5ea278555b05000417773377dd44c81f",
+    "metrics.json": "923a000e43c9f6528ac53a5c3b99827cfd0ed55ec38db5f3c9a2564f3db0f9da",
+    "polarity-confusion-matrix.png": "a8653ebfcaa5c07168a818464eaee10a3106d324e441ec5793935140c94e738f",
+    "test-predictions.npz": "8c3dca6ee093c9bc455ed7a23ddc116bdf6d4e243b78ed0ddd9a15096c88a20f",
+    "test-probability-quality.png": "b1492ee1e3d53cc5c3f220b60bfd8b22e80ebcec5594e4651ffc3fc15a620591"
+  },
+  "calibration_sha256": "f7efc6525c2b7de9351b31257beb7455db7f3b1c7abe675a412038505123eadb",
+  "created_at": "2026-08-01T11:51:53.597944+00:00",
+  "manual_error_policy": "No automatic linguistic category classification; audit fields remain pending.",
+  "model_hashes": {
+    "aspect/model/config.json": "953072ce4625fa8c32c1022904a1c9a18f15836e670b5a48fea7c7527b5f2557",
+    "aspect/model/model.safetensors": "52906dad616f585710fddc576a922c2efa6a10d813ac68af8444431e3f8df4d9",
+    "aspect/model/special_tokens_map.json": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+    "aspect/model/tokenizer_config.json": "0088a6f8bcdd4014184fb068b83ebb12896a9db2bb269a71f73de83fef24bceb",
+    "aspect/model/vocab.txt": "35cfc7be6dc3ec71102248722f352830a8fd89b5a5dadb83d70c2f7794ddbc11",
+    "polarity/model/config.json": "afa61f4fb24db810ec38bf2d41cfc3c3a0267219ab9fd3a35f9275671e3c419a",
+    "polarity/model/model.safetensors": "de30bf7f8f5dbb6b8faab20d9840b1fc5e1720dcb1c3b4e96aa4417795740f72",
+    "polarity/model/special_tokens_map.json": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+    "polarity/model/tokenizer_config.json": "0088a6f8bcdd4014184fb068b83ebb12896a9db2bb269a71f73de83fef24bceb",
+    "polarity/model/vocab.txt": "35cfc7be6dc3ec71102248722f352830a8fd89b5a5dadb83d70c2f7794ddbc11"
+  },
+  "phase": "locked_test_evaluation",
+  "split_manifest_sha256": "2044659130e0f2a80bc6c15bd75052ecce51c8a064f8c24ef8eb86d06110a2c0",
+  "test_inference_passes": 1,
+  "test_sha256": "edf650024fc2f74c5f3eea1bc04c3b909c52884849067987196fd8b795bb43ff"
+}

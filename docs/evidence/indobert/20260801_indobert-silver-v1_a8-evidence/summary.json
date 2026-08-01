@@ -1,0 +1,54 @@
+{
+  "source_zip_sha256": "069731af3e8e52761accc5416b50e3d7055aabdef2880eeebacc471f4fbc326b",
+  "source_inventory_sha256": "3f20451fb93bc214715247e92f97a08007f6fdaf8afef703fac451fc56a2fe06",
+  "calibration_sha256": "f7efc6525c2b7de9351b31257beb7455db7f3b1c7abe675a412038505123eadb",
+  "calibration_manifest_sha256": "0fb30bf3170a62bc4a7e257d9fcf9393b42c78eee7239e80aa1c435dff878e3a",
+  "evaluation_manifest_sha256": "d58fd1c17af3c0e0c5de2b118fc70072b5a8190b2bf999082f35d3003975fc88",
+  "evaluation_metrics_sha256": "923a000e43c9f6528ac53a5c3b99827cfd0ed55ec38db5f3c9a2564f3db0f9da",
+  "evaluation_state_sha256": "1b237b33f32b044fac0607c1c412292a5ea278555b05000417773377dd44c81f",
+  "test_sha256": "edf650024fc2f74c5f3eea1bc04c3b909c52884849067987196fd8b795bb43ff",
+  "test_inference_passes": 1,
+  "reference_label_type": "ai_assisted_weak_supervision_silver",
+  "calibration": {
+    "temperature": 0.6,
+    "validation_macro_f1_threshold_0_50": 0.4012246461923619,
+    "validation_macro_f1_tuned": 0.553546118292758,
+    "validation_micro_f1_tuned": 0.56957928802589,
+    "nll_before": 0.4533156870788427,
+    "nll_after": 0.4235609447556627,
+    "ece_before": 0.2705768614228283,
+    "ece_after": 0.22529126900754612,
+    "brier_before": 0.1440880331928714,
+    "brier_after": 0.13877199324016595
+  },
+  "locked_test": {
+    "aspect_macro_f1": 0.52472918092202,
+    "aspect_micro_f1": 0.5241379310344828,
+    "precision_at_alert_overall_micro": 0.5885714285714285,
+    "precision_at_alert_predicted_support": 175,
+    "ece": 0.20213223025866892,
+    "brier": 0.12582656832083053,
+    "polarity_macro_f1": 0.7459128771731742,
+    "polarity_support": 248,
+    "aspect_latency_ms_per_record": 8.469313425741735,
+    "severity_status": "unavailable_no_model"
+  },
+  "baseline_comparison": {
+    "keyword_macro_f1": 0.9767532595118802,
+    "keyword_micro_f1": 0.9783037475345168,
+    "tfidf_macro_f1": 0.7200524598653073,
+    "tfidf_micro_f1": 0.804040404040404
+  },
+  "privacy": {
+    "review_level_files_included": false,
+    "restricted_files_excluded": [
+      "test_silver_v1.jsonl",
+      "validation-predictions.npz",
+      "test-predictions.npz",
+      "errors.json",
+      "errors.csv",
+      "audit-fp.json",
+      "audit-fn.json"
+    ]
+  }
+}

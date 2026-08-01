@@ -1,6 +1,6 @@
 # A8 Calibration and Locked Evaluation Runbook
 
-**Status:** implementation ready; execution pending.
+**Status:** executed once on 1 August 2026; retained as the immutable procedure and incident policy for run `20260801_indobert-silver-v1_locked-test-v1`.
 
 A8 has two strictly ordered phases. The locked test must not be uploaded, copied, mounted into the runtime split directory, inspected, or read until the validation calibration artifact exists, has been inspected, and is frozen. Labels remain AI-assisted silver references unless a separately versioned gold split is supplied.
 
@@ -53,7 +53,7 @@ If hashing, parsing, inference, plotting, or artifact writing fails after the st
 
 ## Outputs and Interpretation
 
-The completed output contains aspect Macro/Micro/per-label F1, per-label and overall micro Precision@Alert with validation `target_met` status, positive-class ECE, multilabel Brier, separate aspect/polarity latency, polarity Macro F1/confusion matrix, compact compatible baseline metrics, a reliability diagram, all aspect FP/FN cases, and deterministic FP/FN audit queues capped at 50 each.
+The completed controlled-storage output contains aspect Macro/Micro/per-label F1, per-label and overall micro Precision@Alert with validation `target_met` status, positive-class ECE, multilabel Brier, separate aspect/polarity latency, polarity Macro F1/confusion matrix, compact compatible baseline metrics, a reliability diagram, all aspect FP/FN cases, and deterministic FP/FN audit queues capped at 50 each. FP/FN records, predictions, and audit queues are review-level restricted artifacts and are not copied into the repository's safe aggregate evidence bundle.
 
 Inspect that `evaluation-state.json` says `completed`, `test_inference_passes` equals `1`, the state and manifest test hashes agree, and every file except `manifest.json` appears in `manifest.json`'s `artifact_hashes`. Preserve incomplete state markers as incident evidence.
 

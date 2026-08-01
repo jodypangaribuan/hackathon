@@ -36,12 +36,6 @@ function readVar(name: string, fallback: string): string {
   return v || fallback;
 }
 
-/** "var(--status-good)" -> "--status-good" */
-function varName(cssVar: string): string {
-  const m = cssVar.match(/var\(\s*(--[\w-]+)\s*\)/);
-  return m ? m[1] : cssVar;
-}
-
 const TILES: Record<
   Exclude<Basemap, "auto">,
   { url: string; attribution: string; maxZoom: number }
@@ -242,8 +236,6 @@ export default function LeafletMap({
     group.clearLayers();
     highlightRef.current = null;
 
-    const surface = readVar("--surface-1", "#fcfcfb");
-
     // Friksi rendah digambar dulu, tinggi terakhir → yang genting tampak di atas.
     const ordered = [...points].sort(
       (a, b) => (a.priorityScore ?? -1) - (b.priorityScore ?? -1),
@@ -251,18 +243,23 @@ export default function LeafletMap({
 
     for (const p of ordered) {
       const lvl = levelOf(p.priority);
-      const color = readVar(varName(lvl.colorVar), "#898781");
       const weak = lvl.key === "none";
+      const radius = weak ? 4 : radiusFor(p.allReviewCount, maxReviews);
+      const symbolSize = Math.max(12, Math.round(radius * 2));
 
-      const marker = L.circleMarker([p.lat, p.lon], {
-        renderer: rendererRef.current ?? undefined,
-        radius: weak ? 4 : radiusFor(p.allReviewCount, maxReviews),
-        color: surface, // cincin permukaan 2px agar marker bertumpuk tetap terbaca
-        weight: 1.5,
-        opacity: weak ? 0.55 : 0.95,
-        fillColor: color,
-        fillOpacity: weak ? 0.35 : 0.85,
-        // Sasaran klik lebih besar daripada marker.
+      const marker = L.marker([p.lat, p.lon], {
+        icon: L.divIcon({
+          className: "mh-map-marker",
+          html: `<span class="mh-map-symbol${weak ? " is-weak" : ""}" style="--marker-color:${lvl.colorVar};--marker-size:${symbolSize}px" aria-hidden="true">${lvl.icon}</span>`,
+          // Kotak transparan 30 px memberi sasaran klik yang nyaman tanpa
+          // mengubah ukuran simbol yang mengodekan jumlah review.
+          iconSize: [30, 30],
+          iconAnchor: [15, 15],
+          tooltipAnchor: [0, -12],
+        }),
+        keyboard: true,
+        riseOnHover: true,
+        zIndexOffset: Math.round((p.priorityScore ?? -1) * 10),
         bubblingMouseEvents: false,
       });
 
@@ -284,7 +281,7 @@ export default function LeafletMap({
          </div>`,
         {
           direction: "top",
-          offset: [0, -6],
+          offset: [0, -2],
           opacity: 1,
           className: "mh-tooltip",
         },

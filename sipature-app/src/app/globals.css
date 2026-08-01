@@ -168,6 +168,37 @@ body {
   background: var(--surface-2) !important;
 }
 
+/* Marker memakai simbol yang sama dengan legend, bukan circle generik Leaflet. */
+.mh-map-marker {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  display: flex;
+  justify-content: center;
+}
+.mh-map-symbol {
+  color: var(--marker-color);
+  display: block;
+  font-family: Arial, sans-serif;
+  font-size: var(--marker-size);
+  font-weight: 700;
+  line-height: 1;
+  paint-order: stroke;
+  text-align: center;
+  text-shadow:
+    -1px -1px 0 var(--surface-1),
+    1px -1px 0 var(--surface-1),
+    -1px 1px 0 var(--surface-1),
+    1px 1px 0 var(--surface-1);
+}
+.mh-map-symbol.is-weak {
+  opacity: 0.65;
+}
+.mh-map-marker:focus {
+  outline: 2px solid var(--series-1);
+  outline-offset: 1px;
+}
+
 /* Tooltip marker — dibangun di LeafletMap.tsx */
 .leaflet-tooltip.mh-tooltip {
   background: var(--surface-1);

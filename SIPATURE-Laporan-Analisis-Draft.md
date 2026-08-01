@@ -4,9 +4,11 @@
 
 **Laporan Analisis *Preliminary Round* — Del AI Hackathon 2026**
 
-**Nama tim:** `[DIISI SEBELUM SUBMISSION]`
+**Nama tim:** `[NAMA TIM]`
 
-**Anggota:** `[DIISI SEBELUM SUBMISSION]`
+**Ketua:** `[ANGGOTA 1 - KETUA]`
+
+**Anggota:** `[ANGGOTA 2]`, `[ANGGOTA 3]`
 
 > Dokumen submission tidak mencantumkan identitas institusi pendidikan. Versi PDF wajib berukuran maksimal 25 MB.
 
@@ -36,8 +38,8 @@ Kandidat IndoBERT dilatih menggunakan *train/validation*, lalu suhu dan *thresho
 | Data *rating-only*                        | 9.935 *review*                              | Konteks volume, *rating*, *coverage*, dan kecukupan data; bukan *input* model teks  |
 | *Silver annotation*                       | 1.320 *review* berteks                      | Membentuk data belajar dan *benchmark* awal yang dapat diaudit                      |
 | Train/*validation*/*test*                 | 922 / 196 / 202 *review*                    | Melatih, memilih konfigurasi, dan mengevaluasi *baseline* tanpa kebocoran destinasi |
-| *Full-corpus inference*, tahap berikutnya | Seluruh 12.234 *review* berteks             | Menghasilkan sinyal isu untuk seluruh *corpus* setelah model dikunci                |
-| Aggregasi produk, tahap berikutnya        | Seluruh 22.169 *record* bersih + *metadata* | Menyusun ringkasan destinasi, *data confidence*, dan prioritas verifikasi           |
+| *Full-corpus inference*                   | Seluruh 12.234 *review* berteks             | Selesai: menghasilkan 9.785 prediksi aspek dan 1.682 sinyal destinasi-aspek          |
+| Agregasi dan integrasi produk             | Seluruh 22.169 *record* bersih + *metadata* | Selesai: menghasilkan proyeksi agregat untuk 103 destinasi dan 210 isu operasional   |
 
 **Interpretasi Tabel 1.** Tidak semua data digunakan untuk tujuan yang sama. Subset berlabel digunakan untuk belajar dan menguji model, sedangkan seluruh data digunakan setelah model dikunci untuk menghasilkan *intelligence* dan konteks *dashboard*. Pemisahan ini menjaga evaluasi tetap adil sekaligus memastikan seluruh data panitia tetap dimanfaatkan pada tahap produk.
 
@@ -279,30 +281,32 @@ Analisis berikut digunakan untuk melihat hubungan antara banyaknya *review* bert
 
 **Gambar 8. Hubungan jumlah *review* berteks dengan *candidate complaint rate*.**
 
-Satu titik mewakili satu tempat; posisi horizontal menunjukkan jumlah *review* berteks dan posisi vertikal menunjukkan persentase *review* yang memuat kata kandidat keluhan. Warna menunjukkan *rating* rata-rata. Tempat dengan sedikit *review* dapat memiliki persentase ekstrem hanya karena satu atau dua komentar, sedangkan tempat ber-volume besar cenderung lebih stabil. Karena itu *priority* score tidak boleh memakai persentase mentah saja; sistem perlu mempertimbangkan jumlah bukti dan kecukupan data. *Candidate complaint rate* adalah pencarian kata awal, bukan hasil model final atau konfirmasi masalah.
+Satu titik mewakili satu tempat; posisi horizontal menunjukkan jumlah *review* berteks dan posisi vertikal menunjukkan persentase *review* yang memuat kata kandidat keluhan. Warna menunjukkan *rating* rata-rata. Tempat dengan sedikit *review* dapat memiliki persentase ekstrem hanya karena satu atau dua komentar, sedangkan tempat ber-volume besar cenderung lebih stabil. Karena itu, urutan pemantauan tidak boleh memakai persentase mentah saja; sistem perlu mempertimbangkan jumlah bukti, kecukupan data, dan konteks volume kunjungan. *Candidate complaint rate* adalah pencarian kata awal untuk eksplorasi, bukan hasil model final atau konfirmasi masalah lapangan.
 
 ## 2.4 Masalah yang Dipilih
 
 Masalah utama dirumuskan sebagai berikut:
 
-> Bagaimana membantu pengelola mengubah ribuan ulasan yang tersebar menjadi daftar isu yang spesifik, memiliki bukti, dan dapat diprioritaskan untuk verifikasi?
+> Bagaimana membantu pengelola mengubah ribuan ulasan yang tersebar menjadi daftar isu yang spesifik, didukung oleh sinyal yang dapat ditelusuri, dan dapat diprioritaskan untuk verifikasi?
 
 Sistem rekomendasi wisata tidak dipilih sebagai fokus utama karena dataset juga menyimpan peluang yang kuat untuk membantu pengelola. SIPATURE mengubah feedback pengunjung menjadi sinyal awal untuk tindakan, bukan hanya daftar tempat yang menarik.
 
 ## 2.5 Risiko yang Harus Diatasi
 
-**Tabel 6. Risiko utama data dan model beserta mitigasinya**
+**Tabel 6. Risiko utama data, model, dan produk beserta mitigasinya**
 
-| Risiko                                  | Dampak                                        | Mitigasi                                                             |
-| --------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------- |
-| *Rating* dan kelas tidak seimbang       | Masalah langka dapat tertutup                 | *Stratified sampling*, *Macro F1*, *class weighting*                 |
-| Nama tempat tidak konsisten             | *Review* dapat terhubung ke tempat yang salah | *Conservative* *entity resolution* dan *unresolved placeholder*      |
-| Ulasan berulang                         | Model dapat menghafal teks                    | Duplicate dan repeated-text grouping saat *split*                    |
-| *False alert*                           | Merugikan reputasi tempat                     | *Evidence*, bahasa netral, *threshold*, *human verification*         |
-| Data sedikit atau usang                 | Skor terlihat lebih pasti daripada kenyataan  | *Data sufficiency*, *freshness*, dan `Insufficient Data`             |
-| *Silver labels* mengandung bias *rules* | Evaluasi terlalu optimistis                   | Label hasil sebagai *silver agreement* dan rencanakan *human review* |
+| Risiko                                  | Dampak                                         | Mitigasi                                                                                  |
+| --------------------------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| *Rating* dan kelas tidak seimbang       | Masalah langka dapat tertutup                  | *Stratified sampling*, *Macro F1*, dan *class weighting*                                 |
+| Nama tempat tidak konsisten             | *Review* dapat terhubung ke tempat yang salah  | *Conservative entity resolution* dan *unresolved placeholder*                            |
+| Ulasan berulang                         | Model dapat menghafal teks                     | Pengelompokan duplikat dan teks berulang ketika membentuk *split*                        |
+| *False alert*                           | Reputasi destinasi dapat dirugikan             | Bahasa netral, *threshold*, dukungan agregat, artefak bukti terbatas, dan verifikasi manusia |
+| Data sedikit atau usang                 | Skor terlihat lebih pasti daripada kenyataan   | *Data sufficiency*, bobot *freshness*, dan status `Insufficient Data`                    |
+| *Silver labels* mengandung bias *rules* | Evaluasi terlihat terlalu optimistis           | Menyebut hasil sebagai *silver agreement* dan merencanakan *human-gold reference*         |
+| Teks ulasan terungkap                   | Risiko privasi, atribusi, dan penyalahgunaan    | Menampilkan agregat aman untuk privasi; teks dan artefak tingkat *reviewer* tetap terbatas |
+| Rekomendasi dianggap keputusan otomatis | Tindakan dilakukan tanpa pemeriksaan lapangan  | Menempatkan SIPATURE sebagai alat triase; keputusan akhir tetap pada pengelola            |
 
-**Interpretasi Tabel 6.** Risiko terbesar bukan hanya kesalahan model, tetapi juga kualitas penggabungan data, ketimpangan *support*, dan potensi kerugian reputasi akibat *false alert*. Mitigasi disusun agar sistem menampilkan bukti serta ketidakpastian dan tetap menempatkan manusia sebagai pengambil keputusan akhir.
+**Interpretasi Tabel 6.** Risiko terbesar bukan hanya kesalahan klasifikasi, tetapi juga salah menggabungkan destinasi, ketimpangan *support*, kebocoran teks ulasan, dan potensi kerugian reputasi akibat *false alert*. Karena itu, aplikasi preliminary hanya memakai proyeksi agregat yang aman untuk privasi. Teks *evidence*, ID *review*, dan artefak tingkat *reviewer* dipertahankan pada penyimpanan terkontrol untuk audit, tetapi belum ditampilkan sebelum pemeriksaan privasi dan ahli selesai. Manusia tetap menjadi pengambil keputusan akhir.
 
 ---
 
@@ -310,7 +314,9 @@ Sistem rekomendasi wisata tidak dipilih sebagai fokus utama karena dataset juga 
 
 ## 3.1 Cara Kerja SIPATURE
 
-Cara kerja SIPATURE terdiri atas tujuh langkah. Pertama, dataset panitia diperiksa dan dibersihkan. Kedua, *review* dihubungkan dengan *metadata* destinasi melalui *entity resolution*. Ketiga, model membaca *review* berteks untuk mendeteksi aspek. Keempat, setiap aspek dilengkapi dengan *polarity*, *severity* bila negatif, dan *evidence*. Kelima, hasil per *review* diagregasikan pada tingkat destinasi. Keenam, sistem menghitung kecukupan data dan prioritas verifikasi. Ketujuh, *dashboard* menyajikan hasil kepada pengelola untuk diperiksa sebelum tindakan dilakukan.
+Cara kerja SIPATURE terdiri atas tujuh langkah. Pertama, dataset panitia diperiksa, dibersihkan, dan distandardisasi. Kedua, *review* dihubungkan dengan *metadata* destinasi melalui *entity resolution* yang konservatif. Ketiga, detektor aspek TF-IDF yang telah dikunci membaca 12.234 *review* berteks. Keempat, arah *polarity* ditentukan menggunakan *fallback* leksikal berversi; komponen ini dinyatakan secara eksplisit sebagai aturan deterministik dan bukan model IndoBERT produksi. Kelima, hasil per *review* diagregasikan menjadi sinyal destinasi-aspek. Keenam, sistem menghitung kecukupan data dan prioritas verifikasi hanya dari komponen yang tersedia. Ketujuh, proyeksi agregat yang aman untuk privasi disajikan melalui *dashboard* agar pengelola dapat menentukan apa yang perlu diperiksa lebih dahulu.
+
+Inferensi korpus penuh menghasilkan 9.785 prediksi aspek dan 1.682 sinyal destinasi-aspek. Dari 388 *canonical IDs* teknis, 322 memiliki acuan metadata dan koordinat yang dapat dipetakan. Setelah aturan kecukupan dan kelayakan operasional diterapkan, keluaran aplikasi mencakup 103 destinasi dengan 210 isu atau kandidat intervensi yang dapat ditindaklanjuti. Sebanyak 66 *unresolved placeholders* tetap dapat diaudit, tetapi tidak dipetakan dan tidak diberi peringkat operasional.
 
 SIPATURE menggunakan *taxonomy* 14 aspek:
 
@@ -327,45 +333,50 @@ SIPATURE menggunakan *taxonomy* 14 aspek:
 
 Dalam bahasa pengguna, aspek tersebut berarti: kebersihan umum, sampah, toilet/sanitasi, kepadatan, akses jalan, parkir, fasilitas publik, pemandangan, kenyamanan, keselamatan, transparansi harga, pelayanan staf, perawatan, dan jam operasional. Nama teknis berbahasa Inggris dipertahankan di data agar konsisten dengan model dan kode, sedangkan *dashboard* dapat menampilkan terjemahan Indonesia.
 
-Satu *review* dapat membahas beberapa aspek. Setiap aspek memiliki *polarity* `positive`, `negative`, atau `neutral`. *Severity* `low`, `medium`, dan `high` hanya diberikan untuk aspek negatif berdasarkan dampak yang tertulis, bukan berdasarkan *rating*.
+Satu *review* dapat membahas beberapa aspek. Setiap aspek dapat memiliki *polarity* `positive`, `negative`, atau `neutral`. Pada produk preliminary, model *severity* tidak tersedia karena kelas `high` hanya memiliki 19 contoh *train*, di bawah batas metodologis minimum 20. *Facility gap* dan *feasibility* juga tidak tersedia. Ketiga komponen tersebut tidak diisi dengan nol atau nilai netral buatan, melainkan dinormalisasi keluar dari formula prioritas. Teks *evidence* dan artefak tingkat *reviewer* tetap berada pada penyimpanan terbatas sampai pemeriksaan privasi dan ahli selesai.
 
 ## 3.2 Fitur Utama
 
-- Ringkasan kondisi data dan jumlah destinasi yang dapat dianalisis.
-- Peta dan halaman detail destinasi.
-- Daftar aspek positif, negatif, dan netral.
-- Kutipan *evidence* *verbatim* yang anonim.
-- *Intervention queue* untuk membantu memilih lokasi yang perlu diverifikasi.
-- Status `Insufficient Data` ketika bukti belum cukup.
-- *Analyzer* untuk mendemonstrasikan analisis satu *review*.
+1. **Overview kualitas data.** Menampilkan jumlah *record* bersih, *review* berteks, cakupan destinasi, versi model, dan keterbatasan komponen analisis.
+2. **Peta prioritas verifikasi.** Menampilkan 322 destinasi berkoordinat dengan bentuk dan warna yang membedakan tingkat prioritas, tanpa menganggap sinyal sebagai kondisi lapangan yang telah terbukti.
+3. **Rapor destinasi.** Menjelaskan *support*, frekuensi keluhan, *data confidence*, aspek utama, komponen skor yang tersedia, dan rekomendasi verifikasi.
+4. **Antrean verifikasi dan kandidat intervensi.** Menyajikan 210 isu pada 103 destinasi yang lolos aturan kelayakan operasional.
+5. **Status `Insufficient Data`.** Membedakan data yang belum cukup dari kondisi yang benar-benar tidak memiliki isu terdeteksi.
+6. **Simulasi skenario.** Memperlihatkan perubahan skor jika isu tertentu diasumsikan selesai, dengan penjelasan bahwa hasilnya bukan prediksi kausal.
+7. **Analisis satu *review*.** Antarmuka langsung menggunakan *baseline* leksikal dan telah disiapkan sebagai titik integrasi model produksi berikutnya. Hasil input tidak mengubah data *dashboard*.
+8. **Batas privasi yang eksplisit.** Aplikasi menampilkan dukungan dan sinyal agregat; kutipan teks, ID *review*, dan provenance tingkat *reviewer* belum dipublikasikan.
 
 ## 3.3 Diferensiasi
 
 **Tabel 8. Perbedaan SIPATURE dengan *dashboard* sentimen umum**
 
-| *Dashboard* sentimen umum                   | SIPATURE                                                 |
-| ------------------------------------------- | -------------------------------------------------------- |
-| Menampilkan positif/negatif secara umum     | Menampilkan 14 isu yang lebih operasional                |
-| Berfokus pada *rating* atau jumlah sentimen | Menampilkan *evidence*, *support*, dan *data confidence* |
-| Keluhan dapat terlihat sebagai fakta        | Menggunakan bahasa “dilaporkan” dan meminta verifikasi   |
-| Semua tempat dapat terlihat sebanding       | Menandai data yang belum cukup                           |
+| *Dashboard* sentimen umum                   | SIPATURE                                                                      |
+| ------------------------------------------- | ----------------------------------------------------------------------------- |
+| Menampilkan positif/negatif secara umum     | Memisahkan ulasan ke dalam 14 aspek yang lebih operasional                    |
+| Berfokus pada *rating* atau jumlah sentimen | Menampilkan *support*, sinyal agregat, komponen skor, dan *data confidence*   |
+| Keluhan dapat terlihat sebagai fakta        | Menggunakan bahasa “dilaporkan” dan meminta verifikasi lapangan               |
+| Semua tempat dapat terlihat sebanding       | Menandai data yang belum cukup dan tidak meranking destinasi *unresolved*      |
+| Teks ulasan dapat tampil tanpa pembatasan   | Menahan teks dan artefak tingkat *reviewer* sampai pemeriksaan privasi selesai |
 
-**Interpretasi Tabel 8.** Nilai tambah SIPATURE terletak pada keluaran yang dapat diperiksa dan ditindaklanjuti. Sistem tidak berhenti pada jumlah sentimen, tetapi menyertakan aspek, *evidence*, *support*, dan kecukupan data serta menggunakan bahasa yang tidak menghakimi destinasi.
+**Interpretasi Tabel 8.** Nilai tambah SIPATURE terletak pada pemisahan isu per aspek, dukungan agregat, kecukupan data, dan bahasa verifikasi yang tidak menghakimi destinasi. Artefak teks yang mendasari sinyal dipertahankan untuk audit terkontrol, tetapi belum dipublikasikan. Dengan demikian, transparansi model tetap dijaga tanpa mengorbankan batas privasi pada produk preliminary.
 
 ## 3.4 Indikator Keberhasilan
 
 **Tabel 9. Indikator keberhasilan dan hasil yang telah terukur**
 
-| Lapisan         | Indikator                                                 | Hasil yang sudah terukur                                              |
-| --------------- | --------------------------------------------------------- | --------------------------------------------------------------------- |
-| Data            | Seluruh clean *review* memiliki *destination ID*          | Tercapai: 22.169/22.169                                               |
-| *Split*         | Tidak ada *destination*/duplicate/repeated-text *leakage* | Tercapai pada A6                                                      |
-| *Baseline*      | Macro dan *Micro F1* pada *split* yang sama               | Tersedia terhadap *silver labels*                                     |
-| *Evidence*      | Kutipan sesuai dengan teks sumber                         | Dijaga oleh *annotation* schema; *human system audit* belum dilakukan |
-| *Early warning* | Precision *alert* berisiko tinggi                         | Belum tersedia; memerlukan *reference* yang lebih kuat                |
-| Produk          | Waktu analisis dan relevansi prioritas                    | Belum diuji bersama pengguna                                          |
+| Lapisan                | Indikator                                                 | Hasil yang sudah terukur                                                        |
+| ---------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Data                   | Seluruh *clean review* memiliki `destination_id`          | Tercapai: 22.169/22.169                                                         |
+| *Split*                | Tidak ada *destination*/duplicate/repeated-text *leakage* | Tercapai pada audit *leakage-safe split*                                        |
+| Model                  | Macro dan *Micro F1* pada *split* yang sama               | Tersedia terhadap *silver labels* untuk Keyword, TF-IDF, dan IndoBERT           |
+| Inferensi korpus penuh | Seluruh *review* berteks diproses                         | 12.234 *review*; 9.785 prediksi aspek; 1.682 sinyal destinasi-aspek             |
+| Cakupan operasional    | Destinasi dan isu yang lolos aturan kelayakan             | 103 destinasi dan 210 isu/kandidat intervensi                                  |
+| Integrasi produk       | Proyeksi agregat tersedia pada aplikasi                   | Tercapai; *overview*, peta, rapor, antrean, simulator, dan analyzer tersedia    |
+| *Evidence*             | Kutipan sesuai dengan sumber dan aman ditampilkan         | Schema menjamin span sumber; audit manusia dan pemeriksaan privasi belum selesai |
+| *Early warning*        | Presisi terhadap penilaian ahli                           | Belum tersedia; 25 kasus telah disiapkan dan belum dinilai                      |
+| Dampak pengguna        | Relevansi prioritas dan waktu kerja                       | Belum diuji bersama pengelola                                                   |
 
-**Interpretasi Tabel 9.** Indikator membedakan hasil yang telah terukur dari sasaran yang masih memerlukan *pilot* atau *human evaluation*. Data *linkage* dan *leakage* audit telah tersedia, sedangkan ketepatan *early warning* serta dampak terhadap pekerjaan pengguna belum boleh diklaim.
+**Interpretasi Tabel 9.** Fondasi data, evaluasi model, inferensi korpus penuh, dan integrasi teknis aplikasi telah selesai. Namun, keberhasilan teknis tidak disamakan dengan dampak operasional. Ketepatan *early warning*, kualitas *evidence*, relevansi intervensi, kesesuaian peringkat, dan penghematan waktu tetap memerlukan penilaian ahli serta *pilot* bersama pengguna.
 
 ---
 
@@ -375,25 +386,54 @@ Satu *review* dapat membahas beberapa aspek. Setiap aspek memiliki *polarity* `p
 
 Implementasi dimulai dari fondasi data: inventory, pemeriksaan kualitas, *cleaning*, dan penghubungan *review* ke destinasi. Setelah fondasi tersebut stabil, *taxonomy* dan *silver labels* dibuat untuk membangun *benchmark* awal. *Keyword* dan TF-IDF kemudian dibandingkan pada *split* yang sama dan bebas dari kebocoran yang terdeteksi.
 
-Pengembangan berikutnya berfokus pada model bahasa Indonesia yang lebih memahami konteks, lalu *calibration* dan *error analysis*. Model hanya diterapkan ke seluruh *corpus* setelah konfigurasi dikunci. Hasil per *review* kemudian digabungkan per destinasi, diberi ukuran kecukupan data, dan diekspor ke *dashboard*. Tahap terakhir adalah *pilot* bersama pengelola untuk menilai apakah isu, *evidence*, dan urutan prioritas benar-benar membantu pekerjaan mereka.
+Detektor aspek TF-IDF dibekukan setelah evaluasi dan telah dijalankan pada seluruh 12.234 *review* berteks. Hasilnya diagregasikan menjadi proyeksi aman untuk privasi dan diintegrasikan ke aplikasi SIPATURE. Pada proyeksi ini, *polarity* menggunakan *fallback* leksikal berversi, bukan kandidat IndoBERT. Tahap berikutnya adalah pemeriksaan ahli terhadap 25 kasus yang telah disiapkan, pemeriksaan privasi *evidence*, pembentukan *human-gold reference*, dan *pilot* bersama pengelola untuk menilai apakah isu serta urutan prioritas benar-benar membantu pekerjaan mereka.
+
+**Tabel 10. Status implementasi dari preliminary menuju produk utuh**
+
+| Tahap                                  | Status preliminary                     | Rencana pengembangan berikutnya                                      |
+| -------------------------------------- | -------------------------------------- | -------------------------------------------------------------------- |
+| Fondasi data dan *entity resolution*   | Selesai dan dapat ditelusuri           | Pembaruan data terjadwal dan audit *linkage* baru                     |
+| Deteksi aspek TF-IDF                   | Selesai dan dipakai untuk korpus penuh | Evaluasi ulang setelah tersedia *human-gold labels*                   |
+| *Polarity*                             | *Fallback* leksikal berversi           | Integrasi model kontekstual jika lolos evaluasi dan *deployment gate* |
+| *Severity*                             | Tidak tersedia                         | Tambah anotasi kelas langka sebelum pelatihan ulang                   |
+| Agregasi dan prioritas                 | Selesai secara teknis                  | Validasi peringkat bersama pengelola                                  |
+| Aplikasi preliminary                   | Proyeksi agregat telah terintegrasi    | Workflow status, autentikasi, audit log, dan monitoring               |
+| Kutipan *evidence*                     | Disimpan secara terbatas               | Tampilkan hanya setelah pemeriksaan privasi dan hak akses             |
+| *Pilot* pengguna                       | Belum dilakukan                        | Uji 5–10 destinasi dan bandingkan dengan proses manual                |
+
+**Interpretasi Tabel 10.** Produk preliminary telah membuktikan rantai dari data mentah hingga aplikasi, tetapi belum menutup seluruh kebutuhan operasional. Pengembangan berikutnya berfokus pada validasi manusia, keamanan akses, kualitas *polarity*, dan workflow tindak lanjut, bukan sekadar menambah jumlah fitur.
 
 ## 4.2 Kapan Seluruh Data Digunakan
 
 Penggunaan data dibagi agar *training* dan evaluasi tidak bercampur dengan penggunaan produk:
 
-1. **Saat *training*:** 922 *silver records* digunakan untuk melatih TF-IDF dan nantinya model lain.
+1. **Saat *training*:** 922 *silver records* digunakan untuk melatih TF-IDF dan kandidat model lain.
 2. **Saat memilih model:** 196 *validation* *records* digunakan untuk memilih *representation* dan *threshold*.
 3. **Saat evaluasi:** 202 *locked-test records* digunakan setelah konfigurasi dibekukan.
-4. **Saat produksi:** model terpilih dijalankan pada seluruh 12.234 *review* berteks.
-5. **Saat agregasi *dashboard*:** hasil model digabungkan dengan seluruh 22.169 clean *records* dan *metadata* destinasi.
+4. **Saat inferensi korpus penuh:** TF-IDF terkunci dijalankan pada seluruh 12.234 *review* berteks dan menghasilkan 9.785 prediksi aspek.
+5. **Saat agregasi aplikasi:** prediksi digabungkan dengan seluruh 22.169 *clean records* dan *metadata* destinasi menjadi 1.682 sinyal destinasi-aspek.
+6. **Saat proyeksi produk:** hanya agregat yang aman untuk privasi digunakan aplikasi, menghasilkan 103 destinasi dan 210 isu yang dapat ditindaklanjuti.
 
-*Rating-only* tidak dipaksa menjadi *input* NLP. Data tersebut digunakan untuk volume, distribusi *rating*, *coverage*, dan *data sufficiency*. Pemisahan ini menjaga agar setiap jenis data dipakai sesuai informasi yang benar-benar dimilikinya.
+*Rating-only* tidak dipaksa menjadi *input* NLP. Data tersebut digunakan untuk volume, distribusi *rating*, *coverage*, *visitor exposure*, dan *data sufficiency*. Pemisahan ini menjaga agar setiap jenis data dipakai sesuai informasi yang benar-benar dimilikinya dan mencegah *rating* dianggap sebagai label aspek atau *polarity*.
 
 ## 4.3 Rencana *Pilot* dan Keberlanjutan
 
-*Pilot* akan memilih 5–10 destinasi dengan jenis dan volume *review* yang berbeda. Pengelola menilai apakah isu, *evidence*, dan urutan prioritas relevan. Sinyal dapat diberi status `confirmed`, `rejected`, atau `uncertain`.
+*Pilot* akan memilih 5–10 destinasi dengan jenis dan volume *review* yang berbeda. Pengelola mula-mula menilai relevansi isu agregat, kandidat intervensi, dan urutan verifikasi. Pemeriksaan kutipan *evidence* dilakukan dalam lingkungan terkontrol setelah protokol privasi dan hak akses disetujui. Sinyal dapat diberi status `confirmed`, `rejected`, atau `uncertain`, disertai alasan agar keputusan dapat digunakan untuk evaluasi model berikutnya.
 
 Keberlanjutan sistem memerlukan jadwal pembaruan data, *versioned model*, audit *false alert*, dan pemilik proses yang bertanggung jawab menindaklanjuti *queue*. Jika kondisi data tidak cukup, sistem harus menyatakan ketidakpastian dan bukan memberi nilai baik secara otomatis.
+
+**Tabel 11. Kebutuhan minimum implementasi dan keberlanjutan**
+
+| Kebutuhan                      | Fungsi                                                                 | Estimasi awal untuk *pilot*                                  |
+| ------------------------------ | ---------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Pengelola/petugas verifikasi   | Menilai sinyal, memeriksa lapangan, dan mencatat keputusan             | 1–2 evaluator pada 5–10 destinasi                            |
+| Anotator atau ahli domain      | Membentuk *human-gold reference* dan mengaudit *evidence*              | Minimal dua penilai dan satu proses adjudikasi               |
+| Infrastruktur data             | Menyimpan data mentah serta artefak terbatas dengan kontrol akses      | Penyimpanan terenkripsi dan pemisahan data publik/restricted  |
+| *Batch inference*              | Memproses pembaruan ulasan tanpa menjalankan model pada setiap halaman | Proses terjadwal; tidak memerlukan GPU untuk TF-IDF saat ini  |
+| Aplikasi dan monitoring        | Menyajikan agregat, versi model, status data, dan log kesalahan         | Satu layanan aplikasi dan pemeriksaan kesehatan berkala       |
+| Tata kelola                    | Menetapkan akses, retensi data, eskalasi, dan pemilik tindak lanjut     | SOP privasi, SOP verifikasi, dan audit versi                  |
+
+**Interpretasi Tabel 11.** Arsitektur preliminary menggunakan inferensi *batch* sehingga kebutuhan komputasi operasional relatif ringan. Kebutuhan utama justru berada pada kualitas referensi manusia, kontrol akses, workflow verifikasi, dan pemilik proses yang memastikan sinyal tidak berhenti sebagai visualisasi.
 
 ---
 
@@ -415,11 +455,11 @@ Sebanyak 16.979 *review* terhubung otomatis karena kecocokannya kuat, 3.901 meng
 
 **Gambar 10. Komposisi 388 *canonical* IDs teknis.**
 
-Sebanyak 322 ID berasal dari *metadata anchors* dan 66 adalah *unresolved placeholders*. Ini menjelaskan bahwa “388 destinasi teknis” bukan berarti 388 tempat wisata unik yang semuanya sudah diverifikasi; sebagian adalah kelompok aman untuk analisis dan *split*.
+Sebanyak 322 ID berasal dari *metadata anchors* dan dapat dipetakan, sedangkan 66 adalah *unresolved placeholders*. Ini menjelaskan bahwa “388 destinasi teknis” bukan berarti 388 tempat wisata unik yang semuanya sudah diverifikasi; sebagian adalah kelompok aman untuk analisis dan *split*. Setelah aturan kecukupan dan kelayakan diterapkan, 103 destinasi masuk ke keluaran operasional. Perbedaan angka tersebut mencegah destinasi *unresolved* atau tanpa sinyal memadai diperlakukan seolah-olah memiliki prioritas lapangan.
 
 ## 5.2 Contoh Perubahan Bentuk Data
 
-*Pipeline* menyimpan hasil antara agar setiap tahap dapat diperiksa dan tidak bergantung pada memori notebook. Contoh berikut disederhanakan dari *artifact* aktual dan tidak memuat identitas *reviewer*.
+*Pipeline* menyimpan hasil antara agar setiap tahap dapat diperiksa dan tidak bergantung pada memori notebook. Contoh berikut disederhanakan dan disanitasi dari struktur *artifact* aktual. Artefak tingkat *review*, teks sumber, dan identitas *reviewer* tidak termasuk dalam proyeksi publik.
 
 ### A. Bentuk Awal: CSV
 
@@ -448,11 +488,11 @@ Parquet adalah format tabel terkompresi. Dibanding CSV, Parquet lebih cepat diba
 }
 ```
 
-`review_id` memastikan setiap *review* dapat dilacak, `destination_id` menunjukkan tempat hasil *entity resolution*, dan `duplicate_group_id` membantu mencegah teks yang sama bocor ke *split* berbeda. Teks asli tetap disimpan untuk *evidence*.
+`review_id` memastikan setiap *review* dapat dilacak, `destination_id` menunjukkan tempat hasil *entity resolution*, dan `duplicate_group_id` membantu mencegah teks yang sama bocor ke *split* berbeda. Teks asli dipertahankan pada penyimpanan terkontrol untuk kebutuhan audit, bukan dikirim ke proyeksi publik aplikasi.
 
 ### C. Setelah *Annotation*: JSONL
 
-JSONL adalah format dengan satu objek JSON per baris. Format ini cocok untuk label multilabel karena satu *review* dapat memiliki beberapa aspek. Contoh dipersingkat dari `silver-v1.0.0.jsonl`:
+JSONL adalah format dengan satu objek JSON per baris. Format ini cocok untuk label multilabel karena satu *review* dapat memiliki beberapa aspek. Contoh struktur berikut dipersingkat dari `silver-v1.0.0.jsonl`; file aktual tetap terbatas karena memuat teks tingkat *review*:
 
 ```json
 {
@@ -483,33 +523,35 @@ JSONL adalah format dengan satu objek JSON per baris. Format ini cocok untuk lab
 
 `evidence_text` adalah potongan teks yang mendukung label. `vote_count: 3` berarti tiga *rule passes* memberi keputusan yang sama, bukan tiga manusia. `confidence: 1.0` adalah konsistensi votes, bukan probabilitas terkalibrasi.
 
-### D. Bentuk *Output* Model Tahap Berikutnya
+### D. Bentuk *Output* Inferensi dan Proyeksi Aplikasi
 
-Setelah model final dikunci, setiap *review* berteks akan menghasilkan *prediction* *record*. Contoh berikut adalah **kontrak *output* yang direncanakan**, bukan hasil *full-corpus inference* yang sudah tersedia:
+Setelah TF-IDF dikunci, model dijalankan pada seluruh 12.234 *review* berteks. Proses ini menghasilkan 9.785 prediksi aspek pada 5.942 *review* yang memiliki sedikitnya satu prediksi. Contoh berikut menunjukkan struktur *prediction record* yang disanitasi; artefak aktual tetap berada pada penyimpanan terbatas:
 
 ```json
 {
   "review_id": "review_a9d17694b1521309",
   "destination_id": "dest_wisata_675974ac1b278e",
-  "model_version": "[MODEL_VERSION]",
+  "model_version": "a9-tfidf-lexical-v1.0.4",
   "predictions": [
     {
       "aspect": "cleanliness",
       "aspect_probability": 0.91,
       "polarity": "positive",
-      "severity": null
+      "polarity_probability": null,
+      "severity_status": "unavailable_no_supported_model"
     }
   ]
 }
 ```
 
-*Record* *prediction* selanjutnya digabungkan berdasarkan `destination_id`. Sistem menghitung jumlah *mention*, *negative signal*, *severe signal*, *evidence*, *freshness*, dan kecukupan data untuk menghasilkan ringkasan per destinasi. Dengan demikian, alur formatnya adalah:
+*Prediction record* selanjutnya digabungkan berdasarkan `destination_id`. Sistem menghitung jumlah *mention*, sinyal negatif, *model confidence*, *persistence*, *freshness*, *visitor exposure*, dan kecukupan data. *Severity*, *facility gap*, dan *feasibility* tidak tersedia sehingga tidak dimasukkan sebagai nol atau nilai netral.
 
-Contoh **bentuk ringkasan destinasi yang direncanakan** untuk *dashboard*:
+Contoh **proyeksi ringkasan destinasi yang aman untuk privasi** pada *dashboard*:
 
 ```json
 {
   "destination_id": "dest_wisata_675974ac1b278e",
+  "model_version": "a9-tfidf-lexical-v1.0.4",
   "data_confidence": "medium",
   "review_coverage": {
     "total_clean_records": 120,
@@ -522,16 +564,16 @@ Contoh **bentuk ringkasan destinasi yang direncanakan** untuk *dashboard*:
       "negative_mentions": 8,
       "support": 14,
       "priority": "monitor",
-      "evidence_review_ids": ["review_..."]
+      "evidence_status": "withheld_pending_privacy_review"
     }
   ],
   "verification_status": "unverified"
 }
 ```
 
-`data_confidence` menjelaskan kecukupan data, bukan keyakinan bahwa kondisi lapangan benar. `support` adalah jumlah bukti *review*, `priority` menentukan urutan pemeriksaan, dan `verification_status` menunjukkan bahwa pengelola belum mengonfirmasi sinyal tersebut. Angka di contoh ini hanya ilustrasi struktur dan bukan hasil aktual suatu destinasi.
+`data_confidence` menjelaskan kecukupan data, bukan keyakinan bahwa kondisi lapangan benar. `support` adalah jumlah dukungan *review*, `priority` menentukan urutan pemeriksaan, dan `verification_status` menunjukkan bahwa pengelola belum mengonfirmasi sinyal tersebut. Proyeksi publik tidak memuat teks *evidence*, `review_id`, identitas *reviewer*, tautan profil, atau provenance baris sumber. Angka pada contoh hanya menjelaskan struktur dan bukan hasil aktual suatu destinasi tertentu.
 
-Urutan transformasi datanya adalah: CSV sumber dibaca dan distandardisasi; hasil bersih disimpan sebagai Parquet; subset *annotation* disimpan sebagai JSONL untuk *training* dan *evaluation*; model terpilih menghasilkan *prediction* bagi 12.234 *review* berteks; lalu *prediction* digabungkan menjadi *aggregate* JSON per destinasi untuk *dashboard*.
+Urutan transformasi aktualnya adalah: CSV sumber dibaca dan distandardisasi; hasil bersih disimpan sebagai Parquet; subset *annotation* disimpan sebagai JSONL untuk *training* dan evaluasi; TF-IDF terkunci menghasilkan *prediction* bagi 12.234 *review* berteks; 9.785 prediksi tersebut digabungkan menjadi 1.682 sinyal destinasi-aspek; lalu generator yang memverifikasi hash membuat proyeksi agregat untuk aplikasi. Hasil akhirnya mencakup 388 ID teknis, 322 destinasi berkoordinat, 103 destinasi *actionable*, dan 210 isu atau kandidat intervensi.
 
 ## 5.3 Mengapa Hanya 1.320 *Review* yang Berlabel
 
@@ -561,7 +603,7 @@ Bagian kiri menunjukkan lebih banyak label positif daripada negatif/netral. Bagi
 
 Seluruh 1.320 *silver records* dibagi berdasarkan *destination*, bukan secara acak per *review*:
 
-**Tabel 10. Pembagian *leakage-safe train*, *validation*, dan *locked test***
+**Tabel 12. Pembagian *leakage-safe train*, *validation*, dan *locked test***
 
 | *Split*       | *Records* | *Destinations* | Fungsi                                   |
 | ------------- | ---------:| --------------:| ---------------------------------------- |
@@ -569,7 +611,7 @@ Seluruh 1.320 *silver records* dibagi berdasarkan *destination*, bukan secara ac
 | *Validation*  | 196       | 40             | Memilih *representation* dan *threshold* |
 | *Locked test* | 202       | 40             | Evaluasi setelah konfigurasi dikunci     |
 
-**Interpretasi Tabel 10.** Proporsi destinasi mendekati 70/15/15, sedangkan jumlah *record* dapat berbeda karena tiap destinasi memiliki volume *review* yang tidak sama. Audit memastikan tidak ada *overlap review ID*, *destination*, *technical duplicate group*, atau *normalized repeated-text group*. Seluruh 14 aspek muncul pada *validation* dan *test*, tetapi *support* beberapa aspek masih kecil, misalnya `opening_hours` hanya memiliki dua contoh pada *test*.
+**Interpretasi Tabel 12.** Proporsi destinasi mendekati 70/15/15, sedangkan jumlah *record* dapat berbeda karena tiap destinasi memiliki volume *review* yang tidak sama. Audit memastikan tidak ada *overlap review ID*, *destination*, *technical duplicate group*, atau *normalized repeated-text group*. Seluruh 14 aspek muncul pada *validation* dan *test*, tetapi *support* beberapa aspek masih kecil, misalnya `opening_hours` hanya memiliki dua contoh pada *test*.
 
 ## 5.5 *Baseline* *Keyword*
 
@@ -579,7 +621,7 @@ Seluruh 1.320 *silver records* dibagi berdasarkan *destination*, bukan secara ac
 
 TF-IDF mengubah teks menjadi pola kata dan potongan karakter. Tiga *representation* diuji hanya pada *validation*:
 
-**Tabel 11. Perbandingan representasi TF-IDF pada *validation* split**
+**Tabel 13. Perbandingan representasi TF-IDF pada *validation* split**
 
 | *Representation*      | *Validation* *Macro F1* terhadap silver |
 | --------------------- | ---------------------------------------:|
@@ -587,7 +629,7 @@ TF-IDF mengubah teks menjadi pola kata dan potongan karakter. Tiga *representati
 | *Character* 3–5 gram  | 0,7314                                  |
 | *Word* + *character*  | 0,8117                                  |
 
-**Interpretasi Tabel 11.** Kombinasi *word* dan *character* memperoleh *Macro F1* *validation* tertinggi sehingga dipilih sebagai *baseline* TF-IDF final. *Classifier* menggunakan *One-vs-Rest Logistic Regression* dengan *class weighting*. *Threshold* setiap aspek dipilih hanya dari *validation*.
+**Interpretasi Tabel 13.** Kombinasi *word* dan *character* memperoleh *Macro F1* *validation* tertinggi sehingga dipilih sebagai *baseline* TF-IDF final. *Classifier* menggunakan *One-vs-Rest Logistic Regression* dengan *class weighting*. *Threshold* setiap aspek dipilih hanya dari *validation*.
 
 ![TF-IDF *validation*](docs/figures/eda/36_tfidf_validation_selection.png)
 
@@ -595,20 +637,22 @@ TF-IDF mengubah teks menjadi pola kata dan potongan karakter. Tiga *representati
 
 `Word` memakai pola satu atau dua kata, `char` memakai potongan 3–5 karakter yang membantu menghadapi variasi ejaan, sedangkan `word_char` menggabungkan keduanya. Kombinasi memperoleh *Macro F1* *validation* tertinggi, yaitu 0,8117. *Locked test* tidak digunakan untuk memilih *representation* ini.
 
+Konfigurasi gabungan *word* dan *character* tersebut kemudian dibekukan dan digunakan sebagai detektor aspek pada inferensi korpus penuh. Pemilihan ini mengikuti hasil evaluasi, bukan asumsi bahwa model yang lebih kompleks selalu lebih baik.
+
 ## 5.7 Pelatihan Kandidat IndoBERT
 
 Kandidat model lanjutan menggunakan `indobenchmark/indobert-base-p1` pada revisi yang dikunci `c2cd0b51ddce6580eb35263b39b0a1e5fb0a39e2`. Model berlisensi MIT berdasarkan *metadata model card*, menggunakan arsitektur BERT dasar 12 lapisan dengan sekitar 124,5 juta parameter, serta `BertTokenizer` berbasis WordPiece. Pelatihan dilakukan pada Google Colab dengan GPU Tesla T4 menggunakan Python 3.12.13, PyTorch 2.7.1, dan Transformers 4.53.2.
 
 Model aspek menerima satu *review* dan menghasilkan 14 *logits* multilabel. Pelatihan menggunakan *weighted binary cross-entropy* agar aspek dengan *support* kecil tidak tertutup oleh kelas yang lebih sering. Model *polarity* dibentuk sebagai klasifikasi berbasis aspek: teks masukan memuat aspek yang sedang dinilai dan isi *review*, kemudian model memilih `positive`, `negative`, atau `neutral` menggunakan *weighted cross-entropy*. Pemilihan *checkpoint* hanya menggunakan *validation Macro F1* dan tidak membaca *locked test*.
 
-**Tabel 12. Hasil pelatihan IndoBERT pada *silver validation***
+**Tabel 14. Hasil pelatihan IndoBERT pada *silver validation***
 
 | Tugas                         | *Epoch* pertama *Macro F1* | Terbaik *Macro F1* | *Best epoch* | *Validation loss* | Waktu *training* |
 | ----------------------------- | -------------------------: | -----------------: | -----------: | ----------------: | ---------------: |
 | Deteksi aspek multilabel      | 0,2822                     | 0,4012             | 4            | 0,7824            | 100,10 detik     |
 | *Aspect-conditioned polarity* | 0,6453                     | 0,7044             | 4            | 0,6962            | 126,55 detik     |
 
-**Interpretasi Tabel 12.** Kedua tugas meningkat hingga *epoch* keempat. Nilai aspek 0,4012 masih memakai *threshold* sementara 0,50 dan bukan hasil final karena setiap aspek dapat memerlukan batas keputusan berbeda. Nilai *polarity* 0,7044 dihitung pada pasangan aspek yang tersedia dalam *silver validation*. Semua angka pada tabel adalah *silver agreement* di *validation*, bukan performa terhadap *human-gold labels* dan bukan hasil *locked test*.
+**Interpretasi Tabel 14.** Kedua tugas meningkat hingga *epoch* keempat. Nilai aspek 0,4012 masih memakai *threshold* sementara 0,50 dan bukan hasil final karena setiap aspek dapat memerlukan batas keputusan berbeda. Nilai *polarity* 0,7044 dihitung pada pasangan aspek yang tersedia dalam *silver validation*. Semua angka pada tabel adalah *silver agreement* di *validation*, bukan performa terhadap *human-gold labels* dan bukan hasil *locked test*.
 
 ![Riwayat pelatihan aspek IndoBERT](docs/evidence/indobert/20260801-1024_indobert-silver-v1/aspect-training-history.png)
 
@@ -624,9 +668,11 @@ Kurva menunjukkan *training loss* dan *validation loss* menurun selama empat *ep
 
 Panjang masukan dikunci pada 192 token. Batas ini mencakup 896 dari 922 *review train* atau 97,18% dan 192 dari 196 *review validation* atau 97,96% tanpa pemotongan. Setelah pelatihan, model aspek dan *polarity* berhasil dimuat ulang sepenuhnya luring dengan `local_files_only=true`. Bentuk keluarannya masing-masing `[1, 14]` dan `[1, 3]`; 65 dari 65 hash *artifact* juga berhasil diverifikasi.
 
+Keberhasilan pelatihan, verifikasi hash, dan *reload* luring membuktikan bahwa kandidat IndoBERT dapat direproduksi, tetapi tidak otomatis menjadikannya model produk. Kandidat deteksi aspek IndoBERT tidak dipilih karena hasil *locked silver test* lebih rendah daripada TF-IDF. Kandidat *polarity* IndoBERT juga tidak digunakan pada proyeksi aplikasi karena bobot produksinya tidak tersedia di *workspace* saat inferensi korpus penuh dijalankan; produk menggunakan `lexical-polarity-v1` yang diberi versi jelas dan tidak menghasilkan probabilitas.
+
 Model *severity* tidak dilatih. Setiap kelas diwajibkan memiliki sedikitnya 20 contoh *train* dan 5 contoh *validation*, tetapi kelas `high` hanya memiliki 19 contoh *train* dan 6 contoh *validation*. Menurunkan batas hanya untuk menghasilkan *artifact* akan melemahkan metodologi. Oleh sebab itu, SIPATURE belum memiliki hasil atau klaim performa *severity*.
 
-Pada A8, *temperature scaling* memilih suhu 0,60 hanya dari *validation*. Pemilihan *threshold* per aspek meningkatkan *validation Macro F1* dari 0,4012 menjadi 0,5535 dan *Micro F1* dari 0,4326 menjadi 0,5696. NLL membaik dari 0,4533 menjadi 0,4236, ECE dari 0,2706 menjadi 0,2253, dan Brier Score dari 0,1441 menjadi 0,1388. Setelah model, konfigurasi, suhu, serta *threshold* dibekukan dan dicatat dengan hash, IndoBERT dievaluasi tepat satu kali pada *locked test*.
+Pada tahap kalibrasi IndoBERT, *temperature scaling* memilih suhu 0,60 hanya dari *validation*. Pemilihan *threshold* per aspek meningkatkan *validation Macro F1* dari 0,4012 menjadi 0,5535 dan *Micro F1* dari 0,4326 menjadi 0,5696. NLL membaik dari 0,4533 menjadi 0,4236, ECE dari 0,2706 menjadi 0,2253, dan Brier Score dari 0,1441 menjadi 0,1388. Setelah model, konfigurasi, suhu, serta *threshold* dibekukan dan dicatat dengan hash, IndoBERT dievaluasi tepat satu kali pada *locked test*.
 
 ---
 
@@ -640,7 +686,7 @@ Ketiga model dinilai pada *locked test* yang sama. *Macro F1* dipakai sebagai me
 
 ## 6.2 Hasil *Locked Silver Test*
 
-**Tabel 13. Perbandingan deteksi aspek pada *locked silver test***
+**Tabel 15. Perbandingan deteksi aspek pada *locked silver test***
 
 | Metric                 | *Keyword* | TF-IDF *word*+char | IndoBERT |
 | ---------------------- | ---------:| ------------------:| --------:|
@@ -648,7 +694,7 @@ Ketiga model dinilai pada *locked test* yang sama. *Macro F1* dipakai sebagai me
 | *Micro F1*             | 0,9783    | 0,8040             | 0,5241   |
 | *Latency*, ms/*review* | 1,8953    | 0,1101             | 8,4693   |
 
-**Interpretasi Tabel 13.** *Keyword* memiliki *agreement* paling tinggi terhadap *silver reference*, tetapi hasil ini sangat dipengaruhi oleh penggunaan kosakata *taxonomy* yang juga berkaitan dengan pembentukan *silver labels*. Di antara model yang belajar dari data, TF-IDF mengungguli IndoBERT sebesar 0,1953 *Macro F1* dan 0,2799 *Micro F1*, sekaligus lebih cepat. Kompleksitas model tidak otomatis memberi hasil lebih baik pada 922 contoh *train* dengan label lemah dan distribusi aspek yang timpang. Seluruh angka merupakan *silver agreement*, bukan *human-gold performance*.
+**Interpretasi Tabel 15.** *Keyword* memiliki *agreement* paling tinggi terhadap *silver reference*, tetapi hasil ini sangat dipengaruhi oleh penggunaan kosakata *taxonomy* yang juga berkaitan dengan pembentukan *silver labels*. Di antara model yang belajar dari data, TF-IDF mengungguli IndoBERT sebesar 0,1953 *Macro F1* dan 0,2799 *Micro F1*, sekaligus lebih cepat. Kompleksitas model tidak otomatis memberi hasil lebih baik pada 922 contoh *train* dengan label lemah dan distribusi aspek yang timpang. Seluruh angka merupakan *silver agreement*, bukan *human-gold performance*.
 
 ![Perbandingan model pada locked test](docs/evidence/indobert/20260801_indobert-silver-v1_a8-evidence/evaluation/comparison.png)
 
@@ -660,7 +706,7 @@ Semakin tinggi batang, semakin sesuai prediksi dengan *silver reference*. *Keywo
 
 TF-IDF lebih independen dari *runtime* *rules*, tetapi tetap belajar dari *silver targets*. Hasil per aspek menunjukkan keterbatasan pada kelas langka:
 
-**Tabel 14. Contoh hasil IndoBERT pada aspek dengan *support* terbatas**
+**Tabel 16. Contoh hasil IndoBERT pada aspek dengan *support* terbatas**
 
 | Aspek             | IndoBERT F1 | *Test* *support* |
 | ----------------- | ---------:| ----------------:|
@@ -670,7 +716,7 @@ TF-IDF lebih independen dari *runtime* *rules*, tetapi tetap belajar dari *silve
 | safety            | 0,5000    | 8                |
 | waste             | 0,8750    | 9                |
 
-**Interpretasi Tabel 14.** Nilai F1 harus dibaca bersama *support*. `opening_hours` memiliki F1 nol tetapi hanya dua contoh pada *test*, sehingga estimasinya belum stabil. `waste` memiliki F1 tinggi, namun *support* sembilan juga masih terbatas. Tabel ini mendukung perlunya tambahan *reference* yang lebih kuat dan evaluasi per aspek, bukan hanya satu nilai rata-rata.
+**Interpretasi Tabel 16.** Nilai F1 harus dibaca bersama *support*. `opening_hours` memiliki F1 nol tetapi hanya dua contoh pada *test*, sehingga estimasinya belum stabil. `waste` memiliki F1 tinggi, namun *support* sembilan juga masih terbatas. Tabel ini mendukung perlunya tambahan *reference* yang lebih kuat dan evaluasi per aspek, bukan hanya satu nilai rata-rata.
 
 ![Per-*aspect* F1 IndoBERT](docs/evidence/indobert/20260801_indobert-silver-v1_a8-evidence/evaluation/aspect-per-label-f1.png)
 
@@ -682,22 +728,22 @@ IndoBERT paling kuat pada `waste` dan `parking`, sedangkan `opening_hours` mempe
 
 Pada *locked test*, IndoBERT memperoleh ECE 0,2021 dan Brier Score 0,1258. Kedua angka mengukur kualitas probabilitas terhadap *silver reference*. *Precision@Alert* keseluruhan adalah 0,5886 pada 175 prediksi, sehingga seluruh *alert* tidak boleh disebut berpresisi tinggi. Dari lima aspek yang mencapai target presisi 0,80 pada *validation*, empat mempertahankannya pada *test*: `parking` 1,0000, `scenery` 0,8889, `staff_service` 1,0000, dan `waste` 1,0000. `cleanliness` turun menjadi 0,7143, menunjukkan bahwa target *validation* bukan jaminan pada data baru.
 
-Model *polarity* memperoleh *Macro F1* 0,7459 pada 248 pasangan aspek yang tersedia dalam *silver test*. Evaluasi *polarity* menggunakan aspek referensi, bukan aspek hasil prediksi, agar kesalahan deteksi aspek tidak tercampur dengan kualitas klasifikasi positif, negatif, dan netral.
+Kandidat model *polarity* IndoBERT memperoleh *Macro F1* 0,7459 pada 248 pasangan aspek yang tersedia dalam *silver test*. Evaluasi *polarity* menggunakan aspek referensi, bukan aspek hasil prediksi, agar kesalahan deteksi aspek tidak tercampur dengan kualitas klasifikasi positif, negatif, dan netral. Nilai ini merupakan hasil evaluasi kandidat dan bukan performa komponen *polarity* yang digunakan pada proyeksi aplikasi.
 
 ![Confusion matrix polarity](docs/evidence/indobert/20260801_indobert-silver-v1_a8-evidence/evaluation/polarity-confusion-matrix.png)
 
 **Gambar 18. *Confusion matrix polarity* IndoBERT pada *locked silver test*.**
 
-Kesalahan terbesar adalah 22 contoh positif yang diprediksi netral, disusul 13 contoh negatif yang diprediksi netral. Model *severity* tetap tidak tersedia karena A7 tidak menghasilkan model yang lolos *support gate*; tidak ada metrik *severity* yang diklaim.
+Kesalahan terbesar adalah 22 contoh positif yang diprediksi netral, disusul 13 contoh negatif yang diprediksi netral. Model *severity* tetap tidak tersedia karena data *train* tidak memenuhi batas minimum *support*; tidak ada metrik *severity* yang diklaim.
 
 ## 6.4 Interpretasi yang Bertanggung Jawab
 
-Hasil A6–A8 mendukung empat kesimpulan:
+Hasil *split*, pembangunan *baseline*, pelatihan, kalibrasi, dan evaluasi mendukung empat kesimpulan:
 
 1. *Pipeline* *split* dan evaluasi dapat berjalan tanpa kebocoran *destination*/repeated text yang terdeteksi.
-2. Combined TF-IDF menjadi classical *baseline* yang dapat dimuat ulang dan cepat untuk *inference*.
-3. IndoBERT tidak dipilih sebagai detektor aspek final pada benchmark ini, tetapi model *polarity* tetap menjadi kandidat tugas terpisah.
-4. Independent human *reference* tetap diperlukan sebelum mengklaim performa dunia nyata atau presisi *alert* operasional.
+2. Combined TF-IDF menjadi detektor aspek terpilih di antara model yang belajar dari data, dapat dimuat ulang, cepat, dan telah digunakan untuk inferensi korpus penuh.
+3. IndoBERT tidak dipilih untuk deteksi aspek produk; kandidat *polarity* IndoBERT yang dievaluasi juga bukan komponen *polarity* pada aplikasi saat ini.
+4. Proyeksi aplikasi memakai *fallback* *polarity* leksikal berversi, sedangkan *human-gold reference* tetap diperlukan sebelum mengklaim performa dunia nyata atau presisi *alert* operasional.
 
 ---
 
@@ -705,21 +751,22 @@ Hasil A6–A8 mendukung empat kesimpulan:
 
 ## 7.1 Hasil yang Sudah Tersedia
 
-- Tim berhasil membaca dan memeriksa 14 file CSV tanpa kesalahan.
-- *Cleaning* menghasilkan 22.169 *clean records*.
-- *Entity resolution* menghasilkan 388 *canonical* IDs teknis.
-- *Taxonomy* 14 aspek dan *silver annotation* 1.320 *records* tersedia.
-- *Destination*/repeated-text-safe *split* telah dikunci.
-- *Keyword* dan TF-IDF telah dievaluasi pada *split* yang sama.
-- Model TF-IDF dapat disimpan, dimuat ulang, dan menghasilkan 14 *probabilities* per *review*.
-- Kandidat IndoBERT aspek dan *polarity* telah dilatih pada *train/validation*, disimpan, diverifikasi 65/65 hash, dan berhasil dimuat ulang secara luring.
-- IndoBERT memperoleh *validation Macro F1* 0,4012 untuk aspek dengan *threshold* sementara dan 0,7044 untuk *polarity* berbasis aspek.
-- Kalibrasi validation meningkatkan IndoBERT aspek menjadi *Macro F1* 0,5535 sebelum konfigurasi dibekukan.
-- Evaluasi IndoBERT pada *locked silver test* selesai tepat satu kali dengan *Macro/Micro F1* aspek 0,5247/0,5241 dan *Macro F1 polarity* 0,7459.
-- Model *severity* tidak dilatih karena kelas `high` tidak melewati batas minimum *support train*.
-- A9 memproses 12.234 *review* berteks dan menghasilkan 9.785 prediksi aspek, 1.682 sinyal destinasi-aspek, serta 210 isu dengan *evidence* pada 103 destinasi setelah *evidence gate*.
-- Seluruh *alert actionable* A9 memiliki *evidence*, *confidence*, status data, penjelasan, dan rekomendasi verifikasi; *unresolved destination* tidak diberi prioritas operasional.
-- *Prototype dashboard* telah memiliki *overview*, peta, *destination detail*, *intervention queue*, *analyzer*, dan *fallback* peta luring.
+Hasil preliminary dapat diringkas ke dalam empat lapisan:
+
+**Tabel 17. Ringkasan hasil aktual preliminary SIPATURE**
+
+| Lapisan             | Hasil aktual                                                                                                            |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Data                | 14 file CSV diperiksa; 22.302 *record* mentah menjadi 22.169 *record* bersih                                           |
+| Integrasi           | 388 *canonical IDs* teknis: 322 beracuan metadata dan dapat dipetakan, 66 *unresolved placeholders*                    |
+| Data belajar        | *Taxonomy* 14 aspek; 1.320 *silver records*; *split* 922/196/202 tanpa kebocoran destinasi atau teks berulang terdeteksi |
+| Model               | TF-IDF aspek *Macro F1* 0,7201; IndoBERT aspek 0,5247; kandidat IndoBERT *polarity* 0,7459 pada *locked silver test*     |
+| Inferensi korpus    | 12.234 *review* berteks diproses; 5.942 memiliki prediksi; 9.785 prediksi aspek                                         |
+| Agregasi            | 1.682 sinyal destinasi-aspek pada 280 destinasi yang memiliki sinyal                                                    |
+| Keluaran operasional| 103 destinasi dan 210 isu atau kandidat intervensi yang dapat ditindaklanjuti                                           |
+| Produk              | Proyeksi agregat terintegrasi pada *overview*, peta, rapor, antrean, simulator, analyzer, dan *fallback* peta luring    |
+
+**Interpretasi Tabel 17.** SIPATURE telah membuktikan satu rantai teknis lengkap dari data mentah, pembersihan, pembentukan data belajar, evaluasi model, inferensi korpus penuh, agregasi, hingga aplikasi. Namun, keluaran operasional masih berupa sinyal triase. Dukungan agregat, status data, penjelasan, dan rekomendasi verifikasi dapat ditampilkan, sedangkan kutipan *evidence*, ID *review*, dan artefak tingkat *reviewer* tetap terbatas sampai pemeriksaan privasi dan ahli selesai. Analyzer pada UI langsung juga masih menggunakan *baseline* leksikal dan tidak mengubah prioritas *batch*.
 
 ## 7.2 Apa yang Belum Boleh Diklaim
 
@@ -727,25 +774,40 @@ Hasil A6–A8 mendukung empat kesimpulan:
 - *Keyword* *Macro F1* 0,9768 bukan akurasi dunia nyata.
 - TF-IDF *Macro F1* 0,7201 belum membuktikan performa terhadap *human gold*.
 - IndoBERT aspek belum mengungguli TF-IDF pada *locked silver test* dan tidak dipilih sebagai detektor aspek final saat ini.
-- SIPATURE belum memiliki metrik *severity* karena tidak ada model yang lolos *support gate*.
+- *Polarity* aplikasi adalah *fallback* leksikal berversi, bukan kandidat IndoBERT produksi, dan tidak menghasilkan probabilitas.
+- SIPATURE belum memiliki model atau metrik *severity*; *facility gap* dan *feasibility* juga belum tersedia.
 - *Priority* score belum divalidasi bersama *stakeholder*.
 - *Evidence correctness*, ranking *agreement*, dan *time saved* belum diukur terhadap manusia; *Precision@Alert* yang tersedia masih terhadap *silver reference*.
-- *Export full-corpus* A9 masih restricted dan belum menggantikan data *baseline* aplikasi.
-- *Evidence correctness*, relevansi intervensi, dan ranking A9 belum dinilai pada 25 kasus ahli yang sudah disiapkan.
+- Aplikasi hanya menggunakan proyeksi agregat yang aman untuk privasi; *prediction record*, teks *evidence*, dan provenance tingkat *reviewer* tetap terbatas.
+- *Evidence correctness*, relevansi intervensi, dan peringkat belum dinilai pada 25 kasus ahli yang telah disiapkan.
+- Analyzer langsung masih berupa *baseline* leksikal, bukan model produksi final.
 
 ## 7.3 Hubungan Model dengan Produk
 
-Saat ini A6 membuktikan *pipeline benchmark* pada subset berlabel, A7 membuktikan kandidat IndoBERT dapat dilatih dan dimuat ulang, sedangkan A8 menunjukkan bahwa TF-IDF tetap lebih baik untuk deteksi aspek pada *silver benchmark*. A9 kemudian menggunakan TF-IDF terkunci untuk memproses 12.234 *review* berteks. Karena bobot IndoBERT *polarity* tidak tersedia di workspace, *polarity* menggunakan fallback leksikal yang diberi versi jelas dan tidak menghasilkan probabilitas. *Severity*, *facility gap*, dan *feasibility* dinyatakan tidak tersedia, bukan diberi nilai baik atau nilai netral buatan.
+Benchmark menunjukkan bahwa kombinasi TF-IDF *word* dan *character* lebih kuat daripada kandidat IndoBERT untuk deteksi aspek pada *locked silver test*. Konfigurasi TF-IDF tersebut dibekukan dan digunakan untuk memproses 12.234 *review* berteks. Karena bobot kandidat IndoBERT *polarity* tidak tersedia di *workspace* ketika inferensi korpus dijalankan, *polarity* menggunakan `lexical-polarity-v1`, yaitu *fallback* deterministik yang diberi versi jelas dan tidak menghasilkan probabilitas.
 
-Agregasi menerapkan bobot *freshness* dan duplikat, Bayesian smoothing, serta aturan kecukupan data. Bobot prioritas hanya dinormalisasi atas *complaint frequency*, *model confidence*, *persistence*, dan *visitor exposure* yang tersedia. Hasil A9 masih berada pada penyimpanan restricted; integrasi kontrak, taxonomy, dan tampilan versi ke aplikasi merupakan gate A10 terpisah.
+Inferensi menghasilkan 9.785 prediksi aspek dan agregasi menghasilkan 1.682 sinyal destinasi-aspek. Sistem menerapkan bobot *freshness* dan duplikat, Bayesian smoothing, serta aturan kecukupan data. Bobot prioritas hanya dinormalisasi atas *complaint frequency*, *model confidence*, *persistence*, dan *visitor exposure* yang tersedia. *Severity*, *facility gap*, dan *feasibility* tidak diimputasi.
+
+Proyeksi agregat yang aman untuk privasi telah diintegrasikan ke aplikasi SIPATURE dengan versi model, waktu pembuatan, hash sumber, *taxonomy*, *support*, *data confidence*, rekomendasi verifikasi, serta status komponen yang belum tersedia. Teks ulasan, kutipan *evidence*, `review_id`, identitas *reviewer*, dan provenance baris sumber tetap pada penyimpanan terkontrol.
 
 Alur ini mencegah angka evaluasi bercampur dengan *output* produksi. Data *training* menjawab “apakah model sesuai dengan *reference*?”, sedangkan *full-corpus inference* menjawab “isu apa yang dilaporkan pada seluruh data?”.
 
 ## 7.4 Dampak yang Diharapkan
 
-SIPATURE diharapkan membantu pengelola mengurangi waktu membaca ulasan, menemukan isu yang berulang, dan memulai verifikasi dari masalah yang memiliki *evidence* serta *support* memadai. Pemerintah daerah dapat melihat pola lintas destinasi tanpa menganggap sistem sebagai pengganti inspeksi.
+SIPATURE diharapkan membantu pengelola mengurangi waktu membaca ulasan, menemukan isu yang berulang, dan memulai verifikasi dari masalah yang memiliki dukungan agregat serta kecukupan data memadai. Pemerintah daerah dapat melihat pola lintas destinasi tanpa menganggap sistem sebagai pengganti inspeksi.
 
-Ukuran dampak pada *pilot* akan mencakup relevansi isu, persentase *alert* yang *confirmed/rejected*, waktu analisis, dan kesesuaian urutan prioritas dengan penilaian pengguna.
+**Tabel 18. Indikator dampak pada pilot**
+
+| Dampak yang diharapkan          | Indikator                                                                 | Cara pengukuran                                                      |
+| ------------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Mengurangi beban membaca ulasan | Waktu penyelesaian tugas manual dibandingkan tugas berbantuan SIPATURE    | Median waktu, rentang antar-kuartil, dan persentase penghematan waktu |
+| Meningkatkan relevansi temuan   | Proporsi isu yang dinilai relevan oleh pengelola                          | Status `confirmed`, `rejected`, atau `uncertain`                     |
+| Memperbaiki urutan verifikasi   | Kesesuaian peringkat SIPATURE dengan urutan buatan pengelola              | *Ranking agreement* dan evaluasi kualitatif                           |
+| Menjaga keterlacakan            | Proporsi sinyal yang didukung kutipan sumber pada audit terkontrol        | *Evidence correctness rate* dan *unsupported alert rate*              |
+| Mengurangi risiko reputasi      | Proporsi *false alert* pada kategori berisiko                             | Presisi per aspek dan pencatatan alasan penolakan                     |
+| Mendorong tindak lanjut         | Sinyal yang berubah menjadi rencana verifikasi atau intervensi            | Jumlah dan proporsi status workflow                                   |
+
+**Interpretasi Tabel 18.** Indikator dampak belum diberi angka karena *pilot* pengguna belum dilakukan. SIPATURE tidak mengklaim penghematan waktu, peningkatan kualitas destinasi, atau manfaat ekonomi sebelum tersedia pengukuran pembanding. Pemeriksaan *evidence* dilakukan pada lingkungan terkontrol agar evaluasi keterlacakan tidak membuka data tingkat *reviewer*.
 
 ---
 
@@ -759,7 +821,7 @@ Penggunaan AI dibatasi sebagai berikut:
 - AI *pass agreement* tidak disebut sebagai *inter-annotator agreement*.
 - *Confidence* berbasis *vote* tidak disebut sebagai *calibrated probability*.
 - AI tidak menentukan tindakan lapangan secara otomatis.
-- *Evidence* tetap berupa kutipan *verbatim* yang anonim dan dapat diperiksa.
+- *Evidence* berasal dari kutipan *verbatim* dan tidak dibuat oleh model; teks serta artefak tingkat *reviewer* tetap pada penyimpanan terkontrol sampai pemeriksaan privasi dan ahli selesai.
 - Kode dan *artifact* diperiksa melalui *lint*, *unit test*, *schema validation*, *hash verification*, *model reload*, dan pembacaan hasil.
 
 Keputusan operasional tetap memerlukan verifikasi manusia karena ulasan adalah laporan pengguna, bukan konfirmasi kondisi aktual.
@@ -774,28 +836,31 @@ Keputusan operasional tetap memerlukan verifikasi manusia karena ulasan adalah l
 4. Laporan *cleaning* dan *entity resolution*: `docs/cleaning-entity-resolution-report.md`.
 5. Laporan *taxonomy* dan *silver annotation*: `docs/taxonomy-annotation-report.md`.
 6. Laporan *split* dan *baseline*: `docs/leakage-safe-split-baseline-report.md`.
-7. Laporan pelatihan IndoBERT: `docs/indobert-training-report.md`.
+7. Laporan pelatihan kandidat IndoBERT: `docs/indobert-training-report.md`.
 8. Laporan kalibrasi dan evaluasi IndoBERT: `docs/indobert-a8-evaluation-report.md`.
-9. Laporan inferensi dan prioritas A9: `docs/a9-inference-priority-report.md`.
-10. *Responsible AI*: `docs/responsible-ai.md`.
-11. *Reproducibility*: `docs/reproducibility-runbook.md`.
+9. Laporan inferensi korpus penuh dan agregasi prioritas: `docs/a9-inference-priority-report.md`.
+10. Laporan integrasi produk preliminary: `docs/a10-preliminary-product-integration.md`.
+11. *Responsible AI*: `docs/responsible-ai.md`.
+12. *Reproducibility*: `docs/reproducibility-runbook.md`.
 
-**Tabel 15. Hubungan klaim laporan dengan *artifact* teknis**
+**Tabel 19. Hubungan klaim laporan dengan *artifact* teknis**
 
-| Klaim utama                 | *Artifact*                                             |
-| --------------------------- | ------------------------------------------------------ |
-| Inventory dan jumlah data   | `ml/artifacts/reports/data_inventory.json`             |
-| *Cleaning*                  | `ml/artifacts/reports/cleaning_summary.json`           |
-| *Entity resolution*         | `ml/artifacts/reports/entity_resolution_summary.json`  |
-| *Silver labels*             | `ml/artifacts/reports/silver_annotation_summary.json`  |
-| Locked *split*              | `ml/data/splits/split_manifest_silver_v1.json`         |
-| *Baseline* *metrics*        | `ml/artifacts/metrics/*-silver-v1-test-metrics.json`   |
-| *Baseline* *error analysis* | `ml/artifacts/reports/baseline_silver_test_errors.csv` |
-| Pelatihan IndoBERT          | `docs/indobert-training-report.md`                     |
-| Bukti dan hash IndoBERT     | `docs/evidence/indobert/20260801-1024_indobert-silver-v1/` |
-| Evaluasi A8 IndoBERT        | `docs/evidence/indobert/20260801_indobert-silver-v1_a8-evidence/` |
-| Inferensi dan prioritas A9  | `docs/evidence/a9/20260801-a9-tfidf-lexical-v1-r5/summary.json` |
+| Klaim utama                                      | *Artifact*                                                                   |
+| ------------------------------------------------ | ---------------------------------------------------------------------------- |
+| Inventory dan jumlah data                        | `ml/artifacts/reports/data_inventory.json`                                   |
+| *Cleaning*                                       | `ml/artifacts/reports/cleaning_summary.json`                                 |
+| *Entity resolution* dan 388 ID teknis            | `ml/artifacts/reports/entity_resolution_summary.json`                        |
+| *Silver labels*                                  | `ml/artifacts/reports/silver_annotation_summary.json`                        |
+| Locked *split*                                   | `ml/data/splits/split_manifest_silver_v1.json`                               |
+| *Baseline metrics*                               | `ml/artifacts/metrics/*-silver-v1-test-metrics.json`                         |
+| *Baseline error analysis*                        | `ml/artifacts/reports/baseline_silver_test_errors.csv`                       |
+| Pelatihan kandidat IndoBERT                      | `docs/indobert-training-report.md`                                           |
+| Bukti dan hash IndoBERT                          | `docs/evidence/indobert/20260801-1024_indobert-silver-v1/`                   |
+| Kalibrasi dan evaluasi IndoBERT                  | `docs/evidence/indobert/20260801_indobert-silver-v1_a8-evidence/`            |
+| Inferensi 12.234 *review* dan 1.682 sinyal       | `docs/evidence/a9/20260801-a9-tfidf-lexical-v1-r5/summary.json`               |
+| Proyeksi 103 destinasi dan 210 isu operasional   | `sipature-app/src/data/generated/corpus.json`                                |
+| Integrasi proyeksi agregat ke aplikasi           | `docs/a10-preliminary-product-integration.md`                                |
 
-**Interpretasi Tabel 15.** Setiap klaim kuantitatif utama memiliki *artifact* sumber yang dapat diperiksa. *Traceability* ini membedakan hasil aktual dari rencana dan memungkinkan reproduksi tanpa menaruh raw/*restricted* data langsung di laporan publik. Bobot IndoBERT yang besar tetap disimpan pada penyimpanan terkontrol, sedangkan bukti kecil dan hash verifikasi tersedia di repositori.
+**Interpretasi Tabel 19.** Setiap klaim kuantitatif utama memiliki *artifact* sumber yang dapat diperiksa. *Traceability* ini membedakan hasil aktual dari rencana dan memungkinkan reproduksi tanpa menaruh data mentah atau artefak terbatas di laporan publik. Repositori publik cukup memuat schema, hash, konfigurasi, ringkasan agregat, dan dokumentasi verifikasi; data tingkat *reviewer* tetap berada pada penyimpanan terkontrol.
 
-> *Raw data*, *review-level annotation*, *split records*, model *artifact*, *metrics*, dan *error cases* bersifat *restricted* dan tidak dipublikasikan tanpa pemeriksaan lisensi serta privasi.
+> *Raw data*, teks *evidence*, *review-level predictions*, *review-level annotation*, *split records*, model *artifact*, dan *error cases* bersifat *restricted* dan tidak dipublikasikan tanpa pemeriksaan lisensi, privasi, dan hak akses.

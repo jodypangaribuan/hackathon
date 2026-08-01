@@ -19,6 +19,7 @@ from .config import load_config
 from .eda import run_eda
 from .entity_resolution import run_entity_resolution
 from .environment import build_environment_snapshot, write_environment_snapshot
+from .evaluation import run_calibration, run_locked_test_evaluation
 from .indobert import run_indobert_training
 from .inventory import inventory_dataset, write_inventory
 from .paths import PATHS
@@ -112,6 +113,23 @@ def build_parser() -> argparse.ArgumentParser:
     indobert.add_argument("--artifact-dir", type=Path, default=PATHS.artifacts)
     indobert.add_argument("--run-id")
 
+    calibrate = subparsers.add_parser(
+        "calibrate-indobert", help="Freeze validation-only IndoBERT calibration"
+    )
+    calibrate.add_argument("--split-dir", type=Path, required=True)
+    calibrate.add_argument("--model-run-dir", type=Path, required=True)
+    calibrate.add_argument("--output-dir", type=Path, required=True)
+
+    evaluate = subparsers.add_parser(
+        "evaluate-indobert", help="Run one frozen locked-test IndoBERT evaluation"
+    )
+    evaluate.add_argument("--split-dir", type=Path, required=True)
+    evaluate.add_argument("--model-run-dir", type=Path, required=True)
+    evaluate.add_argument("--calibration", type=Path, required=True)
+    evaluate.add_argument("--output-dir", type=Path, required=True)
+    evaluate.add_argument("--baseline-metrics-dir", type=Path)
+    evaluate.add_argument("--baseline-figure-dir", type=Path)
+
     snapshot = subparsers.add_parser("snapshot-run", help="Write run environment metadata")
     snapshot.add_argument("--output", type=Path, required=True)
 
@@ -203,6 +221,21 @@ def main() -> int:
         result = run_indobert_training(args.split_dir, args.artifact_dir, args.run_id)
         print(json.dumps(result, indent=2))
         return 0
+    if args.command == "calibrate-indobert":
+        result = run_calibration(args.split_dir, args.model_run_dir, args.output_dir)
+        print(json.dumps(result, indent=2))
+        return 0
+    if args.command == "evaluate-indobert":
+        result = run_locked_test_evaluation(
+            args.split_dir,
+            args.model_run_dir,
+            args.calibration,
+            args.output_dir,
+            args.baseline_metrics_dir,
+            args.baseline_figure_dir,
+        )
+        print(json.dumps(result, indent=2))
+        return 0
     if args.command == "snapshot-run":
         output = write_environment_snapshot(args.output)
         print(output)
@@ -250,7 +283,6 @@ def main() -> int:
     if args.command == "run" and args.stage in {
         Stage.TRAIN_KEYWORD.value,
         Stage.TRAIN_TFIDF.value,
-        Stage.EVALUATE.value,
     }:
         result = run_baselines(PATHS.splits, PATHS.artifacts, args.figure_dir)
         print(json.dumps(result, indent=2))
@@ -259,6 +291,10 @@ def main() -> int:
         result = run_indobert_training(PATHS.splits, PATHS.artifacts)
         print(json.dumps(result, indent=2))
         return 0
+    if args.command == "run" and args.stage in {Stage.CALIBRATE.value, Stage.EVALUATE.value}:
+        raise SystemExit(
+            "Use calibrate-indobert or evaluate-indobert with explicit model and artifact paths"
+        )
     raise NotImplementedError(
         f"Stage '{args.stage}' is declared but not implemented. "
         "Implement and test the stage before marking its TODO complete."

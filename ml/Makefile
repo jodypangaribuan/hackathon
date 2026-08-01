@@ -3,7 +3,7 @@ VENV ?= .venv
 BIN := $(VENV)/bin
 DATASET_DIR ?= ../Datasets
 
-.PHONY: setup test lint check stages doctor inventory eda clean-data resolve-entities annotation-sample silver-annotate split-silver baselines train-indobert snapshot clean
+.PHONY: setup test lint check stages doctor inventory eda clean-data resolve-entities annotation-sample silver-annotate split-silver baselines train-indobert calibrate-indobert evaluate-indobert snapshot clean
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -51,6 +51,12 @@ baselines:
 
 train-indobert:
 	$(BIN)/sipature-ml train-indobert
+
+calibrate-indobert:
+	$(BIN)/sipature-ml calibrate-indobert --split-dir "$(SPLIT_DIR)" --model-run-dir "$(MODEL_RUN_DIR)" --output-dir "$(CALIBRATION_DIR)"
+
+evaluate-indobert:
+	$(BIN)/sipature-ml evaluate-indobert --split-dir "$(SPLIT_DIR)" --model-run-dir "$(MODEL_RUN_DIR)" --calibration "$(CALIBRATION_DIR)" --output-dir "$(EVALUATION_DIR)" $(if $(BASELINE_METRICS_DIR),--baseline-metrics-dir "$(BASELINE_METRICS_DIR)",) $(if $(BASELINE_FIGURE_DIR),--baseline-figure-dir "$(BASELINE_FIGURE_DIR)",)
 
 snapshot:
 	$(BIN)/sipature-ml snapshot-run --output artifacts/reports/run-environment.json

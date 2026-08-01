@@ -76,4 +76,4 @@ Full local/Colab instructions and intermediate checkpoint rules are in `../docs/
 - Do not call baseline outputs trained-model predictions.
 - The Next.js app consumes exported product data through `contracts/app-export.schema.json`.
 
-Current status: A1-A6 are complete. A7 run `20260801-1024_indobert-silver-v1` trained aspect and polarity candidates on Colab train/validation data and passed offline reload; severity was skipped by its support gate. Threshold calibration and locked-test evaluation remain pending in A8. See `../docs/indobert-training-report.md`.
+Current status: A1-A6 are complete. A7 run `20260801-1024_indobert-silver-v1` trained aspect and polarity candidates on Colab train/validation data and passed offline reload; severity was skipped by its support gate. A8 calibration/evaluation code, tests, CLI, notebook, and runbook are implementation ready, but calibration and locked-test execution remain pending. See `../docs/a8-calibration-evaluation-runbook.md`.

@@ -126,7 +126,8 @@ sipature-ml run split
 sipature-ml run train-keyword
 sipature-ml run train-tfidf
 sipature-ml run train-indobert
-sipature-ml run calibrate
+sipature-ml calibrate-indobert --split-dir SPLITS --model-run-dir A7_RUN --output-dir CALIBRATION
+sipature-ml evaluate-indobert --split-dir SPLITS --model-run-dir A7_RUN --calibration CALIBRATION --output-dir EVALUATION
 sipature-ml run evaluate
 sipature-ml run infer
 sipature-ml run aggregate
@@ -134,7 +135,7 @@ sipature-ml run prioritize
 sipature-ml run export-app
 ```
 
-Inventory through A6 is implemented and tested. A7 run `20260801-1024_indobert-silver-v1` trained aspect and polarity candidates on hash-verified train/validation data and passed offline reload; severity was skipped by its support gate. A8 threshold calibration and locked-test evaluation remain pending. See `indobert-training-report.md`. Declaring or implementing a command is not evidence that an unrecorded run completed.
+Inventory through A6 is implemented and tested. A7 run `20260801-1024_indobert-silver-v1` trained aspect and polarity candidates on hash-verified train/validation data and passed offline reload; severity was skipped by its support gate. A8's strict two-phase implementation is ready, but calibration and locked-test execution remain pending. Follow `a8-calibration-evaluation-runbook.md`; implementing a command is not evidence that an unrecorded run completed.
 
 ## Run Identity
 

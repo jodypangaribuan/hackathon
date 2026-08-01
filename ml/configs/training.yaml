@@ -44,3 +44,15 @@ thresholds:
   default_detection: 0.50
   candidates: [0.25, 0.35, 0.45, 0.50, 0.55, 0.65, 0.75]
   prioritize_alert_precision: true
+
+calibration:
+  version: "aspect-calibration-v1"
+  output_version: "indobert-evaluation-v1"
+  method: deterministic_bounded_temperature_grid
+  temperature_min: 0.5
+  temperature_max: 5.0
+  temperature_grid_size: 181
+  ece_bins: 10
+  threshold_candidates: [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95]
+  alert_minimum_precision: 0.80
+  alert_minimum_predictions: 5

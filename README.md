@@ -37,3 +37,4 @@ pip install -e ".[dev]"
 pytest
 sipature-ml stages
 ```
+The A8 validation-calibration and locked-test evaluation workflow is implementation ready but has not been executed. See `docs/a8-calibration-evaluation-runbook.md`; no A8 result claims are available.

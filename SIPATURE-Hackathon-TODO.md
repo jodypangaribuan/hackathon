@@ -167,6 +167,8 @@ Catatan 2026-08-01: run `20260801-1024_indobert-silver-v1` selesai pada Colab Te
 
 ## A8. Calibration, Test Evaluation, Error Analysis
 
+Catatan 2026-08-01: implementasi dua fase, CLI, notebook, pengujian sintetis, dan runbook A8 telah disiapkan. Kalibrasi validation dan evaluasi locked test belum dijalankan; semua kotak berbasis hasil di bawah tetap tidak dicentang.
+
 - [ ] Cari detection threshold per aspect pada validation.
 - [ ] Cari high-precision alert threshold.
 - [ ] Uji probability calibration.

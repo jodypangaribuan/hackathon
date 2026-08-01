@@ -108,9 +108,9 @@ export default function Nav() {
           <span
             className="hidden rounded-md border px-2 py-1 text-[11px] text-muted lg:inline"
             style={{ borderColor: "var(--hairline)" }}
-            title="Dashboard memuat batch output A9 r5; analyzer adalah sandbox terpisah."
+            title="Dashboard memuat SIPATURE Intelligence; analyzer adalah sandbox terpisah."
           >
-            A9 r5 · batch
+            Intelligence v1.0.4
           </span>
           <ThemeToggle />
         </div>

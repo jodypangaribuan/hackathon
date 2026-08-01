@@ -1,6 +1,6 @@
-import placesJson from "@/data/generated/a9-places.json";
-import interventionsJson from "@/data/generated/a9-interventions.json";
-import corpusJson from "@/data/generated/a9-corpus.json";
+import placesJson from "@/data/generated/places.json";
+import interventionsJson from "@/data/generated/interventions.json";
+import corpusJson from "@/data/generated/corpus.json";
 import type {
   AspectKey,
   Confidence,

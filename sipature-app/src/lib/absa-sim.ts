@@ -72,6 +72,6 @@ export function analyzeText(text: string): AnalyzeResult {
           100,
       ) / 100,
     ),
-    note: "Sandbox leksikal deterministik, bukan model batch A9. Input tidak disimpan dan hasil tidak mengubah prioritas destinasi.",
+    note: "Sandbox leksikal deterministik, bukan model intelligence utama. Input tidak disimpan dan hasil tidak mengubah prioritas destinasi.",
   };
 }

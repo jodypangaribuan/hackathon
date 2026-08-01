@@ -26,7 +26,7 @@ export default function RootLayout({
             Del AI Hackathon 2026.
           </p>
           <p className="mt-1">
-            Dashboard memakai batch output A9 r5: TF-IDF aspect, lexical
+            Dashboard memakai SIPATURE Intelligence: TF-IDF aspect, lexical
             polarity fallback, Bayesian smoothing, dan missing-aware priority.
             Reported issue bukan vonis kondisi lapangan. Evidence text ditahan
             pending privacy review dan identitas reviewer tidak masuk bundle

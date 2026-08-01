@@ -30,7 +30,7 @@ export default function InterventionSim({ place }: { place: Place }) {
       </SectionTitle>
       <p className="mb-4 text-[13px] leading-relaxed text-ink-2">
         Centang isu yang diasumsikan hilang sepenuhnya. Health dan prioritas
-        dihitung ulang dari isu A9 lain yang tersisa.
+        dihitung ulang dari isu intelligence lain yang tersisa.
       </p>
       {fixable.length ? (
         <fieldset className="space-y-1.5">

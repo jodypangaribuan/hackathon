@@ -133,7 +133,8 @@ export default function OpportunityList({
         <Note>
           Kandidat ini bukan rekomendasi investasi, estimasi modal, atau hasil
           studi kelayakan. Ia adalah tindakan awal yang diturunkan deterministik
-          dari reported issue A9 dan wajib diperiksa di lapangan.
+          dari reported issue SIPATURE Intelligence dan wajib diperiksa di
+          lapangan.
         </Note>
       </div>
     </div>

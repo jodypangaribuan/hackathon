@@ -11,10 +11,11 @@ const sourcePath = resolve(
 );
 const expectedHash = "f349a499afe04cdb9fafde8101e136470a41ca53815bd0c829dd62f07ca812b0";
 const outputDir = join(appRoot, "src/data/generated");
+const publicModelVersion = "SIPATURE Intelligence v1.0.4";
 
 const raw = await readFile(sourcePath);
 const actualHash = createHash("sha256").update(raw).digest("hex");
-if (actualHash !== expectedHash) throw new Error(`A9 export hash mismatch: ${actualHash}`);
+if (actualHash !== expectedHash) throw new Error(`Source export hash mismatch: ${actualHash}`);
 
 const source = JSON.parse(raw.toString("utf8"));
 const legacy = JSON.parse(
@@ -87,7 +88,7 @@ function priorityRank(value) {
 }
 
 if (source.schema_version !== "1.0.0" || source.model_version !== "a9-tfidf-lexical-v1.0.4") {
-  throw new Error("Unsupported A9 schema or model version");
+  throw new Error("Unsupported source schema or model version");
 }
 if (source.destinations.length !== 388) throw new Error("Expected 388 destinations");
 
@@ -192,7 +193,7 @@ interventions.forEach((item, index) => { item.rank = index + 1; });
 
 const mappable = places.filter((place) => place.lat != null && place.lon != null);
 if (mappable.length !== 322 || actionable.length !== 103 || actionableIssueCount !== 210 || issueCount !== 1121) {
-  throw new Error(`A9 count gate failed: ${mappable.length}/${actionable.length}/${actionableIssueCount}/${issueCount}`);
+  throw new Error(`Product data count gate failed: ${mappable.length}/${actionable.length}/${actionableIssueCount}/${issueCount}`);
 }
 if (places.some((place) => place.canonicalStatus === "unresolved_placeholder" && place.priority !== "Insufficient Data")) {
   throw new Error("Unresolved destination received operational priority");
@@ -200,7 +201,7 @@ if (places.some((place) => place.canonicalStatus === "unresolved_placeholder" &&
 
 const corpus = {
   schemaVersion: source.schema_version,
-  modelVersion: source.model_version,
+  modelVersion: publicModelVersion,
   generatedAt: source.generated_at,
   sourceManifest: source.source_manifest,
   exportSha256: actualHash,
@@ -241,8 +242,8 @@ assertPublic(interventions);
 
 await mkdir(outputDir, { recursive: true });
 await Promise.all([
-  writeFile(join(outputDir, "a9-places.json"), `${JSON.stringify(places, null, 2)}\n`),
-  writeFile(join(outputDir, "a9-interventions.json"), `${JSON.stringify(interventions, null, 2)}\n`),
-  writeFile(join(outputDir, "a9-corpus.json"), `${JSON.stringify(corpus, null, 2)}\n`),
+  writeFile(join(outputDir, "places.json"), `${JSON.stringify(places, null, 2)}\n`),
+  writeFile(join(outputDir, "interventions.json"), `${JSON.stringify(interventions, null, 2)}\n`),
+  writeFile(join(outputDir, "corpus.json"), `${JSON.stringify(corpus, null, 2)}\n`),
 ]);
-console.log(`Generated A9 app data: ${places.length} destinations, ${interventions.length} interventions`);
+console.log(`Generated product data: ${places.length} destinations, ${interventions.length} interventions`);

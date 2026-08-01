@@ -209,17 +209,21 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 
 ## A10. Preliminary Product
 
-- [ ] Integrasikan real batch output ke SIPATURE.
-- [ ] Tampilkan model version dan generated time.
-- [ ] Overview: coverage, issues, priorities.
-- [ ] Map: sufficient/low/insufficient data dan filters.
-- [ ] Detail: evidence, metadata conflicts, confidence.
-- [ ] Queue: reasons, ranking, recommended verification.
-- [ ] Simulator: assumptions dan non-causal warning.
-- [ ] Analyzer: real model atau label baseline jelas.
-- [ ] Pastikan desktop/mobile, offline map, loading/error/empty states.
-- [ ] Pastikan reviewer identity tidak tampil.
-- [ ] Tambahkan model limitations dan Responsible AI.
+- [x] Integrasikan real batch output A9 r5 ke SIPATURE melalui hash-locked privacy-safe generator.
+- [x] Tampilkan model version dan generated time.
+- [x] Overview: coverage, issues, priorities.
+- [x] Map: actionable/monitor/insufficient data, filters, dan 322 canonical coordinates; 66 unresolved tidak dipetakan.
+- [x] Detail: aggregate evidence status, metadata enrichment, canonical identity, confidence, health, dan missing components; evidence text ditahan pending privacy review.
+- [x] Queue: reasons, ranking, support, dan recommended verification.
+- [x] Simulator: explicit issue-removal assumptions dan permanent non-causal warning.
+- [x] Analyzer: sandbox leksikal diberi label jelas sebagai bukan A9; contoh restricted diganti contoh sintetis.
+- [x] Pastikan responsive desktop/mobile code, offline map, loading/error/empty states; manual device QA tetap follow-up.
+- [x] Pastikan reviewer identity dan review-level provenance tidak tampil atau masuk generated/build assets.
+- [x] Tambahkan model limitations dan Responsible AI.
+
+**Output:** `sipature-app/src/data/generated/a9-*`, `sipature-app/scripts/generate-a9-data.mjs`, aplikasi A9-native, dan `docs/a10-preliminary-product-integration.md`.
+
+**Gate:** terpenuhi untuk integrasi teknis — data generation, typecheck, production build, route/API smoke tests, semantic assertions, dan static privacy scan lulus. Evidence text tetap restricted sampai privacy review dan expert gate A9 selesai.
 
 ## A11. Laporan, Visual, dan Video
 

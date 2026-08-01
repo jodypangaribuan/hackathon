@@ -7,7 +7,7 @@ import { dateTime, num } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Model & Keterbatasan — SIPATURE",
-  description: "Kontrak model A9, formula prioritas, dan Responsible AI.",
+  description: "Kontrak model SIPATURE Intelligence, formula prioritas, dan Responsible AI.",
 };
 
 const pipeline = [
@@ -44,7 +44,7 @@ export default function MethodPage() {
       </section>
 
       <Card className="p-4 sm:p-5">
-        <SectionTitle>Rantai A9</SectionTitle>
+        <SectionTitle>Rantai Intelligence</SectionTitle>
         <pre
           className="thin-scroll overflow-x-auto rounded-md border p-3 text-[12px] leading-relaxed"
           style={{
@@ -180,14 +180,14 @@ export default function MethodPage() {
           <li>Simulator adalah analisis skenario non-kausal.</li>
           <li>
             Analyzer adalah sandbox leksikal terpisah dan tidak mengaku sebagai
-            A9.
+            model intelligence utama.
           </li>
         </ul>
       </Card>
 
       <Note>
-        Regenerasi bundle: <code>npm run data:a9</code>. Generator memverifikasi
-        hash r5, taxonomy, count, identity, coordinates, missing semantics, dan
+        Regenerasi bundle: <code>npm run data:generate</code>. Generator memverifikasi
+        source hash, taxonomy, count, identity, coordinates, missing semantics, dan
         forbidden privacy keys.
       </Note>
     </div>

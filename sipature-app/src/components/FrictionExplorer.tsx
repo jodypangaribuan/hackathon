@@ -182,8 +182,8 @@ export default function FrictionExplorer({
             Prioritas Verifikasi
           </SectionTitle>
           <p className="mb-3 text-[12px] text-muted">
-            Urut menurut priority score A9. Peringkat adalah sinyal triase,
-            bukan bukti kondisi lapangan.
+            Urut menurut priority score SIPATURE Intelligence. Peringkat adalah
+            sinyal triase, bukan bukti kondisi lapangan.
           </p>
           {ranked.length ? (
             <ol className="thin-scroll max-h-[560px] space-y-1 overflow-y-auto">

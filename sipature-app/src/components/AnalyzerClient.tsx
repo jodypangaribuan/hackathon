@@ -89,7 +89,7 @@ export default function AnalyzerClient() {
         <div className="mt-3">
           <Note>
             Sandbox ini memakai aturan leksikal deterministik 14 aspek, bukan
-            model TF-IDF batch A9. Input tidak disimpan dan hasil tidak mengubah
+            model intelligence utama. Input tidak disimpan dan hasil tidak mengubah
             dashboard.
           </Note>
         </div>

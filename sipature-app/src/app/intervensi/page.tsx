@@ -15,7 +15,8 @@ export default function InterventionsPage() {
             Antrean Verifikasi & Intervensi
           </h1>
           <p className="mt-1 max-w-3xl text-[13px] text-ink-2">
-            Destinasi diurutkan berdasarkan priority score A9 yang transparan.
+            Destinasi diurutkan berdasarkan priority score SIPATURE Intelligence
+            yang transparan.
             Tindakan tetap memerlukan verifikasi manusia.
           </p>
         </div>

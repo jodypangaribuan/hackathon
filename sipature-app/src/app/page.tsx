@@ -10,7 +10,7 @@ import { dateTime, num } from "@/lib/format";
 import { StatTile } from "@/components/ui";
 export const metadata: Metadata = {
   title: "Regional Overview — SIPATURE",
-  description: "Sinyal prioritas A9 untuk destinasi kawasan Danau Toba.",
+  description: "Sinyal prioritas SIPATURE untuk destinasi kawasan Danau Toba.",
 };
 export default function HomePage() {
   const stats = headlineStats();

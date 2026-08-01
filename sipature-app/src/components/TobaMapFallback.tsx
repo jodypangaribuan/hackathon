@@ -37,8 +37,9 @@ export default function TobaMapFallback({
   onSelect?: (id: string) => void;
   heightClass?: string;
 }) {
-  // Titik friksi tinggi digambar terakhir agar tidak tertutup.
-  const drawOrder = [...points].sort((a, b) => a.frictionScore - b.frictionScore);
+  const drawOrder = [...points].sort(
+    (a, b) => (a.priorityScore ?? -1) - (b.priorityScore ?? -1),
+  );
 
   return (
     <div className={`${heightClass} w-full overflow-hidden`}>
@@ -83,7 +84,7 @@ export default function TobaMapFallback({
 
         {drawOrder.map((p) => {
           const { x, y } = project(p.lat, p.lon);
-          const lvl = levelOf(p.frictionScore, p.confidence);
+          const lvl = levelOf(p.priority);
           const isSel = p.id === selectedId;
           return (
             <g
@@ -93,7 +94,12 @@ export default function TobaMapFallback({
               style={{ cursor: onSelect ? "pointer" : "default" }}
             >
               {isSel ? (
-                <circle r={13} fill="none" stroke="var(--series-1)" strokeWidth={2} />
+                <circle
+                  r={13}
+                  fill="none"
+                  stroke="var(--series-1)"
+                  strokeWidth={2}
+                />
               ) : null}
               {/* ikon tingkat = pembawa makna kedua di samping warna */}
               <text
@@ -107,7 +113,7 @@ export default function TobaMapFallback({
               >
                 {lvl.icon}
               </text>
-              <title>{`${p.name} — friksi ${score(p.frictionScore)} (${lvl.label})`}</title>
+              <title>{`${p.name} — priority score ${score(p.priorityScore)} (${lvl.label})`}</title>
             </g>
           );
         })}

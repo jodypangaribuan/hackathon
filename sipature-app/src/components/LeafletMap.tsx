@@ -30,7 +30,9 @@ import type { Basemap, MapPoint } from "./TobaMap";
 /** Ambil nilai token CSS. Menjaga satu sumber kebenaran di globals.css. */
 function readVar(name: string, fallback: string): string {
   if (typeof window === "undefined") return fallback;
-  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const v = getComputedStyle(document.documentElement)
+    .getPropertyValue(name)
+    .trim();
   return v || fallback;
 }
 
@@ -58,7 +60,8 @@ const TILES: Record<
   },
   satelit: {
     url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    attribution: "Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics",
+    attribution:
+      "Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics",
     maxZoom: 18,
   },
 };
@@ -113,7 +116,9 @@ export default function LeafletMap({
     const stamped = document.documentElement.getAttribute("data-theme");
     if (stamped === "dark") return "gelap";
     if (stamped === "light") return "terang";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "gelap" : "terang";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "gelap"
+      : "terang";
   };
 
   /* ------------------------------------------------------- inisialisasi */
@@ -225,7 +230,7 @@ export default function LeafletMap({
 
   /* ------------------------------------------------------------- marker */
   const maxReviews = useMemo(
-    () => points.reduce((m, p) => Math.max(m, p.nReviewsText), 0),
+    () => points.reduce((m, p) => Math.max(m, p.allReviewCount), 0),
     [points],
   );
 
@@ -240,16 +245,18 @@ export default function LeafletMap({
     const surface = readVar("--surface-1", "#fcfcfb");
 
     // Friksi rendah digambar dulu, tinggi terakhir → yang genting tampak di atas.
-    const ordered = [...points].sort((a, b) => a.frictionScore - b.frictionScore);
+    const ordered = [...points].sort(
+      (a, b) => (a.priorityScore ?? -1) - (b.priorityScore ?? -1),
+    );
 
     for (const p of ordered) {
-      const lvl = levelOf(p.frictionScore, p.confidence);
+      const lvl = levelOf(p.priority);
       const color = readVar(varName(lvl.colorVar), "#898781");
       const weak = lvl.key === "none";
 
       const marker = L.circleMarker([p.lat, p.lon], {
         renderer: rendererRef.current ?? undefined,
-        radius: weak ? 4 : radiusFor(p.nReviewsText, maxReviews),
+        radius: weak ? 4 : radiusFor(p.allReviewCount, maxReviews),
         color: surface, // cincin permukaan 2px agar marker bertumpuk tetap terbaca
         weight: 1.5,
         opacity: weak ? 0.55 : 0.95,
@@ -269,13 +276,18 @@ export default function LeafletMap({
         `<div class="mh-tip">
            <strong>${escapeHtml(p.name)}</strong>
            <div class="mh-tip-row"><span aria-hidden>${lvl.icon}</span> ${lvl.label}
-             · <span class="tabular">${score(p.frictionScore)}</span></div>
-           <div class="mh-tip-sub">${p.kabupaten} · ${p.nReviewsText} ulasan berteks${
+             · <span class="tabular">${score(p.priorityScore)}</span></div>
+           <div class="mh-tip-sub">${p.kabupaten} · ${p.allReviewCount} review bersih${
              p.rank !== null ? ` · prioritas #${p.rank}` : ""
            }</div>
            ${aspects ? `<div class="mh-tip-sub">${escapeHtml(aspects)}</div>` : ""}
          </div>`,
-        { direction: "top", offset: [0, -6], opacity: 1, className: "mh-tooltip" },
+        {
+          direction: "top",
+          offset: [0, -6],
+          opacity: 1,
+          className: "mh-tooltip",
+        },
       );
 
       marker.on("click", () => selectRef.current?.(p.id));
@@ -285,7 +297,9 @@ export default function LeafletMap({
 
     // Sekali saja: pas-kan tampilan ke seluruh titik.
     if (!fittedRef.current && points.length > 0) {
-      const b = L.latLngBounds(points.map((p) => [p.lat, p.lon] as [number, number]));
+      const b = L.latLngBounds(
+        points.map((p) => [p.lat, p.lon] as [number, number]),
+      );
       map.fitBounds(b, { padding: [28, 28], maxZoom: 11 });
       fittedRef.current = true;
     }
@@ -307,7 +321,7 @@ export default function LeafletMap({
 
     const ring = L.circleMarker([p.lat, p.lon], {
       renderer: rendererRef.current ?? undefined,
-      radius: radiusFor(p.nReviewsText, maxReviews) + 7,
+      radius: radiusFor(p.allReviewCount, maxReviews) + 7,
       color: readVar("--series-1", "#2a78d6"),
       weight: 2.5,
       opacity: 1,
@@ -324,7 +338,7 @@ export default function LeafletMap({
       ref={boxRef}
       className="h-full w-full"
       role="application"
-      aria-label="Peta interaktif friksi destinasi kawasan Danau Toba"
+      aria-label="Peta interaktif sinyal prioritas destinasi kawasan Danau Toba"
     />
   );
 }

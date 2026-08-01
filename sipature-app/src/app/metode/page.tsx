@@ -1,204 +1,194 @@
-/**
- * Layar 5 — Metode & Keterbatasan.
- * Rumus, audit bias, deklarasi pemakaian dataset, dan etika — semua angka
- * diambil dari corpus.json, bukan diketik ulang.
- */
 import type { Metadata } from "next";
-import { Card, Meter, Note, SectionTitle } from "@/components/ui";
-import { corpus, places } from "@/lib/data";
-import { ASPECT_LABEL, num, severityLabel } from "@/lib/format";
-import type { AspectKey } from "@/lib/types";
+import { Check, Circle, EyeOff, TriangleAlert } from "lucide-react";
 import { AspectIcon } from "@/components/AppIcon";
-import { Check, Circle, TriangleAlert } from "lucide-react";
+import { Card, Note, SectionTitle } from "@/components/ui";
+import { corpus } from "@/lib/data";
+import { dateTime, num } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Model & Keterbatasan — SIPATURE",
-  description:
-    "Rumus indeks friksi, audit bias, deklarasi dataset, dan batas kejujuran demo.",
+  description: "Kontrak model A9, formula prioritas, dan Responsible AI.",
 };
 
-export default function MetodePage() {
-  const severityRows = (Object.entries(corpus.severity) as [AspectKey, number][])
-    .sort((a, b) => a[1] - b[1]);
+const pipeline = [
+  "12.234 review berteks",
+  `TF-IDF multilabel aspect (${corpus.aspectModel})`,
+  `Lexical polarity fallback (${corpus.polarityModel})`,
+  "Duplicate + freshness weights",
+  "Bayesian-smoothed complaint rate",
+  "Support / identity / evidence gate",
+  "Missing-aware priority",
+  "Human field verification",
+].join("\n→ ");
 
-  const dist = corpus.ratingDistribution;
-  const distTotal = Object.values(dist).reduce((s, v) => s + v, 0);
-  const noReview = places.filter((p) => p.confidence === "none").length;
-  const lowConf = places.filter((p) => p.confidence === "low").length;
+const formula = [
+  "priority = 0,3333 × complaint_frequency",
+  "         + 0,2500 × model_confidence",
+  "         + 0,2500 × persistence",
+  "         + 0,1667 × visitor_exposure",
+  "",
+  "severity, facility_gap, feasibility = unavailable",
+].join("\n");
 
+export default function MethodPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-5">
       <section>
         <h1 className="text-[22px] font-semibold tracking-tight">
-          Metode &amp; Keterbatasan
+          Model &amp; Keterbatasan
         </h1>
-        <p className="mt-1 text-[13px] leading-relaxed text-ink-2">
-          Semua angka pada halaman ini dihitung dari dataset panitia (
-          {corpus.generatedFrom}) oleh <code className="text-[12px]">scripts/gen_seed.py</code>{" "}
-          — tidak ada yang diketik manual.
+        <p className="mt-1 text-[13px] text-ink-2">
+          Dashboard memuat batch output <code>{corpus.modelVersion}</code>,
+          generated {dateTime(corpus.generatedAt)}.
         </p>
       </section>
 
-      {/* ------------------------------------------------------------ rumus */}
       <Card className="p-4 sm:p-5">
-        <SectionTitle>Rumus Indeks Friksi</SectionTitle>
+        <SectionTitle>Rantai A9</SectionTitle>
         <pre
           className="thin-scroll overflow-x-auto rounded-md border p-3 text-[12px] leading-relaxed"
-          style={{ borderColor: "var(--hairline)", background: "var(--surface-2)" }}
+          style={{
+            borderColor: "var(--hairline)",
+            background: "var(--surface-2)",
+          }}
         >
-{`mention_rate  = review menyebut aspek / total review berteks di tempat itu
-neg_rate      = Wilson lower bound 95% dari (negatif / disebut)
-severity      = mean(rating | aspek disebut) − mean(rating global ${String(corpus.globalMeanRating).replace(".", ",")})
-FrictionIndex = Σ  mention_rate × neg_rate × |severity|   (ditampilkan × 100)`}
+          {pipeline}
         </pre>
-        <p className="mt-3 text-[13px] leading-relaxed text-ink-2">
-          <strong>Wilson lower bound wajib.</strong>{" "}
-          {Math.round(((dist["5"] ?? 0) / Math.max(distTotal, 1)) * 100)}% ulasan
-          berbintang 5 sehingga kelas negatif langka; tanpa koreksi ini, tempat
-          dengan 5 ulasan akan tampak lebih bermasalah daripada tempat dengan
-          800 ulasan. Ini sekaligus jawaban matematis terhadap bias popularitas.
+      </Card>
+
+      <Card className="p-4 sm:p-5">
+        <SectionTitle>Formula Priority</SectionTitle>
+        <pre
+          className="thin-scroll overflow-x-auto rounded-md border p-3 text-[12px] leading-relaxed"
+          style={{
+            borderColor: "var(--hairline)",
+            background: "var(--surface-2)",
+          }}
+        >
+          {formula}
+        </pre>
+        <p className="mt-3 text-[13px] text-ink-2">
+          Bobot original komponen tersedia berjumlah 0,60 dan dinormalisasi
+          menjadi 1,00. Missing data tidak pernah diisi nol atau dianggap
+          kondisi baik.
         </p>
       </Card>
 
-      {/* ------------------------------------------------- distribusi rating */}
       <Card className="p-4 sm:p-5">
-        <SectionTitle hint={`${num(distTotal)} ulasan berbintang`}>
-          Distribusi Rating Korpus
+        <SectionTitle hint={`${corpus.aspects.length} aspek`}>
+          Taxonomy {corpus.taxonomyVersion}
         </SectionTitle>
-        <div className="space-y-2">
-          {(["5", "4", "3", "2", "1"] as const).map((star) => (
-            <Meter
-              key={star}
-              value={dist[star] ?? 0}
-              max={distTotal}
-              label={`★ ${star}`}
-              valueLabel={`${num(dist[star] ?? 0)} (${Math.round(((dist[star] ?? 0) / Math.max(distTotal, 1)) * 100)}%)`}
-            />
+        <div className="grid gap-2 sm:grid-cols-2">
+          {corpus.aspects.map((aspect) => (
+            <div
+              key={aspect.key}
+              className="flex items-center gap-2 rounded-md border px-3 py-2 text-[13px]"
+              style={{ borderColor: "var(--hairline)" }}
+            >
+              <AspectIcon aspect={aspect.key} />
+              <span>{aspect.label}</span>
+              <span className="ml-auto text-[10px] text-muted">
+                {aspect.group}
+              </span>
+            </div>
           ))}
         </div>
-        <p className="mt-3 text-[12px] leading-relaxed text-muted">
-          Ketimpangan ini alasan kelas negatif diperlakukan hati-hati: sinyal
-          keluhan harus dicari pada minoritas ulasan, bukan diasumsikan merata.
-        </p>
       </Card>
 
-      {/* ---------------------------------------------------------- severity */}
       <Card className="p-4 sm:p-5">
-        <SectionTitle>Severity Keluar dari Data — Bukan Ditentukan Manual</SectionTitle>
-        <p className="mb-3 text-[13px] leading-relaxed text-ink-2">
-          Severity tiap aspek = rata-rata rating saat aspek disebut dikurangi
-          rata-rata global. Aspek yang benar-benar menyakitkan menyeret rating
-          paling dalam:
-        </p>
-        <div className="thin-scroll overflow-x-auto">
-          <table className="w-full text-[13px]">
-            <thead>
-              <tr className="text-left text-[11px] uppercase tracking-wide text-muted">
-                <th className="pb-2 font-medium">Aspek</th>
-                <th className="pb-2 text-right font-medium">Dampak rating</th>
-              </tr>
-            </thead>
-            <tbody>
-              {severityRows.map(([key, sev]) => {
-                const positive = sev > 0;
-                return (
-                  <tr
-                    key={key}
-                    className="border-t"
-                    style={{ borderColor: "var(--hairline)" }}
-                  >
-                    <td className="py-1.5">
-                       <AspectIcon aspect={key} className="mr-1.5 inline" />
-                      {positive ? (
-                        <strong>{ASPECT_LABEL[key]}</strong>
-                      ) : (
-                        ASPECT_LABEL[key]
-                      )}
-                    </td>
-                    <td
-                      className="tabular py-1.5 text-right font-medium"
-                      style={positive ? { color: "var(--success-text)" } : undefined}
-                    >
-                      {severityLabel(sev)}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-3 text-[12px] leading-relaxed text-muted">
-          Baris positif adalah uji kewarasan: aspek yang memang disukai
-          (pemandangan) keluar bernilai positif. Metode ini bukan sekadar
-          penghitung kata negatif.
-        </p>
+        <SectionTitle>Traceability</SectionTitle>
+        <dl className="space-y-2 text-[12px]">
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted">Clean reviews</dt>
+            <dd>{num(corpus.totalCleanReviews)}</dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted">Prediksi aspek</dt>
+            <dd>{num(corpus.aspectPredictions)}</dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted">Canonical destinations</dt>
+            <dd>{num(corpus.canonicalDestinations)}</dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted">Actionable destinations/issues</dt>
+            <dd>
+              {num(corpus.actionableDestinations)} /{" "}
+              {num(corpus.actionableIssues)}
+            </dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted">Export SHA-256</dt>
+            <dd className="max-w-[480px] break-all text-right">
+              {corpus.exportSha256}
+            </dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted">Expert judgments</dt>
+            <dd>{corpus.expertJudgmentsCompleted}/25</dd>
+          </div>
+        </dl>
       </Card>
 
-      {/* ---------------------------------------------------- batas kejujuran */}
       <Card className="p-4 sm:p-5">
-        <SectionTitle>Batas Kejujuran Demo Ini</SectionTitle>
+        <SectionTitle>Batas Kejujuran</SectionTitle>
         <ul className="space-y-2.5 text-[13px] leading-relaxed text-ink-2">
           <li>
-             <TriangleAlert size={14} className="mr-1 inline" /> <strong>Skor friksi berasal dari baseline keyword + rating, BUKAN
-            model IndoBERT terlatih.</strong>{" "}
-            Lapisan itu diganti setelah model tahap preliminary selesai, dan
-            macro-F1-nya dilaporkan.
+            <TriangleAlert size={14} className="mr-1 inline" />
+            TF-IDF Macro F1 0,7201 diukur terhadap held-out weak-supervision
+            silver labels, bukan human gold.
           </li>
           <li>
-             <Check size={14} className="mr-1 inline" /> <strong>Nama tempat, koordinat, dan seluruh kutipan ulasan adalah
-            data asli</strong>{" "}
-            dataset panitia. Tidak ada kutipan karangan.
+            <Circle size={12} className="mr-1 inline" />
+            Polarity memakai fallback leksikal dan tidak mengeluarkan
+            probability.
           </li>
           <li>
-             <Circle size={12} className="mr-1 inline" /> {num(noReview)} tempat tidak punya ulasan sama sekali. Mereka{" "}
-            <strong>ditampilkan</strong> sebagai prioritas survei lapangan,
-            bukan disembunyikan.
+            <Circle size={12} className="mr-1 inline" />
+            Severity model tidak tersedia karena support kelas high tidak
+            melewati gate.
           </li>
           <li>
-             <Circle size={12} className="mr-1 inline" /> {num(lowConf)} tempat dengan &lt; 20 ulasan berteks ditandai
-            kepercayaan rendah dan <strong>dikeluarkan dari peringkat publik</strong>{" "}
-            — hanya {num(corpus.rankedCount)} dari {num(places.length)} tempat
-            yang diperingkat.
+            <EyeOff size={14} className="mr-1 inline" />
+            Evidence text ditahan sampai privacy review selesai; aplikasi publik
+            hanya membawa agregat.
           </li>
           <li>
-             <TriangleAlert size={14} className="mr-1 inline" /> Korelasi gap infrastruktur ↔ tingkat keluhan <strong>bukan</strong>{" "}
-            kausalitas. Simulasi Intervensi menampilkan <em>batas atas</em>{" "}
-            perbaikan, bukan prediksi. Uji kausal memerlukan pilot terkendali di
-            satu kecamatan.
+            <TriangleAlert size={14} className="mr-1 inline" />
+            Priority adalah sinyal triase, bukan bukti destinasi buruk,
+            berbahaya, atau tidak layak.
           </li>
           <li>
-             <TriangleAlert size={14} className="mr-1 inline" /> Bias platform: seluruh ulasan berasal dari pengguna Google Maps —
-            condong ke wisatawan muda dan melek digital. Wisatawan lansia dan
-            lokal non-digital tidak terwakili.
+            <Check size={14} className="mr-1 inline" />
+            Unresolved identity dan insufficient data tidak diberi operational
+            priority.
           </li>
         </ul>
       </Card>
 
-      {/* -------------------------------------------------------------- etika */}
       <Card className="p-4 sm:p-5">
-        <SectionTitle>Etika &amp; Privasi</SectionTitle>
-        <ul className="space-y-2 text-[13px] leading-relaxed text-ink-2">
+        <SectionTitle>Responsible AI</SectionTitle>
+        <ul className="space-y-2 text-[13px] text-ink-2">
           <li>
-            Identitas pengulas <strong>tidak disimpan maupun ditampilkan</strong>{" "}
-            di mana pun pada aplikasi ini — kutipan dipotong di sekitar kata
-            kunci aspek tanpa nama, foto, atau tautan profil.
+            Identitas reviewer, review ID, source file, dan source row tidak
+            masuk bundle aplikasi.
           </li>
           <li>
-            Skor friksi menilai <em>pengelolaan tempat</em>, bukan warga atau
-            komunitas. Aspek “keamanan &amp; sikap” dilaporkan agregat, tidak
-            pernah menunjuk individu.
+            Setiap kandidat tindakan tampil sebagai kandidat pending field
+            verification.
           </li>
+          <li>Simulator adalah analisis skenario non-kausal.</li>
           <li>
-            Metode: {corpus.method}.
+            Analyzer adalah sandbox leksikal terpisah dan tidak mengaku sebagai
+            A9.
           </li>
         </ul>
       </Card>
 
       <Note>
-        Regenerasi data:{" "}
-        <code className="text-[11px]">python3 scripts/gen_seed.py src/data</code>{" "}
-        membaca 15 file CSV dataset panitia dan menulis ulang empat berkas JSON
-        di <code className="text-[11px]">src/data/</code>.
+        Regenerasi bundle: <code>npm run data:a9</code>. Generator memverifikasi
+        hash r5, taxonomy, count, identity, coordinates, missing semantics, dan
+        forbidden privacy keys.
       </Note>
     </div>
   );

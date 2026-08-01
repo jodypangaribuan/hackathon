@@ -1,10 +1,10 @@
 # SIPATURE
 
-AI early-warning and intervention system for sustainable tourism quality around Lake Toba.
+AI early-warning and field-verification prioritization for tourism quality around Lake Toba.
 
-The app transforms organizer-provided tourism reviews and destination metadata into explainable
-issue signals, destination evidence, and prioritized field-verification targets. Review-derived
-signals are reports requiring human verification, not scientific measurements or public verdicts.
+The current app integrates the privacy-safe aggregate projection of A9 run
+`20260801-a9-tfidf-lexical-v1-r5`. Reported issues are signals requiring human
+verification, not measurements of field conditions or public verdicts.
 
 ## Run
 
@@ -19,24 +19,32 @@ Open `http://localhost:3100`.
 
 | Route | Feature |
 | --- | --- |
-| `/` | Regional overview, intelligence map, filters, top priorities |
-| `/destinasi/[id]` | Destination score, issue evidence, infrastructure gaps, local simulator |
-| `/intervensi` | Regional intervention and field-verification queue |
-| `/simulator` | Destination-selectable intervention scenario simulator |
-| `/analyzer` | Live review aspect/sentiment analyzer |
-| `/metode` | Scoring method, data audit, limitations, responsible AI |
-| `/umkm` | Supporting local-service opportunities derived from evidence |
+| `/` | A9 overview, map, filters, and actionable destination ranking |
+| `/destinasi/[id]` | Reported issues, explainability, verification, and local scenario |
+| `/intervensi` | Field-verification queue |
+| `/umkm` | Candidate interventions; not investment opportunities |
+| `/simulator` | Non-causal issue-removal scenarios |
+| `/analyzer` | Clearly separated deterministic lexical sandbox |
+| `/metode` | Model contract, traceability, limitations, and Responsible AI |
 
 ## Commands
 
 ```bash
+npm run data:a9
 npm run typecheck
 npm run build
-python3 scripts/gen_seed.py src/data
 ```
 
-## Current model status
+`npm run data:a9` verifies the frozen r5 export hash and generates a sanitized
+application projection. The generated bundle excludes evidence text and all
+review-level identifiers because A9 evidence remains restricted pending privacy
+review.
 
-The UI uses a transparent keyword + rating baseline generated from the organizer dataset. It is a
-stand-in for the planned evaluated IndoBERT aspect, polarity, and severity model. Actual model
-metrics must be reported honestly before replacing the baseline.
+## Model Status
+
+- Aspect model: `tfidf-aspect-silver-v1`.
+- Polarity: deterministic `lexical-polarity-v1` fallback without probability.
+- Severity, facility gap, and feasibility: unavailable and renormalized away.
+- Evaluation reference: weak-supervision silver labels, not human gold.
+- Expert judgments: 0 of 25 prepared cases completed.
+- Application mode: precomputed batch; the analyzer is not the A9 model.

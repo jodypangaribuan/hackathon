@@ -1,36 +1,34 @@
-/**
- * Layar 1 — Peta Friksi (halaman utama).
- * Server component: memuat data di server, mengirim versi RAMPING ke client.
- */
 import type { Metadata } from "next";
 import FrictionExplorer, { type MapPlace } from "@/components/FrictionExplorer";
-import { headlineStats, kabupatenList, places } from "@/lib/data";
-import { num } from "@/lib/format";
+import {
+  corpus,
+  headlineStats,
+  kabupatenList,
+  mappablePlaces,
+} from "@/lib/data";
+import { dateTime, num } from "@/lib/format";
 import { StatTile } from "@/components/ui";
-
 export const metadata: Metadata = {
   title: "Regional Overview — SIPATURE",
-  description:
-    "320 tempat di kawasan Danau Toba, diwarnai menurut tingkat friksi wisatawan.",
+  description: "Sinyal prioritas A9 untuk destinasi kawasan Danau Toba.",
 };
-
 export default function HomePage() {
   const stats = headlineStats();
-
-  const mapPlaces: MapPlace[] = places.map((p) => ({
-    id: p.id,
-    name: p.name,
-    kind: p.kind,
-    lat: p.lat,
-    lon: p.lon,
-    kabupaten: p.kabupaten,
-    frictionScore: p.frictionScore,
-    confidence: p.confidence,
-    topAspects: p.topAspects,
-    nReviewsText: p.nReviewsText,
-    rank: p.rank,
+  const mapPlaces: MapPlace[] = mappablePlaces.map((place) => ({
+    id: place.id,
+    name: place.name,
+    kind: place.kind,
+    lat: place.lat,
+    lon: place.lon,
+    kabupaten: place.kabupaten,
+    priority: place.priority,
+    priorityScore: place.priorityScore,
+    dataConfidence: place.dataConfidence,
+    topAspects: place.topAspects,
+    textReviewCount: place.textReviewCount,
+    allReviewCount: place.allReviewCount,
+    rank: place.rank,
   }));
-
   return (
     <div className="space-y-5">
       <section>
@@ -38,35 +36,35 @@ export default function HomePage() {
           Masalah destinasi mana yang harus diverifikasi lebih dulu?
         </h1>
         <p className="mt-1 max-w-3xl text-[13px] leading-relaxed text-ink-2">
-          SIPATURE mengubah {num(stats.reviews)} ulasan menjadi sinyal peringatan dini
-          yang dapat dijelaskan dan antrean intervensi bagi pengelola destinasi, BPODT,
-          dan pemerintah daerah.
+          SIPATURE mengubah {num(stats.reviews)} review bersih menjadi
+          early-warning signal dan antrean verifikasi yang dapat dijelaskan.
+        </p>
+        <p className="mt-1 text-[11px] text-muted">
+          Model {corpus.modelVersion} · generated {dateTime(corpus.generatedAt)}
         </p>
       </section>
-
       <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <StatTile
-          value={stats.duration !== null ? String(stats.duration).replace(".", ",") : "–"}
-          label="Regional tourism health proxy"
-          sub="Indikator konteks durasi kunjungan dari dataset panitia; bukan pengukuran kausal."
-        />
-        <StatTile
-          value={num(stats.visits)}
-          label="Eksposur kunjungan tahunan"
-          sub="Digunakan sebagai konteks prioritas, bukan satu-satunya penentu."
-        />
-        <StatTile
           value={num(stats.reviewsWithText)}
-          label="Ulasan berteks dianalisis"
-          sub={`Dari ${num(stats.reviews)} ulasan · ${num(stats.placesGeocoded)} tempat berkoordinat.`}
+          label="Review berteks dianalisis"
+          sub={`${num(corpus.reviewsWithPredictions)} review memiliki prediksi aspek.`}
+        />
+        <StatTile
+          value={num(corpus.aspectPredictions)}
+          label="Prediksi aspek"
+          sub={`${num(corpus.destinationsWithSignals)} destinasi memiliki sinyal.`}
         />
         <StatTile
           value={num(stats.ranked)}
-          label="Destinasi dalam antrean prioritas"
-          sub={`${num(stats.noData)} tempat tanpa ulasan ditampilkan sebagai prioritas survei lapangan.`}
+          label="Destinasi actionable"
+          sub={`${num(stats.actionableIssues)} isu lolos evidence gate.`}
+        />
+        <StatTile
+          value={num(stats.placesGeocoded)}
+          label="Destinasi berkoordinat"
+          sub={`${num(stats.canonicalPlaces)} canonical destination · ${num(stats.noData)} lokasi unresolved.`}
         />
       </section>
-
       <FrictionExplorer places={mapPlaces} kabupatenList={kabupatenList} />
     </div>
   );

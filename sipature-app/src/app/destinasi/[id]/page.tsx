@@ -1,12 +1,9 @@
-/**
- * Layar 2 — Rapor Destinasi.
- * Prioritas perbaikan + kutipan verbatim sebagai bukti + gap infrastruktur +
- * Simulasi Intervensi. Server component; hanya InterventionSim yang client.
- */
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ClipboardCheck, EyeOff, MapPin, ShieldAlert } from "lucide-react";
 import InterventionSim from "@/components/InterventionSim";
+import { AspectIcon } from "@/components/AppIcon";
 import {
   Badge,
   Card,
@@ -14,354 +11,254 @@ import {
   LevelBadge,
   Meter,
   Note,
-  Quote,
   SectionTitle,
 } from "@/components/ui";
 import {
-  KIND_LABEL,
+  corpus,
   getPlace,
-  opportunitiesForPlace,
-  rankedPlaces,
+  interventionsForPlace,
+  KIND_LABEL,
 } from "@/lib/data";
 import {
   ASPECT_LABEL,
-  FRICTION_ASPECTS,
-  TREND_META,
-  km,
+  dateTime,
   levelOfPlace,
-  monthsAgoLabel,
   num,
   pct,
   score,
-  severityLabel,
 } from "@/lib/format";
-import { buildRankLadder } from "@/lib/simulate";
-import { AspectIcon, TrendIcon } from "@/components/AppIcon";
-import { Accessibility, BedDouble, Bus, Check, MapPin, Utensils, X } from "lucide-react";
-
 interface Props {
   params: Promise<{ id: string }>;
 }
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const place = getPlace(id);
   return {
     title: place
-      ? `${place.name} — Bukti Destinasi — SIPATURE`
+      ? `${place.name} — SIPATURE`
       : "Tempat tidak ditemukan — SIPATURE",
   };
 }
-
-export default async function DestinasiPage({ params }: Props) {
+export default async function DestinationPage({ params }: Props) {
   const { id } = await params;
   const place = getPlace(id);
   if (!place) notFound();
-
-  const level = levelOfPlace(place);
-  const ladder = buildRankLadder(rankedPlaces.map((p) => p.frictionScore));
-  const opps = opportunitiesForPlace(place.id);
-
-  const frictionRows = place.aspects
-    .filter((a) => a.frictionContrib > 0 && FRICTION_ASPECTS.includes(a.aspect))
-    .sort((a, b) => a.priorityRank - b.priorityRank);
-  const maxContrib = Math.max(...frictionRows.map((a) => a.frictionContrib), 0.0001);
-
-  const positiveRows = place.aspects.filter(
-    (a) => a.aspect === "pemandangan" && a.nMention > 0,
+  const actionable = place.issues.filter(
+    (issue) => issue.priority !== "Insufficient Data",
   );
-
-  const gap = place.infraGap;
-
+  const maxScore = Math.max(
+    ...actionable.map((issue) => issue.priorityScore ?? 0),
+    0.01,
+  );
+  const candidates = interventionsForPlace(place.id);
   return (
     <div className="space-y-5">
       <nav className="text-[12px] text-muted">
-        <Link href="/" className="hover:text-ink">
-          Kembali ke overview
-        </Link>
+        <Link href="/">Kembali ke overview</Link>
       </nav>
-
-      {/* ------------------------------------------------------------ kepala */}
       <header className="flex flex-wrap items-start justify-between gap-4">
-        <div className="min-w-0">
+        <div>
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-[22px] font-semibold tracking-tight">{place.name}</h1>
-            <LevelBadge level={level} />
-            <ConfidenceBadge confidence={place.confidence} />
+            <h1 className="text-[22px] font-semibold tracking-tight">
+              {place.name}
+            </h1>
+            <LevelBadge level={levelOfPlace(place)} />
+            <ConfidenceBadge confidence={place.dataConfidence} />
           </div>
           <p className="mt-1.5 text-[13px] text-ink-2">
             {KIND_LABEL[place.kind]} · {place.kabupaten}
             {place.kecamatan ? ` · Kec. ${place.kecamatan}` : ""}
           </p>
           <div className="mt-2 flex flex-wrap gap-1.5">
-            {place.gmapsRating !== null ? (
-              <Badge>★ {String(place.gmapsRating).replace(".", ",")} Google Maps</Badge>
-            ) : null}
-            <Badge>{num(place.nReviewsText)} ulasan berteks</Badge>
+            <Badge>{num(place.textReviewCount)} review berteks</Badge>
+            <Badge>{num(place.allReviewCount)} seluruh review</Badge>
             {place.entryFee ? <Badge>Tiket: {place.entryFee}</Badge> : null}
             {place.hours ? <Badge>Jam: {place.hours}</Badge> : null}
-            {place.status ? <Badge tone="muted">{place.status}</Badge> : null}
           </div>
         </div>
-        <div className="shrink-0 text-right">
+        <div className="text-right">
           <div className="tabular text-[40px] font-semibold leading-none">
-            {score(place.frictionScore)}
+            {score(place.priorityScore)}
           </div>
-          <div className="mt-1 text-[11px] text-muted">indeks friksi (0–100)</div>
-          {place.rank !== null ? (
-            <div className="tabular mt-1 text-[12px] text-ink-2">
-              Prioritas <span className="font-semibold">#{place.rank}</span> dari{" "}
-              {num(ladder.length)}
-            </div>
-          ) : (
-            <div className="mt-1 max-w-[180px] text-[11px] text-muted">
-              Tidak masuk peringkat publik — sampel terlalu kecil
-            </div>
-          )}
+          <div className="mt-1 text-[11px] text-muted">
+            priority score (0–100)
+          </div>
+          <div className="mt-1 text-[12px] text-ink-2">
+            {place.rank
+              ? `Prioritas #${place.rank} dari ${corpus.actionableDestinations}`
+              : "Tidak masuk antrean actionable"}
+          </div>
         </div>
       </header>
-
-      {place.nReviewsText === 0 ? (
+      {place.canonicalStatus === "unresolved_placeholder" ? (
         <Note>
-          Tempat ini belum memiliki ulasan berteks pada dataset. Ia tetap
-          ditampilkan sebagai <strong>prioritas survei lapangan</strong> —
-          ketiadaan data adalah temuan, bukan alasan menyembunyikan.
+          <MapPin size={13} className="mr-1 inline" />
+          Identitas atau koordinat destinasi belum terselesaikan. Record
+          dipertahankan untuk audit tetapi tidak diberi prioritas operasional.
         </Note>
       ) : null}
-
       <div className="grid gap-4 lg:grid-cols-[1fr_400px]">
-        {/* --------------------------------------------- kolom kiri: aspek */}
-        <div className="min-w-0 space-y-4">
+        <div className="space-y-4">
           <Card className="p-4 sm:p-5">
             <SectionTitle
               hint={
-                frictionRows.length > 0
-                  ? `${frictionRows.length} aspek menyumbang friksi`
+                actionable.length
+                  ? `${actionable.length} isu actionable`
                   : undefined
               }
             >
-              Prioritas Perbaikan
+              Reported Issues
             </SectionTitle>
-            {frictionRows.length === 0 ? (
-              <p className="py-6 text-center text-[13px] text-muted">
-                Tidak ada aspek friksi dengan kontribusi terukur pada ulasan
-                tempat ini.
-              </p>
-            ) : (
+            {actionable.length ? (
               <ol className="space-y-4">
-                {frictionRows.map((a) => {
-                  const t = TREND_META[a.trend];
-                  return (
-                    <li
-                      key={a.aspect}
-                      className="rounded-card border p-3.5"
-                      style={{ borderColor: "var(--hairline)" }}
-                    >
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span aria-hidden className="text-[16px]">
-                          <AspectIcon aspect={a.aspect} />
-                        </span>
-                        <span className="text-[14px] font-semibold">
-                          {ASPECT_LABEL[a.aspect]}
-                        </span>
-                        <span
-                          className="inline-flex items-center gap-1 text-[11px]"
-                          style={{ color: t.tone }}
-                        >
-                           <TrendIcon trend={a.trend} />
-                          <span className="text-muted">{t.label}</span>
-                        </span>
-                        <span className="tabular ml-auto text-[12px] text-muted">
-                          dampak {severityLabel(a.severity)}
-                        </span>
-                      </div>
-
-                      <div className="mt-2.5">
-                        <Meter
-                          value={a.frictionContrib}
-                          max={maxContrib}
-                          label={`${num(a.nMention)} sebutan · ${num(a.nNegative)} negatif · tingkat negatif ${pct(a.negRateWilson)} (Wilson 95%)`}
-                          valueLabel={`+${(a.frictionContrib * 100).toFixed(2).replace(".", ",")} poin`}
-                        />
-                      </div>
-
-                      {a.evidence.length > 0 ? (
-                        <div className="mt-3 space-y-1.5">
-                          {a.evidence.slice(0, 3).map((e, i) => (
-                            <Quote
-                              key={i}
-                              text={e.text}
-                              meta={
-                                <>
-                                  {e.rating !== null ? `★ ${e.rating} · ` : ""}
-                                  {monthsAgoLabel(e.monthsAgo)} · kutipan verbatim
-                                </>
-                              }
-                            />
-                          ))}
+                {actionable.map((issue) => (
+                  <li
+                    key={issue.aspect}
+                    className="rounded-card border p-3.5"
+                    style={{ borderColor: "var(--hairline)" }}
+                  >
+                    <div className="flex flex-wrap items-center gap-2">
+                      <AspectIcon aspect={issue.aspect} />
+                      <span className="text-[14px] font-semibold">
+                        {ASPECT_LABEL[issue.aspect]}
+                      </span>
+                      <LevelBadge
+                        level={levelOfPlace({
+                          ...place,
+                          priority: issue.priority,
+                        })}
+                        size="sm"
+                      />
+                      <span className="ml-auto text-[11px] text-muted">
+                        confidence {pct(issue.meanConfidence, 1)}
+                      </span>
+                    </div>
+                    <div className="mt-2.5">
+                      <Meter
+                        value={issue.priorityScore ?? 0}
+                        max={maxScore}
+                        label={`${num(issue.mentionCount)} sebutan · ${num(issue.negativeCount)} negatif · sinyal keluhan smoothed ${pct(issue.smoothedComplaintRate, 1)}`}
+                        valueLabel={score(issue.priorityScore)}
+                      />
+                    </div>
+                    <p className="mt-3 text-[12px] leading-relaxed text-ink-2">
+                      {issue.explanation}
+                    </p>
+                    <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                      <div
+                        className="rounded-md border p-2.5"
+                        style={{ borderColor: "var(--hairline)" }}
+                      >
+                        <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase text-muted">
+                          <ClipboardCheck size={13} />
+                          Verifikasi berikutnya
                         </div>
-                      ) : null}
-                    </li>
-                  );
-                })}
+                        <p className="text-[12px] text-ink-2">
+                          {issue.recommendedVerification}
+                        </p>
+                      </div>
+                      <div
+                        className="rounded-md border p-2.5"
+                        style={{ borderColor: "var(--hairline)" }}
+                      >
+                        <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase text-muted">
+                          <ShieldAlert size={13} />
+                          Kandidat intervensi
+                        </div>
+                        <p className="text-[12px] text-ink-2">
+                          {issue.candidateIntervention}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-3">
+                      <Note>
+                        <EyeOff size={13} className="mr-1 inline" />
+                        Kutipan evidence ditahan dari aplikasi publik sampai
+                        privacy review selesai. Evidence gate sudah diverifikasi
+                        secara restricted.
+                      </Note>
+                    </div>
+                  </li>
+                ))}
               </ol>
+            ) : (
+              <p className="py-6 text-center text-[13px] text-muted">
+                Belum ada isu yang memenuhi support, identity, dan evidence gate
+                untuk prioritas operasional.
+              </p>
             )}
           </Card>
-
-          {positiveRows.length > 0 ? (
-            <Card className="p-4 sm:p-5">
-              <SectionTitle>Yang Sudah Baik</SectionTitle>
-              {positiveRows.map((a) => (
-                <div key={a.aspect}>
-                  <p className="text-[13px] text-ink-2">
-                     <AspectIcon aspect={a.aspect} className="mr-1 inline" />{" "}
-                    <strong>{ASPECT_LABEL[a.aspect]}</strong> disebut{" "}
-                    {num(a.nMention)} kali dengan dampak rating{" "}
-                    {severityLabel(a.severity)} — kekuatan yang layak dijaga.
-                  </p>
-                  {a.evidence.length > 0 ? (
-                    <div className="mt-2 space-y-1.5">
-                      {a.evidence.slice(0, 2).map((e, i) => (
-                        <Quote
-                          key={i}
-                          text={e.text}
-                          meta={
-                            <>
-                              {e.rating !== null ? `★ ${e.rating} · ` : ""}
-                              {monthsAgoLabel(e.monthsAgo)}
-                            </>
-                          }
-                        />
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-              ))}
-            </Card>
-          ) : null}
-        </div>
-
-        {/* ----------------------------------------- kolom kanan: sim + gap */}
-        <div className="min-w-0 space-y-4">
-          <InterventionSim place={place} ladder={ladder} />
-
           <Card className="p-4 sm:p-5">
-            <SectionTitle>Gap Infrastruktur</SectionTitle>
-            <dl className="space-y-2.5 text-[13px]">
-              <div className="flex items-baseline justify-between gap-3">
-                 <dt className="inline-flex items-center gap-1.5 text-ink-2"><Utensils size={14} />Kuliner terdekat</dt>
-                <dd className="tabular text-right">
-                  {gap.nearestFood ? (
-                    <>
-                      <span className="font-medium">{km(gap.nearestFood.km)}</span>
-                      <span className="block text-[11px] text-muted">
-                        {gap.nearestFood.name}
-                      </span>
-                    </>
-                  ) : (
-                    <span className="text-muted">tidak terdata</span>
-                  )}
+            <SectionTitle>Explainability & Missing Data</SectionTitle>
+            <p className="text-[13px] leading-relaxed text-ink-2">
+              Priority score memakai complaint frequency, model confidence,
+              persistence, dan visitor exposure. Severity, facility gap, dan
+              feasibility tidak tersedia sehingga bobotnya dikeluarkan dan bobot
+              tersedia dinormalisasi ulang.
+            </p>
+            <p className="mt-2 text-[12px] text-muted">
+              Health{" "}
+              {place.healthScore === null
+                ? "tidak tersedia"
+                : place.healthScore.toFixed(1).replace(".", ",")}{" "}
+              adalah kebalikan rata-rata complaint signal yang sudah di-smooth,
+              bukan penilaian kualitas total destinasi.
+            </p>
+          </Card>
+        </div>
+        <div className="space-y-4">
+          <InterventionSim place={place} />
+          <Card className="p-4 sm:p-5">
+            <SectionTitle>Metadata & Provenance</SectionTitle>
+            <dl className="space-y-2 text-[12px]">
+              <div className="flex justify-between gap-3">
+                <dt className="text-muted">Canonical ID</dt>
+                <dd className="break-all text-right">{place.id}</dd>
+              </div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-muted">Status identitas</dt>
+                <dd>{place.canonicalStatus}</dd>
+              </div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-muted">Alamat</dt>
+                <dd className="max-w-[240px] text-right">
+                  {place.address ?? "tidak terdata"}
                 </dd>
               </div>
-              <div className="flex items-baseline justify-between gap-3">
-                 <dt className="inline-flex items-center gap-1.5 text-ink-2"><MapPin size={14} />Kuliner halal terdekat</dt>
-                <dd className="tabular text-right">
-                  {gap.nearestHalalFood ? (
-                    <>
-                      <span className="font-medium">{km(gap.nearestHalalFood.km)}</span>
-                      <span className="block text-[11px] text-muted">
-                        {gap.nearestHalalFood.name}
-                      </span>
-                    </>
-                  ) : (
-                    <span className="text-muted">tidak terdata</span>
-                  )}
-                </dd>
+              <div className="flex justify-between gap-3">
+                <dt className="text-muted">Model</dt>
+                <dd>{corpus.modelVersion}</dd>
               </div>
-              <div className="flex items-baseline justify-between gap-3">
-                 <dt className="inline-flex items-center gap-1.5 text-ink-2"><BedDouble size={14} />Akomodasi terdekat</dt>
-                <dd className="tabular text-right">
-                  {gap.nearestLodging ? (
-                    <>
-                      <span className="font-medium">{km(gap.nearestLodging.km)}</span>
-                      <span className="block text-[11px] text-muted">
-                        {gap.nearestLodging.name}
-                      </span>
-                    </>
-                  ) : (
-                    <span className="text-muted">tidak terdata</span>
-                  )}
-                </dd>
+              <div className="flex justify-between gap-3">
+                <dt className="text-muted">Generated</dt>
+                <dd>{dateTime(corpus.generatedAt)}</dd>
               </div>
-              <div className="flex items-baseline justify-between gap-3">
-                 <dt className="inline-flex items-center gap-1.5 text-ink-2"><Accessibility size={14} />Toilet</dt>
-                <dd>
-                  {gap.hasToilet === null ? (
-                    <span className="text-muted">tidak terdata</span>
-                  ) : gap.hasToilet ? (
-                     <span className="inline-flex items-center gap-1"><Check size={13} />tercatat ada</span>
-                  ) : (
-                    <span style={{ color: "var(--status-critical)" }}>
-                       <span className="inline-flex items-center gap-1"><X size={13} />tidak tercatat</span>
-                    </span>
-                  )}
-                </dd>
+              <div className="flex justify-between gap-3">
+                <dt className="text-muted">Severity</dt>
+                <dd>unavailable</dd>
               </div>
             </dl>
-
-            {gap.publicTransport.length > 0 ? (
-              <div className="mt-4">
-                <div className="mb-1.5 text-[12px] font-medium text-ink-2">
-                   <span className="inline-flex items-center gap-1.5"><Bus size={14} />Angkutan umum tercatat</span>
-                </div>
-                <ul className="space-y-1.5">
-                  {gap.publicTransport.map((r, i) => (
-                    <li
-                      key={i}
-                      className="rounded-md border px-2.5 py-1.5 text-[12px]"
-                      style={{ borderColor: "var(--hairline)" }}
-                    >
-                      <span className="font-medium">{r.name}</span>
-                      <span className="block text-[11px] text-muted">
-                        via {r.via} · {r.hours} · {r.price}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-
-            <div className="mt-3">
-              <Note>
-                Jarak dihitung garis lurus antar koordinat dataset. Korelasi gap
-                infrastruktur ↔ keluhan bukan kausalitas.
-              </Note>
-            </div>
           </Card>
-
-          {opps.length > 0 ? (
+          {candidates.length ? (
             <Card className="p-4 sm:p-5">
-              <SectionTitle hint={`${opps.length} peluang`}>
-                Peluang UMKM di Sini
+              <SectionTitle hint={`${candidates.length} kandidat`}>
+                Kandidat Tindakan
               </SectionTitle>
               <ul className="space-y-2">
-                {opps.map((o) => (
-                  <li key={o.id}>
+                {candidates.map((item) => (
+                  <li key={item.id}>
                     <Link
                       href="/umkm"
-                      className="flex items-start gap-2.5 rounded-md border px-3 py-2 transition-colors hover:bg-surface-2"
+                      className="flex items-start gap-2 rounded-md border px-3 py-2"
                       style={{ borderColor: "var(--hairline)" }}
                     >
-                      <span aria-hidden className="text-[16px]">
-                        {o.icon}
-                      </span>
-                      <span className="min-w-0">
-                        <span className="block text-[13px] font-medium text-ink">
-                          {o.title}
+                      <AspectIcon aspect={item.aspect} />
+                      <span>
+                        <span className="block text-[13px] font-medium">
+                          {item.title}
                         </span>
-                        <span className="block text-[11px] text-muted">
-                          dari keluhan {o.aspectLabel.toLowerCase()} ·{" "}
-                          {num(o.mentionCount)} sebutan
+                        <span className="text-[11px] text-muted">
+                          pending verifikasi lapangan
                         </span>
                       </span>
                     </Link>

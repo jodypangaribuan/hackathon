@@ -3,10 +3,9 @@
  * konsisten satu sistem. Tidak ada warna hex mentah di sini — semuanya token.
  */
 import type { ReactNode } from "react";
-import type { Confidence, LevelSpec, Trend } from "@/lib/types";
-import { CONFIDENCE_LABEL, TREND_META } from "@/lib/format";
+import type { Confidence, LevelSpec } from "@/lib/types";
+import { CONFIDENCE_LABEL } from "@/lib/format";
 import { Check, CircleAlert } from "lucide-react";
-import { TrendIcon } from "@/components/AppIcon";
 
 /* --------------------------------------------------------------- layout */
 
@@ -49,7 +48,7 @@ export function SectionTitle({
 /* ---------------------------------------------------------------- badges */
 
 /**
- * Lencana tingkat friksi. Warna status SELALU disertai ikon + label teks —
+ * Lencana tingkat sinyal. Warna status SELALU disertai ikon + label teks —
  * ini mitigasi wajib karena warning/serious berada di bawah 3:1 pada
  * permukaan terang.
  */
@@ -62,7 +61,8 @@ export function LevelBadge({
   size?: "sm" | "md";
   showLabel?: boolean;
 }) {
-  const pad = size === "sm" ? "px-1.5 py-0.5 text-[11px]" : "px-2 py-1 text-[12px]";
+  const pad =
+    size === "sm" ? "px-1.5 py-0.5 text-[11px]" : "px-2 py-1 text-[12px]";
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-md border font-medium ${pad}`}
@@ -97,7 +97,7 @@ export function Badge({
 }
 
 export function ConfidenceBadge({ confidence }: { confidence: Confidence }) {
-  const weak = confidence === "low" || confidence === "none";
+  const weak = confidence === "low" || confidence === "insufficient";
   return (
     <span
       className="inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[11px]"
@@ -107,21 +107,12 @@ export function ConfidenceBadge({ confidence }: { confidence: Confidence }) {
       }}
       title={
         weak
-          ? "Sampel terlalu kecil — tidak dimasukkan ke peringkat publik."
-          : "Sampel cukup untuk masuk peringkat."
+          ? "Support atau komponen data belum cukup untuk prioritas operasional."
+          : "Support data cukup untuk sinyal operasional."
       }
     >
-      {weak ? <CircleAlert size={12} /> : <Check size={12} />} {CONFIDENCE_LABEL[confidence]}
-    </span>
-  );
-}
-
-export function TrendTag({ trend }: { trend: Trend }) {
-  const t = TREND_META[trend];
-  return (
-    <span className="inline-flex items-center gap-1 text-[11px]" style={{ color: t.tone }}>
-      <TrendIcon trend={trend} />
-      <span className="text-muted">{t.label}</span>
+      {weak ? <CircleAlert size={12} /> : <Check size={12} />}{" "}
+      {CONFIDENCE_LABEL[confidence]}
     </span>
   );
 }
@@ -151,9 +142,15 @@ export function Meter({
     <div>
       {(label || valueLabel) && (
         <div className="mb-1 flex items-baseline justify-between gap-2">
-          {label ? <span className="text-[12px] text-ink-2">{label}</span> : <span />}
+          {label ? (
+            <span className="text-[12px] text-ink-2">{label}</span>
+          ) : (
+            <span />
+          )}
           {valueLabel ? (
-            <span className="tabular text-[12px] font-medium text-ink">{valueLabel}</span>
+            <span className="tabular text-[12px] font-medium text-ink">
+              {valueLabel}
+            </span>
           ) : null}
         </div>
       )}
@@ -193,26 +190,26 @@ export function StatTile({
         {value}
       </div>
       <div className="mt-2 text-[12px] font-medium text-ink-2">{label}</div>
-      {sub ? <div className="mt-1 text-[11px] leading-snug text-muted">{sub}</div> : null}
+      {sub ? (
+        <div className="mt-1 text-[11px] leading-snug text-muted">{sub}</div>
+      ) : null}
     </Card>
   );
 }
 
 /** Kutipan verbatim review — lapisan explainability. */
-export function Quote({
-  text,
-  meta,
-}: {
-  text: string;
-  meta?: ReactNode;
-}) {
+export function Quote({ text, meta }: { text: string; meta?: ReactNode }) {
   return (
     <figure
       className="rounded-md border-l-2 py-1.5 pl-3 pr-2"
       style={{ borderColor: "var(--baseline)", background: "var(--surface-2)" }}
     >
-      <blockquote className="text-[12px] leading-relaxed text-ink-2">“{text}”</blockquote>
-      {meta ? <figcaption className="mt-1 text-[11px] text-muted">{meta}</figcaption> : null}
+      <blockquote className="text-[12px] leading-relaxed text-ink-2">
+        “{text}”
+      </blockquote>
+      {meta ? (
+        <figcaption className="mt-1 text-[11px] text-muted">{meta}</figcaption>
+      ) : null}
     </figure>
   );
 }

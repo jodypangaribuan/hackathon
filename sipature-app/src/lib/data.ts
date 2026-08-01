@@ -1,63 +1,53 @@
-/**
- * Loader data — HANYA dipakai di server component / route handler.
- * Client component menerima data lewat props supaya bundle tetap ramping.
- *
- * Semua data sudah PRECOMPUTED sejak tahap preliminary (lihat EKSEKUSI.md §19).
- * Aplikasi tidak menghitung ulang model saat halaman dibuka.
- */
-import placesJson from "@/data/places.json";
-import opportunitiesJson from "@/data/opportunities.json";
-import corpusJson from "@/data/corpus.json";
-import lexiconJson from "@/data/lexicon.json";
-
+import placesJson from "@/data/generated/a9-places.json";
+import interventionsJson from "@/data/generated/a9-interventions.json";
+import corpusJson from "@/data/generated/a9-corpus.json";
 import type {
-  Place,
-  Opportunity,
-  Corpus,
-  Lexicon,
   AspectKey,
-  PlaceKind,
   Confidence,
+  Corpus,
+  Intervention,
+  Place,
+  PlaceKind,
 } from "./types";
 
-export const places = placesJson as unknown as Place[];
-export const opportunities = opportunitiesJson as unknown as Opportunity[];
-export const corpus = corpusJson as unknown as Corpus;
-export const lexicon = lexiconJson as unknown as Lexicon;
-
-/** Tempat yang punya cukup data untuk masuk peringkat publik. */
-export const rankedPlaces: Place[] = places
-  .filter((p) => p.rank !== null)
+export const places = placesJson as Place[];
+export const interventions = interventionsJson as Intervention[];
+export const corpus = corpusJson as Corpus;
+export const rankedPlaces = places
+  .filter((place) => place.rank !== null)
   .sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0));
+export const mappablePlaces = places.filter(
+  (place): place is Place & { lat: number; lon: number } =>
+    place.lat !== null && place.lon !== null,
+);
 
-export function getPlace(id: string): Place | undefined {
-  return places.find((p) => p.id === id);
+export function getPlace(id: string) {
+  return places.find((place) => place.id === id || place.legacyId === id);
+}
+export function interventionsForPlace(placeId: string) {
+  return interventions.filter((item) => item.placeId === placeId);
 }
 
-export function getOpportunity(id: string): Opportunity | undefined {
-  return opportunities.find((o) => o.id === id);
-}
-
-export function opportunitiesForPlace(placeId: string): Opportunity[] {
-  return opportunities.filter((o) => o.placeId === placeId);
-}
-
-export const kabupatenList: string[] = Array.from(
-  new Set(places.map((p) => p.kabupaten)),
+export const kabupatenList = Array.from(
+  new Set(mappablePlaces.map((place) => place.kabupaten)),
 ).sort();
-
-export const kindList: PlaceKind[] = ["wisata", "kuliner", "akomodasi"];
-
+export const kindList: PlaceKind[] = [
+  "wisata",
+  "kuliner",
+  "akomodasi",
+  "layanan",
+];
 export const KIND_LABEL: Record<PlaceKind, string> = {
   wisata: "Destinasi Wisata",
   kuliner: "Kuliner",
   akomodasi: "Akomodasi",
+  layanan: "Layanan/Belum Terklasifikasi",
 };
-
 export const KIND_SHORT: Record<PlaceKind, string> = {
   wisata: "Wisata",
   kuliner: "Kuliner",
   akomodasi: "Akomodasi",
+  layanan: "Layanan",
 };
 
 export interface PlaceFilter {
@@ -67,35 +57,42 @@ export interface PlaceFilter {
   confidence?: Confidence[];
   query?: string;
 }
-
-export function filterPlaces(all: Place[], f: PlaceFilter): Place[] {
-  const q = (f.query ?? "").trim().toLowerCase();
-  return all.filter((p) => {
-    if (f.kabupaten?.length && !f.kabupaten.includes(p.kabupaten)) return false;
-    if (f.kind?.length && !f.kind.includes(p.kind)) return false;
-    if (f.confidence?.length && !f.confidence.includes(p.confidence)) return false;
-    if (f.aspect) {
-      const a = p.aspects.find((x) => x.aspect === f.aspect);
-      if (!a || a.frictionContrib <= 0) return false;
-    }
-    if (q && !p.name.toLowerCase().includes(q) && !(p.address ?? "").toLowerCase().includes(q)) {
+export function filterPlaces(all: Place[], filter: PlaceFilter) {
+  const query = (filter.query ?? "").trim().toLowerCase();
+  return all.filter((place) => {
+    if (filter.kabupaten?.length && !filter.kabupaten.includes(place.kabupaten))
       return false;
-    }
-    return true;
+    if (filter.kind?.length && !filter.kind.includes(place.kind)) return false;
+    if (
+      filter.confidence?.length &&
+      !filter.confidence.includes(place.dataConfidence)
+    )
+      return false;
+    if (
+      filter.aspect &&
+      !place.issues.some(
+        (issue) =>
+          issue.aspect === filter.aspect &&
+          issue.priority !== "Insufficient Data",
+      )
+    )
+      return false;
+    return (
+      !query ||
+      place.name.toLowerCase().includes(query) ||
+      (place.address ?? "").toLowerCase().includes(query)
+    );
   });
 }
 
-/** Ringkasan angka untuk stat tile di halaman utama. */
 export function headlineStats() {
-  const toba = corpus.kabupaten.find((k) => k.name === "Toba");
   return {
-    duration: toba?.duration ?? null,
-    visits: toba?.visits ?? null,
-    intl: toba?.intl ?? null,
-    reviews: corpus.totalReviews,
-    reviewsWithText: corpus.reviewsWithText,
-    placesGeocoded: corpus.placesGeocoded,
-    ranked: corpus.rankedCount,
-    noData: places.filter((p) => p.confidence === "none").length,
+    reviews: corpus.totalCleanReviews,
+    reviewsWithText: corpus.textualReviewsAnalyzed,
+    placesGeocoded: corpus.geocodedDestinations,
+    canonicalPlaces: corpus.canonicalDestinations,
+    ranked: corpus.actionableDestinations,
+    actionableIssues: corpus.actionableIssues,
+    noData: corpus.unresolvedDestinations,
   };
 }

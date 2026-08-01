@@ -21,14 +21,16 @@ export default function RootLayout({
           style={{ borderColor: "var(--hairline)" }}
         >
           <p>
-            <strong className="text-ink-2">SIPATURE</strong> — AI early-warning and intervention
-            system for sustainable tourism quality. Prototipe Del AI Hackathon 2026.
+            <strong className="text-ink-2">SIPATURE</strong> — AI early-warning
+            and intervention system for sustainable tourism quality. Prototipe
+            Del AI Hackathon 2026.
           </p>
           <p className="mt-1">
-            Nama tempat, koordinat, dan seluruh kutipan ulasan berasal dari dataset panitia
-             yang sebenarnya. Sinyal kualitas pada demo ini dihitung dengan baseline
-            <em> keyword + rating</em> sebagai pengganti sementara keluaran model IndoBERT.
-            Identitas pengulas tidak disimpan maupun ditampilkan.
+            Dashboard memakai batch output A9 r5: TF-IDF aspect, lexical
+            polarity fallback, Bayesian smoothing, dan missing-aware priority.
+            Reported issue bukan vonis kondisi lapangan. Evidence text ditahan
+            pending privacy review dan identitas reviewer tidak masuk bundle
+            aplikasi.
           </p>
         </footer>
       </body>

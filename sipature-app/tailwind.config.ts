@@ -18,7 +18,7 @@ const config: Config = {
         muted: "var(--text-muted)",
         hairline: "var(--hairline)",
         grid: "var(--gridline)",
-        // status (friksi) — tetap, tidak ikut tema
+        // status sinyal — tetap, tidak ikut tema
         good: "var(--status-good)",
         warning: "var(--status-warning)",
         serious: "var(--status-serious)",

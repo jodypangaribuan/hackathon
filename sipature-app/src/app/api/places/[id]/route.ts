@@ -10,15 +10,21 @@
  * generateStaticParams dihitung per permintaan.
  */
 import { NextResponse } from "next/server";
-import { getPlace, opportunitiesForPlace } from "@/lib/data";
+import { getPlace, interventionsForPlace } from "@/lib/data";
 
-export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
+export async function GET(
+  _req: Request,
+  ctx: { params: Promise<{ id: string }> },
+) {
   const { id } = await ctx.params;
   const place = getPlace(id);
 
   if (!place) {
     return NextResponse.json(
-      { error: `Tempat dengan id "${id}" tidak ditemukan.`, code: "PLACE_NOT_FOUND" },
+      {
+        error: `Tempat dengan id "${id}" tidak ditemukan.`,
+        code: "PLACE_NOT_FOUND",
+      },
       { status: 404 },
     );
   }
@@ -26,6 +32,6 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
   return NextResponse.json({
     ...place,
     // Tautan silang ke Layar 3; kosong bila tempat ini tidak menghasilkan peluang.
-    opportunityIds: opportunitiesForPlace(place.id).map((o) => o.id),
+    interventionIds: interventionsForPlace(place.id).map((item) => item.id),
   });
 }

@@ -25,14 +25,14 @@ export async function POST(req: Request) {
     body = await req.json();
   } catch {
     return badRequest(
-      "Body permintaan bukan JSON yang valid. Kirim { \"text\": \"…\" }.",
+      'Body permintaan bukan JSON yang valid. Kirim { "text": "…" }.',
       "INVALID_JSON",
     );
   }
 
   if (typeof body !== "object" || body === null || Array.isArray(body)) {
     return badRequest(
-      "Body harus berupa objek JSON { \"text\": \"…\" }.",
+      'Body harus berupa objek JSON { "text": "…" }.',
       "INVALID_BODY",
     );
   }
@@ -57,5 +57,7 @@ export async function POST(req: Request) {
     );
   }
 
-  return NextResponse.json(analyzeText(text));
+  return NextResponse.json(analyzeText(text), {
+    headers: { "Cache-Control": "no-store" },
+  });
 }

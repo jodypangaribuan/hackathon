@@ -1,217 +1,164 @@
-/**
- * Tipe data SIPATURE — mencerminkan persis skema JSON di src/data/.
- * JSON dihasilkan oleh scripts/gen_seed.py dari dataset asli panitia.
- */
-
-export type PlaceKind = "wisata" | "kuliner" | "akomodasi";
-export type Confidence = "high" | "medium" | "low" | "none";
-export type Trend = "naik" | "turun" | "stabil";
-
-/** Kunci aspek yang dikenali model. `pemandangan` bukan aspek friksi. */
+export type PlaceKind = "wisata" | "kuliner" | "akomodasi" | "layanan";
+export type Confidence = "high" | "medium" | "low" | "insufficient";
+export type Priority =
+  "Critical" | "High" | "Medium" | "Monitor" | "Insufficient Data";
 export type AspectKey =
-  | "kebersihan"
-  | "harga_pungli"
-  | "toilet_sanitasi"
-  | "parkir"
-  | "akses_jalan"
-  | "ramah_keluarga"
-  | "halal_muslim"
-  | "rumah_ibadah"
-  | "jam_operasional"
-  | "keamanan_sikap"
-  | "pemandangan";
+  | "cleanliness"
+  | "waste"
+  | "sanitation"
+  | "crowding"
+  | "access"
+  | "parking"
+  | "public_facilities"
+  | "scenery"
+  | "comfort"
+  | "safety"
+  | "price_transparency"
+  | "staff_service"
+  | "maintenance"
+  | "opening_hours";
 
-export interface Evidence {
-  /** Kutipan verbatim review asli, dipotong di sekitar kata kunci aspek. */
-  text: string;
-  rating: number | null;
-  monthsAgo: number | null;
+export interface PriorityComponent {
+  value: number | null;
+  original_weight: number;
+  effective_weight: number;
+  contribution: number;
 }
 
-export interface AspectRow {
+export interface Issue {
   aspect: AspectKey;
-  /** Jumlah review yang menyebut aspek ini. */
-  nMention: number;
-  /** Jumlah di antaranya yang bernada negatif (rating <= 3). */
-  nNegative: number;
-  negRateRaw: number;
-  /** Wilson lower bound 95% — menghukum sampel kecil. Ini yang dipakai. */
-  negRateWilson: number;
-  /** mean(rating | aspek disebut) - mean(rating global). Negatif = menyeret rating. */
-  severity: number;
-  mentionRate: number;
-  /** mentionRate x negRateWilson x |severity| */
-  frictionContrib: number;
-  trend: Trend;
-  evidence: Evidence[];
-  priorityRank: number;
-}
-
-export interface NearestPlace {
-  km: number;
-  name: string;
-}
-
-export interface TransportRoute {
-  name: string;
-  hours: string;
-  price: string;
-  via: string;
-}
-
-export interface InfraGap {
-  nearestFood: NearestPlace | null;
-  nearestHalalFood: NearestPlace | null;
-  nearestLodging: NearestPlace | null;
-  /** null = tidak terdata di sheet 'waktu operasional destinasi'. */
-  hasToilet: boolean | null;
-  publicTransport: TransportRoute[];
+  mentionCount: number;
+  negativeCount: number;
+  textReviewCount: number;
+  allReviewCount: number;
+  smoothedComplaintRate: number;
+  meanConfidence: number;
+  dataConfidence: Confidence;
+  priority: Priority;
+  priorityScore: number | null;
+  priorityComponents: Record<string, PriorityComponent>;
+  explanation: string;
+  recommendedVerification: string;
+  candidateIntervention: string;
+  severityStatus: "unavailable_no_supported_model";
+  evidenceStatus: "withheld_pending_privacy_review";
 }
 
 export interface Place {
   id: string;
+  legacyId: string | null;
   name: string;
   kind: PlaceKind;
-  lat: number;
-  lon: number;
+  lat: number | null;
+  lon: number | null;
+  canonicalStatus: "metadata_anchor" | "unresolved_placeholder";
   type: string;
   entryFee: string | null;
   hours: string | null;
   address: string | null;
   gmapsRating: number | null;
   status: string | null;
-  facilities?: string | null;
+  facilities: string | null;
   kabupaten: string;
   kecamatan: string | null;
-  infraGap: InfraGap;
-  /** Indeks mentah (0–0,35). Untuk tampilan pakai frictionScore. */
-  frictionIndex: number;
-  /** frictionIndex x 100 — skala 0–100 yang enak dibaca. */
-  frictionScore: number;
-  nReviewsText: number;
-  confidence: Confidence;
-  aspects: AspectRow[];
+  priority: Priority;
+  priorityScore: number | null;
+  healthScore: number | null;
+  concernScore: number | null;
+  dataConfidence: Confidence;
+  textReviewCount: number;
+  allReviewCount: number;
+  issues: Issue[];
   topAspects: AspectKey[];
-  /** null bila confidence low/none (tidak masuk peringkat publik). */
   rank: number | null;
 }
 
-export interface Opportunity {
+export interface Intervention {
   id: string;
-  title: string;
-  icon: string;
-  category: string;
-  aspect: AspectKey;
-  aspectLabel: string;
   placeId: string;
   placeName: string;
   kabupaten: string;
-  lat: number;
-  lon: number;
-  evidenceCount: number;
+  aspect: AspectKey;
+  aspectLabel: string;
+  category: string;
+  title: string;
+  verification: string;
+  explanation: string;
   mentionCount: number;
-  negRate: number;
-  why: string;
-  gapKm: number | null;
-  competitorNote: string;
-  marketProxy: string;
-  kabupatenVisits: number | null;
-  budgetBand: string | null;
-  investEstimate: string;
-  score: number;
-  evidence: string[];
+  negativeCount: number;
+  smoothedComplaintRate: number;
+  dataConfidence: Confidence;
+  priority: Priority;
+  priorityScore: number;
+  evidenceStatus: "withheld_pending_privacy_review";
   rank: number;
 }
 
-export interface KabupatenStat {
-  name: string;
-  visits: number;
-  intl: number;
-  /** Hanya baris Toba yang terisi di dataset panitia. */
-  duration: number | null;
-  budget: string;
-}
-
-export interface AspectMeta {
-  key: AspectKey;
-  label: string;
-  icon: string;
-}
-
 export interface Corpus {
-  totalReviews: number;
-  reviewsWithText: number;
-  placesGeocoded: number;
-  globalMeanRating: number;
-  ratingDistribution: Record<string, number>;
-  severity: Record<string, number>;
-  aspects: AspectMeta[];
-  kabupaten: KabupatenStat[];
-  generatedFrom: string;
+  schemaVersion: string;
+  modelVersion: string;
+  generatedAt: string;
+  sourceManifest: string;
+  exportSha256: string;
+  taxonomyVersion: string;
+  totalCleanReviews: number;
+  textualReviewsAnalyzed: number;
+  reviewsWithPredictions: number;
+  aspectPredictions: number;
+  canonicalDestinations: number;
+  geocodedDestinations: number;
+  unresolvedDestinations: number;
+  destinationsWithSignals: number;
+  actionableDestinations: number;
+  actionableIssues: number;
+  aspectModel: string;
+  polarityModel: string;
+  polarityProbabilityAvailable: false;
+  severityStatus: "unavailable_no_supported_model";
+  expertJudgmentsCompleted: number;
+  evidenceStatus: "withheld_pending_privacy_review";
+  limitations: string[];
+  aspects: { key: AspectKey; label: string; group: string }[];
   method: string;
-  maxFrictionScore: number;
-  rankedCount: number;
 }
 
-export interface LexiconEntry {
-  label: string;
-  icon: string;
-  pattern: string;
-  severity: number;
-  isFriction: boolean;
-}
-
-export interface Lexicon {
-  aspects: Record<string, LexiconEntry>;
-  samples: string[];
-}
-
-/* ---------------------------------------------------------- tingkat friksi */
-
-export type FrictionLevel = "none" | "rendah" | "sedang" | "serius" | "kritis";
-
+export type SignalLevel = "none" | "monitor" | "medium" | "high" | "critical";
 export interface LevelSpec {
-  key: FrictionLevel;
-  /** Label teks — WAJIB ikut ditampilkan; warna tidak pernah sendirian. */
+  key: SignalLevel;
   label: string;
   icon: string;
   colorVar: string;
-  min: number;
-  max: number;
 }
-
-/* ------------------------------------------------------------ kontrak API */
 
 export interface AnalyzeHit {
   aspect: AspectKey;
   label: string;
-  icon: string;
   sentiment: "positif" | "negatif" | "netral";
-  score: number;
-  severity: number;
-  isFriction: boolean;
-  evidence: string[];
+  matchScore: number;
+  snippets: string[];
 }
-
 export interface AnalyzeResult {
+  method: "lexical_demo_v1";
+  modelVersion: null;
   text: string;
   hits: AnalyzeHit[];
   latencyMs: number;
-  /** true bila tidak ada satu pun kata kunci aspek yang cocok. */
-  keywordBaselineWouldMiss: boolean;
   note: string;
-}
-
-export interface SimulateRequest {
-  placeId: string;
-  fixes: AspectKey[];
 }
 
 export interface SimulateResult {
   placeId: string;
   placeName: string;
-  before: { score: number; rank: number | null };
-  after: { score: number; rank: number | null };
-  removed: { aspect: AspectKey; label: string; delta: number }[];
+  before: {
+    healthScore: number | null;
+    priority: Priority;
+    priorityScore: number | null;
+  };
+  after: {
+    healthScore: number | null;
+    priority: Priority;
+    priorityScore: number | null;
+  };
+  removed: { aspect: AspectKey; label: string }[];
   caveat: string;
 }

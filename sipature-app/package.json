@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start -p 3100",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "data:a9": "node scripts/generate-a9-data.mjs"
   },
   "dependencies": {
     "leaflet": "^1.9.4",

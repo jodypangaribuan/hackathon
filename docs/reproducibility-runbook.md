@@ -134,7 +134,7 @@ sipature-ml run prioritize
 sipature-ml run export-app
 ```
 
-Inventory, EDA, cleaning, entity resolution, silver annotation, A6 grouped split, and keyword/TF-IDF baseline commands are implemented and tested. IndoBERT and downstream commands intentionally fail fast until implemented. Declaring a command is not evidence that its stage has been completed.
+Inventory, EDA, cleaning, entity resolution, silver annotation, A6 grouped split, and keyword/TF-IDF baseline commands are implemented and tested. The IndoBERT command is implementation-ready for Colab GPU execution and is restricted to hash-verified train/validation inputs; it has not been executed, and no trained-model claims are made. See `indobert-training-runbook.md`. Downstream commands remain pending. Declaring or implementing a command is not evidence that training or evaluation completed.
 
 ## Run Identity
 

@@ -19,6 +19,7 @@ from .config import load_config
 from .eda import run_eda
 from .entity_resolution import run_entity_resolution
 from .environment import build_environment_snapshot, write_environment_snapshot
+from .indobert import run_indobert_training
 from .inventory import inventory_dataset, write_inventory
 from .paths import PATHS
 from .quality_figures import (
@@ -103,6 +104,13 @@ def build_parser() -> argparse.ArgumentParser:
     baselines.add_argument("--split-dir", type=Path, default=PATHS.splits)
     baselines.add_argument("--artifact-dir", type=Path, default=PATHS.artifacts)
     baselines.add_argument("--figure-dir", type=Path, required=True)
+
+    indobert = subparsers.add_parser(
+        "train-indobert", help="Train IndoBERT tasks on train/validation only (GPU)"
+    )
+    indobert.add_argument("--split-dir", type=Path, default=PATHS.splits)
+    indobert.add_argument("--artifact-dir", type=Path, default=PATHS.artifacts)
+    indobert.add_argument("--run-id")
 
     snapshot = subparsers.add_parser("snapshot-run", help="Write run environment metadata")
     snapshot.add_argument("--output", type=Path, required=True)
@@ -191,6 +199,10 @@ def main() -> int:
         result = run_baselines(args.split_dir, args.artifact_dir, args.figure_dir)
         print(json.dumps(result, indent=2))
         return 0
+    if args.command == "train-indobert":
+        result = run_indobert_training(args.split_dir, args.artifact_dir, args.run_id)
+        print(json.dumps(result, indent=2))
+        return 0
     if args.command == "snapshot-run":
         output = write_environment_snapshot(args.output)
         print(output)
@@ -241,6 +253,10 @@ def main() -> int:
         Stage.EVALUATE.value,
     }:
         result = run_baselines(PATHS.splits, PATHS.artifacts, args.figure_dir)
+        print(json.dumps(result, indent=2))
+        return 0
+    if args.command == "run" and args.stage == Stage.TRAIN_INDOBERT.value:
+        result = run_indobert_training(PATHS.splits, PATHS.artifacts)
         print(json.dumps(result, indent=2))
         return 0
     raise NotImplementedError(

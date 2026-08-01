@@ -148,6 +148,8 @@ Semua anggota wajib memahami problem, data, model, metrics, limitation, arsitekt
 
 ## A7. IndoBERT Training
 
+Catatan 2026-08-01: kode, helper murni, konfigurasi, CLI, dan notebook orkestrasi A7 telah divalidasi lokal tanpa download/training model; eksekusi GPU Colab dan seluruh output yang bergantung pada training masih pending.
+
 - [ ] Pilih model ID; dokumentasikan lisensi, tokenizer, dan size.
 - [ ] Aktifkan Colab GPU; simpan environment versions.
 - [ ] Pilih max length berdasarkan review-length EDA.

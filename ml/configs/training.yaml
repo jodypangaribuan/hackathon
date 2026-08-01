@@ -18,8 +18,14 @@ baselines:
     max_iter: 2000
 
 indobert:
-  model_id: "[SELECT_AND_RECORD_LICENSE_BEFORE_TRAINING]"
+  output_version: "indobert-silver-v1"
+  model_id: "indobenchmark/indobert-base-p1"
+  revision: "c2cd0b51ddce6580eb35263b39b0a1e5fb0a39e2"
+  license: "MIT"
+  parameter_count: 124500000
+  tokenizer: "BertTokenizer (WordPiece)"
   max_length: 192
+  max_length_basis: "Confirm with tokenizer report; word EDA train+validation p95=103, p99=210."
   batch_size: 16
   gradient_accumulation_steps: 2
   learning_rate: 0.00002
@@ -29,6 +35,9 @@ indobert:
   early_stopping_patience: 2
   mixed_precision: fp16
   aspect_loss: weighted_bce
+  classification_loss: weighted_cross_entropy
+  severity_min_train_per_class: 20
+  severity_min_validation_per_class: 5
 
 thresholds:
   tune_per_label_on_validation: true

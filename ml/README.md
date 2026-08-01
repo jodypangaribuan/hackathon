@@ -40,6 +40,8 @@ make annotation-sample
 make silver-annotate
 make split-silver
 make baselines
+# GPU/Colab only; downloads the pinned model and trains
+make train-indobert
 ```
 
 Python 3.10 or newer is required. Google Colab's current Python runtime is compatible.
@@ -60,6 +62,7 @@ make snapshot     # persist the current run environment
 make inventory    # run source inventory
 make split-silver # create locked destination/repeated-text-safe splits
 make baselines    # train/evaluate keyword and TF-IDF against silver
+make train-indobert # GPU train/validation only; locked test remains unopened
 ```
 
 Full local/Colab instructions and intermediate checkpoint rules are in `../docs/reproducibility-runbook.md`.
@@ -73,4 +76,4 @@ Full local/Colab instructions and intermediate checkpoint rules are in `../docs/
 - Do not call baseline outputs trained-model predictions.
 - The Next.js app consumes exported product data through `contracts/app-export.schema.json`.
 
-Current status: A1-A6 data, silver annotation, grouped split, and keyword/TF-IDF baseline stages are implemented. IndoBERT and downstream intelligence stages remain pending.
+Current status: A1-A6 data, silver annotation, grouped split, and keyword/TF-IDF baseline stages are implemented. The A7 IndoBERT code and Colab orchestration are implementation-ready and locally validated without model download; GPU training and all resulting claims remain pending. See `../docs/indobert-training-runbook.md`.

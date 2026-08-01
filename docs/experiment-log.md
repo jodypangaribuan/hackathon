@@ -57,3 +57,16 @@ Append one section per experiment. Do not rewrite failed experiments.
 - Error analysis: Review-level FP/FN records and deterministic 50-case queues remain restricted in controlled Drive storage; manual linguistic and reputational-risk coding is pending.
 - Decision: Reject the IndoBERT aspect head as the final aspect detector for this benchmark; keep TF-IDF as the current learned aspect candidate and retain IndoBERT polarity as a separate candidate.
 - Rationale and next action: The contextual aspect model underperformed TF-IDF while requiring more compute. Do not retune from locked-test results. Complete manual restricted error audit, then define the A9 production contract using TF-IDF aspect detection and an explicitly versioned polarity decision.
+
+### `20260801-a9-tfidf-lexical-v1-r5` — Full-Corpus Signals and Missing-Aware Priority
+
+- Date/owner: 1 August 2026 / SIPATURE ML pipeline.
+- Hypothesis: The A8-selected TF-IDF aspect model can produce traceable destination signals and evidence-gated priorities across the canonical corpus without treating missing severity, facility, or identity data as favorable.
+- Data/annotation/split version: 22,169 canonical reviews, including 12,234 textual reviews; 388 canonical technical destination IDs.
+- Config and git commit: `ml/configs/a9.yaml` version `a9-tfidf-lexical-v1.0.4`; uncommitted workspace at execution time.
+- Hardware/runtime: Local CPU; scikit-learn 1.7.2 enforced to match the serialized TF-IDF artifact.
+- Metrics artifact: restricted `ml/artifacts/a9/20260801-a9-tfidf-lexical-v1-r5/`; safe summary `docs/evidence/a9/20260801-a9-tfidf-lexical-v1-r5/summary.json`.
+- Result: 9,785 aspect predictions for 5,942 textual reviews; 1,682 destination-aspect signals; 210 evidence-backed actionable issues across 103 destinations. Zero unresolved placeholders received operational priority. Exposure includes all 22,169 clean records. Top-20 sensitivity Jaccard was 0.8182–1.0000 under +20% one-at-a-time weight perturbations.
+- Error analysis: A deterministic 25-destination restricted expert queue was prepared; no human judgments or system-level expert metrics are available yet.
+- Decision: Keep r5 as the A9 quantitative candidate; do not integrate the restricted export into the app until expert/privacy and A10 compatibility gates pass.
+- Rationale and next action: r1 was rejected because destination priority was not propagated after evidence gating. R2 was rejected because every unique duplicate-group ID incorrectly received a duplicate discount. R3 fixed both issues but retained unsupported polarity/feasibility numeric placeholders. R4 removed those pseudo-values but used textual-review counts as exposure. R5 uses all clean reviews for exposure, records config/code hashes in stage manifests, and passed schema/hash/privacy gates. Polarity remains an explicitly lexical fallback; severity, facility gap, and feasibility remain unavailable.

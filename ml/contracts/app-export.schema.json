@@ -3,25 +3,69 @@
   "$id": "https://sipature.local/schemas/app-export.schema.json",
   "title": "SIPATURE application export",
   "type": "object",
-  "required": ["schema_version", "model_version", "generated_at", "destinations"],
+  "required": ["schema_version", "model_version", "generated_at", "source_manifest", "limitations", "destinations"],
   "properties": {
-    "schema_version": { "type": "string" },
-    "model_version": { "type": "string" },
+    "schema_version": { "type": "string", "pattern": "^1\\." },
+    "model_version": { "type": "string", "minLength": 1 },
     "generated_at": { "type": "string", "format": "date-time" },
-    "source_manifest": { "type": "string" },
+    "source_manifest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "limitations": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
     "destinations": {
       "type": "array",
       "items": {
         "type": "object",
         "required": ["destination_id", "name", "data_confidence", "priority", "issues"],
         "properties": {
-          "destination_id": { "type": "string" },
-          "name": { "type": "string" },
+          "destination_id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "kind": { "type": "string", "minLength": 1 },
+          "latitude": { "type": ["number", "null"] },
+          "longitude": { "type": ["number", "null"] },
           "data_confidence": { "enum": ["high", "medium", "low", "insufficient"] },
           "priority": { "enum": ["Critical", "High", "Medium", "Monitor", "Insufficient Data"] },
-          "issues": { "type": "array" }
+          "priority_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+          "health_score": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["aspect", "mention_count", "negative_count", "severe_count", "text_review_count", "all_review_count", "smoothed_complaint_rate", "mean_confidence", "data_confidence", "priority", "priority_score", "priority_components", "severity_status", "explanation", "recommended_verification", "candidate_intervention", "evidence"],
+              "properties": {
+                "aspect": { "type": "string", "minLength": 1 },
+                "mention_count": { "type": "integer", "minimum": 0 },
+                "negative_count": { "type": "integer", "minimum": 0 },
+                "severe_count": { "type": "null" },
+                "text_review_count": { "type": "integer", "minimum": 0 },
+                "all_review_count": { "type": "integer", "minimum": 0 },
+                "smoothed_complaint_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+                "mean_confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+                "data_confidence": { "enum": ["high", "medium", "low", "insufficient"] },
+                "priority": { "enum": ["Critical", "High", "Medium", "Monitor", "Insufficient Data"] },
+                "priority_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+                "priority_components": { "type": "object" },
+                "severity_status": { "const": "unavailable_no_supported_model" },
+                "explanation": { "type": "string", "minLength": 1 },
+                "recommended_verification": { "type": "string", "minLength": 1 },
+                "candidate_intervention": { "type": "string", "minLength": 1 },
+                "evidence": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["text", "aspect_probability", "published_date_estimate"],
+                    "properties": {
+                      "text": { "type": "string", "minLength": 1, "maxLength": 240 },
+                      "aspect_probability": { "type": "number", "minimum": 0, "maximum": 1 },
+                      "published_date_estimate": { "type": ["string", "null"] }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          }
         },
-        "additionalProperties": true
+        "additionalProperties": false
       }
     }
   },

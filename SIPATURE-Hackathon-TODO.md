@@ -187,23 +187,25 @@ Catatan 2026-08-01: kalibrasi validation dibekukan dan run `20260801_indobert-si
 
 ## A9. Inference, Aggregation, dan Priority Engine
 
-- [ ] Batch infer semua textual reviews memakai locked model.
-- [ ] Simpan probabilities, labels, version, timestamp, provenance.
-- [ ] Hubungkan ke canonical destination.
-- [ ] Pilih verbatim high-confidence evidence; hapus reviewer identity.
-- [ ] Terapkan duplicate, freshness, severity weights.
-- [ ] Hitung mention, negative, severe counts/rates.
-- [ ] Terapkan Bayesian smoothing dan data-sufficiency rules.
-- [ ] Hitung component/overall health; missing bukan nilai baik.
-- [ ] Hitung transparent priority dari severity, frequency, confidence, persistence, exposure, gap, feasibility.
-- [ ] Renormalisasi bobot jika feature missing.
-- [ ] Map issue ke field verification dan candidate intervention.
-- [ ] Buat 20–30 expert-reviewed destination cases.
+Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 12.234 textual reviews dengan TF-IDF aspect terkunci dan fallback `lexical-polarity-v1`. Run menghasilkan 9.785 prediksi aspek, 1.682 sinyal, dan 210 issue actionable pada 103 destinasi setelah evidence gate. Severity, facility gap, dan feasibility tetap unavailable; unresolved destination tidak diranking. Exposure memakai seluruh 22.169 clean records, termasuk rating-only context. Queue 25 kasus telah disiapkan, tetapi belum dinilai ahli dan export belum menggantikan baseline aplikasi.
+
+- [x] Batch infer semua textual reviews memakai locked model.
+- [x] Simpan probabilities, labels, version, timestamp, provenance.
+- [x] Hubungkan ke canonical destination.
+- [x] Pilih verbatim high-confidence evidence; hapus reviewer identity dari export.
+- [x] Terapkan duplicate dan freshness weights; severity dinyatakan unavailable.
+- [x] Hitung mention dan negative counts/rates; severe count dinyatakan unavailable.
+- [x] Terapkan Bayesian smoothing dan data-sufficiency rules.
+- [x] Hitung component/overall health; missing bukan nilai baik.
+- [x] Hitung transparent priority dari komponen yang tersedia dan tandai komponen missing.
+- [x] Renormalisasi bobot jika feature missing dan turunkan confidence.
+- [x] Map issue ke field verification dan candidate intervention.
+- [ ] Selesaikan review ahli untuk 25 destination cases yang telah disiapkan.
 - [ ] Hitung evidence correctness, unsupported alerts, intervention relevance.
 - [ ] Hitung NDCG/rank correlation jika expert ranking tersedia.
-- [ ] Jalankan sensitivity analysis bobot.
+- [x] Jalankan sensitivity analysis bobot.
 
-**Gate:** setiap top alert punya evidence, confidence, data status, dan explanation.
+**Gate teknis:** terpenuhi — setiap alert actionable memiliki evidence, confidence, data status, explanation, dan recommended verification; unresolved identity tidak diranking. **Gate manusia:** belum terpenuhi sampai 25 kasus dinilai dan metrik expert tersedia.
 
 ## A10. Preliminary Product
 

@@ -2,9 +2,9 @@
 
 **Dataset version:** `eda-v0.1.0`
 **Generated from:** `ml/artifacts/reports/eda_summary.json`
-**Last updated:** 28 Juli 2026
+**Last updated:** 1 Agustus 2026
 
-Field definitions below are the canonical contract proposed from inventory/EDA. Raw source values remain preserved; cleaning and entity-resolution outputs do not yet exist.
+Field definitions below cover canonical cleaning/entity outputs and the A9 production contract. Raw source values remain preserved in restricted storage.
 
 ## Source Files
 
@@ -53,7 +53,18 @@ Field definitions below are the canonical contract proposed from inventory/EDA. 
 
 ## Prediction and Signal Schema
 
-`[ADD REVIEW PREDICTION, DESTINATION-ASPECT SIGNAL, HEALTH, PRIORITY, AND EVIDENCE FIELDS AFTER IMPLEMENTATION.]`
+| Entity/field | Type | Missing semantics | Definition |
+| --- | --- | --- | --- |
+| Review prediction `predictions` | array | Empty means no aspect crossed its threshold | TF-IDF aspect probability, lexical polarity, explicit severity-unavailable status |
+| Signal `mention_count` | integer | Zero/absent signal is not evidence of good condition | Number of detected aspect mentions |
+| Signal `negative_count` | integer | N/A | Lexical-negative mentions among detected aspects |
+| Signal `severe_count` | null | No supported severity model | Never coerced to zero |
+| Signal `smoothed_complaint_rate` | float 0–1 | Insufficient support remains labeled | Bayesian-smoothed weighted negative rate |
+| Signal `data_confidence` | enum | `insufficient` is not healthy | `high`, `medium`, `low`, or `insufficient` |
+| Priority `priority_score` | float 0–1/null | Null when insufficient | Renormalized sum of available transparent components |
+| Priority `priority_components` | object | Missing components omitted and documented | Values, original/effective weights, and contributions |
+| Evidence `text` | string | Empty evidence blocks actionable priority | Anonymous verbatim span; full provenance remains restricted |
+| Destination `health_score` | float 0–100/null | Null when insufficient | Inverse mean smoothed complaint rate over usable issues |
 
 ## Controlled Vocabularies
 

@@ -1,0 +1,85 @@
+a9_version: "a9-tfidf-lexical-v1.0.4"
+schema_version: "1.0.0"
+taxonomy_version: "1.0.0-rc1"
+
+models:
+  aspect:
+    version: "tfidf-aspect-silver-v1"
+    required_sklearn_version: "1.7.2"
+    model_sha256: "9132efbf60f24c234571902026d9d0e1d88a0a4911098efb955d50e2c5a07606"
+    manifest_sha256: "61df6aa0b0064b163d86b88f197731ff179c7217e8d1d8d428dc95fe3c8097ce"
+  polarity:
+    version: "lexical-polarity-v1"
+    method: "aspect_conditioned_context_cues"
+    limitation: "Deterministic fallback, not the IndoBERT polarity model."
+  severity:
+    status: "unavailable_no_supported_model"
+
+inference:
+  evidence_min_aspect_probability: 0.70
+
+aggregation:
+  bayesian_alpha: 10.0
+  freshness_half_life_days: 730
+  duplicate_discount: 0.50
+  evidence_per_issue: 3
+  evidence_max_chars: 240
+  persistence_recent_days: 730
+  minimum_mentions:
+    low: 3
+    medium: 10
+    high: 30
+
+priority:
+  labels:
+    Critical: 0.75
+    High: 0.55
+    Medium: 0.35
+    Monitor: 0.0
+  minimum_issue_mentions: 3
+  minimum_available_weight: 0.45
+  top_issues_per_destination: 5
+
+interventions:
+  cleanliness:
+    verification: "Periksa kebersihan area dan jadwal pembersihan."
+    candidate: "Perkuat SOP, jadwal, dan bukti inspeksi kebersihan."
+  waste:
+    verification: "Periksa titik penumpukan dan alur pengangkutan sampah."
+    candidate: "Tambah titik pemilahan dan jadwal pengangkutan terukur."
+  sanitation:
+    verification: "Periksa toilet, air bersih, drainase, dan log perawatan."
+    candidate: "Prioritaskan perbaikan sanitasi dan inspeksi berkala."
+  crowding:
+    verification: "Periksa antrean dan kepadatan pada jam puncak."
+    candidate: "Uji pengaturan antrean dan kapasitas kunjungan."
+  access:
+    verification: "Periksa kondisi rute, medan, dan penunjuk arah."
+    candidate: "Koordinasikan perbaikan akses dan informasi rute."
+  parking:
+    verification: "Periksa kapasitas, keamanan, tarif, dan pengelolaan parkir."
+    candidate: "Tata ulang parkir dan tampilkan tarif secara jelas."
+  public_facilities:
+    verification: "Periksa fasilitas publik dan aksesibilitas yang tercatat."
+    candidate: "Susun perbaikan fasilitas berdasarkan hasil inspeksi."
+  scenery:
+    verification: "Periksa apakah kualitas pandangan terganggu atau terawat."
+    candidate: "Lindungi titik pandang dan tata area foto secara aman."
+  comfort:
+    verification: "Periksa panas, kebisingan, ventilasi, dan area istirahat."
+    candidate: "Uji perbaikan kenyamanan sesuai temuan lapangan."
+  safety:
+    verification: "Periksa risiko cedera, kriminalitas, dan titik berbahaya."
+    candidate: "Terapkan mitigasi keselamatan setelah verifikasi lapangan."
+  price_transparency:
+    verification: "Periksa daftar harga, tiket, dan pungutan aktual."
+    candidate: "Publikasikan tarif resmi dan kanal pengaduan."
+  staff_service:
+    verification: "Periksa SOP layanan dan respons petugas."
+    candidate: "Lakukan coaching layanan dan pantau tindak lanjut."
+  maintenance:
+    verification: "Periksa kerusakan, keusangan, dan backlog perawatan."
+    candidate: "Prioritaskan backlog berdasarkan risiko dan penggunaan."
+  opening_hours:
+    verification: "Cocokkan informasi jam buka dengan operasi aktual."
+    candidate: "Sinkronkan jam operasional pada seluruh kanal informasi."

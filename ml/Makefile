@@ -3,7 +3,7 @@ VENV ?= .venv
 BIN := $(VENV)/bin
 DATASET_DIR ?= ../Datasets
 
-.PHONY: setup test lint check stages doctor inventory eda clean-data resolve-entities annotation-sample silver-annotate split-silver baselines train-indobert calibrate-indobert evaluate-indobert snapshot clean
+.PHONY: setup test lint check stages doctor inventory eda clean-data resolve-entities annotation-sample silver-annotate split-silver baselines train-indobert calibrate-indobert evaluate-indobert infer-corpus aggregate-destinations prioritize-destinations export-app snapshot clean
 
 setup:
 	$(PYTHON) -m venv $(VENV)
@@ -57,6 +57,18 @@ calibrate-indobert:
 
 evaluate-indobert:
 	$(BIN)/sipature-ml evaluate-indobert --split-dir "$(SPLIT_DIR)" --model-run-dir "$(MODEL_RUN_DIR)" --calibration "$(CALIBRATION_DIR)" --output-dir "$(EVALUATION_DIR)" $(if $(BASELINE_METRICS_DIR),--baseline-metrics-dir "$(BASELINE_METRICS_DIR)",) $(if $(BASELINE_FIGURE_DIR),--baseline-figure-dir "$(BASELINE_FIGURE_DIR)",)
+
+infer-corpus:
+	$(BIN)/sipature-ml infer-corpus --reviews "$(REVIEWS)" --model-dir "$(MODEL_DIR)" --output-dir "$(INFERENCE_DIR)"
+
+aggregate-destinations:
+	$(BIN)/sipature-ml aggregate-destinations --predictions-dir "$(INFERENCE_DIR)" --reviews "$(REVIEWS)" --output-dir "$(AGGREGATION_DIR)"
+
+prioritize-destinations:
+	$(BIN)/sipature-ml prioritize-destinations --aggregation-dir "$(AGGREGATION_DIR)" --destinations "$(DESTINATIONS)" --output-dir "$(PRIORITY_DIR)"
+
+export-app:
+	$(BIN)/sipature-ml export-app --prioritization-dir "$(PRIORITY_DIR)" --aggregation-dir "$(AGGREGATION_DIR)" --output-dir "$(EXPORT_DIR)"
 
 snapshot:
 	$(BIN)/sipature-ml snapshot-run --output artifacts/reports/run-environment.json

@@ -22,6 +22,7 @@ SIPATURE is an evidence-based early-warning and intervention-priority system for
 - A7 trained IndoBERT aspect and polarity candidates; A8 calibrated on validation and evaluated the locked silver test exactly once.
 - IndoBERT aspect Macro F1 was 0.5247, below TF-IDF 0.7201; IndoBERT polarity Macro F1 was 0.7459 on reference-annotated aspects.
 - Severity remains unavailable because the A7 class-support gate did not produce a model.
+- A9 completed restricted full-corpus TF-IDF inference and produced an evidence-gated aggregate export; expert review and app integration remain pending.
 - Do not present baseline scores as trained-model results.
 - ML outputs replace baseline app data only after schema, metric, evidence, and smoke-test gates pass.
 
@@ -40,3 +41,5 @@ pytest
 sipature-ml stages
 ```
 A8 execution and safe aggregate evidence are documented in `docs/indobert-a8-evaluation-report.md`. Results are silver-label agreement, not human-gold performance; review-level predictions and error cases remain restricted.
+
+A9 execution is documented in `docs/a9-inference-priority-report.md`. Its generated review predictions, evidence, expert queue, and app export remain restricted under `ml/artifacts/a9/` and are not committed.

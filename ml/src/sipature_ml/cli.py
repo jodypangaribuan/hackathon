@@ -4,6 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
+from .a9 import run_aggregation, run_export, run_inference, run_prioritization
 from .annotation import (
     evaluate_agreement,
     freeze_gold,
@@ -130,6 +131,26 @@ def build_parser() -> argparse.ArgumentParser:
     evaluate.add_argument("--baseline-metrics-dir", type=Path)
     evaluate.add_argument("--baseline-figure-dir", type=Path)
 
+    infer = subparsers.add_parser("infer-corpus", help="Run restricted A9 full-corpus inference")
+    infer.add_argument("--reviews", type=Path, required=True)
+    infer.add_argument("--model-dir", type=Path, required=True)
+    infer.add_argument("--output-dir", type=Path, required=True)
+
+    aggregate = subparsers.add_parser("aggregate-destinations", help="Aggregate A9 predictions")
+    aggregate.add_argument("--predictions-dir", type=Path, required=True)
+    aggregate.add_argument("--reviews", type=Path, required=True)
+    aggregate.add_argument("--output-dir", type=Path, required=True)
+
+    prioritize = subparsers.add_parser("prioritize-destinations", help="Score A9 priorities")
+    prioritize.add_argument("--aggregation-dir", type=Path, required=True)
+    prioritize.add_argument("--destinations", type=Path, required=True)
+    prioritize.add_argument("--output-dir", type=Path, required=True)
+
+    export = subparsers.add_parser("export-app", help="Write privacy-safe A9 aggregate export")
+    export.add_argument("--prioritization-dir", type=Path, required=True)
+    export.add_argument("--aggregation-dir", type=Path, required=True)
+    export.add_argument("--output-dir", type=Path, required=True)
+
     snapshot = subparsers.add_parser("snapshot-run", help="Write run environment metadata")
     snapshot.add_argument("--output", type=Path, required=True)
 
@@ -236,6 +257,24 @@ def main() -> int:
         )
         print(json.dumps(result, indent=2))
         return 0
+    if args.command == "infer-corpus":
+        print(json.dumps(run_inference(args.reviews, args.model_dir, args.output_dir), indent=2))
+        return 0
+    if args.command == "aggregate-destinations":
+        print(json.dumps(
+            run_aggregation(args.predictions_dir, args.reviews, args.output_dir), indent=2
+        ))
+        return 0
+    if args.command == "prioritize-destinations":
+        print(json.dumps(
+            run_prioritization(args.aggregation_dir, args.destinations, args.output_dir), indent=2
+        ))
+        return 0
+    if args.command == "export-app":
+        print(json.dumps(
+            run_export(args.prioritization_dir, args.aggregation_dir, args.output_dir), indent=2
+        ))
+        return 0
     if args.command == "snapshot-run":
         output = write_environment_snapshot(args.output)
         print(output)
@@ -295,6 +334,10 @@ def main() -> int:
         raise SystemExit(
             "Use calibrate-indobert or evaluate-indobert with explicit model and artifact paths"
         )
+    if args.command == "run" and args.stage in {
+        Stage.INFER.value, Stage.AGGREGATE.value, Stage.PRIORITIZE.value, Stage.EXPORT_APP.value,
+    }:
+        raise SystemExit("Use the explicit A9 command with immutable input and output paths")
     raise NotImplementedError(
         f"Stage '{args.stage}' is declared but not implemented. "
         "Implement and test the stage before marking its TODO complete."

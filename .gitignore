@@ -59,6 +59,7 @@ ml/artifacts/models/*
 ml/artifacts/metrics/*
 ml/artifacts/figures/*
 ml/artifacts/reports/*
+ml/artifacts/a9/*
 !ml/data/**/README.md
 !ml/data/**/.gitkeep
 !ml/artifacts/**/README.md

@@ -1,0 +1,61 @@
+{
+  "a9_version": "a9-tfidf-lexical-v1.0.4",
+  "run_id": "20260801-a9-tfidf-lexical-v1-r5",
+  "status": "quantitative_pipeline_completed_expert_review_pending",
+  "models": {
+    "aspect": "tfidf-aspect-silver-v1",
+    "aspect_model_sha256": "9132efbf60f24c234571902026d9d0e1d88a0a4911098efb955d50e2c5a07606",
+    "aspect_manifest_sha256": "61df6aa0b0064b163d86b88f197731ff179c7217e8d1d8d428dc95fe3c8097ce",
+    "polarity": "lexical-polarity-v1",
+    "polarity_probability_available": false,
+    "severity_status": "unavailable_no_supported_model"
+  },
+  "inference": {"text_reviews": 12234, "reviews_with_predictions": 5942, "aspect_predictions": 9785},
+  "aggregation": {
+    "destination_aspect_signals": 1682,
+    "destinations_with_signals": 280,
+    "evidence_items": 598,
+    "signals_with_rating_only_exposure_context": 1670,
+    "signal_confidence": {"medium": 49, "low": 769, "insufficient": 864}
+  },
+  "priority": {
+    "destinations_total": 388,
+    "actionable_destinations_after_evidence_gate": 103,
+    "actionable_issues_after_evidence_gate": 210,
+    "actionable_issues_without_evidence": 0,
+    "unresolved_destinations_with_operational_priority": 0,
+    "available_components": ["complaint_frequency", "model_confidence", "persistence", "visitor_exposure"],
+    "unavailable_components": ["severity", "facility_gap", "feasibility"]
+  },
+  "sensitivity": {
+    "one_at_a_time_weight_scenarios": 7,
+    "perturbation": "+20%",
+    "top20_jaccard_min": 0.8181818181818182,
+    "top20_jaccard_max": 1.0
+  },
+  "expert_review": {"cases_prepared": 25, "judgments_completed": 0, "metrics_available": false},
+  "verification": {
+    "all_stage_artifact_hashes_matched": true,
+    "app_export_schema_valid": true,
+    "destination_priority_propagation_errors": 0,
+    "export_sha256": "f349a499afe04cdb9fafde8101e136470a41ca53815bd0c829dd62f07ca812b0",
+    "export_manifest_sha256": "db7a67687f968a384b398004960fd9206a4b3ed8c92ab68b81ef2291bce81b05",
+    "expert_queue_sha256": "94963a4af698fd67c1dc702b3fe54ab89a0b3efd5eeda8f1edccbf19f716bad7",
+    "weight_sensitivity_sha256": "71f44a0d043d274ef77c419233b83d48a89974a4a8c5501c46f3bd173ae4ab7f",
+    "a9_config_sha256": "684d791efe10f471f73dfef3a75b8b52d6c09ffec69bc6b8c7818dad31cb91f0",
+    "a9_code_sha256": "9376f290e1ebe506ee001457547381ee72d65ab5dc9da8d011f7bc0b218c7e72"
+  },
+  "privacy": {
+    "review_level_artifacts_in_git": false,
+    "review_text_in_this_summary": false,
+    "generated_export_restricted_pending_privacy_review": true
+  },
+  "limitations": [
+    "Polarity uses a deterministic lexical fallback, not the trained IndoBERT polarity candidate.",
+    "Lexical polarity does not emit a probability.",
+    "Severity, facility gap, and feasibility are unavailable and renormalized away.",
+    "Priority is a transparent triage signal, not proof of field conditions.",
+    "Expert evidence and intervention review is pending; system-level human metrics are unavailable.",
+    "The generated export remains restricted and has not replaced the application baseline."
+  ]
+}

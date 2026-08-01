@@ -717,6 +717,8 @@ Hasil A6–A8 mendukung empat kesimpulan:
 - Kalibrasi validation meningkatkan IndoBERT aspek menjadi *Macro F1* 0,5535 sebelum konfigurasi dibekukan.
 - Evaluasi IndoBERT pada *locked silver test* selesai tepat satu kali dengan *Macro/Micro F1* aspek 0,5247/0,5241 dan *Macro F1 polarity* 0,7459.
 - Model *severity* tidak dilatih karena kelas `high` tidak melewati batas minimum *support train*.
+- A9 memproses 12.234 *review* berteks dan menghasilkan 9.785 prediksi aspek, 1.682 sinyal destinasi-aspek, serta 210 isu dengan *evidence* pada 103 destinasi setelah *evidence gate*.
+- Seluruh *alert actionable* A9 memiliki *evidence*, *confidence*, status data, penjelasan, dan rekomendasi verifikasi; *unresolved destination* tidak diberi prioritas operasional.
 - *Prototype dashboard* telah memiliki *overview*, peta, *destination detail*, *intervention queue*, *analyzer*, dan *fallback* peta luring.
 
 ## 7.2 Apa yang Belum Boleh Diklaim
@@ -728,11 +730,14 @@ Hasil A6–A8 mendukung empat kesimpulan:
 - SIPATURE belum memiliki metrik *severity* karena tidak ada model yang lolos *support gate*.
 - *Priority* score belum divalidasi bersama *stakeholder*.
 - *Evidence correctness*, ranking *agreement*, dan *time saved* belum diukur terhadap manusia; *Precision@Alert* yang tersedia masih terhadap *silver reference*.
-- Data aplikasi saat ini belum merupakan hasil *full-corpus inference* dari model A6.
+- *Export full-corpus* A9 masih restricted dan belum menggantikan data *baseline* aplikasi.
+- *Evidence correctness*, relevansi intervensi, dan ranking A9 belum dinilai pada 25 kasus ahli yang sudah disiapkan.
 
 ## 7.3 Hubungan Model dengan Produk
 
-Saat ini A6 membuktikan *pipeline benchmark* pada subset berlabel, A7 membuktikan kandidat IndoBERT dapat dilatih dan dimuat ulang, sedangkan A8 menunjukkan bahwa TF-IDF tetap lebih baik untuk deteksi aspek pada *silver benchmark*. Karena itu, kandidat kontrak A9 menggunakan TF-IDF untuk aspek dan mempertimbangkan IndoBERT hanya untuk *polarity* dengan versi yang dinyatakan jelas. Setelah kontrak produksi dikunci, model digunakan untuk melakukan *inference* terhadap 12.234 *review* berteks. Hasil tersebut kemudian digabungkan dengan 9.935 *rating-only records* sehingga konteks agregasi mencakup seluruh 22.169 *clean records*.
+Saat ini A6 membuktikan *pipeline benchmark* pada subset berlabel, A7 membuktikan kandidat IndoBERT dapat dilatih dan dimuat ulang, sedangkan A8 menunjukkan bahwa TF-IDF tetap lebih baik untuk deteksi aspek pada *silver benchmark*. A9 kemudian menggunakan TF-IDF terkunci untuk memproses 12.234 *review* berteks. Karena bobot IndoBERT *polarity* tidak tersedia di workspace, *polarity* menggunakan fallback leksikal yang diberi versi jelas dan tidak menghasilkan probabilitas. *Severity*, *facility gap*, dan *feasibility* dinyatakan tidak tersedia, bukan diberi nilai baik atau nilai netral buatan.
+
+Agregasi menerapkan bobot *freshness* dan duplikat, Bayesian smoothing, serta aturan kecukupan data. Bobot prioritas hanya dinormalisasi atas *complaint frequency*, *model confidence*, *persistence*, dan *visitor exposure* yang tersedia. Hasil A9 masih berada pada penyimpanan restricted; integrasi kontrak, taxonomy, dan tampilan versi ke aplikasi merupakan gate A10 terpisah.
 
 Alur ini mencegah angka evaluasi bercampur dengan *output* produksi. Data *training* menjawab “apakah model sesuai dengan *reference*?”, sedangkan *full-corpus inference* menjawab “isu apa yang dilaporkan pada seluruh data?”.
 
@@ -771,8 +776,9 @@ Keputusan operasional tetap memerlukan verifikasi manusia karena ulasan adalah l
 6. Laporan *split* dan *baseline*: `docs/leakage-safe-split-baseline-report.md`.
 7. Laporan pelatihan IndoBERT: `docs/indobert-training-report.md`.
 8. Laporan kalibrasi dan evaluasi IndoBERT: `docs/indobert-a8-evaluation-report.md`.
-9. *Responsible AI*: `docs/responsible-ai.md`.
-10. *Reproducibility*: `docs/reproducibility-runbook.md`.
+9. Laporan inferensi dan prioritas A9: `docs/a9-inference-priority-report.md`.
+10. *Responsible AI*: `docs/responsible-ai.md`.
+11. *Reproducibility*: `docs/reproducibility-runbook.md`.
 
 **Tabel 15. Hubungan klaim laporan dengan *artifact* teknis**
 
@@ -788,6 +794,7 @@ Keputusan operasional tetap memerlukan verifikasi manusia karena ulasan adalah l
 | Pelatihan IndoBERT          | `docs/indobert-training-report.md`                     |
 | Bukti dan hash IndoBERT     | `docs/evidence/indobert/20260801-1024_indobert-silver-v1/` |
 | Evaluasi A8 IndoBERT        | `docs/evidence/indobert/20260801_indobert-silver-v1_a8-evidence/` |
+| Inferensi dan prioritas A9  | `docs/evidence/a9/20260801-a9-tfidf-lexical-v1-r5/summary.json` |
 
 **Interpretasi Tabel 15.** Setiap klaim kuantitatif utama memiliki *artifact* sumber yang dapat diperiksa. *Traceability* ini membedakan hasil aktual dari rencana dan memungkinkan reproduksi tanpa menaruh raw/*restricted* data langsung di laporan publik. Bobot IndoBERT yang besar tetap disimpan pada penyimpanan terkontrol, sedangkan bukti kecil dan hash verifikasi tersedia di repositori.
 

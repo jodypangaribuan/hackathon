@@ -1,4 +1,4 @@
-scoring_version: "0.1.0-draft"
+scoring_version: "1.0.0-a9"
 
 severity_weights:
   low: 1.0

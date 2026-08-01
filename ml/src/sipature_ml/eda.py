@@ -429,7 +429,7 @@ def generate_figures(
     bars = ax.barh(labels, plot_data["rows_physical_schema"], color=blue)
     ax.bar_label(bars, fmt="{:,.0f}", padding=4, fontsize=8)
     _style_axis(ax, "Ukuran Dataset Berdasarkan Record CSV")
-    ax.set_xlabel("Record (di luar header fisik)")
+    ax.set_xlabel("Jumlah record")
     save("01_dataset_row_counts.png", fig)
 
     # 2. Review funnel

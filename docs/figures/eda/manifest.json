@@ -1,7 +1,7 @@
 {
   "01_dataset_row_counts.png": {
-    "sha256": "6a4f1d8eb17fed79d7ce46b4e06111b8e35632cbb2c3ede430ffa7724e7cfee3",
-    "size_bytes": 167636
+    "sha256": "c8e39d72cb79f08f4b0bd2e775226d7615dfa0a67eb5cdc0ee22f3d266567e5b",
+    "size_bytes": 162431
   },
   "02_review_availability_funnel.png": {
     "sha256": "d961bbdea4a9bd6adb238423a9e2e68b54a52d4ca4e1adff42310956f481500c",
@@ -64,16 +64,16 @@
     "size_bytes": 88651
   },
   "17_cleaning_funnel.png": {
-    "sha256": "5768185f91ab6cd8e3e49e759691276810bdfd803883078f5b8337e6ba4afa10",
-    "size_bytes": 100994
+    "sha256": "7539529074d10ac297c0f2c6ad5963e56c6b0db6d7d7c3927ba24f5c26bce98c",
+    "size_bytes": 144541
   },
   "18_relative_date_parsing.png": {
     "sha256": "ae96efce106660a12b21ac671c0fc12d06e8b296a497fc2d075ec56abc8185d0",
     "size_bytes": 107133
   },
   "19_entity_link_status.png": {
-    "sha256": "8a15a8a87c1b5369ebc2b608c63f24ee2e4be935a4e49273cc058ff51f288c85",
-    "size_bytes": 128730
+    "sha256": "03444eac6ccc72b19c89b7ece4e1ec2e993a192e30bf6924d6c5f576141ca6fa",
+    "size_bytes": 141878
   },
   "20_review_linkage_coverage.png": {
     "sha256": "e106193354b91e3dbd163c6bb1f47a2149be4de379faaf675e64f60906ba4841",

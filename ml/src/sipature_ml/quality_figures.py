@@ -46,19 +46,70 @@ def generate_quality_figures(
         _save(fig, figure_dir / name)
         outputs.append(name)
 
-    values = [
-        cleaning["reviews"]["raw_records"],
-        cleaning["reviews"]["exact_duplicate_excess_removed"],
-        cleaning["reviews"]["empty_records_excluded"],
-        cleaning["reviews"]["clean_records"],
-        cleaning["reviews"]["clean_textual_records"],
-    ]
-    labels = ["Raw", "Duplikat excess", "Empty excluded", "Clean", "Clean textual"]
-    fig, ax = plt.subplots(figsize=(9, 5))
-    bars = ax.bar(labels, values, color=[blue, red, gray, green, orange])
-    ax.bar_label(bars, labels=[f"{value:,}" for value in values], padding=4)
-    _style(ax, "Cleaning Funnel Review")
-    ax.tick_params(axis="x", rotation=15)
+    review_counts = cleaning["reviews"]
+    raw = review_counts["raw_records"]
+    duplicate = review_counts["exact_duplicate_excess_removed"]
+    empty = review_counts["empty_records_excluded"]
+    clean = review_counts["clean_records"]
+    textual = review_counts["clean_textual_records"]
+    rating_only = review_counts["clean_rating_only_records"]
+    fig, ax = plt.subplots(figsize=(11, 5.5))
+    ax.axis("off")
+
+    def box(x: float, y: float, text: str, color: str, width: float = 0.19) -> None:
+        ax.text(
+            x,
+            y,
+            text,
+            ha="center",
+            va="center",
+            fontsize=11,
+            fontweight="bold",
+            color="white",
+            bbox={"boxstyle": "round,pad=0.7", "facecolor": color, "edgecolor": "none"},
+            transform=ax.transAxes,
+        )
+
+    box(0.11, 0.54, f"Data mentah\n{raw:,} record", blue)
+    box(0.50, 0.54, f"Data bersih\n{clean:,} record", green)
+    box(0.85, 0.72, f"Review berteks\n{textual:,}", orange)
+    box(0.85, 0.35, f"Rating-only\n{rating_only:,}", gray)
+    ax.annotate(
+        "",
+        xy=(0.40, 0.54),
+        xytext=(0.22, 0.54),
+        xycoords="axes fraction",
+        arrowprops={"arrowstyle": "->", "lw": 2, "color": "#4b5563"},
+    )
+    ax.text(
+        0.31,
+        0.66,
+        f"Dikeluarkan dari data bersih:\n{duplicate:,} duplikat teknis + {empty:,} data kosong",
+        ha="center",
+        va="bottom",
+        fontsize=9.5,
+        color="#374151",
+        transform=ax.transAxes,
+    )
+    for target_y in (0.72, 0.35):
+        ax.annotate(
+            "",
+            xy=(0.75, target_y),
+            xytext=(0.61, 0.54),
+            xycoords="axes fraction",
+            arrowprops={"arrowstyle": "->", "lw": 2, "color": "#4b5563"},
+        )
+    ax.text(
+        0.70,
+        0.16,
+        "Data bersih dipisahkan berdasarkan ketersediaan teks.",
+        ha="center",
+        va="center",
+        fontsize=9.5,
+        color="#374151",
+        transform=ax.transAxes,
+    )
+    ax.set_title("Alur Pembersihan dan Pemisahan Data Review", loc="left", fontsize=15, fontweight="bold", pad=16)
     save("17_cleaning_funnel.png", fig)
 
     date_values = cleaning["reviews"]["date_parse_status"]
@@ -76,10 +127,17 @@ def generate_quality_figures(
     status = links["match_status"].value_counts()
     fig, ax = plt.subplots(figsize=(9, 5))
     order = [item for item in ["auto_match", "human_verified_match", "human_verified_no_match", "manual_review", "unresolved"] if item in status]
+    status_labels = {
+        "auto_match": "Cocok otomatis",
+        "human_verified_match": "Cocok terverifikasi",
+        "human_verified_no_match": "Tidak cocok terverifikasi",
+        "manual_review": "Perlu pemeriksaan",
+        "unresolved": "Belum terselesaikan",
+    }
     colors = [green, blue, red, purple, gray][: len(order)]
-    bars = ax.bar(order, [status[item] for item in order], color=colors)
+    bars = ax.bar([status_labels[item] for item in order], [status[item] for item in order], color=colors)
     ax.bar_label(bars, padding=4)
-    _style(ax, "Status Entity Link Setelah Adjudication")
+    _style(ax, "Status 810 Hubungan Entitas Tempat Setelah Pemeriksaan")
     ax.tick_params(axis="x", rotation=15)
     save("19_entity_link_status.png", fig)
 

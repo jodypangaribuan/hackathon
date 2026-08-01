@@ -1,919 +1,740 @@
 # SIPATURE
 
-## Sistem Peringatan Dini dan Prioritas Intervensi Kualitas Pariwisata Danau Toba
+## Sistem Pemantauan Ulasan dan Prioritas Tindak Lanjut Pariwisata Toba
 
-### Laporan Analisis — Preliminary Round Del AI Hackathon 2026
+**Laporan Analisis *Preliminary Round* — Del AI Hackathon 2026**
 
-**Nama Tim:** `[MENUNGGU KONFIRMASI ADMINISTRASI]`  
-**Ketua:** `[MENUNGGU KONFIRMASI ADMINISTRASI]`  
-**Anggota:** `[MENUNGGU KONFIRMASI ADMINISTRASI]`  
-**Tanggal pembaruan:** 28 Juli 2026  
-**Versi:** Draft 0.1
+**Nama tim:** `[DIISI SEBELUM SUBMISSION]`
 
-> Dokumen kerja ini hanya mengisi bagian yang telah memiliki dasar faktual atau keputusan scope. Bagian yang menunggu EDA, annotation, training, locked-test evaluation, atau validasi stakeholder ditandai secara eksplisit. Dokumen submission akhir tidak akan mencantumkan identitas institusi pendidikan dan dibatasi maksimal 25 MB.
+**Anggota:** `[DIISI SEBELUM SUBMISSION]`
 
-## Status Bukti dalam Dokumen
+> Dokumen submission tidak mencantumkan identitas institusi pendidikan. Versi PDF wajib berukuran maksimal 25 MB.
 
-| Status | Arti |
-| --- | --- |
-| **Aktual** | Sudah diperoleh dari data, kode, atau pengujian yang dapat ditelusuri |
-| **Baseline** | Berasal dari pipeline keyword + rating lama; bukan hasil model terlatih |
-| **Rancangan** | Keputusan desain yang belum divalidasi sebagai hasil |
-| **Belum tersedia** | Menunggu tahap pipeline berikutnya |
+---
 
 ## Ringkasan Eksekutif
 
-Dataset pariwisata Toba menyediakan ulasan, rating, metadata tempat, koordinat, fasilitas, jam operasional, harga, akomodasi, kuliner, dan transportasi. Meskipun kaya informasi, data tersebut masih tersebar pada beberapa file, memiliki struktur yang beragam, dan memuat teks ulasan yang tidak dapat dipantau secara manual dalam skala besar. Rating rata-rata juga tidak menunjukkan masalah operasional tertentu. Sebuah destinasi dapat memiliki rating tinggi sekaligus menerima keluhan mengenai sanitasi, sampah, akses jalan, pungutan, parkir, pelayanan, atau perawatan.
+Ulasan wisata menyimpan informasi yang lebih rinci daripada *rating*. Sebuah tempat dapat memperoleh *rating* tinggi, tetapi masih memiliki laporan tentang toilet kotor, jalan rusak, pungutan, parkir, sampah, atau pelayanan. Ketika jumlah ulasan bertambah, pengelola sulit membaca semuanya secara rutin dan menentukan masalah mana yang perlu diperiksa lebih dahulu.
 
-SIPATURE dirancang sebagai sistem **Dashboard & Decision Support** yang menghubungkan review dengan isu spesifik, confidence, bukti verbatim, prioritas verifikasi, dan kandidat intervensi. Pengguna utamanya adalah pengelola destinasi; pengguna sekundernya adalah BPODT, pemerintah daerah, dan perencana program pariwisata. SIPATURE tidak menggantikan inspeksi lapangan. Sistem ini ditujukan untuk membantu tim dengan sumber daya terbatas menentukan lokasi dan masalah yang perlu diperiksa lebih dahulu berdasarkan bukti.
+SIPATURE dirancang sebagai ***dashboard*** **dan sistem pendukung keputusan**. Sistem membaca ulasan, mengelompokkan isu ke dalam 14 aspek, menunjukkan kutipan bukti, lalu membantu pengelola menyusun prioritas verifikasi. SIPATURE tidak menyatakan bahwa keluhan pasti benar dan tidak menggantikan pemeriksaan lapangan.
 
-Inventory dan EDA reproducible berhasil membaca 14 CSV pada direktori dataset saat ini tanpa read error. Dua file ulasan utama masing-masing berisi 12.691 dan 9.611 baris, sehingga berjumlah 22.302 record. EDA menemukan 12.280 review berteks (55,06%), 9.978 rating-only bersih, 44 record tanpa rating maupun teks, dan 83 exact duplicate excess rows. Dari 22.243 rating integer valid, 15.595 (70,11%) adalah bintang lima. Metadata wisata, restoran, dan hotel menyediakan 323 coordinate records. Hasil ini menunjukkan class/coverage imbalance dan kebutuhan untuk tidak mengandalkan accuracy atau rating rata-rata saja.
+*Pipeline* saat ini berhasil mengolah 22.302 *record* mentah menjadi 22.169 *record* bersih. Dari jumlah tersebut, 12.234 memiliki teks dan 9.935 hanya memiliki *rating*. Sebanyak 1.320 *review* berteks dipilih secara terstruktur untuk membuat label bantu atau ***silver labels***. Label ini digunakan untuk membangun dan membandingkan *baseline* *Keyword* serta TF-IDF pada pembagian data yang aman dari kebocoran destinasi.
 
-Tahap saat ini telah menyelesaikan scope lock, struktur repositori, dependency lock, konfigurasi, provenance manifest, Google Drive bootstrap, inventory, EDA, cleaning, entity resolution, AI-assisted silver annotation, leakage-safe split, serta keyword dan TF-IDF silver benchmark. IndoBERT belum dilatih dan tidak ada human-gold evaluation; karena itu baseline Macro F1 hanya dinyatakan sebagai agreement terhadap silver, sedangkan Alert Precision, calibration, dan system-level metrics belum tersedia.
+Pada *locked silver test*, *Keyword* memperoleh *Macro F1* 0,9768 dan TF-IDF memperoleh 0,7201. Nilai ini hanya mengukur kesesuaian terhadap *silver labels*, bukan akurasi terhadap label manusia. Skor *Keyword* sangat tinggi karena memakai kosakata *taxonomy* yang juga berkaitan dengan proses pembentukan *silver labels*. Oleh karena itu, hasil tersebut diperlakukan sebagai batas pembanding, bukan bukti bahwa model telah memahami kondisi nyata.
 
-| Indikator Utama | Nilai | Status dan Sumber |
-| --- | ---: | --- |
-| CSV pada inventory saat ini | 14 | Aktual; `ml/artifacts/reports/data_inventory.json` |
-| CSV dengan read error | 0 | Aktual; inventory stage |
-| Baris dua file review utama | 22.302 | Aktual; 12.691 + 9.611 pada inventory |
-| Review berteks | 12.280 (55,06%) | Aktual; EDA v0.1 |
-| Metadata coordinate records | 323 | Aktual; 139 wisata + 148 resto + 36 hotel |
-| Clean review records | 22.169 | Aktual; cleaning v0.1 |
-| Canonical IDs teknis | 388 | 322 metadata anchors + 66 unresolved placeholders |
-| Rating rata-rata | 4,4413 | Aktual; 22.251 rating valid |
-| Rating bintang lima | 15.595 (70,11%) | Aktual; denominator 22.243 rating integer |
-| Gold annotation | Belum tersedia | Menunggu annotation |
-| Annotation sample | Pilot 120; main 1.200 | Aktual; taxonomy `1.0.0-rc1` |
-| AI-assisted silver annotation | 1.320 records | Aktual; 489 consensus, 334 review-recommended, 497 no-supported-aspect |
-| AI pass agreement | 0,8827 | Rule consistency; bukan inter-annotator agreement |
-| Locked split | 922 / 196 / 202 records | 187 / 40 / 40 destination; zero checked leakage |
-| Keyword Macro F1 | 0,9768 | Agreement terhadap locked silver test; circularity tinggi |
-| TF-IDF Macro/Micro F1 | 0,7201 / 0,8040 | Agreement terhadap locked silver test |
-| Aspect Macro F1 | Belum tersedia | Menunggu locked-test evaluation |
-| Alert Precision | Belum tersedia | Menunggu calibration/evaluation |
-| Evidence correctness | Belum tersedia | Menunggu human system evaluation |
+### Alur Data dari Awal hingga Produk
 
-## Daftar Istilah
+**Tabel 1. Alur penggunaan data dari sumber hingga produk**
 
-| Istilah | Definisi |
-| --- | --- |
-| ABSA | Aspect-Based Sentiment Analysis; analisis aspek dan polaritas pada teks |
-| Multilabel classification | Klasifikasi yang memungkinkan satu review memiliki beberapa aspek |
-| Macro F1 | Rata-rata F1 seluruh label dengan bobot sama |
-| Micro F1 | F1 dari total keputusan label di seluruh data |
-| Entity Resolution | Penghubungan record lintas sumber ke satu entitas canonical |
-| Early-Warning Signal | Sinyal berbasis laporan pengunjung yang memerlukan verifikasi manusia |
-| Alert Precision | Proporsi alert yang benar pada threshold operasional |
-| Bayesian smoothing | Penyesuaian estimasi untuk mengurangi skor ekstrem pada sampel kecil |
-| Locked test | Test set yang tidak digunakan untuk preprocessing, tuning, atau calibration |
+| Tahap                                     | Data yang digunakan                         | Tujuan                                                                              |
+| ----------------------------------------- | -------------------------------------------:| ----------------------------------------------------------------------------------- |
+| Data mentah                               | 22.302 *record*                             | Memahami seluruh bahan dari panitia                                                 |
+| Pembersihan dan integrasi                 | 22.169 *record* bersih                      | Menghapus *record* kosong/duplikat teknis dan menghubungkan *review* ke destinasi   |
+| Data teks                                 | 12.234 *review*                             | Sumber utama analisis aspek, *polarity*, *severity*, dan *evidence*                 |
+| Data *rating-only*                        | 9.935 *review*                              | Konteks volume, *rating*, *coverage*, dan kecukupan data; bukan *input* model teks  |
+| *Silver annotation*                       | 1.320 *review* berteks                      | Membentuk data belajar dan *benchmark* awal yang dapat diaudit                      |
+| Train/*validation*/*test*                 | 922 / 196 / 202 *review*                    | Melatih, memilih konfigurasi, dan mengevaluasi *baseline* tanpa kebocoran destinasi |
+| *Full-corpus inference*, tahap berikutnya | Seluruh 12.234 *review* berteks             | Menghasilkan sinyal isu untuk seluruh *corpus* setelah model dikunci                |
+| Aggregasi produk, tahap berikutnya        | Seluruh 22.169 *record* bersih + *metadata* | Menyusun ringkasan destinasi, *data confidence*, dan prioritas verifikasi           |
 
----
+**Interpretasi Tabel 1.** Tidak semua data digunakan untuk tujuan yang sama. Subset berlabel digunakan untuk belajar dan menguji model, sedangkan seluruh data digunakan setelah model dikunci untuk menghasilkan *intelligence* dan konteks *dashboard*. Pemisahan ini menjaga evaluasi tetap adil sekaligus memastikan seluruh data panitia tetap dimanfaatkan pada tahap produk.
 
-# BAB I — LATAR BELAKANG
+### Istilah Penting dalam Bahasa Sederhana
 
-## 1.1 Konteks Pariwisata Danau Toba
+**Tabel 2. Glosarium istilah data dan pemodelan**
 
-Ekosistem pariwisata Danau Toba tidak hanya terdiri atas objek wisata. Pengalaman pengunjung juga dipengaruhi akomodasi, restoran dan tempat kuliner, transportasi, fasilitas publik, jam operasional, harga, akses, pelayanan, budaya, masyarakat lokal, serta kebijakan pengelola dan pemerintah. Kualitas pada salah satu komponen dapat memengaruhi pengalaman keseluruhan meskipun daya tarik alam atau budaya destinasi dinilai positif.
+| Istilah                     | Arti dalam laporan ini                                                                      | Mengapa digunakan                                                     |
+| --------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| *Record*                    | Satu baris data                                                                             | Menyebut unit dasar di dalam file CSV                                 |
+| *Metadata*                  | Informasi tentang tempat, misalnya nama, alamat, kategori, harga, dan koordinat             | Memberi konteks selain isi ulasan                                     |
+| Latitude dan longitude      | Angka posisi utara–selatan dan timur–barat suatu lokasi                                     | Memungkinkan tempat ditampilkan dan dianalisis pada peta              |
+| *Entity resolution*         | Proses menyatukan penyebutan yang merujuk pada tempat yang sama                             | Menghubungkan *review* dan *metadata* tanpa asal menggabungkan tempat |
+| *Canonical destination*     | ID utama yang dipakai untuk mewakili satu tempat dalam *pipeline*                           | Menyatukan data tempat yang muncul dengan ejaan atau sumber berbeda   |
+| *Unresolved placeholder*    | ID sementara untuk tempat yang belum dapat dicocokkan dengan yakin                          | Mencegah sistem salah menggabungkan dua tempat                        |
+| NLP                         | Teknik komputer untuk mengolah bahasa manusia                                               | Digunakan untuk membaca isi *review* secara otomatis                  |
+| *Aspect*                    | Topik khusus dalam *review*, misalnya kebersihan, akses, atau parkir                        | Lebih berguna daripada sentimen umum                                  |
+| *Polarity*                  | Arah penilaian suatu aspek: positif, negatif, atau netral                                   | Satu *review* dapat memuji satu aspek dan mengeluhkan aspek lain      |
+| *Severity*                  | Tingkat dampak keluhan: rendah, sedang, atau tinggi                                         | Membantu membedakan gangguan kecil dari masalah mendesak              |
+| *Evidence*                  | Potongan teks asli yang mendukung hasil analisis                                            | Membuat hasil dapat diperiksa manusia                                 |
+| *Taxonomy*                  | Daftar dan batas definisi aspek yang digunakan sistem                                       | Menjaga pelabelan tetap konsisten                                     |
+| *Silver labels*             | Label bantu yang dibuat dengan aturan AI dan belum diverifikasi sebagai *gold* oleh manusia | Memungkinkan eksperimen awal secara transparan                        |
+| *Baseline*                  | Metode pembanding sederhana                                                                 | Menilai apakah model yang lebih kompleks benar-benar memberi manfaat  |
+| TF-IDF                      | Cara mengubah teks menjadi angka berdasarkan pentingnya kata atau potongan kata             | Cepat, ringan, dan kuat sebagai pembanding NLP klasik                 |
+| Train, *validation*, *test* | Data untuk belajar, memilih konfigurasi, dan menguji hasil akhir                            | Mencegah model dinilai menggunakan data yang dipakai untuk belajar    |
+| *Leakage*                   | Kebocoran informasi yang membuat evaluasi terlihat lebih baik dari kondisi sebenarnya       | Harus dicegah agar perbandingan model adil                            |
+| *Macro F1*                  | Rata-rata kualitas prediksi seluruh aspek dengan bobot yang sama                            | Aspek langka tetap diperhatikan                                       |
+| *Micro F1*                  | Kualitas prediksi dihitung dari seluruh keputusan secara bersama                            | Menunjukkan performa keseluruhan pada semua label                     |
+| *Exact Match*               | Persentase *review* yang seluruh kumpulan aspeknya diprediksi tepat                         | Memberi ukuran yang ketat untuk tugas dengan banyak label             |
+| *Hamming Loss*              | Proporsi keputusan aspek yang salah; semakin kecil semakin baik                             | Menunjukkan rata-rata kesalahan pada seluruh aspek                    |
+| *Support*                   | Jumlah contoh yang tersedia untuk suatu aspek                                               | Membantu menilai apakah sebuah skor cukup stabil untuk dipercaya      |
+| *Class weighting*           | Memberi perhatian lebih pada kelas yang jumlahnya sedikit saat model belajar                | Mengurangi dominasi aspek yang sering muncul                          |
+| *One-vs-Rest*               | Satu model ya/tidak dibuat untuk setiap aspek                                               | Memungkinkan satu *review* memiliki beberapa aspek sekaligus          |
+| *Logistic Regression*       | Model statistik ringan untuk memperkirakan peluang suatu aspek muncul                       | Cepat, mudah diaudit, dan cocok sebagai *baseline* klasik             |
+| *Latency*                   | Waktu yang dibutuhkan model untuk memproses satu *review*                                   | Mengukur kelayakan model digunakan dalam aplikasi                     |
+| *Calibration*               | Pemeriksaan apakah tingkat keyakinan model sesuai dengan frekuensi kebenarannya             | Mencegah *confidence* terlihat lebih pasti dari kenyataan             |
+| *Locked test*               | Data uji yang tidak boleh dipakai untuk memilih model atau *threshold*                      | Menjaga evaluasi akhir tetap independen                               |
+| *Threshold*                 | Batas nilai agar sebuah aspek dianggap terdeteksi                                           | Mengubah *probability* menjadi keputusan ya/tidak                     |
+| *Inference*                 | Proses memakai model yang sudah jadi untuk menganalisis data baru                           | Tahap ketika seluruh *review* berteks akan digunakan                  |
+| *Aggregation*               | Menggabungkan hasil per *review* menjadi ringkasan per destinasi                            | Menghasilkan informasi yang dapat ditampilkan di *dashboard*          |
 
-Dalam konteks tersebut, pengelolaan kualitas membutuhkan informasi yang lebih rinci daripada rating agregat. Pengelola perlu mengetahui aspek apa yang dilaporkan, seberapa sering laporan muncul, seberapa berat indikasinya, apakah data cukup, serta tindakan verifikasi apa yang relevan. Kebutuhan ini menempatkan analisis review sebagai sumber sinyal operasional, bukan sebagai pengganti pengukuran lapangan.
-
-## 1.2 Latar Belakang Data
-
-Dataset panitia mencakup ulasan destinasi, hotel, dan restoran; metadata wisata, hotel, serta restoran; informasi tempat wisata; waktu operasional; transportasi; kuliner; artikel; dan informasi pendukung lainnya. Inventory pipeline saat ini menemukan 14 CSV yang dapat dibaca menggunakan `utf-8-sig` tanpa read error. File-file tersebut memiliki schema yang berbeda, dari 3 hingga 68 kolom, dan ukuran yang tidak seimbang.
-
-Dua file review terbesar adalah `wisata-v2.csv` dengan 12.691 baris dan `resto-hotel-v2.csv` dengan 9.611 baris. Dataset metadata mencakup antara lain 139 baris wisata, 148 baris restoran, dan 36 baris hotel. Tidak tersedia satu ID universal yang secara langsung menghubungkan seluruh record lintas sumber. Kondisi ini menimbulkan kebutuhan cleaning, normalisasi, deduplikasi, entity resolution, dan pencatatan provenance sebelum data dapat digunakan sebagai dasar model atau keputusan.
-
-Inventory yang telah dilakukan masih berfokus pada struktur, hash, encoding, header, serta jumlah baris/kolom. Missing-value profiling, duplicate analysis, abnormal-value analysis, dan semantic schema audit akan dilakukan pada tahap A3.
-
-Metadata corpus aplikasi lama menyatakan `generatedFrom` 15 file, sedangkan direktori saat ini berisi 14 CSV dan satu `.DS_Store`. Hal ini mungkin menjelaskan perbedaan hitungan file, tetapi belum membuktikan pipeline lama memakai snapshot yang sama. Input script baseline dan hash sumber tetap harus direkonsiliasi sebelum corpus lama dipakai sebagai bukti final.
-
-## 1.3 Kesenjangan Keputusan Operasional
-
-Ketersediaan ribuan review belum otomatis menghasilkan keputusan yang dapat ditindaklanjuti. Membaca review satu per satu memerlukan waktu, sulit dilakukan secara konsisten, dan menyulitkan perbandingan antar-destinasi. Rating rata-rata mereduksi berbagai pengalaman menjadi satu angka sehingga tidak menjelaskan apakah masalah berkaitan dengan sanitasi, sampah, akses, harga, keamanan, parkir, pelayanan, atau jam operasional.
-
-Baseline aplikasi memperlihatkan contoh awal kesenjangan ini. Kawah Putih Dolok Tinggi Raja memiliki rating agregat 4,0, tetapi review yang dianalisis baseline memuat laporan mengenai pungutan dan akses jalan. Bagus Bay Guest House memiliki rating agregat 5,0 pada snapshot metadata, tetapi subset review baseline memuat laporan kebersihan dan sanitasi. Perbedaan ini belum boleh dianggap sebagai hasil model final; snapshot rating dan kumpulan review juga dapat berbeda. Namun, kasus tersebut cukup untuk merumuskan kebutuhan sistem yang membaca isu pada level aspek dan menampilkan bukti yang dapat diperiksa.
-
-## 1.4 Urgensi Permasalahan
-
-Tanpa mekanisme penyaringan dan prioritas, masalah operasional cenderung diketahui secara reaktif dan sumber daya inspeksi berisiko dialokasikan berdasarkan popularitas, laporan yang paling terlihat, atau keputusan ad hoc. Hal ini dapat memperlambat verifikasi masalah, menyulitkan audit keputusan, serta membuat destinasi dengan sedikit data salah dipahami sebagai tidak bermasalah.
-
-SIPATURE memfokuskan urgensi pada respons operasional: memperpendek jarak antara laporan pengunjung dan verifikasi manusia. Draft ini tidak mengklaim peningkatan jumlah kunjungan atau pendapatan karena dampak tersebut belum diuji. Indikator awal diarahkan pada evidence correctness, alert verification rate, waktu menuju verifikasi, relevansi intervensi, dan waktu analisis yang dapat dihemat.
-
-## 1.5 Relevansi dengan Challenge
-
-| Nilai Challenge | Kontribusi SIPATURE |
-| --- | --- |
-| Informatif | Mengubah review tidak terstruktur menjadi isu, evidence, confidence, dan konteks metadata |
-| Inklusif | Memasukkan aspek akses, fasilitas, kenyamanan, keluarga, dan kebutuhan layanan; representasi kelompok non-digital tetap menjadi limitation |
-| Efisien | Mengurutkan target verifikasi agar tim terbatas tidak harus membaca seluruh review secara manual |
-| Berkelanjutan | Menempatkan kebersihan, sampah, sanitasi, crowding, dan maintenance sebagai sinyal awal yang perlu diperiksa |
-| Bernilai | Mengubah feedback menjadi dukungan keputusan yang dapat ditindaklanjuti dan diaudit |
-
-## 1.6 Tujuan
-
-### 1.6.1 Tujuan Umum
-
-Membangun sistem pendukung keputusan yang mengubah data pariwisata Toba, terutama review pengunjung, menjadi sinyal masalah yang dapat dijelaskan dan prioritas verifikasi lapangan yang bertanggung jawab.
-
-### 1.6.2 Tujuan Khusus
-
-1. Membersihkan, mengintegrasikan, dan menghubungkan data lintas sumber ke entitas destinasi canonical dengan provenance yang dapat diaudit.
-2. Mengembangkan dan membandingkan keyword baseline, TF-IDF, serta IndoBERT untuk multilabel aspect detection, aspect-level polarity, dan negative issue severity.
-3. Mengagregasi prediksi review menjadi destination-level signal dengan confidence, minimum support, freshness, dan Bayesian smoothing.
-4. Menyajikan regional overview, peta, destination evidence, intervention queue, dan scenario simulator dalam aplikasi SIPATURE.
-5. Mengevaluasi model dan sistem secara kuantitatif serta menerapkan privacy, human oversight, calibration, dan mitigasi reputational harm.
-
-## 1.7 Manfaat
-
-| Pihak | Manfaat yang Diharapkan | Indikator yang Direncanakan |
-| --- | --- | --- |
-| Pengelola destinasi | Menemukan isu berulang dan bukti lebih cepat | Waktu analisis, evidence correctness, alert verification rate |
-| BPODT/pemerintah | Membandingkan gap dan prioritas secara regional | NDCG/ranking agreement, coverage, verified alerts |
-| Wisatawan | Mendapat pengalaman yang lebih terawat melalui respons pengelola | Complaint-rate change setelah pilot; belum diukur |
-| Masyarakat/pelaku lokal | Memperoleh feedback terstruktur dan peluang perbaikan layanan | Relevansi intervensi dan adoption rate; belum diukur |
-
-## 1.8 Ruang Lingkup dan Batasan
-
-Ruang lingkup mencakup cleaning dan integrasi dataset panitia, conservative entity resolution, klasifikasi review Indonesia, multilabel aspect detection, aspect-level polarity, negative issue severity, destination aggregation, transparent health/priority score, geospatial visualization, evidence, data confidence, dan human verification workflow.
-
-Ruang lingkup tidak mencakup chatbot umum, RAG, itinerary, booking, pembayaran, marketplace penuh, computer vision, real-time crowd tracking, pengukuran ilmiah kualitas lingkungan, atau prediksi kausal dampak intervensi. Sistem tidak menyatakan destinasi pasti aman, berbahaya, bersih, atau tercemar hanya berdasarkan review.
-
-## 1.9 Struktur Laporan
-
-Bab I menjelaskan konteks, kesenjangan, tujuan, manfaat, dan scope. Bab II menganalisis stakeholder, data, bias, dan rumusan masalah. Bab III mendeskripsikan desain solusi dan indikator keberhasilan. Bab IV memaparkan rencana implementasi. Bab V menjelaskan rancangan dan status modelling. Bab VI menetapkan protokol evaluasi dan nantinya memuat hasil aktual. Bab VII membahas hasil data, model, dan produk. Bab VIII mendeklarasikan penggunaan AI, human oversight, privasi, lisensi, dan batas penggunaan.
+**Interpretasi Tabel 2.** Istilah teknis pada laporan digunakan untuk menjelaskan fungsi tertentu dalam *pipeline*, bukan untuk memperumit pembahasan. Glosarium ini menjadi acuan ketika istilah yang sama muncul pada bagian analisis data, *modelling*, evaluasi, dan rancangan produk.
 
 ---
 
-# BAB II — ANALISIS PERMASALAHAN
+# 1. Latar Belakang
 
-## 2.1 Pemangku Kepentingan
+Bagian ini menjelaskan konteks pariwisata Toba, potensi dan tantangan dataset, kesenjangan dalam pengelolaan ulasan, serta alasan pengembangan SIPATURE. Selain itu, bagian ini merangkum tujuan, manfaat, ruang lingkup, dan batasan awal solusi sebagai dasar bagi analisis pada bagian berikutnya.
 
-| Stakeholder | Peran | Kebutuhan | Hambatan Saat Ini |
-| --- | --- | --- | --- |
-| Pengelola destinasi | Mengelola operasi dan fasilitas | Isu spesifik, evidence, urgency, next verification | Review tersebar dan sulit dibandingkan |
-| BPODT/pemerintah daerah | Perencanaan dan alokasi program | Gambaran regional, gap layanan, prioritas transparan | Data lintas sumber belum terintegrasi |
-| Wisatawan | Sumber feedback dan penerima layanan | Pengalaman yang aman, bersih, jelas, terawat | Keluhan tidak selalu berubah menjadi respons |
-| Masyarakat/pelaku lokal | Penyedia layanan dan beneficiary | Feedback terstruktur dan adil | Rating agregat tidak menjelaskan aspek perbaikan |
+## 1.1 Konteks Pariwisata Toba
 
-## 2.2 Persona dan Jobs-to-be-Done
+Kawasan Danau Toba memiliki ekosistem pariwisata yang saling bergantung. Pengalaman wisatawan tidak hanya ditentukan oleh daya tarik sebuah destinasi, tetapi juga oleh kebersihan, akses jalan, parkir, toilet, keamanan, harga, pelayanan, akomodasi, kuliner, transportasi, dan informasi operasional. Masalah pada salah satu unsur tersebut dapat memengaruhi kenyamanan pengunjung dan citra kawasan secara keseluruhan.
 
-### 2.2.1 Pengelola Destinasi
+Peningkatan kualitas pariwisata membutuhkan informasi yang dapat digunakan untuk mengambil tindakan. Pengelola perlu mengetahui bukan hanya tempat mana yang populer, tetapi juga masalah apa yang berulang, seberapa banyak bukti yang tersedia, dan hal apa yang perlu diperiksa lebih dahulu. Informasi tersebut penting agar sumber daya yang terbatas dapat diarahkan pada kebutuhan yang paling relevan.
 
-Persona utama adalah pengelola yang perlu memutuskan masalah apa yang harus diperiksa dengan tenaga dan anggaran terbatas. Job-to-be-done-nya adalah menemukan isu berulang, memeriksa kutipan pendukung, memahami kecukupan data, merencanakan verifikasi, dan mencatat status tindak lanjut. Keberhasilan berarti keputusan tidak hanya bersandar pada satu rating atau satu review yang paling keras.
+## 1.2 Potensi dan Tantangan Dataset
 
-Persona ini masih merupakan persona desain dan belum divalidasi melalui wawancara stakeholder. Validasi kebutuhan, terminologi, serta alur kerja harus dilakukan sebelum pilot.
+Dataset yang disediakan panitia mencakup objek wisata, akomodasi, kuliner, transportasi, fasilitas, lokasi, harga, jam operasional, *rating*, dan ulasan pengguna. Cakupan ini memungkinkan analisis pariwisata dilakukan sebagai satu ekosistem, bukan sebagai daftar destinasi yang berdiri sendiri. Ulasan pengguna menjadi komponen penting karena memuat pengalaman langsung yang tidak selalu tercermin pada *metadata* atau *rating* rata-rata.
 
-### 2.2.2 Perencana Pemerintah/BPODT
+Namun, data tersebut masih mentah dan realistis. Informasi tersebar di sejumlah file dengan struktur yang berbeda, beberapa nama tempat tidak konsisten, sebagian *field* kosong, dan tidak semua *review* memiliki teks. Tempat yang sama juga dapat muncul dengan variasi nama pada sumber *review* dan *metadata*. Oleh sebab itu, data tidak dapat langsung dimasukkan ke model. Diperlukan pemeriksaan kualitas, pembersihan, penyamaan struktur, penghubungan entitas, dan dokumentasi perubahan data sebelum analisis dilakukan.
 
-Persona sekunder adalah perencana yang membandingkan banyak destinasi untuk menentukan target survei atau program. Ia memerlukan peta persebaran masalah, confidence, facility gap, dan alasan ranking yang dapat dipertanggungjawabkan. Keberhasilan berarti prioritas dapat diaudit dan tidak otomatis didominasi destinasi dengan review terbanyak.
+Kondisi ini sejalan dengan tujuan Del AI Hackathon 2026, yaitu memanfaatkan dataset utama panitia secara bermakna dan mengubah data pariwisata yang belum terintegrasi menjadi *insight*, layanan, atau sistem pendukung keputusan. SIPATURE menggabungkan ruang eksplorasi **operasional destinasi** dan ***data intelligence***. NLP (*Natural Language Processing*) digunakan sebagai pendekatan AI utama untuk memahami isi ulasan, sedangkan hasil analisis disajikan dalam bentuk ***dashboard*** dan ***decision support system*** bagi pengelola. Dengan demikian, SIPATURE tidak berhenti pada proses klasifikasi teks: data yang telah dibersihkan dan diintegrasikan diubah menjadi informasi visual, bukti ulasan, ukuran kecukupan data, serta prioritas verifikasi yang mendukung pengambilan keputusan operasional.
 
-Persona ini juga belum divalidasi melalui wawancara.
+## 1.3 Kesenjangan Informasi dalam Pengelolaan Ulasan
 
-## 2.3 Problem Tree
+*Rating* rata-rata memberikan gambaran umum, tetapi tidak menjelaskan penyebab pengalaman pengunjung. Dua destinasi dengan *rating* yang sama dapat menghadapi masalah yang berbeda. Satu tempat mungkin memiliki keluhan mengenai toilet dan sampah, sedangkan tempat lain menghadapi masalah akses, parkir, pelayanan, atau transparansi harga. Bahkan *review* dengan *rating* tinggi dapat tetap mengandung kritik pada aspek tertentu.
 
-```text
-Akar masalah
-├── Review tidak terstruktur dan volumenya besar
-├── Rating agregat menyembunyikan aspek spesifik
-├── Data tempat/fasilitas tersebar dan tidak memiliki ID universal
-├── Coverage, freshness, dan jumlah review tidak merata
-└── Tidak ada metode prioritas yang konsisten
+Membaca ulasan satu per satu juga tidak efisien ketika jumlahnya mencapai ribuan. Keluhan penting dapat tertutup oleh *review* positif, komentar singkat, atau tempat yang mempunyai volume ulasan lebih besar. Jika pengelola hanya melihat jumlah keluhan mentah, destinasi populer berisiko selalu terlihat paling bermasalah karena memiliki lebih banyak *review*. Sebaliknya, persentase keluhan yang tinggi pada tempat dengan sedikit *review* dapat terlihat terlalu ekstrem dan belum tentu stabil.
 
-Masalah inti
-└── Feedback belum menjadi intelligence operasional yang dapat diaudit
+Dengan demikian, kebutuhan utamanya bukan sekadar analisis sentimen positif dan negatif. Pengelola memerlukan sistem yang dapat mengidentifikasi **aspek yang dibicarakan**, menunjukkan **potongan bukti dari review**, memperhitungkan **jumlah dan kecukupan data**, serta menyusun **prioritas verifikasi** tanpa menyatakan keluhan pengguna sebagai fakta lapangan.
 
-Konsekuensi
-├── Inspeksi manual lambat
-├── Masalah ditemukan secara reaktif
-├── Prioritas rentan popularitas dan keputusan ad hoc
-└── Evidence dan dasar rekomendasi sulit ditelusuri
-```
+## 1.4 Gagasan Solusi SIPATURE
 
-Diagram tersebut adalah model masalah awal, bukan kesimpulan kausal hasil penelitian lapangan. Hubungannya perlu divalidasi melalui wawancara atau pilot.
+SIPATURE merupakan singkatan dari **Sistem Pemantauan Ulasan dan Prioritas Tindak Lanjut Pariwisata Toba**. Nama ini juga memiliki kedekatan dengan nilai budaya Batak. Secara kontekstual, kata *pature* mengandung makna membenahi, menata, atau memperbaiki, sedangkan *sipature* dapat dimaknai sebagai pihak yang membenahi. Semangat tersebut selaras dengan ungkapan Batak *Marsipature Huta Na Be*, yaitu ajakan untuk bersama-sama membangun dan memperbaiki kampung halaman masing-masing. Dalam SIPATURE, semangat itu diwujudkan melalui pemanfaatan suara pengunjung untuk membantu pengelola mengenali hal yang perlu diperiksa dan dibenahi demi peningkatan kualitas pariwisata Toba. Dengan demikian, nama SIPATURE tidak hanya berfungsi sebagai akronim teknis, tetapi juga membawa pesan lokal tentang kepedulian, gotong royong, dan tanggung jawab merawat kawasan Toba.
 
-## 2.4 Current User Journey
+Solusi ini dirancang sebagai *dashboard* dan sistem pendukung keputusan yang mengubah *review* menjadi sinyal operasional per destinasi. Model membaca teks *review*, mengelompokkan pembahasan ke dalam 14 aspek, menentukan arah penilaian per aspek, menilai tingkat dampak untuk keluhan negatif, dan mempertahankan kutipan *evidence* yang dapat diperiksa.
 
-```text
-Review tersebar
--> pencarian dan pembacaan manual
--> pengelompokan masalah secara informal
--> perbandingan antar-destinasi sulit
--> keputusan verifikasi ad hoc
--> tindak lanjut tidak terhubung ke evidence
-```
+Hasil per *review* kemudian diringkas pada tingkat destinasi dengan mempertimbangkan volume bukti, *severity*, *freshness*, dan kecukupan data. Destinasi dengan data sedikit tidak otomatis diberi penilaian baik atau buruk, tetapi ditandai sebagai `Insufficient Data`. Sinyal prioritas juga tetap berstatus belum terverifikasi sampai pengelola melakukan pemeriksaan. Dengan pendekatan ini, SIPATURE berfungsi sebagai alat penyaring dan pemberi arah awal, bukan sebagai pengganti inspeksi lapangan atau keputusan manusia.
 
-Alur ini merupakan asumsi desain berdasarkan karakter data dan problem statement kompetisi; belum divalidasi langsung dengan pengelola destinasi.
+Pengguna utama SIPATURE adalah pengelola destinasi yang perlu memantau keluhan dan menentukan pemeriksaan operasional. Pemerintah daerah atau pengelola kawasan menjadi pengguna sekunder untuk melihat pola lintas destinasi. Dalam pengembangan berikutnya, hasil agregat juga dapat membantu penyusunan program perbaikan fasilitas, koordinasi dengan pelaku layanan pendukung, dan evaluasi perubahan kondisi dari waktu ke waktu.
 
-## 2.5 Inventaris dan Profil Data Awal
+## 1.5 Tujuan dan Manfaat
 
-Inventory stage menggunakan encoding `utf-8-sig`, membaca file secara streaming untuk row count, dan mencatat SHA-256 tanpa mengubah sumber. Empat belas CSV berhasil dibaca tanpa error. Satu file `.DS_Store` juga terdeteksi sebagai non-CSV dan akan dikecualikan pada ingest.
+Tujuan pengembangan SIPATURE adalah:
 
-| Kelompok data | File utama | Baris | Kolom | Peran awal |
-| --- | --- | ---: | ---: | --- |
-| Review wisata | `wisata-v2.csv` | 12.691 | 7 | Training/inference review destinasi |
-| Review hotel/resto | `resto-hotel-v2.csv` | 9.611 | 8 | Review layanan pendukung |
-| Metadata wisata | `wisata-metadata.csv` | 139 | 12 | Identitas, koordinat, rating, status |
-| Tempat wisata tambahan | `tempat-wisata-v1.csv` | 96 | 9 | Fasilitas dan metadata tambahan |
-| Metadata restoran | `resto-metadata.csv` | 148 | 11 | Konteks kuliner/geospasial |
-| Metadata hotel | `hotel-metadata.csv` | 36 | 12 | Konteks akomodasi/geospasial |
-| Operasional | `waktu operasional destinasi.csv` | 40 | 8 | Jam dan fasilitas |
-| Transportasi | `transportasi.csv` | 16 | 7 | Konteks akses |
-| Kuliner | `kuliner.csv` | 12 | 3 | Informasi kuliner tambahan |
-| Artikel/informasi | Tiga CSV informasi/artikel | 50 | Beragam | Konteks, bukan ground truth model |
-| Data pendukung lain | `hotel-resto-v1.csv`, `prompt.csv` | 16 | Beragam | Perlu audit fungsi/kelayakan |
+1. Mengintegrasikan *review* dan *metadata* pariwisata Toba ke dalam struktur data yang dapat ditelusuri.
+2. Mengidentifikasi aspek pengalaman wisatawan secara lebih spesifik daripada sentimen umum.
+3. Menyediakan *evidence* anonim agar hasil model dapat diperiksa kembali.
+4. Membedakan sinyal yang memiliki dukungan memadai dari kondisi yang datanya belum cukup.
+5. Membantu pengelola menyusun urutan verifikasi secara lebih cepat dan transparan.
+6. Menyediakan fondasi data dan model yang dapat dikembangkan menjadi produk pada *Final Round*.
 
-Inventory menemukan file informasi dengan banyak nama kolom kosong dan schema yang lebar. Temuan ini mengindikasikan embedded/irregular spreadsheet structure yang harus diperiksa pada EDA dan cleaning. Profil missing values, duplicate rows, abnormal ratings, tanggal, dan coordinate outliers belum dihitung.
+Manfaat yang diharapkan bagi pengelola adalah berkurangnya waktu untuk membaca *review* secara manual, meningkatnya kemampuan menemukan isu berulang, dan tersedianya dasar yang lebih jelas untuk menentukan tindak lanjut. Bagi pemerintah atau pengelola kawasan, SIPATURE dapat memberikan gambaran lintas destinasi dengan tetap mempertahankan konteks *evidence* dan keterbatasan data. Bagi wisatawan dan pelaku lokal, tindak lanjut yang lebih terarah diharapkan berkontribusi pada pengalaman wisata yang lebih aman, nyaman, informatif, dan berkelanjutan.
 
-## 2.6 EDA Review
+## 1.6 Ruang Lingkup dan Batasan Awal
 
-EDA baru mereproduksi 22.302 review-like records. Sebanyak 12.280 atau 55,06% memiliki teks, 9.978 merupakan rating-only bersih, 7 text-only, dan 44 tidak memiliki rating maupun teks. Terdapat 83 exact duplicate excess rows. Seluruh record dipertahankan pada EDA; keputusan deduplication/quarantine dilakukan pada cleaning dengan provenance.
+Ruang lingkup preliminary berfokus pada pengolahan dataset panitia, pengembangan *taxonomy* aspek, pembuatan *silver labels*, pembangunan *baseline* *Keyword* dan TF-IDF, evaluasi *leakage-safe*, serta rancangan integrasi model dengan *dashboard*. Analisis utama menggunakan *review* berteks, sedangkan *rating-only* digunakan sebagai konteks volume, distribusi *rating*, dan kecukupan data. *Metadata* lokasi digunakan untuk menghubungkan *review* dengan destinasi dan mendukung penyajian geospasial.
 
-![Funnel ketersediaan review](docs/figures/eda/02_review_availability_funnel.png)
+SIPATURE tidak menilai kebenaran faktual sebuah keluhan, tidak menentukan sanksi, dan tidak mempublikasikan identitas *reviewer*. *Silver labels* yang digunakan pada tahap awal bukan *human-gold labels*, sehingga hasil evaluasi belum dapat disebut sebagai akurasi terhadap penilaian manusia. Selain itu, keterbatasan *metadata* tidak boleh ditafsirkan sebagai bukti bahwa fasilitas atau layanan tidak tersedia di dunia nyata. Batasan tersebut dijaga agar solusi tetap transparan, etis, dan dapat dipertanggungjawabkan.
 
-**Gambar 2.1. Funnel ketersediaan review.** Review berteks menjadi candidate pool NLP, sedangkan rating-only tetap digunakan untuk coverage dan rating context.
+---
 
-### 2.6.1 Distribusi Rating
+# 2. Analisis Permasalahan
 
-Dari 22.243 rating integer valid, distribusinya adalah 15.595 bintang lima (70,11%), 3.635 bintang empat (16,34%), 1.396 bintang tiga (6,28%), 475 bintang dua (2,14%), dan 1.142 bintang satu (5,13%). Terdapat 8 rating desimal yang tidak dibulatkan dan 51 missing/unparseable ratings. Rating rata-rata valid adalah 4,4413.
+Bagian ini membahas kondisi dan karakteristik utama dataset pariwisata Toba sebagai dasar perumusan masalah SIPATURE. Pembahasan mencakup skala dan kualitas data, proses integrasi, kelengkapan metadata, potensi geospasial, hubungan volume ulasan dengan sinyal keluhan, masalah yang dipilih, serta risiko yang perlu dimitigasi.
 
-![Distribusi rating](docs/figures/eda/03_rating_distribution.png)
+## 2.1 Temuan Utama Data
 
-**Gambar 2.2. Distribusi rating integer review.** Dominasi bintang lima menunjukkan imbalance dan risiko rating-based polarity.
+Bagian ini menyajikan hasil pemeriksaan awal terhadap skala, komposisi, ketersediaan informasi, sumber, dan proses integrasi data. Pembahasan dibagi menjadi beberapa subbagian agar hubungan antara temuan, tabel, dan visual dapat diikuti secara lebih sistematis.
 
-### 2.6.2 Panjang Review
+### 2.1.1 Skala dan Komposisi Data
 
-Review berteks memiliki median 10 kata, kuartil pertama 4 kata, kuartil ketiga 23 kata, P95 55 kata, dan P99 120 kata. Sebanyak 2.530 review atau 20,60% memiliki maksimal tiga kata. Temuan ini mendukung max sequence length awal 192 token, tetapi keputusan final harus menggunakan truncation rate tokenizer model yang dipilih.
+Tim memeriksa dan mengolah 14 file CSV yang disediakan panitia. Seluruh file berhasil dibaca tanpa kesalahan, kemudian diperiksa struktur kolom, jumlah baris, kelengkapan nilai, dan perannya dalam proses analisis. Dua file ulasan utama berisi total 22.302 *record*. Setelah tahap pembersihan dan penghubungan data, diperoleh 22.169 *record* bersih yang seluruhnya memiliki `destination_id` teknis.
 
-![Distribusi panjang review](docs/figures/eda/04_review_text_length.png)
+![Ukuran dataset](docs/figures/eda/01_dataset_row_counts.png)
 
-**Gambar 2.3. Distribusi panjang review berteks.** Visual dicap pada P99 untuk menjaga keterbacaan.
+**Gambar 1. Ukuran file berdasarkan jumlah *record*.**
 
-### 2.6.3 Coverage per Tempat
+Dua batang terpanjang adalah file ulasan wisata dan ulasan restoran/hotel, masing-masing 12.691 dan 9.611 *record*. File lainnya jauh lebih kecil karena terutama berisi *metadata*, jam operasional, transportasi, atau informasi pendukung. Visual ini menunjukkan bahwa kekuatan utama dataset berada pada ulasan, sedangkan file kecil digunakan untuk memperkaya konteks tempat.
 
-Sebelum entity resolution terdapat 343 nama tempat exact. Median coverage adalah 14 review berteks dan maksimum 685. Sebanyak 18 nama tidak memiliki review berteks, 82 memiliki 1–4, 91 memiliki 5–19, 71 memiliki 20–49, dan 81 memiliki minimal 50 review berteks.
+**Tabel 3. Ringkasan hasil pemeriksaan dan pembersihan data**
 
-![Band coverage tempat](docs/figures/eda/06_place_text_coverage_bands.png)
+| Temuan                 | Nilai                                 | Implikasi                                               |
+| ---------------------- | -------------------------------------:| ------------------------------------------------------- |
+| *Record* mentah        | 22.302                                | Volume terlalu besar untuk dibaca manual secara rutin   |
+| *Record* bersih        | 22.169                                | Menjadi dasar integrasi dan agregasi                    |
+| *Review* berteks       | 12.234                                | Dapat dianalisis dengan NLP                             |
+| *Rating-only*          | 9.935                                 | Berguna sebagai konteks, tetapi tidak menjelaskan aspek |
+| *Rating* bintang lima  | 15.595 dari 22.243 *rating* *integer* | Data sangat condong ke *rating* tinggi                  |
+| *Canonical* IDs teknis | 388                                   | 322 *metadata anchors* dan 66 *unresolved placeholders* |
 
-**Gambar 2.4. Band coverage teks per nama tempat exact.** Band belum merupakan confidence final karena entitas belum di-resolve.
+**Interpretasi Tabel 3.** Dataset memiliki volume *review* yang besar, tetapi hanya sekitar separuh *record* yang mempunyai teks. Karena model NLP memerlukan teks, *review rating-only* dipisahkan untuk konteks agregasi. Dominasi *rating* bintang lima dan keberadaan *unresolved placeholders* juga menunjukkan bahwa sistem perlu memperhitungkan ketidakseimbangan serta ketidakpastian data.
 
-### 2.6.4 Kandidat Aspek
+### 2.1.2 Ketersediaan Teks dan Distribusi *Rating*
 
-Seed-keyword retrieval menemukan support awal terbesar pada pemandangan (3.677 review), pelayanan (1.477), harga/pungutan (1.017), kebersihan (1.001), akses/jalan (557), parkir (426), dan sanitasi (336). Sampah, keamanan, perawatan, dan jam operasional memiliki 70–134 candidate reviews, sehingga membutuhkan oversampling saat annotation. Hasil ini bukan gold label dan tidak mengukur polarity.
+![Funnel *review*](docs/figures/eda/02_review_availability_funnel.png)
 
-![Prevalensi kandidat aspek](docs/figures/eda/07_candidate_aspect_prevalence.png)
+**Gambar 2. Ketersediaan informasi pada data mentah.**
 
-**Gambar 2.5. Prevalensi kandidat aspek berdasarkan seed keywords.** Digunakan untuk sampling annotation, bukan model evaluation.
+Dari 22.302 *record*, hampir semua memiliki *rating*, tetapi hanya 12.280 yang memiliki teks sebelum *cleaning*. Sebanyak 9.978 *record* hanya memiliki *rating* dan 83 merupakan duplikat fisik berlebih. Setelah *cleaning* yang lebih ketat, angka yang digunakan *pipeline* menjadi 12.234 *review* berteks dan 9.935 *rating-only*. Perbedaan angka sebelum dan sesudah *cleaning* menunjukkan bahwa data perlu diperiksa sebelum dipakai oleh model.
 
-### 2.6.5 Bahasa, Negasi, dan Kontras
+*Rating* tinggi tidak selalu berarti tidak ada masalah. Karena itu, SIPATURE membaca isi ulasan dan tidak menggunakan *rating* untuk menentukan *polarity* atau *severity* sebuah aspek.
 
-Marker heuristic menemukan 6.794 review dengan marker Indonesia, 1.401 Inggris, 146 campuran, dan 3.939 tidak teridentifikasi. Sebanyak 2.102 review (17,12%) memuat marker negasi dan 1.295 (10,55%) marker kontras. Ini memperkuat kebutuhan contextual model dan error analysis pada mixed clauses. Kategori bahasa bukan hasil language-identification model.
+![*Rating* distribution](docs/figures/eda/03_rating_distribution.png)
 
-![Indikator bahasa dan negasi](docs/figures/eda/08_language_negation_markers.png)
+**Gambar 3. Distribusi *rating* pada data mentah.**
 
-**Gambar 2.6. Indikator bahasa, negasi, dan kontras berbasis marker kata.**
+Batang bintang lima jauh lebih tinggi daripada *rating* lain. Artinya, model yang hanya mengikuti kelas mayoritas dapat terlihat baik, padahal belum tentu menemukan keluhan penting. Karena itu SIPATURE membaca teks dan menggunakan *Macro F1* agar aspek yang jarang tetap diperhatikan.
 
-### 2.6.6 N-gram dan Repeated Text
+### 2.1.3 Dataset Sumber dan Perannya
 
-N-gram dominan mencakup `danau toba`, `luar biasa`, `air terjun`, `makanan enak`, `kamar mandi`, dan `tiket masuk`. Pola ini menunjukkan campuran pengalaman destinasi dan layanan serta membantu menemukan candidate vocabulary untuk annotation guideline. EDA menemukan 1.037 repeated-text excess rows dan 103 kelompok repeated text substantif. Repetition belum disebut spam karena komentar generik yang sama dapat ditulis pengguna berbeda.
+Dataset panitia tidak diperlakukan sebagai satu tabel besar yang langsung digabung. Setiap jenis file memiliki makna berbeda, sehingga dibaca dengan aturan yang sesuai sebelum dipertemukan melalui nama tempat, kategori, alamat, dan koordinat.
 
-![Top n-gram](docs/figures/eda/13_top_review_ngrams.png)
+**Tabel 4. Daftar dataset sumber dan perannya dalam pipeline**
 
-**Gambar 2.7. Top unigram, bigram, dan trigram setelah stopword ringkas.**
+| Kelompok                 | Nama file CSV sumber                  | Peran dalam *pipeline*                                   |
+| ------------------------ | ------------------------------------- | -------------------------------------------------------- |
+| *Review* wisata          | `wisata-v2.csv`                       | Sumber ulasan dan *rating* objek wisata                  |
+| *Review* hotel/restoran  | `resto-hotel-v2.csv`                  | Sumber ulasan dan *rating* hotel/restoran                |
+| *Metadata* wisata        | `wisata-metadata.csv`                 | Nama, kategori, alamat, koordinat, status, *rating*      |
+| *Metadata* restoran      | `resto-metadata.csv`                  | Nama, koordinat, *rating*, harga, fasilitas, status      |
+| *Metadata* hotel         | `hotel-metadata.csv`                  | Nama, koordinat, *rating*, harga, fasilitas, status      |
+| Data tempat wisata       | `tempat-wisata-v1.csv`                | Fasilitas, *review*, dan status tambahan                 |
+| Jam operasional          | `waktu operasional destinasi.csv`     | *Enrichment* jam dan fasilitas destinasi                 |
+| Transportasi             | `transportasi.csv`                    | Rute, tarif, dan jadwal transportasi                     |
+| Data kawasan             | `Info Seputar Danau Toba (TOP 3).csv` | Informasi ekosistem wilayah yang lebar dan tidak seragam |
+| Atraksi tambahan         | `Attractions Info.csv`                | Deskripsi atraksi, lokasi, jam, tiket, budaya            |
+| Hotel/restoran pendukung | `hotel-resto-v1.csv`                  | Daftar tempat pendukung dengan *field* heterogen         |
+| Kuliner                  | `kuliner.csv`                         | Deskripsi kuliner                                        |
+| Artikel kawasan          | `Artikel Danau Toba.csv`              | Konteks artikel, bukan label model                       |
 
-### 2.6.7 Freshness Field Availability
+**Interpretasi Tabel 4.** Dua file *review* menjadi sumber utama analisis bahasa. Tiga file *metadata* utama menyediakan identitas dan lokasi tempat. File lainnya berfungsi sebagai *enrichment* atau konteks tambahan dan tidak seluruhnya menjadi label model. Pemisahan peran ini mencegah artikel atau *field* pendukung diperlakukan sebagai *ground truth* secara keliru.
 
-Scrape date tersedia pada 19.059 record dan hilang pada 3.243. Published-at tersedia pada 22.023 record dan hilang pada 279, tetapi nilainya berupa relative multilingual text. Parsing tanggal akan menghasilkan estimasi/interval beserta precision flag, bukan tanggal presisi palsu.
+### 2.1.4 Integrasi, Pembersihan, dan Penghubungan Entitas
 
-![Ketersediaan waktu review](docs/figures/eda/14_review_time_field_availability.png)
+Proses penggabungan dilakukan bertahap sebagaimana diringkas pada Tabel 5.
 
-**Gambar 2.8. Ketersediaan scrape date dan published-at.**
+**Tabel 5. Tahapan integrasi dataset SIPATURE**
 
-### 2.6.8 Volume dan Candidate Complaint Rate
+| Tahap integrasi              | Dataset masukan                                                                                   | Proses utama                                                                       | Keluaran                                                              |
+| ---------------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Standardisasi *review*       | `wisata-v2.csv`, `resto-hotel-v2.csv`                                                             | Menyamakan nama kolom, normalisasi teks/*rating*, membentuk ID dan status *review* | Tabel *review*: `review_id`, nama tempat, teks, *rating*, dan tanggal |
+| Standardisasi *metadata*     | `wisata-metadata.csv`, `resto-metadata.csv`, `hotel-metadata.csv`                                 | Menyamakan nama, kategori, alamat, koordinat, harga, fasilitas, dan status         | Tabel *metadata* tempat                                               |
+| *Enrichment*                 | `tempat-wisata-v1.csv`, `waktu operasional destinasi.csv`, `transportasi.csv`, dan file pendukung | Menata jam operasional, fasilitas, rute, tarif, serta konteks kawasan              | Tabel *enrichment* terstruktur                                        |
+| *Entity resolution*          | Tabel *review*, *metadata*, dan *enrichment*                                                      | Membandingkan nama, jenis, alamat, serta koordinat secara konservatif              | Hubungan *review*–destinasi dan daftar kandidat tidak pasti           |
+| Pembentukan data *canonical* | Hasil *entity resolution*                                                                         | Menetapkan ID utama dan *unresolved placeholder* bila kecocokan belum pasti        | `canonical_reviews.parquet` dan `canonical_destinations.parquet`      |
 
-Seed complaint retrieval menemukan 916 review. Pada nama tempat dengan minimal lima review berteks, candidate complaint rate bervariasi dan tidak memiliki hubungan sederhana dengan volume atau mean rating. Karena retrieval masih berbasis keyword, visual ini digunakan untuk sampling dan bias analysis, bukan sebagai ranking hasil akhir.
+**Interpretasi Tabel 5.** Integrasi tidak dilakukan dengan menumpuk seluruh CSV sekaligus karena struktur dan makna *field* berbeda. *Review* terlebih dahulu distandardisasi, *metadata* tempat dibentuk secara terpisah, dan file pendukung dijadikan *enrichment*. Ketiga kelompok baru dipertemukan melalui *entity resolution*. Pendekatan ini mengurangi risiko salah mengartikan kolom atau menggabungkan dua tempat yang berbeda.
 
-![Volume vs complaint rate](docs/figures/eda/15_volume_vs_candidate_complaint_rate.png)
+Setelah standardisasi struktur pada Tabel 5, proses dilanjutkan melalui dua tahap yang berbeda. Tahap pertama membersihkan baris *review* dan menentukan data yang layak dipertahankan. Tahap kedua menghubungkan nama tempat dari berbagai sumber dengan identitas destinasi yang konsisten. Pemisahan ini penting karena Gambar 4 menggunakan satuan jumlah *review*, sedangkan Gambar 5 menggunakan satuan jumlah hubungan entitas tempat.
 
-**Gambar 2.9. Volume review berteks vs candidate complaint rate.**
+#### Tahap 1: Pembersihan dan Pemisahan Data *Review*
 
-Temuan tersebut memiliki beberapa implikasi awal:
+![*Cleaning* funnel](docs/figures/eda/17_cleaning_funnel.png)
 
-1. Sekitar 44,94% record tidak memiliki teks dan tidak dapat menjadi contoh training NLP, tetapi rating-only records masih dapat digunakan untuk konteks rating/coverage.
-2. Dominasi bintang lima membuat accuracy dan rating-based sentiment berisiko menutupi kelas negatif.
-3. Macro F1, per-label metrics, class weighting, threshold calibration, dan high-severity precision lebih relevan daripada accuracy tunggal.
-4. Mixed-sentiment review tidak boleh diberi polaritas hanya berdasarkan rating keseluruhan.
+**Gambar 4. Alur pembersihan dan pemisahan data *review*.**
 
-Seluruh source data EDA tersedia pada `ml/artifacts/reports/` dan narasi lengkap pada `docs/eda-report.md`.
+Proses dimulai dari 22.302 *record* mentah. Sebanyak 89 baris duplikat teknis berlebih dan 44 baris tanpa *rating* maupun teks dikeluarkan, sehingga tersisa 22.169 *record* bersih. Dari data bersih tersebut, 12.234 *record* memiliki teks dan dapat digunakan untuk analisis NLP, sedangkan 9.935 lainnya hanya memiliki *rating* dan tetap dipertahankan sebagai konteks agregasi.
 
-## 2.7 EDA Metadata dan Geospasial
+Batang “Clean textual” pada Gambar 4 bukan tahap penghapusan lanjutan dari 22.169 *record* bersih, melainkan subset dari data bersih yang mempunyai teks. Dengan demikian, hubungan angkanya adalah 22.302 data mentah dikurangi 89 duplikat dan 44 data kosong menjadi 22.169 data bersih; selanjutnya, 22.169 data bersih dipisahkan menjadi 12.234 *review* berteks dan 9.935 *rating-only records*. Data yang dikeluarkan tetap dicatat pada artefak audit agar proses pembersihan dapat ditelusuri.
 
-Tiga metadata utama berisi 323 coordinate records: 139 wisata, 148 restoran, dan 36 hotel. Seluruh string koordinat berhasil diparse dan berada pada regional warning envelope latitude 1–4 dan longitude 97–101. Hanya terdapat 321 coordinate pairs unik; empat records terlibat pada shared-coordinate groups dan memerlukan audit nama/alamat. WGS84 masih merupakan asumsi terdokumentasi.
+#### Tahap 2: Penghubungan Identitas Tempat
+
+Setelah data *review* bersih tersedia, nama tempat pada file *review*, *metadata*, dan sumber pendukung dibandingkan melalui *entity resolution*. Pada tahap ini, unit yang dihitung bukan lagi jumlah *review*, melainkan **810 hubungan kandidat antarsumber tempat**. Satu hubungan menunjukkan upaya menghubungkan satu penyebutan tempat dari suatu sumber dengan identitas destinasi yang menjadi acuan.
+
+Tahap ini diimplementasikan menggunakan ***Python*** dan ***Pandas*** untuk normalisasi, pengelompokan, serta penggabungan data. Pustaka ***RapidFuzz*** digunakan untuk menghitung kemiripan nama dan alamat melalui metode `ratio` dan `token_set_ratio`. Koordinat dibandingkan menggunakan rumus ***Haversine*** untuk mengukur jarak antarlokasi, sedangkan jenis tempat digunakan sebagai pembatas agar objek wisata tidak dicocokkan dengan hotel atau restoran secara keliru. ID destinasi dibentuk secara deterministik menggunakan **SHA-256** agar hasil pengelompokan dapat direproduksi. Kandidat dengan kecocokan nama, alamat, jenis, atau koordinat yang belum cukup kuat dimasukkan ke pemeriksaan manual dan tidak digabungkan secara otomatis.
+
+![Entity link status](docs/figures/eda/19_entity_link_status.png)
+
+**Gambar 5. Status 810 hubungan entitas tempat setelah pemeriksaan.**
+
+Sebanyak 698 hubungan dapat dicocokkan otomatis karena memiliki bukti yang kuat. Sebanyak 45 hubungan dikonfirmasi setelah pemeriksaan manusia, sedangkan 31 hubungan dikonfirmasi sebagai tidak cocok dan dipertahankan secara terpisah. Empat hubungan masih memerlukan pemeriksaan lebih lanjut, dan 32 hubungan belum dapat diselesaikan karena bukti yang tersedia belum cukup.
+
+Hubungan yang belum cukup kuat tidak dipaksa bergabung. Sistem memberikan `unresolved placeholder`, yaitu ID sementara yang menjaga *review* tetap dapat dikelompokkan tanpa mengklaim bahwa dua penyebutan merujuk pada tempat yang sama. Status tidak cocok dan belum terselesaikan bukan berarti data dibuang; keduanya merupakan mekanisme pengaman untuk mencegah penggabungan tempat yang salah.
+
+Keluaran kedua tahap tersebut adalah 22.169 *review* bersih yang seluruhnya memiliki `destination_id` teknis dan dapat dikelompokkan ke dalam 388 *canonical IDs*. Sebanyak 322 ID berasal dari tempat yang memiliki acuan *metadata*, sedangkan 66 lainnya merupakan *unresolved placeholders*. Dengan alur ini, analisis per destinasi dapat dilakukan tanpa mengorbankan kehati-hatian dalam penghubungan identitas tempat.
+
+## 2.2 Kelengkapan dan Potensi Geospasial
+
+Analisis pada bagian ini bertujuan menilai apakah *metadata* tempat cukup lengkap untuk mendukung identifikasi destinasi, penyajian peta, dan analisis kedekatan layanan. Pemeriksaan dilakukan terhadap ketersediaan atribut penting, seperti nama, alamat, koordinat, kategori, fasilitas, dan jam operasional, kemudian dilanjutkan dengan melihat pola persebaran lokasi hotel, restoran, dan destinasi wisata.
+
+![Kelengkapan *metadata*](docs/figures/eda/10_metadata_completeness_heatmap.png)
+
+**Gambar 6. Kelengkapan *metadata* hotel, restoran, dan wisata.**
+
+Warna gelap berarti *field* lebih lengkap. Nama, alamat, koordinat, dan status tersedia hampir penuh, sehingga cukup kuat untuk *linkage* dan peta. Sebaliknya, fasilitas hotel tersedia 83% tetapi fasilitas restoran hanya 4% dan wisata 0% pada file *metadata* utama; jam operasional juga tidak merata. SIPATURE tidak menganggap *field* kosong sebagai “tidak ada fasilitas”, melainkan sebagai data yang belum cukup.
 
 ![Sebaran koordinat](docs/figures/eda/11_metadata_coordinate_distribution.png)
 
-**Gambar 2.10. Sebaran coordinate records wisata, restoran, dan hotel.** Basemap tidak digunakan agar output reproducible dan luring.
+**Gambar 7. Sebaran latitude dan longitude pada 323 *metadata* *records*.**
 
-Kelengkapan field berbeda tajam. Nama, alamat, dan coordinate tersedia 100% pada tiga metadata utama. Namun, fasilitas tersedia pada 0% metadata wisata, 4,05% metadata restoran, dan 83,33% metadata hotel. Hours tersedia 100% untuk wisata, 0,68% untuk restoran, dan tidak memiliki field yang sebanding pada metadata hotel. Absence diperlakukan sebagai unknown, bukan fasilitas/jam tidak tersedia.
+Latitude menunjukkan posisi utara–selatan, sedangkan longitude menunjukkan posisi timur–barat. Setiap titik mewakili hotel, restoran, atau destinasi wisata. Titik wisata tersebar lebih luas, sementara hotel dan restoran lebih mengelompok pada beberapa pusat layanan. Gambar ini menarik untuk solusi karena membuktikan bahwa data dapat dikembangkan menjadi peta persebaran destinasi, analisis kedekatan layanan, dan perbandingan kawasan. Plot ini menunjukkan koordinat, bukan jarak perjalanan atau batas administratif.
 
-![Kelengkapan metadata](docs/figures/eda/10_metadata_completeness_heatmap.png)
+## 2.3 Hubungan Volume *Review* dan Sinyal Keluhan
 
-**Gambar 2.11. Kelengkapan field metadata utama.** Gap mendukung integrasi lintas sumber dan state `Insufficient Data`.
+Analisis berikut digunakan untuk melihat hubungan antara banyaknya *review* berteks dan proporsi ulasan yang mengandung kata kandidat keluhan pada setiap tempat. Tujuannya adalah menguji apakah persentase keluhan dapat langsung digunakan sebagai dasar prioritas atau perlu dibaca bersama jumlah bukti, distribusi *rating*, dan kecukupan data.
 
-Schema fisik juga menunjukkan missingness tinggi pada `Info Seputar` (52,74%), `prompt` (42,86%), dan `resto-hotel-v2` (34,02%). Dua file pertama memiliki embedded/multirow headers, sehingga missingness tersebut tidak langsung dianggap data hilang sebelum semantic loader diterapkan.
+![Volume dan candidate complaint](docs/figures/eda/15_volume_vs_candidate_complaint_rate.png)
 
-![Missingness file](docs/figures/eda/09_file_missing_cell_rates.png)
+**Gambar 8. Hubungan jumlah *review* berteks dengan *candidate complaint rate*.**
 
-**Gambar 2.12. Proporsi sel kosong per file berdasarkan schema fisik.**
+Satu titik mewakili satu tempat; posisi horizontal menunjukkan jumlah *review* berteks dan posisi vertikal menunjukkan persentase *review* yang memuat kata kandidat keluhan. Warna menunjukkan *rating* rata-rata. Tempat dengan sedikit *review* dapat memiliki persentase ekstrem hanya karena satu atau dua komentar, sedangkan tempat ber-volume besar cenderung lebih stabil. Karena itu *priority* score tidak boleh memakai persentase mentah saja; sistem perlu mempertimbangkan jumlah bukti dan kecukupan data. *Candidate complaint rate* adalah pencarian kata awal, bukan hasil model final atau konfirmasi masalah.
 
-Proximity analysis berbasis Haversine menemukan bahwa 72 dari 139 wisata tidak memiliki metadata hotel/restoran dalam radius 5 km. Median jumlah layanan dalam radius adalah 0 dan median jarak ke metadata layanan terdekat adalah 5,374 km. Hasil ini menunjukkan gap coverage/proximity pada dataset, bukan bukti layanan nyata tidak tersedia.
+## 2.4 Masalah yang Dipilih
 
-![Service density](docs/figures/eda/16_nearby_service_density_5km.png)
+Masalah utama dirumuskan sebagai berikut:
 
-**Gambar 2.13. Kepadatan metadata hotel/restoran dalam radius 5 km dari wisata.**
+> Bagaimana membantu pengelola mengubah ribuan ulasan yang tersebar menjadi daftar isu yang spesifik, memiliki bukti, dan dapat diprioritaskan untuk verifikasi?
 
-## 2.8 Bias dan Risiko Data
+Sistem rekomendasi wisata tidak dipilih sebagai fokus utama karena dataset juga menyimpan peluang yang kuat untuk membantu pengelola. SIPATURE mengubah feedback pengunjung menjadi sinyal awal untuk tindakan, bukan hanya daftar tempat yang menarik.
 
-| Risiko | Bukti awal | Dampak | Mitigasi yang dirancang |
-| --- | --- | --- | --- |
-| Popularity bias | Volume review tidak merata; distribusi per destinasi belum dihitung ulang | Tempat populer menghasilkan lebih banyak sinyal | Minimum support, Bayesian smoothing, confidence band |
-| Rating imbalance | 70,11% rating integer valid adalah bintang lima | Kelas negatif dapat tertutup | Macro F1, class weights, stratified annotation |
-| Missing review text | Hanya 55,06% record memiliki teks | Coverage training tidak merata | Pisahkan text/rating-only dan tampilkan sufficiency |
-| Platform bias | Review berasal dari pengguna platform digital | Tidak mewakili semua wisatawan | Nyatakan limitation; validasi lapangan |
-| Data staleness | 3.243 scrape date missing; published-at masih relatif | Alert mungkin tidak menggambarkan kondisi kini | Conservative date normalization, precision flag, freshness weight |
-| Entity ambiguity | Tidak ada cross-file ID universal | Evidence dapat terhubung ke tempat salah | Conservative matching dan false-merge audit |
-| Source snapshot mismatch | Inventory 14 CSV + `.DS_Store`; corpus baseline menyebut 15 file | Input pipeline lama belum pasti identik | Rekonsiliasi source manifest dan hashes |
-| Service coverage gap | 72/139 wisata tanpa metadata hotel/restoran dalam radius 5 km | Facility-gap dapat berlebihan | Label sebagai metadata gap; validasi eksternal/lapangan |
-| Reputational harm | False alert dapat dibaca sebagai vonis | Kerugian reputasi | Alert precision, evidence, neutral language, human verification |
+## 2.5 Risiko yang Harus Diatasi
 
-## 2.9 Rumusan Masalah dan Hipotesis
+**Tabel 6. Risiko utama data dan model beserta mitigasinya**
 
-Pertanyaan yang akan diuji adalah:
+| Risiko                                  | Dampak                                        | Mitigasi                                                             |
+| --------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------- |
+| *Rating* dan kelas tidak seimbang       | Masalah langka dapat tertutup                 | *Stratified sampling*, *Macro F1*, *class weighting*                 |
+| Nama tempat tidak konsisten             | *Review* dapat terhubung ke tempat yang salah | *Conservative* *entity resolution* dan *unresolved placeholder*      |
+| Ulasan berulang                         | Model dapat menghafal teks                    | Duplicate dan repeated-text grouping saat *split*                    |
+| *False alert*                           | Merugikan reputasi tempat                     | *Evidence*, bahasa netral, *threshold*, *human verification*         |
+| Data sedikit atau usang                 | Skor terlihat lebih pasti daripada kenyataan  | *Data sufficiency*, *freshness*, dan `Insufficient Data`             |
+| *Silver labels* mengandung bias *rules* | Evaluasi terlalu optimistis                   | Label hasil sebagai *silver agreement* dan rencanakan *human review* |
 
-1. Seberapa baik model multilabel mendeteksi seluruh aspek yang muncul pada review pariwisata Indonesia dibanding keyword dan TF-IDF baseline?
-2. Bagaimana mengagregasi sinyal review tanpa memberi skor ekstrem kepada destinasi dengan sampel kecil atau data tidak lengkap?
-3. Seberapa selaras intervention priority yang transparan dengan penilaian ahli terhadap target verifikasi?
-4. Seberapa sering evidence benar-benar mendukung alert, dan safeguard apa yang diperlukan untuk mencegah unsupported claim?
-
-| ID | Hipotesis | Cara Uji | Metric |
-| --- | --- | --- | --- |
-| H1 | IndoBERT meningkatkan kinerja aspect detection dibanding Keyword dan TF-IDF | Locked destination-group test | Macro/Micro/per-label F1 |
-| H2 | High-precision threshold dan evidence rule menekan false alert | Validation calibration + test/human review | Alert Precision, unsupported-alert rate |
-| H3 | SIPATURE membantu menemukan isu prioritas lebih cepat daripada inspeksi review manual | Controlled user/system evaluation | Time saved, evidence correctness |
-
-Hipotesis tersebut belum diuji dan tidak ditulis sebagai hasil.
-
-## 2.10 Kesimpulan Analisis Permasalahan
-
-Masalah yang dipilih bukan kekurangan rekomendasi wisata bagi pengunjung, melainkan kesenjangan antara feedback dan tindakan pengelolaan. Review intelligence dipilih karena memanfaatkan data panitia secara langsung, sedangkan intervention ranking memberi keluaran operasional yang lebih spesifik daripada sentiment dashboard. Fokus ini juga memungkinkan evaluasi lengkap dari data quality, model, evidence, ranking, sampai human verification.
+**Interpretasi Tabel 6.** Risiko terbesar bukan hanya kesalahan model, tetapi juga kualitas penggabungan data, ketimpangan *support*, dan potensi kerugian reputasi akibat *false alert*. Mitigasi disusun agar sistem menampilkan bukti serta ketidakpastian dan tetap menempatkan manusia sebagai pengambil keputusan akhir.
 
 ---
 
-# BAB III — DESAIN SOLUSI DAN INDIKATOR KEBERHASILAN
+# 3. Desain dan Indikator Keberhasilan Solusi
 
-## 3.1 Konsep dan Value Proposition
+## 3.1 Cara Kerja SIPATURE
 
-**SIPATURE mengubah ribuan ulasan pariwisata Toba menjadi sinyal masalah spesifik, bukti verbatim, dan prioritas verifikasi yang transparan agar pengelola mengetahui apa yang perlu diperiksa lebih dahulu dan mengapa.**
+Cara kerja SIPATURE terdiri atas tujuh langkah. Pertama, dataset panitia diperiksa dan dibersihkan. Kedua, *review* dihubungkan dengan *metadata* destinasi melalui *entity resolution*. Ketiga, model membaca *review* berteks untuk mendeteksi aspek. Keempat, setiap aspek dilengkapi dengan *polarity*, *severity* bila negatif, dan *evidence*. Kelima, hasil per *review* diagregasikan pada tingkat destinasi. Keenam, sistem menghitung kecukupan data dan prioritas verifikasi. Ketujuh, *dashboard* menyajikan hasil kepada pengelola untuk diperiksa sebelum tindakan dilakukan.
 
-Nilai SIPATURE bukan pada menghasilkan lebih banyak teks atau rekomendasi generik. Sistem dirancang untuk membangun satu rantai yang dapat diaudit:
+SIPATURE menggunakan *taxonomy* 14 aspek:
 
-```text
-review -> issue -> confidence -> evidence -> destination signal
--> priority explanation -> field verification -> candidate intervention
-```
+**Tabel 7. *Taxonomy* aspek yang dianalisis SIPATURE**
 
-## 3.2 Prinsip Desain
+| Kelompok      | Aspek                                        |
+| ------------- | -------------------------------------------- |
+| Lingkungan    | cleanliness, waste, sanitation, crowding     |
+| Infrastruktur | access, parking, public_facilities           |
+| Pengalaman    | scenery, comfort, safety, price_transparency |
+| Operasional   | staff_service, maintenance, opening_hours    |
 
-1. **Evidence before recommendation.** Setiap alert harus memiliki jumlah dukungan dan kutipan verbatim; model tidak membuat kutipan baru.
-2. **Human verification before action.** Review diperlakukan sebagai laporan, bukan konfirmasi kondisi aktual.
-3. **No issue berbeda dari insufficient data.** Ketiadaan prediksi tidak boleh disamakan dengan kondisi baik ketika data tidak cukup.
-4. **Transparent score components.** Health dan priority harus menampilkan komponen, bobot, missing data, dan confidence.
-5. **Batch-first dan offline-capable.** Dashboard memakai hasil batch agar stabil dan tidak memerlukan inference saat page load; real-time inference terbatas pada analyzer.
-6. **Privacy by design.** Reviewer identity tidak disimpan pada output produk dan evidence ditampilkan secara anonim.
-7. **Conservative claims.** Sistem menggunakan bahasa “dilaporkan” atau “sinyal awal” serta menghindari klaim kausal dan ilmiah yang tidak didukung data.
+**Interpretasi Tabel 7.** Empat kelompok aspek memisahkan isu lingkungan, infrastruktur, pengalaman pengunjung, dan operasional. Pembagian ini membuat hasil lebih mudah dihubungkan dengan unit atau jenis tindakan yang relevan dibandingkan sentimen positif/negatif secara umum.
 
-## 3.3 Arsitektur Konseptual
+Dalam bahasa pengguna, aspek tersebut berarti: kebersihan umum, sampah, toilet/sanitasi, kepadatan, akses jalan, parkir, fasilitas publik, pemandangan, kenyamanan, keselamatan, transparansi harga, pelayanan staf, perawatan, dan jam operasional. Nama teknis berbahasa Inggris dipertahankan di data agar konsisten dengan model dan kode, sedangkan *dashboard* dapat menampilkan terjemahan Indonesia.
 
-```text
-Organizer CSV
--> deterministic inventory and cleaning
--> conservative entity resolution
--> AI-assisted weak-supervision silver annotation
--> Keyword / TF-IDF / IndoBERT training
--> threshold calibration and locked test evaluation
--> batch review inference
--> destination aggregation and evidence selection
--> health and intervention-priority engine
--> versioned export / API
--> SIPATURE web application
--> human verification workflow
-```
+Satu *review* dapat membahas beberapa aspek. Setiap aspek memiliki *polarity* `positive`, `negative`, atau `neutral`. *Severity* `low`, `medium`, dan `high` hanya diberikan untuk aspek negatif berdasarkan dampak yang tertulis, bukan berdasarkan *rating*.
 
-Pipeline data/model berada pada package Python `sipature_ml`, sedangkan produk berada pada aplikasi Next.js terpisah. Kontrak ekspor didefinisikan melalui JSON Schema. Pemisahan ini mencegah model besar masuk ke browser dan memungkinkan dashboard tetap berjalan dengan precomputed data pada lingkungan luring.
+## 3.2 Fitur Utama
 
-## 3.4 Fitur Utama
+- Ringkasan kondisi data dan jumlah destinasi yang dapat dianalisis.
+- Peta dan halaman detail destinasi.
+- Daftar aspek positif, negatif, dan netral.
+- Kutipan *evidence* *verbatim* yang anonim.
+- *Intervention queue* untuk membantu memilih lokasi yang perlu diverifikasi.
+- Status `Insufficient Data` ketika bukti belum cukup.
+- *Analyzer* untuk mendemonstrasikan analisis satu *review*.
 
-### 3.4.1 Regional Overview
+## 3.3 Diferensiasi
 
-Overview menampilkan coverage data, jumlah destinasi yang dapat dinilai, distribusi isu, prioritas tertinggi, serta konteks kunjungan. Saat ini halaman sudah tersedia dalam prototipe, tetapi indikatornya masih menggunakan output baseline keyword + rating.
+**Tabel 8. Perbedaan SIPATURE dengan *dashboard* sentimen umum**
 
-### 3.4.2 Intelligence Map
+| *Dashboard* sentimen umum                   | SIPATURE                                                 |
+| ------------------------------------------- | -------------------------------------------------------- |
+| Menampilkan positif/negatif secara umum     | Menampilkan 14 isu yang lebih operasional                |
+| Berfokus pada *rating* atau jumlah sentimen | Menampilkan *evidence*, *support*, dan *data confidence* |
+| Keluhan dapat terlihat sebagai fakta        | Menggunakan bahasa “dilaporkan” dan meminta verifikasi   |
+| Semua tempat dapat terlihat sebanding       | Menandai data yang belum cukup                           |
 
-Peta memvisualisasikan lokasi destinasi, status sinyal, volume review, dan confidence. Filter saat ini mencakup kabupaten, jenis tempat, aspek, pencarian nama, dan kecukupan data. Leaflet digunakan untuk peta daring, sedangkan fallback SVG tersedia untuk demo luring. Layer taxonomy final akan diselaraskan dengan model baru.
+**Interpretasi Tabel 8.** Nilai tambah SIPATURE terletak pada keluaran yang dapat diperiksa dan ditindaklanjuti. Sistem tidak berhenti pada jumlah sentimen, tetapi menyertakan aspek, *evidence*, *support*, dan kecukupan data serta menggunakan bahasa yang tidak menghakimi destinasi.
 
-### 3.4.3 Destination Evidence Page
+## 3.4 Indikator Keberhasilan
 
-Halaman destinasi memperlihatkan skor, aspek prioritas, jumlah mention/negative signal, trend baseline, kutipan evidence, confidence, facility gap, dan local simulator. Desain akhirnya akan menambahkan model version, generated timestamp, freshness, metadata conflict, dan status verifikasi.
+**Tabel 9. Indikator keberhasilan dan hasil yang telah terukur**
 
-### 3.4.4 Intervention Queue
+| Lapisan         | Indikator                                                 | Hasil yang sudah terukur                                              |
+| --------------- | --------------------------------------------------------- | --------------------------------------------------------------------- |
+| Data            | Seluruh clean *review* memiliki *destination ID*          | Tercapai: 22.169/22.169                                               |
+| *Split*         | Tidak ada *destination*/duplicate/repeated-text *leakage* | Tercapai pada A6                                                      |
+| *Baseline*      | Macro dan *Micro F1* pada *split* yang sama               | Tersedia terhadap *silver labels*                                     |
+| *Evidence*      | Kutipan sesuai dengan teks sumber                         | Dijaga oleh *annotation* schema; *human system audit* belum dilakukan |
+| *Early warning* | Precision *alert* berisiko tinggi                         | Belum tersedia; memerlukan *reference* yang lebih kuat                |
+| Produk          | Waktu analisis dan relevansi prioritas                    | Belum diuji bersama pengguna                                          |
 
-Queue mengurutkan destinasi berdasarkan priority score dan menampilkan isu utama, support, evidence summary, confidence, serta tindakan verifikasi berikutnya. Status yang dirancang adalah `New`, `Verification Planned`, `Verified`, `Intervention Planned`, `Resolved`, dan `Rejected`.
-
-### 3.4.5 Intervention Simulator
-
-Simulator mengubah score berdasarkan asumsi penanganan aspek yang dipilih. Hasil wajib berlabel sebagai estimasi skenario, bukan prediksi kausal atau jaminan dampak dunia nyata.
-
-### 3.4.6 Live Analyzer
-
-Analyzer menerima satu review dan menampilkan aspect, polarity, severity, confidence, dan evidence span. Implementasi saat ini memakai baseline leksikon; model terlatih hanya akan menggantikannya setelah memenuhi schema dan evaluation gate.
-
-## 3.5 User Flow
-
-```text
-Regional overview
--> filter peta/antrean
--> pilih destinasi
--> periksa issue, support, confidence, evidence, metadata
--> lihat alasan ranking
--> rencanakan verifikasi
--> catat hasil verified/rejected
--> pertimbangkan intervensi
-```
-
-Flow ini dirancang untuk menjaga manusia sebagai pengambil keputusan dan menjadikan output model dapat ditelusuri sampai ke evidence.
-
-## 3.6 Taxonomy dan Output Model
-
-Taxonomy `1.0.0-rc1` berstatus pilot-locked dan mendefinisikan 14 aspek dalam empat kelompok:
-
-| Kelompok | Aspek | Makna awal |
-| --- | --- | --- |
-| Environmental | cleanliness, waste, sanitation, crowding | Kebersihan, sampah, toilet/sanitasi, kepadatan yang dilaporkan |
-| Infrastructure | access, parking, public_facilities | Akses, parkir, dan fasilitas publik |
-| Visitor experience | scenery, comfort, safety, price_transparency | Pemandangan, kenyamanan, keselamatan, transparansi harga |
-| Operations | staff_service, maintenance, opening_hours | Pelayanan, perawatan, dan jam operasi |
-
-Task bersifat multilabel karena satu review dapat membahas beberapa aspek. Setiap aspek memiliki polarity `positive`, `negative`, atau `neutral`. Severity `low`, `medium`, dan `high` hanya berlaku pada aspek negatif. Taxonomy digunakan oleh tiga deterministic weak-supervision passes; perubahan boundary menghasilkan regression test dan regenerasi silver artifact.
-
-![Taxonomy composition](docs/figures/eda/26_taxonomy_group_composition.png)
-
-**Gambar 3.3. Komposisi taxonomy MVP.** Definisi, in/out scope, examples, negation, sarcasm, implicit complaint, multi-aspect, dan severity boundaries terdapat pada guideline versi yang sama.
-
-## 3.7 Desain Health dan Priority Score
-
-### 3.7.1 Aspect Health
-
-```text
-AspectHealth = 100 * (1 - SmoothedWeightedComplaintRate)
-```
-
-Complaint signal akan ditimbang dengan model confidence, severity, freshness, dan duplicate discount. Bayesian smoothing digunakan agar destinasi dengan sedikit review tidak memperoleh skor ekstrem.
-
-### 3.7.2 Tourism Health
-
-Rancangan awal menggunakan komponen environmental, sanitation, infrastructure, safety, operations, dan visitor experience. Bobot belum menjadi hasil final; bobot harus diuji melalui sensitivity analysis dan, bila memungkinkan, divalidasi bersama stakeholder. Komponen tanpa data tidak diberi nilai 100, tetapi dinyatakan `Insufficient Data`.
-
-### 3.7.3 Intervention Priority
-
-Config scoring draft menggunakan:
-
-```text
-0.25 severity + 0.20 complaint_frequency + 0.15 model_confidence
-+ 0.15 persistence + 0.10 visitor_exposure + 0.10 facility_gap
-+ 0.05 feasibility
-```
-
-Semua komponen dinormalisasi 0–1. Jika komponen hilang, bobot yang tersedia direncanakan untuk dinormalisasi ulang dan confidence diturunkan. Label keluaran adalah `Critical`, `High`, `Medium`, `Monitor`, dan `Insufficient Data`. Formula ini adalah decision rule transparan, bukan predictive model.
-
-## 3.8 Indikator Keberhasilan
-
-| Lapisan | Metric utama | Target awal | Hasil aktual |
-| --- | --- | ---: | --- |
-| Annotation | Aspect/Polarity/Severity agreement | 0,70 / 0,75 / 0,60 | Belum tersedia |
-| Silver consistency | Mean AI pass agreement | Monitoring, bukan quality gate manusia | 0,8827 |
-| Entity resolution | Pairwise F1 dan false-merge rate | >=0,90 / serendah mungkin | 0,5965 / 0,0286 pre-adjudication reviewed pairs |
-| Aspect detection | Macro F1 | >=0,70 | Belum tersedia |
-| Aspect detection | Micro F1 | >=0,82 | Belum tersedia |
-| Early warning | High-severity Alert Precision | >=0,85 | Belum tersedia |
-| Evidence | Unsupported evidence claims | <5% | Belum tersedia |
-| Ranking | NDCG@10/rank agreement | Ditetapkan setelah expert cases | Belum tersedia |
-| Product | Analysis time saved | Ditetapkan melalui user test | Belum tersedia |
-
-Target adalah sasaran pengembangan, bukan hasil kompetisi. Hanya nilai locked-test atau human evaluation aktual yang akan dicantumkan sebagai hasil akhir.
-
-## 3.9 Diferensiasi dan Kebaruan
-
-| Pendekatan umum | SIPATURE |
-| --- | --- |
-| Sentiment dashboard | Aspect-specific issue, polarity, severity, dan data sufficiency |
-| Review summary | Evidence verbatim dan provenance |
-| Destination ranking opaque | Transparent intervention priority components |
-| Environmental verdict | Reported issue yang memerlukan field verification |
-| Generic recommendation | Deterministic, human-reviewed verification/action mapping |
-| Fokus pengunjung saja | Decision support untuk pengelola dan perencana program |
-
-## 3.10 Responsible AI by Design
-
-Safeguard utama adalah anonimisasi evidence, larangan fabricated quote, high-precision alert threshold, minimum support, Bayesian smoothing, freshness indicator, data-confidence state, serta alur verifikasi dan penolakan alert. Popularity bias dan platform bias ditampilkan sebagai limitation. Produk tidak mengotomatisasi tindakan dan tidak menggunakan simulator untuk klaim kausal.
+**Interpretasi Tabel 9.** Indikator membedakan hasil yang telah terukur dari sasaran yang masih memerlukan *pilot* atau *human evaluation*. Data *linkage* dan *leakage* audit telah tersedia, sedangkan ketepatan *early warning* serta dampak terhadap pekerjaan pengguna belum boleh diklaim.
 
 ---
 
-# BAB IV — PERENCANAAN IMPLEMENTASI
+# 4. Perencanaan Implementasi
 
-## 4.1 Strategi Pengembangan
+## 4.1 Alur Implementasi
 
-Implementasi dilakukan bertahap agar setiap keluaran dapat diuji sebelum menjadi input tahap berikutnya:
+Implementasi dimulai dari fondasi data: inventory, pemeriksaan kualitas, *cleaning*, dan penghubungan *review* ke destinasi. Setelah fondasi tersebut stabil, *taxonomy* dan *silver labels* dibuat untuk membangun *benchmark* awal. *Keyword* dan TF-IDF kemudian dibandingkan pada *split* yang sama dan bebas dari kebocoran yang terdeteksi.
 
-```text
-Inventory/EDA -> cleaning/entity resolution -> annotation
--> destination-group split -> Keyword/TF-IDF baselines
--> IndoBERT -> calibration/locked test
--> inference/aggregation/ranking -> product integration
--> system evaluation/submission
+Pengembangan berikutnya berfokus pada model bahasa Indonesia yang lebih memahami konteks, lalu *calibration* dan *error analysis*. Model hanya diterapkan ke seluruh *corpus* setelah konfigurasi dikunci. Hasil per *review* kemudian digabungkan per destinasi, diberi ukuran kecukupan data, dan diekspor ke *dashboard*. Tahap terakhir adalah *pilot* bersama pengelola untuk menilai apakah isu, *evidence*, dan urutan prioritas benar-benar membantu pekerjaan mereka.
+
+## 4.2 Kapan Seluruh Data Digunakan
+
+Penggunaan data dibagi agar *training* dan evaluasi tidak bercampur dengan penggunaan produk:
+
+1. **Saat *training*:** 922 *silver records* digunakan untuk melatih TF-IDF dan nantinya model lain.
+2. **Saat memilih model:** 196 *validation* *records* digunakan untuk memilih *representation* dan *threshold*.
+3. **Saat evaluasi:** 202 *locked-test records* digunakan setelah konfigurasi dibekukan.
+4. **Saat produksi:** model terpilih dijalankan pada seluruh 12.234 *review* berteks.
+5. **Saat agregasi *dashboard*:** hasil model digabungkan dengan seluruh 22.169 clean *records* dan *metadata* destinasi.
+
+*Rating-only* tidak dipaksa menjadi *input* NLP. Data tersebut digunakan untuk volume, distribusi *rating*, *coverage*, dan *data sufficiency*. Pemisahan ini menjaga agar setiap jenis data dipakai sesuai informasi yang benar-benar dimilikinya.
+
+## 4.3 Rencana *Pilot* dan Keberlanjutan
+
+*Pilot* akan memilih 5–10 destinasi dengan jenis dan volume *review* yang berbeda. Pengelola menilai apakah isu, *evidence*, dan urutan prioritas relevan. Sinyal dapat diberi status `confirmed`, `rejected`, atau `uncertain`.
+
+Keberlanjutan sistem memerlukan jadwal pembaruan data, *versioned model*, audit *false alert*, dan pemilik proses yang bertanggung jawab menindaklanjuti *queue*. Jika kondisi data tidak cukup, sistem harus menyatakan ketidakpastian dan bukan memberi nilai baik secara otomatis.
+
+---
+
+# 5. *Modelling*
+
+## 5.1 Persiapan Data
+
+*Cleaning* melakukan normalisasi Unicode dan spasi tanpa menghilangkan tanda baca, negasi, *typo*, atau *mixed language* yang penting bagi NLP. *Entity resolution* menghubungkan *review* ke *canonical destination* secara konservatif. Semua *review* bersih memperoleh *destination ID*; kandidat yang belum dapat dipastikan disimpan sebagai *unresolved placeholder* agar tidak dipaksa bergabung.
+
+**Entity resolution** adalah proses menyatukan penyebutan yang merujuk pada tempat yang sama. Contohnya, nama tempat dapat memiliki perbedaan ejaan pada file *review* dan *metadata*. Pendekatan konservatif berarti sistem lebih memilih menandai hubungan sebagai belum pasti daripada salah menggabungkan dua tempat yang berbeda.
+
+![Coverage *linkage*](docs/figures/eda/20_review_linkage_coverage.png)
+
+**Gambar 9. Hasil penghubungan 22.169 clean reviews ke *destination ID*.**
+
+Sebanyak 16.979 *review* terhubung otomatis karena kecocokannya kuat, 3.901 menggunakan alias yang telah diverifikasi, dan sisanya ditempatkan pada kategori *no-match*, *unresolved*, atau manual *review*. Semua *review* tetap memperoleh ID teknis agar dapat dikelompokkan saat *split*, tetapi *unresolved* ID tidak diklaim sebagai destinasi baru yang telah terverifikasi.
+
+![*Canonical* composition](docs/figures/eda/22_canonical_destination_composition.png)
+
+**Gambar 10. Komposisi 388 *canonical* IDs teknis.**
+
+Sebanyak 322 ID berasal dari *metadata anchors* dan 66 adalah *unresolved placeholders*. Ini menjelaskan bahwa “388 destinasi teknis” bukan berarti 388 tempat wisata unik yang semuanya sudah diverifikasi; sebagian adalah kelompok aman untuk analisis dan *split*.
+
+## 5.2 Contoh Perubahan Bentuk Data
+
+*Pipeline* menyimpan hasil antara agar setiap tahap dapat diperiksa dan tidak bergantung pada memori notebook. Contoh berikut disederhanakan dari *artifact* aktual dan tidak memuat identitas *reviewer*.
+
+### A. Bentuk Awal: CSV
+
+CSV adalah file teks berbentuk tabel. Satu baris mewakili satu *review* sumber. Nama kolom dua file *review* utama dipetakan ke *field* yang sama sebelum digabung.
+
+```csv
+place-name,reviewer-rating,review-text,published-at,scraped-at-date
+Pantai Pasir Putih Lumban Bul-bul Balige,5,"Pantainya bersih ...",setahun lalu,2025-07-29
 ```
 
-Strategi ini mencegah pengembangan dashboard mendahului validasi data dan model, serta memungkinkan baseline tetap digunakan secara jujur jika primary model belum layak.
+Kolom pentingnya adalah nama tempat, *rating*, teks *review*, waktu publikasi, dan tanggal pengambilan data. Nama *reviewer* tidak dibawa ke *output* publik.
 
-## 4.2 Work Breakdown Structure dan Status
+### B. Setelah *Cleaning* dan *Entity Resolution*: Parquet
 
-| Fase | Output utama | Status 28 Juli 2026 |
-| --- | --- | --- |
-| Scope dan repository | Charter, configs, contracts, locks, runbook | Selesai |
-| Inventory | Hash/schema/row-count inventory | Selesai untuk 14 CSV saat ini |
-| EDA/cleaning | EDA report, clean/interim data, quarantine | Selesai v0.1 |
-| Entity resolution | Canonical destinations, links, metrics | Selesai v0.1 dengan human adjudication |
-| Annotation | Guideline, samples, silver labels, consistency audit | Silver v1.0.0 selesai; human gold tidak tersedia |
-| Modelling | Keyword, TF-IDF, IndoBERT artifacts | Keyword/TF-IDF A6 selesai; IndoBERT belum dimulai |
-| Evaluation | Locked metrics, latency, error analysis, calibration | Silver baseline metrics selesai; calibration belum tersedia |
-| Intelligence engine | Prediction, aggregation, priority export | Draft config; belum diimplementasikan |
-| Product | Next.js prototype dan integration contract | Prototype baseline tersedia |
+Parquet adalah format tabel terkompresi. Dibanding CSV, Parquet lebih cepat dibaca oleh *pipeline*, mempertahankan tipe data, dan cocok untuk dataset antara yang besar. Contoh satu row dari `canonical_reviews.parquet`:
 
-## 4.3 Repositori dan Reproducibility
+```json
+{
+  "review_id": "review_a9d17694b1521309",
+  "source_kind": "wisata",
+  "place_name_raw": "Pantai Pasir Putih Lumban Bul-bul Balige",
+  "review_text_raw": "Pantainya bersih, hanya saja gerai makanan cenderung agak monoton.",
+  "rating": 5.0,
+  "destination_id": "dest_wisata_675974ac1b278e",
+  "duplicate_group_id": "dup_6d3c085d5f680b65"
+}
+```
 
-Kode data/model menggunakan package Python `sipature_ml` dengan Python 3.10+, exact dependency lock untuk development dan profile terpisah untuk Colab/GPU. Seed global ditetapkan 42 untuk Python, NumPy, dan PyTorch. Config pipeline, taxonomy, split, training, dan scoring disimpan dalam YAML dan dicatat hash-nya pada environment snapshot.
+`review_id` memastikan setiap *review* dapat dilacak, `destination_id` menunjukkan tempat hasil *entity resolution*, dan `duplicate_group_id` membantu mencegah teks yang sama bocor ke *split* berbeda. Teks asli tetap disimpan untuk *evidence*.
 
-CLI mendeklarasikan stage dari inventory/EDA sampai app export. Inventory, EDA, cleaning, entity resolution, sampling, silver generation/validation, leakage-safe split, keyword/TF-IDF baselines, dan aggregate figures sudah diimplementasikan; stage IndoBERT dan downstream tetap fail-fast. Clean environment telah berhasil menjalankan lint dan 46 unit tests terhadap pipeline saat ini.
+### C. Setelah *Annotation*: JSONL
 
-Intermediate artifact wajib ditulis ke disk/Google Drive dan memiliki manifest berisi source hash, config version, pipeline/model version, timestamp, dan row counts. Raw data, generated artifact, model weight, dan secret tidak dimasukkan ke public Git. Catatan khusus: dataset sudah ter-track sebelum policy dibuat dan memerlukan keputusan lisensi terpisah sebelum repository dipublikasikan.
+JSONL adalah format dengan satu objek JSON per baris. Format ini cocok untuk label multilabel karena satu *review* dapat memiliki beberapa aspek. Contoh dipersingkat dari `silver-v1.0.0.jsonl`:
 
-## 4.4 Teknologi dan Alasan Pemilihan
+```json
+{
+  "review_id": "review_000332d077bc2a6e",
+  "destination_id": "dest_wisata_0ff99a3eeafd42",
+  "text": "pemandangan bagus ... video informasi rusak tak dapat dilihat",
+  "labels": [
+    {
+      "aspect": "scenery",
+      "polarity": "positive",
+      "severity": null,
+      "evidence_text": "pemandangan bagus lihat dari atas.",
+      "vote_count": 3,
+      "confidence": 1.0
+    },
+    {
+      "aspect": "maintenance",
+      "polarity": "negative",
+      "severity": "medium",
+      "evidence_text": "video informasi ... rusak tak dapat dilihat",
+      "vote_count": 3,
+      "confidence": 1.0
+    }
+  ],
+  "silver_status": "consensus"
+}
+```
 
-| Layer | Teknologi | Alasan |
-| --- | --- | --- |
-| Data | Python, Pandas, PyArrow/Parquet | Reproducible tabular processing dan efficient intermediate storage |
-| Matching | RapidFuzz + geospatial distance | Conservative entity similarity yang dapat dijelaskan |
-| Baseline | scikit-learn | Baseline kuat, cepat, dan mudah diaudit |
-| Primary model | PyTorch, Transformers, IndoBERT | Contextual Indonesian NLP untuk mixed/multiaspect review |
-| Experiment | Google Colab GPU | Akses GPU dan persistence melalui Drive |
-| API | FastAPI (rencana) | Typed inference service dan offline deployment |
-| Web | Next.js 15, React 19, Leaflet | Aplikasi interaktif, peta, dan server-side batch data |
-| Deployment | Docker dan DGX B200 | Reproducible offline final deployment |
+`evidence_text` adalah potongan teks yang mendukung label. `vote_count: 3` berarti tiga *rule passes* memberi keputusan yang sama, bukan tiga manusia. `confidence: 1.0` adalah konsistensi votes, bukan probabilitas terkalibrasi.
 
-## 4.5 Integrasi dan Deployment
+### D. Bentuk *Output* Model Tahap Berikutnya
 
-Dashboard akan membaca versioned precomputed export yang divalidasi terhadap `app-export.schema.json`. Real-time inference hanya digunakan pada analyzer/API. Export harus menyertakan schema version, model version, generated time, source manifest, destination confidence, priority, issues, dan evidence provenance.
+Setelah model final dikunci, setiap *review* berteks akan menghasilkan *prediction* *record*. Contoh berikut adalah **kontrak *output* yang direncanakan**, bukan hasil *full-corpus inference* yang sudah tersedia:
 
-Arsitektur deployment yang direncanakan adalah Next.js web, FastAPI inference, dan PostgreSQL/PostGIS atau SQLite untuk MVP. Model dan tokenizer disimpan lokal; container tidak boleh mengunduh model saat startup. Health check, CPU fallback, precomputed data, dan offline map fallback disiapkan untuk final round.
+```json
+{
+  "review_id": "review_a9d17694b1521309",
+  "destination_id": "dest_wisata_675974ac1b278e",
+  "model_version": "[MODEL_VERSION]",
+  "predictions": [
+    {
+      "aspect": "cleanliness",
+      "aspect_probability": 0.91,
+      "polarity": "positive",
+      "severity": null
+    }
+  ]
+}
+```
 
-## 4.6 Rencana Pilot
+*Record* *prediction* selanjutnya digabungkan berdasarkan `destination_id`. Sistem menghitung jumlah *mention*, *negative signal*, *severe signal*, *evidence*, *freshness*, dan kecukupan data untuk menghasilkan ringkasan per destinasi. Dengan demikian, alur formatnya adalah:
 
-Pilot direncanakan pada 5–10 destinasi yang berbeda jenis dan volume review. Expert menilai masalah tanpa melihat ranking model, kemudian hasil dibandingkan menggunakan rank agreement. Top alert diverifikasi di lapangan dan dicatat sebagai confirmed, rejected, atau uncertain. Feedback tersebut digunakan untuk memperbaiki taxonomy, thresholds, dan bobot ranking.
+Contoh **bentuk ringkasan destinasi yang direncanakan** untuk *dashboard*:
 
-## 4.7 Risiko dan Mitigasi
+```json
+{
+  "destination_id": "dest_wisata_675974ac1b278e",
+  "data_confidence": "medium",
+  "review_coverage": {
+    "total_clean_records": 120,
+    "textual_records": 76,
+    "rating_only_records": 44
+  },
+  "issues": [
+    {
+      "aspect": "cleanliness",
+      "negative_mentions": 8,
+      "support": 14,
+      "priority": "monitor",
+      "evidence_review_ids": ["review_..."]
+    }
+  ],
+  "verification_status": "unverified"
+}
+```
 
-| Risiko | Kemungkinan awal | Dampak | Mitigasi | Status residual |
-| --- | --- | --- | --- | --- |
-| Sparse labels | Tinggi | Model lemah pada aspek penting | Stratified sampling, support audit, class weights | Belum diukur |
-| Popularity bias | Tinggi | Ranking didominasi tempat populer | Smoothing, minimum support, sufficiency state | Belum diuji |
-| False alert | Sedang–tinggi | Reputational harm | Alert threshold, evidence, verification | Belum diuji |
-| Entity false merge | Sedang | Evidence salah tempat | Conservative matching, manual review | Belum diuji |
-| Data staleness | Belum diketahui | Alert usang | Date normalization dan freshness | Menunggu EDA |
-| Deployment failure | Sedang | Demo tidak berjalan | Lock, Docker, offline artifacts/fallback | Local web build lulus |
+`data_confidence` menjelaskan kecukupan data, bukan keyakinan bahwa kondisi lapangan benar. `support` adalah jumlah bukti *review*, `priority` menentukan urutan pemeriksaan, dan `verification_status` menunjukkan bahwa pengelola belum mengonfirmasi sinyal tersebut. Angka di contoh ini hanya ilustrasi struktur dan bukan hasil aktual suatu destinasi.
 
-## 4.8 Keberlanjutan
+Urutan transformasi datanya adalah: CSV sumber dibaca dan distandardisasi; hasil bersih disimpan sebagai Parquet; subset *annotation* disimpan sebagai JSONL untuk *training* dan *evaluation*; model terpilih menghasilkan *prediction* bagi 12.234 *review* berteks; lalu *prediction* digabungkan menjadi *aggregate* JSON per destinasi untuk *dashboard*.
 
-Keberlanjutan teknis bergantung pada feedback loop dari status verified/rejected, versioned retraining, monitoring drift dan alert precision, serta governance penggunaan data/evidence. Keberlanjutan operasional memerlukan pemilik proses pada pengelola atau pemerintah, jadwal review, definisi siapa yang boleh mengubah status, dan mekanisme audit. Model tidak memberi nilai apabila alert tidak masuk ke proses verifikasi nyata.
+## 5.3 Mengapa Hanya 1.320 *Review* yang Berlabel
+
+Dari 12.234 *review* berteks, dipilih 1.320 *review* untuk *annotation* awal:
+
+- 120 *review* untuk *pilot*;
+- 1.200 *review* untuk *main sample*;
+- pemilihan mempertimbangkan *destination*, *rating*, panjang teks, jenis sumber, penanda bahasa, *recency*, *candidate complaint*, dan aspek langka.
+
+Tujuannya adalah memperoleh subset yang cukup beragam dan dapat diaudit, bukan menyatakan bahwa subset tersebut mewakili prevalensi seluruh populasi. Tiga *deterministic rule passes* menghasilkan ***AI-assisted weak-supervision silver labels***. Hasilnya adalah 489 `consensus`, 334 `review_recommended`, dan 497 `no_supported_aspect` *records*.
+
+*Silver labels* bukan *human gold*. `pass_agreement` 0,8827 mengukur konsistensi *rules* dan bukan *inter-annotator agreement* atau *calibrated probability*.
+
+![Distribusi silver *aspect*](docs/figures/eda/29_silver_aspect_distribution.png)
+
+**Gambar 11. Jumlah *silver labels* per aspek pada *main sample* 1.200 *review*.**
+
+Satu *review* dapat memiliki beberapa aspek, sehingga total batang tidak sama dengan jumlah *review*. Pemandangan, pelayanan staf, transparansi harga, dan kebersihan memiliki *support* terbesar. Jam operasional, keselamatan, kepadatan, dan sampah jauh lebih sedikit. Ketimpangan ini menjadi alasan penggunaan *stratified sampling*, *class weighting*, dan *Macro F1*. Distribusi ini berasal dari *sample* yang sengaja memperbanyak aspek langka, sehingga tidak boleh dianggap sebagai prevalensi seluruh pariwisata Toba.
+
+![Silver *polarity* *severity*](docs/figures/eda/30_silver_polarity_severity.png)
+
+**Gambar 12. Distribusi *polarity* dan *severity* pada *main sample*.**
+
+Bagian kiri menunjukkan lebih banyak label positif daripada negatif/netral. Bagian kanan hanya menghitung label negatif: *severity* rendah paling banyak, diikuti sedang, sedangkan tinggi relatif sedikit. Gambar ini menjelaskan mengapa *severity* tinggi tidak dapat dinilai hanya dengan *accuracy*; jumlahnya kecil dan setiap *false alert* berpotensi merugikan reputasi destinasi.
+
+## 5.4 *Leakage-Safe* *Split*
+
+Seluruh 1.320 *silver records* dibagi berdasarkan *destination*, bukan secara acak per *review*:
+
+**Tabel 10. Pembagian *leakage-safe train*, *validation*, dan *locked test***
+
+| *Split*       | *Records* | *Destinations* | Fungsi                                   |
+| ------------- | ---------:| --------------:| ---------------------------------------- |
+| Train         | 922       | 187            | Model belajar pola                       |
+| *Validation*  | 196       | 40             | Memilih *representation* dan *threshold* |
+| *Locked test* | 202       | 40             | Evaluasi setelah konfigurasi dikunci     |
+
+**Interpretasi Tabel 10.** Proporsi destinasi mendekati 70/15/15, sedangkan jumlah *record* dapat berbeda karena tiap destinasi memiliki volume *review* yang tidak sama. Audit memastikan tidak ada *overlap review ID*, *destination*, *technical duplicate group*, atau *normalized repeated-text group*. Seluruh 14 aspek muncul pada *validation* dan *test*, tetapi *support* beberapa aspek masih kecil, misalnya `opening_hours` hanya memiliki dua contoh pada *test*.
+
+## 5.5 *Baseline* *Keyword*
+
+*Keyword baseline* menggunakan *lexicon* aspek, konteks lokal, *polarity* cues, *contrast marker*, *intensity*, dan *severity* *rules*. Model ini transparan dan mudah dijelaskan, tetapi sangat bergantung pada kata yang sudah dikenal.
+
+## 5.6 *Baseline* TF-IDF
+
+TF-IDF mengubah teks menjadi pola kata dan potongan karakter. Tiga *representation* diuji hanya pada *validation*:
+
+**Tabel 11. Perbandingan representasi TF-IDF pada *validation* split**
+
+| *Representation*      | *Validation* *Macro F1* terhadap silver |
+| --------------------- | ---------------------------------------:|
+| *Word* unigram/bigram | 0,7780                                  |
+| *Character* 3–5 gram  | 0,7314                                  |
+| *Word* + *character*  | 0,8117                                  |
+
+**Interpretasi Tabel 11.** Kombinasi *word* dan *character* memperoleh *Macro F1* *validation* tertinggi sehingga dipilih sebagai *baseline* TF-IDF final. *Classifier* menggunakan *One-vs-Rest Logistic Regression* dengan *class weighting*. *Threshold* setiap aspek dipilih hanya dari *validation*.
+
+![TF-IDF *validation*](docs/figures/eda/36_tfidf_validation_selection.png)
+
+**Gambar 13. Pemilihan TF-IDF *representation* menggunakan *validation* *split*.**
+
+`Word` memakai pola satu atau dua kata, `char` memakai potongan 3–5 karakter yang membantu menghadapi variasi ejaan, sedangkan `word_char` menggabungkan keduanya. Kombinasi memperoleh *Macro F1* *validation* tertinggi, yaitu 0,8117. *Locked test* tidak digunakan untuk memilih *representation* ini.
+
+## 5.7 Rencana Model Lanjutan
+
+Tahap berikutnya adalah IndoBERT untuk mempelajari konteks bahasa Indonesia yang tidak selalu tertangkap *keyword* atau TF-IDF. IndoBERT hanya akan dipertahankan jika memberi peningkatan yang berarti dengan biaya komputasi yang masih layak. Model yang lebih kompleks tidak otomatis dianggap lebih baik.
 
 ---
 
-# BAB V — MODELLING
+# 6. Evaluasi Model
 
-## 5.1 Definisi Tugas
+## 6.1 Protokol
 
-Model dirancang sebagai tiga tugas terhubung:
+Kedua *baseline* dinilai pada *locked test* yang sama. *Macro F1* dipakai sebagai metrik utama karena semua aspek perlu diperhatikan, termasuk aspek langka. *Micro F1*, *Exact Match*, *Hamming Loss*, per-*aspect* F1, dan *latency* dilaporkan sebagai pelengkap.
 
-1. Multilabel aspect detection untuk menemukan seluruh aspek pada review.
-2. Aspect-conditioned polarity untuk menentukan positive, negative, atau neutral per aspek.
-3. Negative severity untuk menentukan low, medium, atau high pada aspek negatif.
+*Config* dan *threshold* dipilih pada *train/validation*. *Locked-test metrics* tidak boleh ditimpa; eksperimen baru harus memakai versi baru.
 
-Pendekatan modular dipilih untuk MVP karena lebih mudah dievaluasi, di-debug, dan disederhanakan apabila support label tidak memadai.
+## 6.2 Hasil *Locked Silver Test*
 
-## 5.2 Data Preparation
+**Tabel 12. Hasil *Keyword* dan TF-IDF pada *locked silver test***
 
-Cleaning mempertahankan raw text dan normalized text, melakukan Unicode NFKC/whitespace normalization, mempertahankan tanda baca/negasi/typo/mixed language, memvalidasi rating, memisahkan rating-only records, dan mencatat quarantine serta duplicate groups. Stemming dan stopword removal tidak digunakan untuk IndoBERT; perlakuannya akan diuji terpisah untuk TF-IDF.
+| Metric                 | *Keyword* | TF-IDF *word*+char |
+| ---------------------- | ---------:| ------------------:|
+| *Macro F1*             | 0,9768    | 0,7201             |
+| *Micro F1*             | 0,9783    | 0,8040             |
+| *Exact Match*          | 0,9455    | 0,7079             |
+| *Hamming Loss*         | 0,0039    | 0,0343             |
+| *Latency*, ms/*review* | 1,8953    | 0,1101             |
 
-Dari 22.302 review-like records, 89 normalized technical duplicate excess dan 44 empty records dikeluarkan dengan provenance. Clean output berisi 22.169 records: 12.234 textual dan 9.935 rating-only. Identitas reviewer tidak disimpan pada processed layer.
+**Interpretasi Tabel 12.** *Keyword* memiliki *agreement* paling tinggi terhadap *silver reference*, tetapi hasil ini sangat dipengaruhi oleh penggunaan kosakata *taxonomy* yang juga berkaitan dengan pembentukan *silver labels*. TF-IDF memiliki *agreement* lebih rendah, namun *inference* lebih cepat dan menjadi pembanding yang lebih berguna untuk model yang belajar dari pola data. Seluruh angka merupakan *silver agreement*, bukan *human-gold performance*.
 
-![Cleaning funnel](docs/figures/eda/17_cleaning_funnel.png)
+![*Baseline* comparison](docs/figures/eda/34_baseline_silver_test_comparison.png)
 
-**Gambar 5.2. Cleaning funnel review.** Enam duplicate tambahan ditemukan setelah Unicode/whitespace normalization dibanding physical exact-row audit.
+**Gambar 14. Perbandingan *agreement* *baseline* terhadap *locked silver test*.**
 
-Relative date parser menghasilkan 18.923 estimasi tanggal, sedangkan 3.100 record tidak memiliki scrape anchor dan 279 tidak memiliki published-at. Estimasi disimpan dengan precision/status dan tidak dianggap tanggal presisi.
+Semakin tinggi batang, semakin sesuai prediksi dengan *silver reference*. *Keyword* tampak sangat tinggi karena menggunakan kosakata yang berkaitan erat dengan pembentukan *silver labels*. TF-IDF lebih rendah tetapi lebih berguna sebagai pembanding model yang belajar pola dari data. Angka ini bukan performa terhadap label manusia.
 
-![Relative date parsing](docs/figures/eda/18_relative_date_parsing.png)
+*Keyword* memperoleh nilai sangat tinggi karena kosakata *taxonomy* juga berkaitan dengan cara *silver labels* dibentuk. Dengan kata lain, model *Keyword* sangat baik dalam meniru *reference* *rules*. Hal ini tidak membuktikan bahwa model mampu memahami semua bentuk keluhan nyata.
 
-**Gambar 5.3. Hasil parsing waktu review.**
+TF-IDF lebih independen dari *runtime* *rules*, tetapi tetap belajar dari *silver targets*. Hasil per aspek menunjukkan keterbatasan pada kelas langka:
 
-Entity resolution menggunakan kind blocking, normalized name, address similarity, dan human review. Review names tanpa address hanya di-auto-match jika exact dan unambiguous; fuzzy candidates masuk manual review. No-match/unresolved memperoleh placeholder ID terpisah agar tidak dipaksa merge. Sebanyak 323 metadata records menghasilkan 322 anchors setelah duplicate Bukit Tara Bunga diverifikasi.
+**Tabel 13. Contoh hasil TF-IDF pada aspek dengan *support* terbatas**
 
-Human review mencakup seluruh 78 ambiguous candidates, seluruh 6 fuzzy auto-matches, dan sampel 30 exact auto-matches. Satu fuzzy false merge (`SAPADIA VILLA BALIGE III` terhadap `II`) dan satu exact-name collision berlokasi berbeda (`Bukit Simargulang Ombun`) dikoreksi.
+| Aspek             | TF-IDF F1 | *Test* *support* |
+| ----------------- | ---------:| ----------------:|
+| opening_hours     | 0,0000    | 2                |
+| crowding          | 0,5000    | 6                |
+| public_facilities | 0,6061    | 18               |
+| safety            | 0,6667    | 8                |
+| waste             | 0,9474    | 9                |
 
-Annotation aktif menggunakan AI-assisted weak supervision pada deterministic stratified sample. Candidate seed retrieval digunakan untuk sampling audit dan tiga rule profiles, bukan human ground truth. Pilot berisi 120 review dari 83 destination IDs dan main sample berisi 1.200 review dari 276 destination IDs; keduanya tidak overlap. Tiga passes (`strict`, `balanced`, `recall`) menghasilkan consensus minimal 2/3 votes, evidence verbatim, dan uncertainty queue. Human gold labels dan inter-annotator agreement tidak tersedia.
+**Interpretasi Tabel 13.** Nilai F1 harus dibaca bersama *support*. `opening_hours` memiliki F1 nol tetapi hanya dua contoh pada *test*, sehingga estimasinya belum stabil. `waste` memiliki F1 tinggi, namun *support* sembilan juga masih terbatas. Tabel ini mendukung perlunya tambahan *reference* yang lebih kuat dan evaluasi per aspek, bukan hanya satu nilai rata-rata.
 
-![Candidate support](docs/figures/eda/23_annotation_candidate_support.png)
+![Per-*aspect* F1](docs/figures/eda/35_baseline_per_aspect_f1.png)
 
-**Gambar 5.4. Candidate aspect support pada clean pool dan main sample.** Seed retrieval digunakan untuk oversampling aspek langka, bukan ground truth.
+**Gambar 15. Per-*aspect* F1 pada *locked silver test*.**
 
-![Pilot stratification](docs/figures/eda/24_pilot_sampling_stratification.png)
+Setiap pasangan batang membandingkan *Keyword* dan TF-IDF untuk satu aspek. TF-IDF cukup kuat pada waste, scenery, comfort, dan staff service, tetapi lemah pada opening hours dan crowding. Perbedaan tersebut tidak boleh dibaca tanpa *support*: opening hours hanya memiliki dua contoh pada *test*, sehingga satu kesalahan saja sangat memengaruhi nilainya.
 
-**Gambar 5.5. Stratifikasi pilot berdasarkan source kind, rating, length, language marker, dan recency.**
+## 6.3 Interpretasi yang Bertanggung Jawab
 
-![Main assignments](docs/figures/eda/25_main_annotation_assignments.png)
+Hasil A6 mendukung tiga kesimpulan:
 
-**Gambar 5.6. Rencana assignment main annotation.**
-
-Silver v1.0.0 berisi 1.320 records dan seluruhnya lulus schema validation. Status seluruh pilot+main adalah 489 consensus, 334 review-recommended, dan 497 no-supported-aspect. Mean AI pass agreement 0,8827 adalah konsistensi antar-rule passes, bukan inter-annotator agreement atau calibrated confidence. Audit systematic errors memperbaiki negation/rumor pungli, aspect-aware severity, dan boundaries access/maintenance, sanitation/cleanliness, toilet/public facilities, crowding, serta opening hours.
-
-## 5.3 Leakage-Safe Split
-
-Split `silver-split-1.0.0` membagi 267 destination IDs menjadi train 187, validation 40, dan locked test 40. Jumlah record adalah 922/196/202. Connected components menggabungkan destination yang berbagi technical duplicate group atau normalized exact repeated text. Audit menghasilkan nol overlap review ID, destination, technical duplicate group, dan repeated-text group. Dua puluh tiga repeated-text groups lintas destination dipertahankan dalam split sama. Seluruh 14 silver aspects muncul pada validation dan test.
-
-Technical `duplicate_group_id` unik pada seluruh 1.320 surviving silver records dan tidak memadai sebagai semantic near-duplicate detector. Karena itu normalized exact-text hash ditambahkan sebagai constraint konservatif; paraphrase semantik tetap menjadi residual risk. Split manifest menyimpan seed 42, destination lists, distributions, hashes, zero-leakage checks, dan status locked test.
-
-## 5.4 Baseline dan Primary Model
-
-Keyword baseline menggunakan aspect lexicon, local polarity cues, contrast marker, intensity, dan severity rules. TF-IDF membandingkan word unigram/bigram, character n-gram 3–5, serta combined representation pada validation. Combined word+character dipilih dengan validation Macro F1 0,8117, kemudian One-vs-Rest Logistic Regression menggunakan `class_weight=balanced`, `C=1.0`, dan `max_iter=2000`. Threshold per aspect dipilih hanya pada validation sebelum locked test dibaca.
-
-Pada 202 locked silver-test records, keyword menghasilkan Macro/Micro F1 0,9768/0,9783 dan TF-IDF 0,7201/0,8040. Keyword yang hampir sempurna terutama menunjukkan circularity karena baseline dan silver generator berbagi taxonomy lexicon; angka tersebut bukan real-world accuracy. TF-IDF memperoleh Exact Match 0,7079 dan latency 0,1101 ms/review. Performa paling lemah adalah `opening_hours` F1 0 dengan support 2, `crowding` 0,5000, dan `public_facilities` 0,6061.
-
-Model ID IndoBERT belum dipilih. Pemilihan harus mencatat lisensi, tokenizer, ukuran, maximum length, dan sumber pretraining. Config hyperparameter saat ini hanya rancangan awal: max length 192, batch size 16, gradient accumulation 2, learning rate 2e-5, weight decay 0,01, empat epoch, warmup 0,10, patience 2, dan FP16. Nilai ini belum diuji.
-
-## 5.5 Class Imbalance dan Threshold
-
-Imbalance akan ditangani bertahap, dimulai dari `class_weight` untuk TF-IDF dan `pos_weight` pada BCE untuk IndoBERT. Oversampling, focal loss, atau augmentation hanya diuji satu per satu bila diperlukan. Detection threshold dan alert threshold dipilih per label menggunakan validation set. Karena false alert berisiko reputasional, alert threshold mengutamakan precision.
-
-## 5.6 Inference, Evidence, dan Aggregation
-
-Setiap prediction akan menyimpan review/destination ID, model version, aspect probability, polarity/probability, severity/probability, dan timestamp. Evidence dipilih dari teks asli, tidak duplikat, dianonimkan, dan tetap terhubung ke source provenance. Aggregation menghitung mention/negative/severe counts, confidence, persistence, freshness, dan data coverage sebelum menghasilkan destination signal.
-
-## 5.7 Reproducibility Status
-
-Reproducibility foundation sudah tersedia: exact local lock, pinned Colab profile, global seed, config hashes, file SHA-256, environment snapshot, Makefile, CLI, Drive bootstrap, checkpoint contract, tests, dan locked-test policy. Pada snapshot saat ini, Python 3.10.18 digunakan pada arm64 macOS; repository berstatus dirty karena pekerjaan belum dikomit. GPU packages belum dipasang pada local CPU profile, sesuai desain environment separation.
+1. *Pipeline* *split* dan evaluasi dapat berjalan tanpa kebocoran *destination*/repeated text yang terdeteksi.
+2. Combined TF-IDF menjadi classical *baseline* yang dapat dimuat ulang dan cepat untuk *inference*.
+3. Independent human *reference* tetap diperlukan sebelum mengklaim performa dunia nyata atau *Alert Precision*.
 
 ---
 
-# BAB VI — EVALUASI MODEL
-
-## 6.1 Protokol Evaluasi
-
-Seluruh model akan dibandingkan pada destination-grouped split yang sama. Preprocessing, feature selection, hyperparameter, threshold, dan calibration ditentukan menggunakan train/validation saja. Test dibuka setelah config dan threshold dikunci. Hasil test tidak ditimpa; eksperimen baru harus memiliki versi baru.
-
-Aspect detection dilaporkan dengan Macro F1 sebagai metric utama, disertai Micro F1, per-label precision/recall/F1, Hamming Loss, Exact Match, dan Alert Precision. Polarity dan severity menggunakan Macro F1 serta confusion matrix; severity juga memakai high-severity precision dan weighted kappa. Calibration diukur dengan ECE, Brier Score, dan reliability diagram.
-
-Entity resolution dinilai dengan pairwise precision, recall, F1, dan false-merge rate. Ranking dinilai dengan NDCG@5/10, Spearman, dan Kendall bila expert ground truth tersedia. System-level evaluation mengukur evidence correctness, unsupported-alert rate, intervention relevance, dan time saved.
-
-## 6.2 Status Hasil Evaluasi
-
-| Evaluasi | Status 28 Juli 2026 | Alasan |
-| --- | --- | --- |
-| Human annotation agreement | Belum tersedia | Tidak dilakukan pada jalur silver aktif |
-| AI pass agreement | 0,8827 | Mean pairwise aspect-set Jaccard tiga rule passes; bukan human agreement |
-| Entity Resolution F1 | 0,5965 pre-adjudication | 110 certain reviewed pairs; precision 0,9714, recall 0,4304 |
-| Keyword silver agreement | Macro/Micro F1 0,9768/0,9783 | Locked silver test; circular terhadap weak rules |
-| TF-IDF silver agreement | Macro/Micro F1 0,7201/0,8040 | Locked silver test; word+char selected on validation |
-| IndoBERT metrics | Belum tersedia | Model belum dipilih/dilatih |
-| Calibration | Belum tersedia | Validation predictions belum ada |
-| Ranking agreement | Belum tersedia | Expert cases belum dinilai |
-| Evidence correctness | Belum tersedia | Human evaluation belum dilakukan |
-
-Skor baseline aplikasi tetap tidak dimasukkan sebagai hasil evaluasi karena berasal dari pipeline UI lama. A6 metrics berasal dari pipeline ML baru dan locked destination-grouped silver test, tetapi tetap bukan human-gold performance.
-
-### 6.2.1 Baseline Silver Benchmark
-
-![Baseline comparison](docs/figures/eda/34_baseline_silver_test_comparison.png)
-
-**Gambar 6.1. Keyword dan TF-IDF agreement terhadap locked silver test.** Keyword result harus dibaca sebagai rule-reconstruction ceiling, bukan bukti pemahaman bahasa.
-
-![Per-aspect F1](docs/figures/eda/35_baseline_per_aspect_f1.png)
-
-**Gambar 6.2. Per-aspect F1 pada locked silver test.** Rare-label estimates tidak stabil; `opening_hours` hanya memiliki support 2.
-
-![TF-IDF validation selection](docs/figures/eda/36_tfidf_validation_selection.png)
-
-**Gambar 6.3. TF-IDF representation selection pada validation.** Test tidak digunakan untuk pemilihan representation atau threshold.
-
-### 6.2.2 Entity Resolution Evaluation
-
-Evaluasi mencakup 114 reviewed pairs: 110 certain dan 4 uncertain. Sebelum adjudication diperoleh TP=34, FP=1, FN=45, dan TN=30. Precision tinggi dan recall rendah merupakan konsekuensi kebijakan konservatif yang lebih memilih unresolved daripada false merge.
-
-| Metric | Pre-adjudication | Post-adjudication reviewed pairs |
-| --- | ---: | ---: |
-| Pairwise Precision | 0,9714 | 1,0000 |
-| Pairwise Recall | 0,4304 | 1,0000 |
-| Pairwise F1 | 0,5965 | 1,0000 |
-| False-merge rate | 0,0286 | 0,0000 |
-
-Post-adjudication 1,0 hanya berlaku pada human-corrected reviewed pairs dan bukan generalization performance.
-
-![Entity confusion matrix](docs/figures/eda/21_entity_review_confusion_matrix.png)
-
-**Gambar 6.4. Confusion matrix reviewed pairs sebelum adjudication.**
-
-## 6.3 Quality Assurance yang Sudah Dilakukan
-
-Fondasi pipeline telah melalui `ruff` lint dan 46 unit tests. Clean Python 3.10 environment berhasil menjalankan inventory, EDA, cleaning, entity resolution, annotation sampling, silver generation/validation, grouped split, baseline training/evaluation, model serialization/reload, dan aggregate figures. Pengujian memvalidasi kontrak, deterministic logic, dan leakage invariants, bukan performa generalisasi terhadap human gold.
-
----
-
-# BAB VII — HASIL DAN PEMBAHASAN
+# 7. Hasil dan Pembahasan
 
 ## 7.1 Hasil yang Sudah Tersedia
 
-Hasil aktual mencakup scope lock, repository architecture, reproducibility foundation, inventory, EDA, clean dataset, canonical entity links, reviewed entity metrics, AI-assisted silver labels, leakage-safe split, keyword/TF-IDF silver benchmark, dan prototipe aplikasi baseline. Pipeline belum menghasilkan human gold labels, IndoBERT predictions, atau priority queue final.
+- Tim berhasil membaca dan memeriksa 14 file CSV tanpa kesalahan.
+- *Cleaning* menghasilkan 22.169 *clean records*.
+- *Entity resolution* menghasilkan 388 *canonical* IDs teknis.
+- *Taxonomy* 14 aspek dan *silver annotation* 1.320 *records* tersedia.
+- *Destination*/repeated-text-safe *split* telah dikunci.
+- *Keyword* dan TF-IDF telah dievaluasi pada *split* yang sama.
+- Model TF-IDF dapat disimpan, dimuat ulang, dan menghasilkan 14 *probabilities* per *review*.
+- *Prototype dashboard* telah memiliki *overview*, peta, *destination detail*, *intervention queue*, *analyzer*, dan *fallback* peta luring.
 
-Cleaning menghasilkan 22.169 clean records dan semuanya memiliki `destination_id`. Resolution menghasilkan 388 canonical IDs teknis: 322 metadata anchors dan 66 unresolved placeholders. Placeholder menjaga leakage-safe grouping tanpa mengklaim sebagai destinasi baru terverifikasi.
+## 7.2 Apa yang Belum Boleh Diklaim
 
-![Review linkage coverage](docs/figures/eda/20_review_linkage_coverage.png)
+- *Silver labels* bukan label manusia atau kondisi lapangan.
+- *Keyword* *Macro F1* 0,9768 bukan akurasi dunia nyata.
+- TF-IDF *Macro F1* 0,7201 belum membuktikan performa terhadap *human gold*.
+- *Priority* score belum divalidasi bersama *stakeholder*.
+- *Evidence* *correctness*, *Alert Precision*, ranking *agreement*, dan *time saved* belum diukur.
+- Data aplikasi saat ini belum merupakan hasil *full-corpus inference* dari model A6.
 
-**Gambar 7.1. Coverage linkage pada clean review.**
+## 7.3 Hubungan Model dengan Produk
 
-![Canonical composition](docs/figures/eda/22_canonical_destination_composition.png)
+Saat ini A6 membuktikan *pipeline training* dan *benchmark* pada subset berlabel. Setelah model akhir dikunci, model digunakan untuk melakukan *inference* terhadap 12.234 *review* berteks. Hasil tersebut kemudian digabungkan dengan 9.935 *rating-only records* sehingga konteks agregasi mencakup seluruh 22.169 *clean records*. Pada tingkat destinasi, sistem menyusun *evidence*, *data confidence*, dan *intervention priority* sebelum hasil dikirimkan ke *dashboard* SIPATURE.
 
-**Gambar 7.2. Komposisi canonical IDs teknis.**
+Alur ini mencegah angka evaluasi bercampur dengan *output* produksi. Data *training* menjawab “apakah model sesuai dengan *reference*?”, sedangkan *full-corpus inference* menjawab “isu apa yang dilaporkan pada seluruh data?”.
 
-Taxonomy RC1, guideline lengkap, silver JSONL schema, 120-review pilot, dan 1.200-review main sample telah dihasilkan. Actual weak-supervision support pada main sample mencakup 1.503 labels: 658 positive, 477 negative, dan 368 neutral. Aspek dengan support terbesar adalah scenery 203, staff service 187, price transparency 181, dan cleanliness 166; opening hours 10 menjadi yang paling langka.
+## 7.4 Dampak yang Diharapkan
 
-![Candidate co-occurrence](docs/figures/eda/27_candidate_aspect_cooccurrence.png)
+SIPATURE diharapkan membantu pengelola mengurangi waktu membaca ulasan, menemukan isu yang berulang, dan memulai verifikasi dari masalah yang memiliki *evidence* serta *support* memadai. Pemerintah daerah dapat melihat pola lintas destinasi tanpa menganggap sistem sebagai pengganti inspeksi.
 
-**Gambar 7.3. Candidate aspect co-occurrence pada main sample.** Visual ini menjelaskan sampling, bukan silver output.
-
-![Silver aspect distribution](docs/figures/eda/29_silver_aspect_distribution.png)
-
-**Gambar 7.4. Actual silver aspect distribution pada main sample.** Distribusi dipengaruhi stratified oversampling dan bukan estimasi prevalensi populasi.
-
-![Silver polarity severity](docs/figures/eda/30_silver_polarity_severity.png)
-
-**Gambar 7.5. Distribusi polarity dan negative severity silver pada main sample.** Terdapat 253 low, 199 medium, dan 25 high negative labels.
-
-![Silver co-occurrence](docs/figures/eda/31_silver_aspect_cooccurrence.png)
-
-**Gambar 7.6. Actual silver aspect co-occurrence pada main sample.**
-
-![Silver status](docs/figures/eda/32_silver_status_distribution.png)
-
-**Gambar 7.7. Silver status pada main sample.** Main-only count adalah 447 consensus, 294 review-recommended, dan 459 no-supported-aspect; ringkasan 1.320 records juga mencakup pilot.
-
-![AI pass agreement](docs/figures/eda/33_silver_pass_agreement.png)
-
-**Gambar 7.8. Distribusi AI pass agreement.** Metrik mengukur konsistensi rules dan tidak boleh dibaca sebagai human agreement.
-
-## 7.2 Prototipe Produk
-
-Prototipe Next.js sudah menyediakan overview, peta, destination detail, intervention queue, simulator, analyzer, model/method page, APIs, dark mode, dan offline map fallback. TypeScript typecheck dan production build lulus. Data yang ditampilkan masih baseline keyword + rating dan harus diberi label demikian sampai trained-model export tersedia.
-
-## 7.3 Studi Kasus Demo Sementara
-
-Kawah Putih Dolok Tinggi Raja dipilih sebagai kasus utama karena baseline menghubungkan rating agregat 4,0 dengan laporan pungutan serta akses jalan. Bagus Bay Guest House menjadi backup dengan isu kebersihan/sanitasi. Puncak Paralayang Sibodiala menjadi failure case: baseline menghasilkan friksi nol meskipun review memuat mixed positive-negative statement mengenai jalan rusak dan berbahaya. Failure case ini menunjukkan alasan utama untuk tidak bergantung pada rating-assisted keyword logic.
-
-Ketiga kasus tersebut belum menjadi hasil final. Kutipan harus diverifikasi ulang terhadap source row, dan prediksi harus dihasilkan ulang menggunakan model yang telah dievaluasi.
-
-## 7.4 Keterbatasan Saat Ini
-
-- Relative dates tetap estimasi; source-specific wide-table unpivoting dan address consistency belum selesai.
-- Exact auto-match evaluation baru mencakup sampel 30 pairs dan human review belum double-annotated.
-- Taxonomy RC1 belum diuji melalui human annotation agreement; silver rules dapat berbagi bias meskipun pass agreement tinggi.
-- Sebanyak 334/1.320 records tetap berstatus review-recommended dan belum diadjudikasi manusia.
-- Keyword dan TF-IDF baru dibandingkan terhadap silver; IndoBERT belum tersedia dan tidak ada human-gold comparison.
-- Keyword-vs-silver score sangat circular karena shared taxonomy lexicon.
-- Semantic near-duplicate paraphrases belum dideteksi oleh exact repeated-text grouping.
-- Rare-label test estimates tidak stabil; `opening_hours` support hanya 2.
-- Confidence baseline belum merupakan calibrated model probability.
-- Priority weights belum divalidasi stakeholder atau sensitivity analysis.
-- Evidence correctness, ranking agreement, dan time saved belum diukur.
-- Persona dan workflow belum divalidasi melalui wawancara.
-- Input manifest pipeline baseline lama belum direkonsiliasi penuh dengan snapshot EDA saat ini.
-
-## 7.5 Implikasi Tahap Berikutnya
-
-Tahap berikutnya adalah A7 IndoBERT aspect training pada train/validation split yang sama. Locked silver test tidak boleh dipakai untuk checkpoint, hyperparameter, atau threshold selection. Perbandingan IndoBERT dengan baseline tetap harus disebut silver agreement sampai independent human-gold reference tersedia.
+Ukuran dampak pada *pilot* akan mencakup relevansi isu, persentase *alert* yang *confirmed/rejected*, waktu analisis, dan kesesuaian urutan prioritas dengan penilaian pengguna.
 
 ---
 
-# BAB VIII — DEKLARASI PENGGUNAAN AI
+# 8. Deklarasi Penggunaan AI
 
-## 8.1 Pernyataan Penggunaan AI Sementara
+AI generatif digunakan untuk membantu perancangan solusi, pengembangan kode, *debugging*, audit aturan, penyusunan dokumentasi, dan pembuatan narasi laporan. *AI-assisted weak supervision* juga digunakan untuk menghasilkan *silver labels* melalui tiga *deterministic rule passes*.
 
-AI digunakan dalam perancangan solusi, penyusunan struktur teknis, pengembangan kode, dan drafting dokumentasi melalui asisten pemrograman generatif. Seluruh perubahan kode dan dokumen tetap diperiksa melalui pembacaan file, lint, unit test, build, serta keputusan pengguna. Deklarasi final akan mencantumkan nama tool, versi bila tersedia, ruang penggunaan, dan bentuk verifikasi manusia.
+Penggunaan AI dibatasi sebagai berikut:
 
-Model AI yang direncanakan dalam produk adalah IndoBERT untuk aspect detection, polarity, dan severity. Model tersebut belum dilatih atau dievaluasi dalam pipeline baru. Aplikasi saat ini memakai baseline keyword + rating dan tidak boleh disebut sebagai output IndoBERT.
+- *Silver labels* tidak disebut sebagai human *annotation* atau *gold* labels.
+- AI *pass agreement* tidak disebut sebagai *inter-annotator agreement*.
+- *Confidence* berbasis *vote* tidak disebut sebagai *calibrated probability*.
+- AI tidak menentukan tindakan lapangan secara otomatis.
+- *Evidence* tetap berupa kutipan *verbatim* yang anonim dan dapat diperiksa.
+- Kode dan *artifact* diperiksa melalui *lint*, *unit test*, *schema validation*, *hash verification*, *model reload*, dan pembacaan hasil.
 
-## 8.2 AI dalam Solusi SIPATURE
-
-| Komponen | Metode | Fungsi | Status |
-| --- | --- | --- | --- |
-| Aspect detection | Keyword + rating | Prototype UI signal | Baseline tersedia; belum tervalidasi |
-| Aspect detection | TF-IDF Logistic Regression | Classical ML baseline | A6 selesai; Macro F1 silver agreement 0,7201 |
-| Aspect detection | IndoBERT multilabel | Primary contextual classifier | Direncanakan |
-| Polarity/severity | Aspect-conditioned classifier | Review-level issue characterization | Direncanakan |
-| Priority ranking | Weighted deterministic formula | Decision-support ordering | Config draft; bukan AI prediction |
-
-## 8.3 Batas Penggunaan AI
-
-- Candidate labels dari rules/LLM tidak menjadi gold tanpa human verification.
-- AI tidak membuat evidence baru atau mengubah kutipan menjadi bukti palsu.
-- AI tidak mengambil keputusan inspeksi, pendanaan, atau intervensi secara otomatis.
-- Review-derived signal tidak menjadi klaim ilmiah kondisi lingkungan.
-- Simulator tidak diposisikan sebagai causal prediction.
-- Model tidak digunakan untuk menilai individu atau komunitas.
-
-## 8.4 Human Oversight, Privasi, dan Etika
-
-Annotation akan menggunakan human verification dan adjudication. Error berisiko tinggi akan direview manual. Setiap alert akhir harus menampilkan evidence, support, confidence, freshness, dan hal yang harus diverifikasi. Workflow memungkinkan alert ditolak beserta alasannya.
-
-Identitas reviewer tidak dimasukkan ke output produk, annotation export, atau evidence yang ditampilkan. Provenance internal dipertahankan untuk audit tanpa menampilkan profil pengguna. Popularity bias, platform bias, missing data, dan staleness didokumentasikan sebagai limitation.
-
-## 8.5 Intended Use dan Misuse Risks
-
-**Intended users:** pengelola destinasi, BPODT, pemerintah daerah, dan perencana program pariwisata.  
-**Intended use:** memprioritaskan pembacaan evidence dan verifikasi lapangan.  
-**Out-of-scope:** keputusan otomatis, public verdict, scientific monitoring, dan causal forecasting.  
-**Misuse risks:** destination shaming, over-trust pada confidence, mengabaikan tempat minim data, atau menggunakan scenario score sebagai janji dampak.  
-**Mitigations:** neutral language, data sufficiency, calibration, evidence, human verification, model card, dan rejection workflow.
-
-## 8.6 Deklarasi Kejujuran Hasil
-
-Seluruh hasil final akan berasal dari evaluasi aktual dengan protokol yang dijelaskan. Draft ini membedakan hasil aktual, output baseline, target, dan rancangan. Metric model yang belum tersedia tidak diisi dengan target. Kutipan evidence tidak boleh difabrikasi dan harus diverifikasi terhadap sumber.
+Keputusan operasional tetap memerlukan verifikasi manusia karena ulasan adalah laporan pengguna, bukan konfirmasi kondisi aktual.
 
 ---
 
-# DAFTAR PUSTAKA SEMENTARA
+## Referensi dan *Traceability*
 
 1. Del AI Hackathon 2026, *Challenge Guidebook*, 2026.
 2. Del AI Hackathon 2026, *Technical Meeting*, 13 Juli 2026.
-3. `[PAPER INDOBERT SETELAH MODEL ID DIPILIH]`.
-4. `[REFERENSI MULTILABEL CLASSIFICATION DAN CALIBRATION]`.
-5. `[REFERENSI BAYESIAN/WILSON SMOOTHING DAN RANKING METRICS]`.
+3. Laporan data: `docs/eda-report.md`.
+4. Laporan *cleaning* dan *entity resolution*: `docs/cleaning-entity-resolution-report.md`.
+5. Laporan *taxonomy* dan *silver annotation*: `docs/taxonomy-annotation-report.md`.
+6. Laporan *split* dan *baseline*: `docs/leakage-safe-split-baseline-report.md`.
+7. *Responsible AI*: `docs/responsible-ai.md`.
+8. *Reproducibility*: `docs/reproducibility-runbook.md`.
 
----
+**Tabel 14. Hubungan klaim laporan dengan *artifact* teknis**
 
-# LAMPIRAN STATUS DAN TRACEABILITY
+| Klaim utama                 | *Artifact*                                             |
+| --------------------------- | ------------------------------------------------------ |
+| Inventory dan jumlah data   | `ml/artifacts/reports/data_inventory.json`             |
+| *Cleaning*                  | `ml/artifacts/reports/cleaning_summary.json`           |
+| *Entity resolution*         | `ml/artifacts/reports/entity_resolution_summary.json`  |
+| *Silver labels*             | `ml/artifacts/reports/silver_annotation_summary.json`  |
+| Locked *split*              | `ml/data/splits/split_manifest_silver_v1.json`         |
+| *Baseline* *metrics*        | `ml/artifacts/metrics/*-silver-v1-test-metrics.json`   |
+| *Baseline* *error analysis* | `ml/artifacts/reports/baseline_silver_test_errors.csv` |
 
-## A. Artifact yang Menjadi Dasar Draft
+**Interpretasi Tabel 14.** Setiap klaim kuantitatif utama memiliki *artifact* sumber yang dapat diperiksa. *Traceability* ini membedakan hasil aktual dari rencana dan memungkinkan reproduksi tanpa menaruh raw/*restricted* data langsung di laporan publik.
 
-| Klaim/Bagian | Artifact |
-| --- | --- |
-| Scope, user, demo cases | `SIPATURE-Project-Charter.md` |
-| File count, rows, columns, hash | `ml/artifacts/reports/data_inventory.json` |
-| Corpus baseline | `sipature-app/src/data/corpus.json` |
-| EDA summary dan source tables | `ml/artifacts/reports/eda_*` |
-| EDA figures dan narrative | `docs/figures/eda/`, `docs/eda-report.md` |
-| Cleaning/entity results | `ml/artifacts/reports/cleaning_summary.json`, `entity_resolution_*.json` |
-| Cleaning/entity report | `docs/cleaning-entity-resolution-report.md`, figures `17_*`–`22_*` |
-| Taxonomy/silver annotation | `ml/configs/taxonomy.yaml`, silver schema/guideline, `docs/taxonomy-annotation-report.md` |
-| Silver workflow dan audit | `docs/annotation-runbook.md`, restricted silver JSONL/queue pada `ml/data/annotations/` |
-| Pipeline/seed/evaluation policy | `ml/configs/pipeline.yaml` |
-| Taxonomy draft | `ml/configs/taxonomy.yaml` |
-| Priority draft | `ml/configs/scoring.yaml` |
-| Reproducibility environment | `ml/artifacts/reports/run-environment.json` |
-| App status/routes | `sipature-app/README.md` |
-| Responsible AI policy | `docs/responsible-ai.md` |
-| Reproduction commands | `docs/reproducibility-runbook.md` |
-
-## B. Bagian yang Menunggu Artifact
-
-| Bagian laporan | Artifact yang diperlukan |
-| --- | --- |
-| EDA lanjutan | Semantic-cleaning-aware profile, relative dates, address validation |
-| Cleaning extension | Complex wide-table unpivoting dan address consistency audit |
-| Entity extension | Independent second review dan expanded exact-match sample |
-| Optional human annotation | Gold JSONL, inter-annotator agreement, dan adjudication report |
-| Model | Keyword/TF-IDF/IndoBERT checkpoints/configs |
-| Evaluasi | Locked-test metrics, curves, matrices, calibration |
-| Ranking | Expert-reviewed destination cases dan NDCG/correlation |
-| System impact | Evidence review dan time-saved study |
-
-## C. Informasi Administrasi yang Belum Diisi
-
-- Nama tim, ketua, dan anggota.
-- Validasi makna/ejaan publik SIPATURE oleh penutur Batak Toba.
-- Persetujuan anggota atas deklarasi penggunaan AI.
-- Daftar lengkap tool AI dan third-party license.
+> *Raw data*, *review-level annotation*, *split records*, model *artifact*, *metrics*, dan *error cases* bersifat *restricted* dan tidak dipublikasikan tanpa pemeriksaan lisensi serta privasi.

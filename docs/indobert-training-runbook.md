@@ -2,9 +2,11 @@
 
 ## Status And Scope
 
-The A7 implementation is ready for a Colab GPU run but has not been trained. No IndoBERT weights, validation metrics, checkpoint claims, or reload claims exist until the steps below complete successfully. The training labels are AI-assisted silver references, not human gold.
+Run `20260801-1024_indobert-silver-v1` completed on a Colab Tesla T4. The aspect and polarity artifacts passed offline reload, while severity was correctly skipped by its support gate. This is a train/validation candidate, not a released model: thresholds and locked-test evaluation remain reserved for A8. The training labels are AI-assisted silver references, not human gold.
 
 The selected encoder is `indobenchmark/indobert-base-p1` at immutable revision `c2cd0b51ddce6580eb35263b39b0a1e5fb0a39e2`: MIT license, approximately 124.5M parameters, and `BertTokenizer` WordPiece tokenization. The revision is pinned in `ml/configs/training.yaml` and enforced by code.
+
+The pinned upstream artifact has a notable metadata mismatch: `vocab.txt` exposes 30,521 tokenizer entries, while `config.json` allocates 50,000 embedding rows. Token IDs observed from the tokenizer remain within the model embedding capacity. The model supports 512 positions; SIPATURE uses 192 tokens, covering 97.18% of train and 97.96% of validation records without truncation.
 
 ## Locked Test Prohibition
 
@@ -32,6 +34,12 @@ drive.mount("/content/drive")
 ```bash
 !python -m pip install -r requirements-colab.lock.txt
 !python -m pip install --no-deps -e .
+```
+
+Colab may provide a `torchvision` build incompatible with the pinned PyTorch version, producing `operator torchvision::nms does not exist` while importing BERT. SIPATURE is text-only and does not use `torchvision`; remove it and restart the session if present:
+
+```bash
+!python -m pip uninstall -y torchvision
 ```
 
 4. Copy the three split control/input files from Drive into `/content/hackathon/ml/data/splits/`. Do not copy the test JSONL into the Colab working directory for A7.
@@ -70,3 +78,15 @@ Severity training occurs only when every low/medium/high class has at least the 
 ## After A7
 
 Do not report locked-test performance from this run. Freeze the chosen run, model configuration, and validation-derived thresholds first. Then follow A8 for one controlled locked-test evaluation, schema validation of emitted predictions, calibration, and error analysis.
+
+## Completed Run
+
+- Run ID: `20260801-1024_indobert-silver-v1`.
+- Git commit: `24f140cac79a7a7fb9e2910fe22987d78d0c5f34` with a clean worktree.
+- Environment: Google Colab, Tesla T4, Python 3.12.13, PyTorch 2.7.1, Transformers 4.53.2.
+- Aspect validation Macro F1: 0.4012 at the temporary 0.50 threshold.
+- Polarity validation Macro F1: 0.7044.
+- Severity: skipped; high support was 19 train and 6 validation against minima of 20 and 5.
+- Offline reload: passed for aspect (1 x 14 logits) and polarity (1 x 3 logits), with `local_files_only=true`.
+- Locked test: not read.
+- Evidence: `docs/evidence/indobert/20260801-1024_indobert-silver-v1/`.

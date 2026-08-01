@@ -396,7 +396,9 @@ def _train_task(
             "train_runtime": result.metrics.get("train_runtime"), "metrics": metrics, "model_dir": str(model_dir)}
 
 
-def offline_reload_smoke_test(model_dir: Path, task: str) -> dict[str, Any]:
+def offline_reload_smoke_test(
+    model_dir: Path, task: str, max_length: int = 192
+) -> dict[str, Any]:
     """Reload a saved task fully offline and run one local forward pass."""
 
     import torch
@@ -407,7 +409,14 @@ def offline_reload_smoke_test(model_dir: Path, task: str) -> dict[str, Any]:
     model.eval()
     text = "[ASPECT] access [REVIEW] Jalan menuju lokasi rusak." if task != "aspect" else "Jalan menuju lokasi rusak."
     with torch.no_grad():
-        logits = model(**tokenizer(text, return_tensors="pt", truncation=True)).logits
+        logits = model(
+            **tokenizer(
+                text,
+                return_tensors="pt",
+                truncation=True,
+                max_length=max_length,
+            )
+        ).logits
     return {"passed": tuple(logits.shape) == (1, model.config.num_labels), "shape": list(logits.shape), "local_files_only": True}
 
 
@@ -497,7 +506,13 @@ def run_indobert_training(split_dir: Path, artifact_dir: Path, run_id: str | Non
                                           config=config, output_dir=run_dir / "severity")
     else:
         results["severity"] = {"status": "skipped_insufficient_support", "gate": gate}
-    smoke = {task: offline_reload_smoke_test(Path(result["model_dir"]), task) for task, result in results.items() if "model_dir" in result}
+    smoke = {
+        task: offline_reload_smoke_test(
+            Path(result["model_dir"]), task, section["max_length"]
+        )
+        for task, result in results.items()
+        if "model_dir" in result
+    }
     (run_dir / "environment.json").write_text(json.dumps(build_environment_snapshot(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
     summary = {"run_id": run_id, "status": "trained_train_validation_only", "test_read": False,
                 "reference_label_type": config["reference_label_type"], "split_version": split_manifest["split_version"],

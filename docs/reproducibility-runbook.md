@@ -134,7 +134,7 @@ sipature-ml run prioritize
 sipature-ml run export-app
 ```
 
-Inventory, EDA, cleaning, entity resolution, silver annotation, A6 grouped split, and keyword/TF-IDF baseline commands are implemented and tested. The IndoBERT command is implementation-ready for Colab GPU execution and is restricted to hash-verified train/validation inputs; it has not been executed, and no trained-model claims are made. See `indobert-training-runbook.md`. Downstream commands remain pending. Declaring or implementing a command is not evidence that training or evaluation completed.
+Inventory through A6 is implemented and tested. A7 run `20260801-1024_indobert-silver-v1` trained aspect and polarity candidates on hash-verified train/validation data and passed offline reload; severity was skipped by its support gate. A8 threshold calibration and locked-test evaluation remain pending. See `indobert-training-report.md`. Declaring or implementing a command is not evidence that an unrecorded run completed.
 
 ## Run Identity
 

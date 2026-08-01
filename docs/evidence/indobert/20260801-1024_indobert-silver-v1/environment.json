@@ -1,0 +1,30 @@
+{
+  "captured_at": "2026-08-01T10:28:09.651236+00:00",
+  "configs": {
+    "pipeline.yaml": "144553cefebaa64644f98611eb3da6edeaa9224b459fac8eb6768669cd174adc",
+    "scoring.yaml": "e1b0b5d9976efd20e68b051884df75c399a6aa119010d923b85ce43895405870",
+    "split.yaml": "eb12e16bddc3cda4a94b85bab5ecce7956de3a2a7ac41dc15653ccf505af3bed",
+    "taxonomy.yaml": "9840978b6c62613cb580ba8c736558fda12b688ae38cd248e01428daacd727f5",
+    "training.yaml": "fd5c68b78e7b284e79e404b9562058fb7502018fb9d832d1f6b93cde525b6e4e"
+  },
+  "git_commit": "24f140cac79a7a7fb9e2910fe22987d78d0c5f34",
+  "git_dirty": false,
+  "machine": "x86_64",
+  "packages": {
+    "PyYAML": "6.0.3",
+    "accelerate": "1.8.1",
+    "datasets": "3.6.0",
+    "evaluate": "0.4.5",
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "pyarrow": "19.0.1",
+    "rapidfuzz": "3.14.5",
+    "scikit-learn": "1.7.2",
+    "torch": "2.7.1",
+    "transformers": "4.53.2"
+  },
+  "platform": "Linux-6.6.122+-x86_64-with-glibc2.35",
+  "python": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+  "python_executable": "/usr/bin/python3",
+  "seed_environment": "not-set"
+}

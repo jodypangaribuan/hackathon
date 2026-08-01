@@ -1,0 +1,124 @@
+{
+  "input_hashes": {
+    "train": "31c31803be592a3c91576f42abbc3fcf562d2f82c126b2856848e88639ab3fc4",
+    "validation": "7c2f5f911ea33c6854ad1adc21e41a58befb6b24b31cb5ef2b8e03b7b771477c"
+  },
+  "offline_reload_smoke": {
+    "aspect": {
+      "local_files_only": true,
+      "passed": true,
+      "shape": [
+        1,
+        14
+      ]
+    },
+    "polarity": {
+      "local_files_only": true,
+      "passed": true,
+      "shape": [
+        1,
+        3
+      ]
+    }
+  },
+  "reference_label_type": "ai_assisted_weak_supervision_silver",
+  "run_id": "20260801-1024_indobert-silver-v1",
+  "severity_gate": {
+    "minimum_train_per_class": 20,
+    "minimum_validation_per_class": 5,
+    "supported": false,
+    "train_support": {
+      "high": 19,
+      "low": 208,
+      "medium": 195
+    },
+    "unsupported_classes": [
+      "high"
+    ],
+    "validation_support": {
+      "high": 6,
+      "low": 38,
+      "medium": 47
+    }
+  },
+  "split_version": "silver-split-1.0.0",
+  "status": "trained_train_validation_only",
+  "tasks": {
+    "aspect": {
+      "best_checkpoint": "/content/drive/MyDrive/SIPATURE/runs/20260801-1024_indobert-silver-v1/aspect/checkpoints/checkpoint-116",
+      "best_metric": 0.4012246461923619,
+      "metrics": {
+        "epoch": 4.0,
+        "eval_loss": 0.7823944091796875,
+        "eval_macro_f1": 0.4012246461923619,
+        "eval_runtime": 0.6462,
+        "eval_samples_per_second": 303.319,
+        "eval_steps_per_second": 20.118
+      },
+      "model_dir": "/content/drive/MyDrive/SIPATURE/runs/20260801-1024_indobert-silver-v1/aspect/model",
+      "task": "aspect",
+      "train_runtime": 100.0997
+    },
+    "polarity": {
+      "best_checkpoint": "/content/drive/MyDrive/SIPATURE/runs/20260801-1024_indobert-silver-v1/polarity/checkpoints/checkpoint-156",
+      "best_metric": 0.7044036969463576,
+      "metrics": {
+        "epoch": 4.0,
+        "eval_loss": 0.6961972713470459,
+        "eval_macro_f1": 0.7044036969463576,
+        "eval_runtime": 0.6794,
+        "eval_samples_per_second": 382.685,
+        "eval_steps_per_second": 25.022
+      },
+      "model_dir": "/content/drive/MyDrive/SIPATURE/runs/20260801-1024_indobert-silver-v1/polarity/model",
+      "task": "polarity",
+      "train_runtime": 126.554
+    },
+    "severity": {
+      "gate": {
+        "minimum_train_per_class": 20,
+        "minimum_validation_per_class": 5,
+        "supported": false,
+        "train_support": {
+          "high": 19,
+          "low": 208,
+          "medium": 195
+        },
+        "unsupported_classes": [
+          "high"
+        ],
+        "validation_support": {
+          "high": 6,
+          "low": 38,
+          "medium": 47
+        }
+      },
+      "status": "skipped_insufficient_support"
+    }
+  },
+  "test_read": false,
+  "token_length_coverage": {
+    "train": {
+      "coverage_at_max_length": 0.9718004338394793,
+      "max_length": 192,
+      "maximum_tokens": 544,
+      "p50_tokens": 23,
+      "p90_tokens": 97,
+      "p95_tokens": 139,
+      "p99_tokens": 304,
+      "records": 922,
+      "records_within_max_length": 896
+    },
+    "validation": {
+      "coverage_at_max_length": 0.9795918367346939,
+      "max_length": 192,
+      "maximum_tokens": 525,
+      "p50_tokens": 23,
+      "p90_tokens": 74,
+      "p95_tokens": 130,
+      "p99_tokens": 319,
+      "records": 196,
+      "records_within_max_length": 192
+    }
+  }
+}

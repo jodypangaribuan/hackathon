@@ -148,22 +148,22 @@ Semua anggota wajib memahami problem, data, model, metrics, limitation, arsitekt
 
 ## A7. IndoBERT Training
 
-Catatan 2026-08-01: kode, helper murni, konfigurasi, CLI, dan notebook orkestrasi A7 telah divalidasi lokal tanpa download/training model; eksekusi GPU Colab dan seluruh output yang bergantung pada training masih pending.
+Catatan 2026-08-01: run `20260801-1024_indobert-silver-v1` selesai pada Colab Tesla T4. Aspect dan polarity dilatih hanya pada train/validation dan lulus offline reload; severity dilewati karena kelas high memiliki 19 train, di bawah minimum 20. Locked test belum dibaca dan tetap menunggu A8.
 
-- [ ] Pilih model ID; dokumentasikan lisensi, tokenizer, dan size.
-- [ ] Aktifkan Colab GPU; simpan environment versions.
-- [ ] Pilih max length berdasarkan review-length EDA.
-- [ ] Train multilabel aspect classifier dengan BCE class weighting.
-- [ ] Simpan best checkpoint berdasarkan validation Macro F1.
-- [ ] Train aspect-conditioned polarity classifier.
-- [ ] Train severity classifier hanya jika support memadai.
+- [x] Pilih model ID; dokumentasikan lisensi, tokenizer, dan size.
+- [x] Aktifkan Colab GPU; simpan environment versions.
+- [x] Pilih max length berdasarkan review-length EDA dan laporan tokenizer.
+- [x] Train multilabel aspect classifier dengan BCE class weighting.
+- [x] Simpan best checkpoint berdasarkan validation Macro F1.
+- [x] Train aspect-conditioned polarity classifier.
+- [x] Terapkan gate severity; jangan train karena support kelas high tidak memadai.
 - [ ] Uji focal loss/oversampling satu per satu jika diperlukan.
-- [ ] Simpan model, tokenizer, config, logs, thresholds, hashes.
-- [ ] Plot train/validation loss dan F1 per epoch.
+- [x] Simpan model, tokenizer, config, logs, threshold sementara, dan hashes.
+- [x] Plot train/validation loss dan F1 per epoch.
 - [ ] Plot learning curve jika waktu cukup.
-- [ ] Uji model reload dan offline inference.
+- [x] Uji model reload dan offline inference.
 
-**Gate:** artifact dapat di-load ulang dan menghasilkan schema valid tanpa external API.
+**Gate:** terpenuhi untuk kandidat aspect dan polarity train/validation — artifact dapat di-load ulang tanpa external API. Severity belum memiliki artifact; kalibrasi, schema prediksi lengkap, dan locked-test metrics tetap berada pada A8.
 
 ## A8. Calibration, Test Evaluation, Error Analysis
 

@@ -1,0 +1,24 @@
+{
+  "train": {
+    "coverage_at_max_length": 0.9718004338394793,
+    "max_length": 192,
+    "maximum_tokens": 544,
+    "p50_tokens": 23,
+    "p90_tokens": 97,
+    "p95_tokens": 139,
+    "p99_tokens": 304,
+    "records": 922,
+    "records_within_max_length": 896
+  },
+  "validation": {
+    "coverage_at_max_length": 0.9795918367346939,
+    "max_length": 192,
+    "maximum_tokens": 525,
+    "p50_tokens": 23,
+    "p90_tokens": 74,
+    "p95_tokens": 130,
+    "p99_tokens": 319,
+    "records": 196,
+    "records_within_max_length": 192
+  }
+}

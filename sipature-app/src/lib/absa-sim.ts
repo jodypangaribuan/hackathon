@@ -61,8 +61,10 @@ export function analyzeText(text: string): AnalyzeResult {
     });
   }
   return {
+    mode: "baseline",
     method: "lexical_demo_v1",
     modelVersion: null,
+    scoreType: "lexical_match",
     text: clean,
     hits,
     latencyMs: Math.max(

@@ -135,11 +135,14 @@ export interface AnalyzeHit {
   label: string;
   sentiment: "positif" | "negatif" | "netral";
   matchScore: number;
+  confidence?: number;
   snippets: string[];
 }
 export interface AnalyzeResult {
-  method: "lexical_demo_v1";
-  modelVersion: null;
+  mode: "baseline" | "production";
+  method: string;
+  modelVersion: string | null;
+  scoreType: "lexical_match" | "model_confidence";
   text: string;
   hits: AnalyzeHit[];
   latencyMs: number;

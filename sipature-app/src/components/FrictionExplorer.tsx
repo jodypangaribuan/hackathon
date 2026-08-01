@@ -12,6 +12,7 @@ import {
 import { Card, Empty, LevelBadge, Note, SectionTitle } from "@/components/ui";
 import TobaMap, { type MapPoint } from "@/components/TobaMap";
 import { AspectIcon } from "@/components/AppIcon";
+import { ChevronDown } from "lucide-react";
 export type MapPlace = MapPoint;
 const KIND: Record<PlaceKind, string> = {
   wisata: "Wisata",
@@ -68,43 +69,67 @@ export default function FrictionExplorer({
               className="min-w-[160px] flex-1 rounded-md border bg-transparent px-2.5 py-1.5 text-[13px]"
               style={{ borderColor: "var(--hairline)" }}
             />
-            <select
-              value={kabupaten}
-              onChange={(e) => setKabupaten(e.target.value)}
-              className="rounded-md border bg-surface px-2 py-1.5 text-[13px]"
-              style={{ borderColor: "var(--hairline)" }}
-            >
-              <option value="">Semua kabupaten</option>
-              {kabupatenList.map((item) => (
-                <option key={item}>{item}</option>
-              ))}
-            </select>
-            <select
-              value={kind}
-              onChange={(e) => setKind(e.target.value as PlaceKind | "")}
-              className="rounded-md border bg-surface px-2 py-1.5 text-[13px]"
-              style={{ borderColor: "var(--hairline)" }}
-            >
-              <option value="">Semua jenis</option>
-              {(Object.keys(KIND) as PlaceKind[]).map((item) => (
-                <option key={item} value={item}>
-                  {KIND[item]}
-                </option>
-              ))}
-            </select>
-            <select
-              value={aspect}
-              onChange={(e) => setAspect(e.target.value as AspectKey | "")}
-              className="rounded-md border bg-surface px-2 py-1.5 text-[13px]"
-              style={{ borderColor: "var(--hairline)" }}
-            >
-              <option value="">Semua aspek</option>
-              {SIGNAL_ASPECTS.map((item) => (
-                <option key={item} value={item}>
-                  {ASPECT_LABEL[item]}
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                value={kabupaten}
+                onChange={(e) => setKabupaten(e.target.value)}
+                className="appearance-none rounded-md border bg-surface py-1.5 pl-2 pr-8 text-[13px]"
+                style={{ borderColor: "var(--hairline)" }}
+              >
+                <option value="">Semua kabupaten</option>
+                {kabupatenList.map((item) => (
+                  <option key={item}>{item}</option>
+                ))}
+              </select>
+              <ChevronDown
+                aria-hidden="true"
+                className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-muted"
+                size={14}
+                strokeWidth={1.8}
+              />
+            </div>
+            <div className="relative">
+              <select
+                value={kind}
+                onChange={(e) => setKind(e.target.value as PlaceKind | "")}
+                className="appearance-none rounded-md border bg-surface py-1.5 pl-2 pr-8 text-[13px]"
+                style={{ borderColor: "var(--hairline)" }}
+              >
+                <option value="">Semua jenis</option>
+                {(Object.keys(KIND) as PlaceKind[]).map((item) => (
+                  <option key={item} value={item}>
+                    {KIND[item]}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                aria-hidden="true"
+                className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-muted"
+                size={14}
+                strokeWidth={1.8}
+              />
+            </div>
+            <div className="relative">
+              <select
+                value={aspect}
+                onChange={(e) => setAspect(e.target.value as AspectKey | "")}
+                className="appearance-none rounded-md border bg-surface py-1.5 pl-2 pr-8 text-[13px]"
+                style={{ borderColor: "var(--hairline)" }}
+              >
+                <option value="">Semua aspek</option>
+                {SIGNAL_ASPECTS.map((item) => (
+                  <option key={item} value={item}>
+                    {ASPECT_LABEL[item]}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                aria-hidden="true"
+                className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-muted"
+                size={14}
+                strokeWidth={1.8}
+              />
+            </div>
             <label className="flex items-center gap-1.5 text-[12px] text-ink-2">
               <input
                 type="checkbox"

@@ -86,6 +86,7 @@ export default function LeafletMap({
   const mapRef = useRef<L.Map | null>(null);
   const tileRef = useRef<L.TileLayer | null>(null);
   const markersRef = useRef<L.LayerGroup | null>(null);
+  const pointMarkersRef = useRef<L.Marker[]>([]);
   const highlightRef = useRef<L.CircleMarker | null>(null);
   /**
    * SATU renderer canvas dipakai bersama seluruh marker. Membuat L.canvas()
@@ -145,6 +146,7 @@ export default function LeafletMap({
       mapRef.current = null;
       tileRef.current = null;
       markersRef.current = null;
+      pointMarkersRef.current = [];
       highlightRef.current = null;
       rendererRef.current = null;
       fittedRef.current = false;
@@ -234,6 +236,7 @@ export default function LeafletMap({
     if (!map || !group) return;
 
     group.clearLayers();
+    pointMarkersRef.current = [];
     highlightRef.current = null;
 
     // Friksi rendah digambar dulu, tinggi terakhir → yang genting tampak di atas.
@@ -272,16 +275,20 @@ export default function LeafletMap({
       marker.bindTooltip(
         `<div class="mh-tip">
            <strong>${escapeHtml(p.name)}</strong>
-           <div class="mh-tip-row"><span aria-hidden>${lvl.icon}</span> ${lvl.label}
-             · <span class="tabular">${score(p.priorityScore)}</span></div>
-           <div class="mh-tip-sub">${p.kabupaten} · ${p.allReviewCount} review bersih${
-             p.rank !== null ? ` · prioritas #${p.rank}` : ""
-           }</div>
-           ${aspects ? `<div class="mh-tip-sub">${escapeHtml(aspects)}</div>` : ""}
+           <div class="mh-tip-priority">
+             <span class="mh-tip-level"><span aria-hidden>${lvl.icon}</span> ${lvl.label}</span>
+             <span class="tabular">Skor ${score(p.priorityScore)}</span>
+           </div>
+           <div class="mh-tip-meta">
+             <span>${escapeHtml(p.kabupaten)}</span>
+             <span>${p.allReviewCount} review</span>
+             ${p.rank !== null ? `<span>Prioritas #${p.rank}</span>` : ""}
+           </div>
+           ${aspects ? `<div class="mh-tip-aspects">${escapeHtml(aspects)}</div>` : ""}
          </div>`,
         {
           direction: "top",
-          offset: [0, -2],
+          offset: [0, -10],
           opacity: 1,
           className: "mh-tooltip",
         },
@@ -290,7 +297,45 @@ export default function LeafletMap({
       marker.on("click", () => selectRef.current?.(p.id));
       marker.on("keypress", () => selectRef.current?.(p.id));
       group.addLayer(marker);
+      pointMarkersRef.current.push(marker);
     }
+
+    // Leaflet `direction: auto` hanya memilih kiri/kanan. Arah vertikal harus
+    // ditentukan sendiri, sambil tetap menjaga tooltip dari tepi kiri/kanan.
+    const positionTooltips = () => {
+      const size = map.getSize();
+      const safeSide = 170;
+      const safeTop = 180;
+      const safeBottom = size.y - 180;
+      for (const marker of pointMarkersRef.current) {
+        const tooltip = marker.getTooltip();
+        if (!tooltip) continue;
+        const point = map.latLngToContainerPoint(marker.getLatLng());
+        const verticalOffset =
+          point.y < safeTop
+            ? safeTop - point.y
+            : point.y > safeBottom
+              ? safeBottom - point.y
+              : 0;
+
+        if (point.x < safeSide) {
+          tooltip.options.direction = "right";
+          tooltip.options.offset = L.point(10, verticalOffset);
+        } else if (point.x > size.x - safeSide) {
+          tooltip.options.direction = "left";
+          tooltip.options.offset = L.point(-10, verticalOffset);
+        } else if (point.y < safeTop) {
+          tooltip.options.direction = "bottom";
+          tooltip.options.offset = L.point(0, 10);
+        } else {
+          tooltip.options.direction = "top";
+          tooltip.options.offset = L.point(0, -10);
+        }
+      }
+    };
+
+    positionTooltips();
+    map.on("moveend zoomend resize", positionTooltips);
 
     // Sekali saja: pas-kan tampilan ke seluruh titik.
     if (!fittedRef.current && points.length > 0) {
@@ -300,6 +345,9 @@ export default function LeafletMap({
       map.fitBounds(b, { padding: [28, 28], maxZoom: 11 });
       fittedRef.current = true;
     }
+    return () => {
+      map.off("moveend zoomend resize", positionTooltips);
+    };
   }, [points, maxReviews]);
 
   /* --------------------------------------------------------- penyorotan */

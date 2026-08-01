@@ -18,7 +18,7 @@ const LINKS = [
   { href: "/intervensi", label: "Intervensi", icon: ListChecks },
   { href: "/umkm", label: "Kandidat", icon: ListChecks },
   { href: "/simulator", label: "Simulator", icon: FlaskConical },
-  { href: "/analyzer", label: "Analyzer", icon: BrainCircuit },
+  { href: "/analyzer", label: "Analisis Review", icon: BrainCircuit },
   { href: "/metode", label: "Model", icon: Activity },
 ];
 

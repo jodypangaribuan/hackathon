@@ -18,10 +18,13 @@ from .config import ML_ROOT, load_config
 from .indobert import POLARITY_LABELS, build_aspect_targets, build_polarity_instances, read_jsonl
 from .manifest import sha256_file
 
-MODEL_HASH_KEYS = (
-    "aspect/model/model.safetensors",
-    "polarity/model/model.safetensors",
-)
+MODEL_RELOAD_FILENAMES = {
+    "config.json",
+    "model.safetensors",
+    "special_tokens_map.json",
+    "tokenizer_config.json",
+    "vocab.txt",
+}
 MANIFEST_NAME = "split_manifest_silver_v1.json"
 
 
@@ -80,7 +83,7 @@ def fit_multilabel_temperature(
 def expected_calibration_error(
     probabilities: np.ndarray, targets: np.ndarray, bins: int = 10
 ) -> float:
-    """Calculate equal-width ECE over flattened multilabel decisions."""
+    """Calculate positive-class ECE over flattened multilabel probabilities/outcomes."""
 
     probabilities = np.asarray(probabilities, dtype=float).ravel()
     targets = np.asarray(targets, dtype=float).ravel()
@@ -171,6 +174,7 @@ def aspect_metrics(
     thresholds: Sequence[float],
     labels: Sequence[str],
     alert_thresholds: Sequence[float | None] | None = None,
+    alert_validation: dict[str, dict[str, Any]] | None = None,
     latency_seconds: float | None = None,
 ) -> dict[str, Any]:
     """Build macro/micro/per-label detection metrics and alert precision."""
@@ -193,17 +197,34 @@ def aspect_metrics(
     for index, label in enumerate(labels):
         threshold = None if alert_thresholds is None else alert_thresholds[index]
         if threshold is None:
-            alerts[label] = {"threshold": None, "precision": None, "predicted_support": 0}
+            alerts[label] = {"threshold": None, "precision": None, "predicted_support": 0,
+                             "validation_target_met": False}
         else:
             alert = probabilities[:, index] >= threshold
             alerts[label] = {"threshold": float(threshold),
                              "precision": float(precision_score(targets[:, index], alert, zero_division=0)),
-                             "predicted_support": int(alert.sum())}
+                             "predicted_support": int(alert.sum()),
+                             "validation_target_met": bool(
+                                 (alert_validation or {}).get(label, {}).get("target_met", False)
+                             )}
+    alert_predictions = np.zeros_like(targets, dtype=bool)
+    for index, threshold in enumerate(alert_thresholds or [None] * len(labels)):
+        if threshold is not None:
+            alert_predictions[:, index] = probabilities[:, index] >= threshold
+    overall_alert_support = int(alert_predictions.sum())
     return {
         "macro_f1": float(f1_score(targets, predicted, average="macro", zero_division=0)),
         "micro_f1": float(f1_score(targets, predicted, average="micro", zero_division=0)),
         "per_label": per_label,
-        "precision_at_alert": alerts,
+        "precision_at_alert": {
+            "per_label": alerts,
+            "overall_micro": {
+                "precision": None if not overall_alert_support else float(
+                    precision_score(targets.ravel(), alert_predictions.ravel(), zero_division=0)
+                ),
+                "predicted_support": overall_alert_support,
+            },
+        },
         "latency": {"total_seconds": latency_seconds,
                     "milliseconds_per_record": None if latency_seconds is None else latency_seconds * 1000 / len(targets)},
     }
@@ -275,7 +296,20 @@ def validate_model_contract(model_run_dir: Path, manifest: dict[str, Any]) -> di
     if not isinstance(hashes, dict):
         raise TypeError("A7 manifest has no artifact_hashes mapping")
     verified = {}
-    for key in MODEL_HASH_KEYS:
+    keys = sorted(
+        key for key in hashes
+        if key.startswith(("aspect/model/", "polarity/model/"))
+        and Path(key).name != "training_args.bin"
+    )
+    expected_keys = {
+        f"{task}/model/{filename}"
+        for task in ("aspect", "polarity")
+        for filename in MODEL_RELOAD_FILENAMES
+    }
+    if set(keys) != expected_keys:
+        missing = sorted(expected_keys - set(keys))
+        raise ValueError(f"A7 manifest is missing local reload artifacts: {missing}")
+    for key in keys:
         expected = hashes.get(key)
         if not isinstance(expected, str):
             raise TypeError(f"A7 manifest is missing model hash: {key}")
@@ -287,14 +321,40 @@ def validate_model_contract(model_run_dir: Path, manifest: dict[str, Any]) -> di
 
 
 def validate_calibration_contract(
-    calibration: dict[str, Any], calibration_sha256: str, model_hashes: dict[str, str]
+    calibration: dict[str, Any], calibration_sha256: str,
+    calibration_manifest: dict[str, Any], model_hashes: dict[str, str],
+    split_manifest_sha256: str, validation_sha256: str, labels: Sequence[str],
+    calibration_config_sha256: str, indobert_config_sha256: str,
 ) -> None:
-    """Validate a frozen calibration's self-hash marker and A7 model binding."""
+    """Validate the pure frozen calibration contract without resolving test data."""
 
-    if calibration.get("artifact_sha256") != calibration_sha256:
+    if calibration_manifest.get("calibration_sha256") != calibration_sha256:
         raise ValueError("Calibration hash does not match frozen manifest")
+    if calibration.get("phase") != "validation_calibration" or calibration.get("test_read") is not False:
+        raise ValueError("Calibration phase/test_read contract is invalid")
+    if calibration_manifest.get("phase") != "validation_calibration" or calibration_manifest.get("test_read") is not False:
+        raise ValueError("Calibration manifest phase/test_read contract is invalid")
     if calibration.get("model_hashes") != model_hashes:
         raise ValueError("Calibration model hashes do not match A7 models")
+    if calibration.get("split_manifest_sha256") != split_manifest_sha256:
+        raise ValueError("Calibration split manifest hash differs from current frozen split manifest")
+    if calibration.get("validation_sha256") != validation_sha256:
+        raise ValueError("Calibration validation hash differs from current split manifest")
+    if calibration.get("labels") != list(labels):
+        raise ValueError("Calibration labels differ from current sorted taxonomy")
+    if calibration.get("calibration_config_canonical_sha256") != calibration_config_sha256:
+        raise ValueError("Current calibration configuration differs from frozen calibration")
+    if calibration.get("indobert_config_canonical_sha256") != indobert_config_sha256:
+        raise ValueError("Current IndoBERT configuration differs from frozen calibration")
+    if not isinstance(calibration.get("temperature"), (int, float)) or calibration["temperature"] <= 0:
+        raise ValueError("Calibration temperature is invalid")
+    for key in ("detection_thresholds", "alert_thresholds", "alert_validation"):
+        mapping = calibration.get(key)
+        if not isinstance(mapping, dict) or set(mapping) != set(labels):
+            raise ValueError(f"Calibration {key} labels are incomplete")
+    for label in labels:
+        if not isinstance(calibration["alert_validation"][label].get("target_met"), bool):
+            raise TypeError(f"Calibration alert target_met is invalid: {label}")
 
 
 def _canonical_hash(value: Any) -> str:
@@ -314,7 +374,8 @@ def _load_a7_contract(model_run_dir: Path, config: dict[str, Any]) -> tuple[dict
 
 
 def _infer_local_models(
-    records: Sequence[dict[str, Any]], model_run_dir: Path, max_length: int
+    records: Sequence[dict[str, Any]], model_run_dir: Path, max_length: int,
+    batch_size: int = 32, require_cuda: bool = True,
 ) -> dict[str, Any]:
     """Infer aspects and gold-aspect-conditioned polarity from local A7 files only."""
 
@@ -324,25 +385,48 @@ def _infer_local_models(
     except ImportError as error:
         raise RuntimeError("Install the A8 train dependencies in the Colab runtime") from error
 
-    def infer(model_dir: Path, texts: list[str]) -> np.ndarray:
+    if batch_size <= 0:
+        raise ValueError("Inference batch size must be positive")
+    if require_cuda and not torch.cuda.is_available():
+        raise RuntimeError("A8 calibration/evaluation requires CUDA but no GPU is available")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    def infer(model_dir: Path, texts: list[str]) -> tuple[np.ndarray, float, float]:
+        loading_started = time.perf_counter()
         tokenizer = BertTokenizer.from_pretrained(model_dir, local_files_only=True)
-        model = BertForSequenceClassification.from_pretrained(model_dir, local_files_only=True)
+        model = BertForSequenceClassification.from_pretrained(
+            model_dir, local_files_only=True
+        ).to(device)
         model.eval()
+        loading_seconds = time.perf_counter() - loading_started
         batches = []
+        if device.type == "cuda":
+            torch.cuda.synchronize()
+        inference_started = time.perf_counter()
         with torch.no_grad():
-            for start in range(0, len(texts), 32):
-                encoded = tokenizer(texts[start:start + 32], return_tensors="pt", padding=True,
+            for start in range(0, len(texts), batch_size):
+                encoded = tokenizer(texts[start:start + batch_size], return_tensors="pt", padding=True,
                                     truncation=True, max_length=max_length)
+                encoded = {key: value.to(device) for key, value in encoded.items()}
                 batches.append(model(**encoded).logits.detach().cpu().numpy())
-        return np.concatenate(batches) if batches else np.empty((0, model.config.num_labels))
+        if device.type == "cuda":
+            torch.cuda.synchronize()
+        latency = time.perf_counter() - inference_started
+        logits = np.concatenate(batches) if batches else np.empty((0, model.config.num_labels))
+        return logits, latency, loading_seconds
 
     polarity = build_polarity_instances(records)
-    started = time.perf_counter()
-    aspect_logits = infer(model_run_dir / "aspect" / "model", [row["text"] for row in records])
-    polarity_logits = infer(model_run_dir / "polarity" / "model",
-                            [row["conditioned_text"] for row in polarity])
+    aspect_logits, aspect_latency, aspect_loading = infer(
+        model_run_dir / "aspect" / "model", [row["text"] for row in records]
+    )
+    polarity_logits, polarity_latency, polarity_loading = infer(
+        model_run_dir / "polarity" / "model", [row["conditioned_text"] for row in polarity]
+    )
     return {"aspect_logits": aspect_logits, "polarity_logits": polarity_logits,
-            "latency_seconds": time.perf_counter() - started}
+            "aspect_latency_seconds": aspect_latency,
+            "polarity_latency_seconds": polarity_latency,
+            "model_loading_seconds": aspect_loading + polarity_loading,
+            "device": str(device)}
 
 
 def _preflight_output(output_dir: Path) -> None:
@@ -356,7 +440,20 @@ def _write_json(path: Path, value: Any) -> None:
 
 def _artifact_hashes(output_dir: Path) -> dict[str, str]:
     return {str(path.relative_to(output_dir)): sha256_file(path)
-            for path in sorted(output_dir.rglob("*")) if path.is_file() and path.name != "manifest.json"}
+             for path in sorted(output_dir.rglob("*")) if path.is_file() and path.name != "manifest.json"}
+
+
+def _run_inference(
+    inference_fn: Callable[..., dict[str, Any]] | None, records: Sequence[dict[str, Any]],
+    model_run_dir: Path, config: dict[str, Any],
+) -> dict[str, Any]:
+    if inference_fn is not None:
+        return inference_fn(records, model_run_dir, config["indobert"]["max_length"])
+    section = config["calibration"]
+    return _infer_local_models(
+        records, model_run_dir, config["indobert"]["max_length"],
+        section["inference_batch_size"], section["require_cuda"],
+    )
 
 
 def _plot_calibration(targets: np.ndarray, before: np.ndarray, after: np.ndarray, output: Path) -> None:
@@ -402,7 +499,7 @@ def run_calibration(
     records = read_jsonl(validation_path)
     labels = sorted(load_config("taxonomy")["aspect_definitions"])
     targets = np.asarray(build_aspect_targets(records, labels), dtype=int)
-    inference = (inference_fn or _infer_local_models)(records, model_run_dir, config["indobert"]["max_length"])
+    inference = _run_inference(inference_fn, records, model_run_dir, config)
     logits = np.asarray(inference["aspect_logits"], dtype=float)
     polarity_instances = build_polarity_instances(records)
     polarity_logits = np.asarray(inference["polarity_logits"], dtype=float)
@@ -432,7 +529,8 @@ def run_calibration(
         "calibration_config": section, "calibration_config_canonical_sha256": _canonical_hash(section),
         "model_hashes": model_hashes,
         "validation_calibration": {
-            **fit, "ece_before": expected_calibration_error(before, targets, section["ece_bins"]),
+            **fit, "ece_semantics": "positive_class_equal_width_flattened_multilabel",
+            "ece_before": expected_calibration_error(before, targets, section["ece_bins"]),
             "ece_after": expected_calibration_error(after, targets, section["ece_bins"]),
             "brier_before": multilabel_brier_score(before, targets),
             "brier_after": multilabel_brier_score(after, targets),
@@ -440,6 +538,13 @@ def run_calibration(
         "validation_polarity": polarity_metrics(
             [row["label"] for row in polarity_instances], np.argmax(polarity_logits, axis=1)
         ),
+        "inference": {
+            "device": inference.get("device", "injected"),
+            "aspect_latency_seconds": inference.get("aspect_latency_seconds"),
+            "polarity_latency_seconds": inference.get("polarity_latency_seconds"),
+            "model_loading_seconds": inference.get("model_loading_seconds"),
+            "model_loading_excluded_from_inference_latency": True,
+        },
     }
     calibration_path = output_dir / "calibration.json"
     _write_json(calibration_path, calibration)
@@ -462,7 +567,65 @@ def _load_baseline_metrics(path: Path | None) -> dict[str, Any] | None:
     if path is None or not path.exists():
         return None
     candidates = [path] if path.is_file() else sorted(path.glob("*.json"))
-    return {item.name: json.loads(item.read_text(encoding="utf-8")) for item in candidates}
+    result = []
+    for item in candidates:
+        payload = json.loads(item.read_text(encoding="utf-8"))
+        if "macro_f1" not in payload or "model_version" not in payload:
+            continue
+        result.append({
+            "model": payload["model_version"], "macro_f1": float(payload["macro_f1"]),
+            "micro_f1": float(payload["micro_f1"]), "records": int(payload["records"]),
+            "reference_label_type": payload.get("reference_label_type"),
+            "split_manifest_sha256": payload.get("split_manifest_sha256"),
+            "split_version": payload.get("split_version"), "source": str(item),
+        })
+    return {"models": result}
+
+
+def _validate_baselines(
+    baseline: dict[str, Any] | None, split_manifest: dict[str, Any], split_hash: str,
+) -> None:
+    for item in (baseline or {}).get("models", []):
+        if item["reference_label_type"] != split_manifest.get("reference_label_type"):
+            raise ValueError(f"Baseline reference label type mismatch: {item['source']}")
+        if item["split_manifest_sha256"] not in (None, split_hash):
+            raise ValueError(f"Baseline split manifest mismatch: {item['source']}")
+        if item["split_version"] not in (None, split_manifest.get("split_version")):
+            raise ValueError(f"Baseline split version mismatch: {item['source']}")
+
+
+def _validate_artifact_map(directory: Path, manifest: dict[str, Any]) -> None:
+    hashes = manifest.get("artifact_hashes")
+    if not isinstance(hashes, dict) or not hashes:
+        raise ValueError("Calibration manifest has no artifact hash map")
+    required = {"calibration.json", "validation-predictions.npz", "calibration.png"}
+    if not required <= hashes.keys():
+        raise ValueError("Calibration manifest is missing required artifact hashes")
+    for relative, expected in sorted(hashes.items()):
+        if sha256_file(directory / relative) != expected:
+            raise ValueError(f"Calibration artifact hash mismatch: {relative}")
+
+
+def _preflight_plotting() -> None:
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot
+    except ImportError as error:
+        raise RuntimeError("Matplotlib is required before locked test access") from error
+
+
+def _read_locked_jsonl_once(path: Path, expected_sha256: str) -> tuple[list[dict[str, Any]], str]:
+    payload = path.read_bytes()
+    actual = hashlib.sha256(payload).hexdigest()
+    if actual != expected_sha256:
+        raise ValueError("Locked test hash mismatch")
+    try:
+        text = payload.decode("utf-8")
+        records = [json.loads(line) for line in text.splitlines() if line.strip()]
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ValueError("Locked test is not valid UTF-8 JSONL") from error
+    return records, actual
 
 
 def _write_errors(output_dir: Path, cases: list[dict[str, Any]]) -> None:
@@ -504,13 +667,42 @@ def _plot_test_figures(metrics: dict[str, Any], probabilities: np.ndarray, targe
     fig.tight_layout()
     fig.savefig(output_dir / "aspect-per-label-f1.png", dpi=180, bbox_inches="tight")
     plt.close(fig)
-    _plot_calibration(targets, probabilities, probabilities, output_dir / "test-calibration.png")
+    _plot_reliability(targets, probabilities, output_dir / "test-probability-quality.png")
     fig, axis = plt.subplots(figsize=(6, 4))
-    axis.bar(["IndoBERT"], [metrics["aspect"]["macro_f1"]], color="#157A6E")
+    comparison = [
+        (item["model"], item["macro_f1"])
+        for item in (baseline or {}).get("models", [])
+    ] + [("IndoBERT", metrics["aspect"]["macro_f1"])]
+    axis.bar([item[0] for item in comparison], [item[1] for item in comparison], color="#157A6E")
     axis.set_ylim(0, 1)
     axis.set_title("Baseline comparison" if baseline else "IndoBERT result (no baseline supplied)")
     fig.tight_layout()
     fig.savefig(output_dir / "comparison.png", dpi=180, bbox_inches="tight")
+    plt.close(fig)
+
+
+def _plot_reliability(targets: np.ndarray, probabilities: np.ndarray, output: Path, bins: int = 10) -> None:
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    probabilities = np.asarray(probabilities, dtype=float).ravel()
+    targets = np.asarray(targets, dtype=float).ravel()
+    indices = np.minimum((probabilities * bins).astype(int), bins - 1)
+    points = [
+        (float(probabilities[indices == index].mean()), float(targets[indices == index].mean()))
+        for index in range(bins) if np.any(indices == index)
+    ]
+    fig, axis = plt.subplots(figsize=(5, 5))
+    axis.plot([0, 1], [0, 1], linestyle="--", color="#8B95A5", label="Ideal")
+    if points:
+        axis.plot([point[0] for point in points], [point[1] for point in points], marker="o",
+                  color="#157A6E", label="Positive-class reliability")
+    axis.set(xlabel="Mean predicted probability", ylabel="Observed positive rate", xlim=(0, 1), ylim=(0, 1))
+    axis.legend()
+    fig.tight_layout()
+    fig.savefig(output, dpi=180, bbox_inches="tight")
     plt.close(fig)
 
 
@@ -530,35 +722,47 @@ def run_locked_test_evaluation(
     config = load_config("training")
     split_manifest_path = split_dir / MANIFEST_NAME
     split_manifest = json.loads(split_manifest_path.read_text(encoding="utf-8"))
+    split_manifest_hash = sha256_file(split_manifest_path)
     if split_manifest.get("test_is_locked") is not True:
         raise ValueError("Split manifest does not declare a locked test")
     calibration_path, calibration_manifest_path = _resolve_calibration(calibration_dir_or_file)
     calibration = json.loads(calibration_path.read_text(encoding="utf-8"))
     calibration_manifest = json.loads(calibration_manifest_path.read_text(encoding="utf-8"))
     calibration_hash = sha256_file(calibration_path)
-    if calibration_manifest.get("calibration_sha256") != calibration_hash:
-        raise ValueError("Frozen calibration hash mismatch")
+    _validate_artifact_map(calibration_path.parent, calibration_manifest)
     _a7_manifest, model_hashes = _load_a7_contract(model_run_dir, config)
-    frozen = dict(calibration)
-    frozen["artifact_sha256"] = calibration_manifest["calibration_sha256"]
-    validate_calibration_contract(frozen, calibration_hash, model_hashes)
+    labels = sorted(load_config("taxonomy")["aspect_definitions"])
+    validation_entry = split_manifest.get("outputs", {}).get("validation")
+    if not isinstance(validation_entry, dict) or not isinstance(validation_entry.get("sha256"), str):
+        raise TypeError("Locked manifest has no complete validation entry")
+    validate_calibration_contract(
+        calibration, calibration_hash, calibration_manifest, model_hashes,
+        split_manifest_hash, validation_entry["sha256"], labels,
+        _canonical_hash(config["calibration"]), _canonical_hash(config["indobert"]),
+    )
     if calibration.get("a7_manifest_sha256") != sha256_file(model_run_dir / "manifest.json"):
         raise ValueError("Calibration was frozen against a different A7 manifest")
-    if calibration.get("calibration_config_canonical_sha256") != _canonical_hash(config["calibration"]):
-        raise ValueError("Current calibration configuration differs from frozen calibration")
-    if calibration.get("indobert_config_canonical_sha256") != _canonical_hash(config["indobert"]):
-        raise ValueError("Current IndoBERT configuration differs from frozen calibration")
+    baseline = _load_baseline_metrics(baseline_metrics_dir)
+    _validate_baselines(baseline, split_manifest, split_manifest_hash)
+    _preflight_plotting()
+
+    # This is the final non-test checkpoint. The durable claim precedes any test path lookup/read.
+    output_dir.mkdir(parents=True)
+    state_path = output_dir / "evaluation-state.json"
+    _write_json(state_path, {
+        "status": "started_before_test_access",
+        "started_at": datetime.now(timezone.utc).isoformat(),
+        "split_manifest_sha256": split_manifest_hash,
+        "calibration_sha256": calibration_hash,
+        "test_access_policy": "Do not rerun after failure; document a methodological incident.",
+    })
     test_entry = split_manifest.get("outputs", {}).get("test")
     if not isinstance(test_entry, dict):
         raise TypeError("Locked manifest has no test entry")
     test_path = split_dir / test_entry["path"]
-    test_hash = sha256_file(test_path)
-    if test_hash != test_entry["sha256"]:
-        raise ValueError("Locked test hash mismatch")
-    records = read_jsonl(test_path)
-    labels = calibration["labels"]
+    records, test_hash = _read_locked_jsonl_once(test_path, test_entry["sha256"])
     targets = np.asarray(build_aspect_targets(records, labels), dtype=int)
-    inference = (inference_fn or _infer_local_models)(records, model_run_dir, config["indobert"]["max_length"])
+    inference = _run_inference(inference_fn, records, model_run_dir, config)
     logits = np.asarray(inference["aspect_logits"], dtype=float)
     probabilities = sigmoid(logits / calibration["temperature"])
     polarity_instances = build_polarity_instances(records)
@@ -567,32 +771,44 @@ def run_locked_test_evaluation(
         raise ValueError("Inference output shape does not match locked references")
     detection = [calibration["detection_thresholds"][label] for label in labels]
     alerts = [calibration["alert_thresholds"][label] for label in labels]
-    baseline = _load_baseline_metrics(baseline_metrics_dir)
     metrics = {
         "phase": "locked_test_evaluation", "test_inference_passes": 1,
         "reference_label_type": split_manifest.get("reference_label_type"),
-        "aspect": aspect_metrics(targets, probabilities, detection, labels, alerts,
-                                 float(inference.get("latency_seconds", 0.0))),
-        "calibration": {"ece": expected_calibration_error(probabilities, targets, config["calibration"]["ece_bins"]),
-                        "brier": multilabel_brier_score(probabilities, targets)},
+        "aspect": aspect_metrics(
+            targets, probabilities, detection, labels, alerts, calibration["alert_validation"],
+            inference.get("aspect_latency_seconds"),
+        ),
+        "calibration": {"method": "positive_class_equal_width_flattened_multilabel",
+                         "ece": expected_calibration_error(probabilities, targets, config["calibration"]["ece_bins"]),
+                         "brier": multilabel_brier_score(probabilities, targets)},
         "polarity": polarity_metrics([row["label"] for row in polarity_instances],
                                      np.argmax(polarity_logits, axis=1)),
         "polarity_evaluation_basis": "gold_or_silver_annotated_aspects_not_predicted_aspects",
         "severity": {"status": "unavailable_no_model"},
         "baseline_comparison": baseline,
         "baseline_figure_dir": None if baseline_figure_dir is None else str(baseline_figure_dir),
+        "inference": {
+            "device": inference.get("device", "injected"),
+            "aspect_latency_seconds": inference.get("aspect_latency_seconds"),
+            "polarity_latency_seconds": inference.get("polarity_latency_seconds"),
+            "model_loading_seconds": inference.get("model_loading_seconds"),
+            "model_loading_excluded_from_inference_latency": True,
+        },
     }
     cases = build_error_cases(records, labels, targets, probabilities, detection)
-    output_dir.mkdir(parents=True)
     _write_json(output_dir / "metrics.json", metrics)
     np.savez_compressed(output_dir / "test-predictions.npz", logits=logits, targets=targets,
                         probabilities=probabilities, polarity_logits=polarity_logits)
     _write_errors(output_dir, cases)
     _plot_test_figures(metrics, probabilities, targets, output_dir, baseline)
+    state = json.loads(state_path.read_text(encoding="utf-8"))
+    state.update({"status": "completed", "completed_at": datetime.now(timezone.utc).isoformat(),
+                  "test_sha256": test_hash, "test_inference_passes": 1})
+    _write_json(state_path, state)
     manifest = {
         "created_at": datetime.now(timezone.utc).isoformat(), "phase": "locked_test_evaluation",
         "test_inference_passes": 1, "test_sha256": test_hash,
-        "split_manifest_sha256": sha256_file(split_manifest_path),
+        "split_manifest_sha256": split_manifest_hash,
         "calibration_sha256": calibration_hash,
         "a7_manifest_sha256": sha256_file(model_run_dir / "manifest.json"),
         "model_hashes": model_hashes, "artifact_hashes": _artifact_hashes(output_dir),

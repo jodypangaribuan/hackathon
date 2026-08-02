@@ -716,6 +716,8 @@ Pada tahap kalibrasi IndoBERT, *temperature scaling* memilih suhu 0,60 hanya dar
 
 # 6. Evaluasi Model
 
+Bagian ini mengevaluasi kemampuan model dalam mendeteksi aspek dan menentukan *polarity* secara terkontrol. Keyword, TF-IDF, dan kandidat IndoBERT dibandingkan pada *locked silver test* yang sama dengan *Macro F1* sebagai metrik utama, dilengkapi *Micro F1*, hasil per aspek, kualitas probabilitas, *latency*, dan analisis kesalahan. Seluruh hasil pada bagian ini menunjukkan kesesuaian terhadap *silver labels*, bukan akurasi terhadap penilaian manusia atau konfirmasi kondisi destinasi di lapangan.
+
 ## 6.1 Protokol
 
 Ketiga model dinilai pada *locked test* yang sama. *Macro F1* dipakai sebagai metrik utama karena semua aspek perlu diperhatikan, termasuk aspek langka. *Micro F1*, per-*aspect* F1, *Precision@Alert*, kualitas probabilitas, dan *latency* dilaporkan sebagai pelengkap. IndoBERT hanya mengakses test setelah kalibrasi validation dan pembekuan konfigurasi selesai; `evaluation-state.json` mencatat satu kali *inference pass*.
@@ -787,6 +789,8 @@ Hasil *split*, pembangunan *baseline*, pelatihan, kalibrasi, dan evaluasi menduk
 
 # 7. Hasil dan Pembahasan
 
+Bagian ini merangkum hasil yang telah dicapai dari pengolahan data, evaluasi model, inferensi korpus penuh, agregasi sinyal, hingga integrasi aplikasi SIPATURE. Hasil teknis dibahas bersama keterbatasan yang masih berlaku agar capaian preliminary tidak ditafsirkan sebagai validasi lapangan. Bagian ini juga menjelaskan hubungan antara model dan produk, dampak yang diharapkan bagi pengelola, serta arah pengembangan yang diprioritaskan pada *Final Round*.
+
 ## 7.1 Hasil yang Sudah Tersedia
 
 Hasil preliminary dapat diringkas ke dalam empat lapisan:
@@ -808,17 +812,9 @@ Hasil preliminary dapat diringkas ke dalam empat lapisan:
 
 ## 7.2 Apa yang Belum Boleh Diklaim
 
-- *Silver labels* bukan label manusia atau kondisi lapangan.
-- *Keyword* *Macro F1* 0,9768 bukan akurasi dunia nyata.
-- TF-IDF *Macro F1* 0,7201 belum membuktikan performa terhadap *human gold*.
-- IndoBERT aspek belum mengungguli TF-IDF pada *locked silver test* dan tidak dipilih sebagai detektor aspek final saat ini.
-- *Polarity* aplikasi adalah *fallback* leksikal berversi, bukan kandidat IndoBERT produksi, dan tidak menghasilkan probabilitas.
-- SIPATURE belum memiliki model atau metrik *severity*; *facility gap* dan *feasibility* juga belum tersedia.
-- *Priority* score belum divalidasi bersama *stakeholder*.
-- *Evidence correctness*, ranking *agreement*, dan *time saved* belum diukur terhadap manusia; *Precision@Alert* yang tersedia masih terhadap *silver reference*.
-- Aplikasi hanya menggunakan proyeksi agregat yang aman untuk privasi; *prediction record*, teks *evidence*, dan provenance tingkat *reviewer* tetap terbatas.
-- *Evidence correctness*, relevansi intervensi, dan peringkat belum dinilai pada 25 kasus ahli yang telah disiapkan.
-- Analyzer langsung masih berupa *baseline* leksikal, bukan model produksi final.
+Hasil evaluasi model masih menggunakan *silver labels*, bukan label manusia atau konfirmasi kondisi lapangan. Oleh karena itu, *Macro F1* Keyword sebesar 0,9768 tidak dapat disebut sebagai akurasi dunia nyata, sedangkan *Macro F1* TF-IDF sebesar 0,7201 belum membuktikan performa terhadap *human-gold reference*. Kandidat IndoBERT untuk deteksi aspek belum mengungguli TF-IDF pada *locked silver test* dan tidak dipilih sebagai detektor aspek final saat ini. Komponen *polarity* pada aplikasi juga masih berupa *fallback* leksikal berversi, bukan kandidat IndoBERT produksi, serta tidak menghasilkan probabilitas. SIPATURE belum memiliki model atau metrik *severity*, sementara komponen *facility gap* dan *feasibility* juga belum tersedia.
+
+Pada tingkat produk, *priority score* belum divalidasi bersama *stakeholder*. *Evidence correctness*, kesesuaian peringkat, dan penghematan waktu belum diukur terhadap penilaian manusia; *Precision@Alert* yang tersedia masih dihitung terhadap *silver reference*. Aplikasi hanya menggunakan proyeksi agregat yang aman untuk privasi, sedangkan *prediction record*, teks *evidence*, dan provenance tingkat *reviewer* tetap berada pada penyimpanan terbatas. Kualitas *evidence*, relevansi intervensi, dan peringkat juga belum dinilai pada 25 kasus ahli yang telah disiapkan. Selain itu, Analyzer langsung masih menggunakan *baseline* leksikal dan belum merupakan model produksi final.
 
 ## 7.3 Hubungan Model dengan Produk
 
@@ -847,20 +843,39 @@ SIPATURE diharapkan membantu pengelola mengurangi waktu membaca ulasan, menemuka
 
 **Interpretasi Tabel 18.** Indikator dampak belum diberi angka karena *pilot* pengguna belum dilakukan. SIPATURE tidak mengklaim penghematan waktu, peningkatan kualitas destinasi, atau manfaat ekonomi sebelum tersedia pengukuran pembanding. Pemeriksaan *evidence* dilakukan pada lingkungan terkontrol agar evaluasi keterlacakan tidak membuka data tingkat *reviewer*.
 
+## 7.5 Kesimpulan dan Arah Pengembangan *Final Round*
+
+Hasil preliminary menunjukkan bahwa kekuatan SIPATURE tidak hanya berada pada satu model, tetapi pada rantai teknis yang telah bekerja dari data mentah hingga aplikasi. Sebanyak 22.302 *record* mentah telah dibersihkan menjadi 22.169 *record*, seluruh *review* telah memperoleh identitas destinasi teknis, 12.234 *review* berteks telah diproses, dan hasilnya telah diubah menjadi 1.682 sinyal destinasi-aspek serta 210 isu operasional pada 103 destinasi. Aplikasi juga telah menyediakan peta, antrean verifikasi, rapor destinasi, rekomendasi pemeriksaan, simulasi berbasis asumsi, dan batas privasi yang eksplisit. Fondasi ini membuat pengembangan *Final Round* dapat dimulai dari produk yang sudah berjalan, bukan dari prototipe kosong.
+
+Keputusan model preliminary juga menjadi titik awal yang jelas. TF-IDF tetap menjadi detektor aspek terpilih karena memperoleh *Macro F1* 0,7201 pada *locked silver test*, lebih tinggi daripada IndoBERT aspek 0,5247. IndoBERT tidak otomatis ditetapkan sebagai model *Final Round*. Kandidat IndoBERT *polarity*, yang memperoleh *Macro F1* 0,7459 pada aspek referensi, akan diperlakukan sebagai kandidat kontekstual yang harus dibandingkan dan diuji kembali dalam rangkaian produk. Model kontekstual hanya akan menggantikan atau melengkapi komponen preliminary jika tersedia bobot yang dapat diverifikasi, memberi manfaat terukur terhadap referensi yang lebih kuat, dapat dimuat ulang secara luring, dan lulus *deployment*, privasi, serta *integration gate*. Jika syarat tersebut tidak terpenuhi, TF-IDF dan *fallback* leksikal yang diberi label jelas tetap menjadi pilihan deployment yang sah.
+
+Untuk memanfaatkan infrastruktur **DGX B200 IT Del** secara relevan, SIPATURE akan menambahkan ***Grounded Verification Copilot*** berbasis model *open-weight* multimodal modern, dengan keluarga **Qwen vision-language** sebagai kandidat utama. Versi dan ukuran model ditetapkan setelah pemeriksaan lisensi, dukungan Bahasa Indonesia, kebutuhan memori, latensi, dan kemampuan menghasilkan keluaran terstruktur. Model ini tidak menggantikan TF-IDF sebagai mesin pemantauan korpus dan tidak dipakai untuk menciptakan skor prioritas. TF-IDF tetap berfungsi sebagai detektor dan penyaring isu yang cepat serta dapat diaudit, sedangkan model multimodal digunakan hanya setelah sebuah isu masuk antrean verifikasi.
+
+Tujuan *copilot* adalah membantu petugas menjawab pertanyaan operasional yang lebih sulit daripada klasifikasi teks: **apa yang perlu diperiksa di lapangan, bukti apa yang mendukung sinyal, apakah temuan lapangan konsisten dengan isu yang dilaporkan, dan tindak lanjut apa yang layak dipertimbangkan?** Untuk satu kasus, sistem mengambil konteks secara terbatas dari proyeksi SIPATURE, yaitu identitas destinasi, aspek, *support*, waktu, metadata, rekomendasi pemeriksaan, serta kutipan *evidence* yang telah lolos pemeriksaan privasi. Petugas kemudian dapat menambahkan catatan inspeksi dan foto kondisi lapangan. Qwen memproses konteks teks dan visual tersebut untuk menghasilkan ringkasan kasus, daftar pemeriksaan, pertanyaan yang masih belum terjawab, dan usulan status `confirmed`, `rejected`, atau `uncertain` dalam schema JSON yang tetap harus disahkan manusia.
+
+Arsitektur *Final Round* dengan demikian membagi tugas model secara jelas:
+
+1. **TF-IDF sebagai *signal engine*.** Memproses seluruh ulasan, mendeteksi 14 aspek, dan mempertahankan hasil preliminary sebagai pembanding serta *fallback* yang ringan.
+2. **Model *polarity* terpilih sebagai *context layer*.** Kandidat IndoBERT *polarity* atau kandidat kontekstual lain hanya dipakai jika mengungguli *fallback* leksikal pada evaluasi yang ditetapkan dan dapat direproduksi.
+3. **Qwen multimodal sebagai *verification reasoning layer*.** Membaca paket kasus yang telah dibatasi, foto inspeksi, dan catatan petugas untuk membantu verifikasi, bukan menentukan kebenaran secara otomatis.
+4. **Retrieval dan schema guard sebagai pengendali.** Model hanya menerima sumber yang diizinkan, wajib menunjuk ID bukti yang digunakan, dan harus mengembalikan keluaran terstruktur. Jika bukti tidak cukup atau sumber bertentangan, jawaban yang benar adalah `uncertain`, bukan melengkapi informasi dengan asumsi.
+5. **Manusia sebagai pengambil keputusan.** Keputusan, alasan, dan tindak lanjut petugas disimpan terpisah dari keluaran model sehingga prediksi awal tidak dapat ditimpa dan seluruh perubahan dapat diaudit.
+
+Pemanfaatan B200 menjadi jelas karena layanan perlu menjalankan inferensi model multimodal berukuran lebih besar secara lokal, menjaga data inspeksi tidak dikirim ke API eksternal, dan tetap memberi respons interaktif saat demo. Jika waktu memungkinkan, B200 juga digunakan untuk menguji kuantisasi dan *parameter-efficient fine-tuning* pada contoh instruksi yang telah disanitasi, bukan untuk melatih model dasar dari awal. Hasil konfigurasi harus dibandingkan pada kualitas *grounded answer*, kepatuhan schema, tingkat sitasi bukti, hallucination rate, latensi, dan penggunaan memori. Model dipakai hanya jika memberi manfaat nyata dibandingkan template deterministik; jika tidak, sistem kembali ke checklist dan ringkasan berbasis aturan.
+
+Demo utama *Final Round* ditargetkan memperlihatkan alur berikut: SIPATURE memilih satu isu prioritas dari hasil 12.234 ulasan; pengelola membuka rapor destinasi; *copilot* membuat checklist berdasarkan aspek dan bukti yang diizinkan; petugas mengunggah foto serta catatan inspeksi; model multimodal membandingkan temuan dengan paket kasus; lalu sistem mengusulkan status dan tindak lanjut beserta rujukan sumber. Petugas menerima, menolak, atau mengubah usulan tersebut, dan keputusan masuk ke *audit trail*. Sebagai contoh, sinyal “toilet dan sanitasi” tidak cukup dijawab dengan sentimen negatif: *copilot* meminta pemeriksaan air, kebersihan, drainase, aksesibilitas, dan log perawatan, kemudian menandai bagian mana yang didukung ulasan, foto, catatan petugas, atau masih belum diketahui.
+
+Strategi ini membuat penggunaan Qwen dan DGX B200 memiliki tujuan produk yang spesifik, bukan sekadar mengikuti tren model generatif. SIPATURE menggabungkan kekuatan model klasik untuk pemantauan skala besar, model kontekstual untuk memahami bahasa, dan model multimodal untuk membantu verifikasi lapangan. Nilai pembeda utamanya adalah perubahan dari ***review intelligence*** menjadi ***evidence-grounded action***: sistem tidak hanya menjawab “apa yang dikeluhkan wisatawan?”, tetapi juga membantu pengelola membuktikan atau menolak sinyal tersebut secara terstruktur, aman, dan dapat ditelusuri.
+
 ---
 
 # 8. Deklarasi Penggunaan AI
 
 AI generatif digunakan untuk membantu perancangan solusi, pengembangan kode, *debugging*, audit aturan, penyusunan dokumentasi, dan pembuatan narasi laporan. *AI-assisted weak supervision* juga digunakan untuk menghasilkan *silver labels* melalui tiga *deterministic rule passes*.
 
-Penggunaan AI dibatasi sebagai berikut:
+Penggunaan AI dibatasi secara metodologis dan operasional. *Silver labels* tidak disebut sebagai anotasi manusia atau *gold labels*, sedangkan kesepakatan antar-*AI pass* tidak disebut sebagai *inter-annotator agreement*. Nilai *confidence* berbasis *vote* juga tidak ditafsirkan sebagai probabilitas terkalibrasi. AI tidak digunakan untuk menentukan tindakan lapangan secara otomatis karena hasil sistem hanya berfungsi sebagai sinyal awal yang perlu diperiksa.
 
-- *Silver labels* tidak disebut sebagai human *annotation* atau *gold* labels.
-- AI *pass agreement* tidak disebut sebagai *inter-annotator agreement*.
-- *Confidence* berbasis *vote* tidak disebut sebagai *calibrated probability*.
-- AI tidak menentukan tindakan lapangan secara otomatis.
-- *Evidence* berasal dari kutipan *verbatim* dan tidak dibuat oleh model; teks serta artefak tingkat *reviewer* tetap pada penyimpanan terkontrol sampai pemeriksaan privasi dan ahli selesai.
-- Kode dan *artifact* diperiksa melalui *lint*, *unit test*, *schema validation*, *hash verification*, *model reload*, dan pembacaan hasil.
+*Evidence* berasal dari kutipan *verbatim* pada ulasan sumber dan tidak dibuat oleh model. Teks serta artefak tingkat *reviewer* tetap berada pada penyimpanan terkontrol sampai pemeriksaan privasi dan ahli selesai. Kode dan *artifact* diperiksa melalui *lint*, *unit test*, *schema validation*, *hash verification*, *model reload*, dan pembacaan hasil untuk mengurangi risiko kesalahan yang berasal dari bantuan AI.
 
 Keputusan operasional tetap memerlukan verifikasi manusia karena ulasan adalah laporan pengguna, bukan konfirmasi kondisi aktual.
 

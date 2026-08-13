@@ -1,7 +1,11 @@
 # Deployment satu perintah untuk DGX B200:
+#   cp .env.example .env   # lalu isi POSTGRES_PASSWORD
 #   docker compose up -d --build
 #   curl http://<dgx-host>:3000/api/health
 #   curl http://<dgx-host>:8000/health
+#
+# Seluruh konfigurasi dibaca dari `.env` (lihat `.env.example`). Jangan hardcode
+# nilai di file ini.
 #
 # Catatan: aplikasi `web` murni membaca data precomputed, jadi tidak butuh GPU.
 # Service `inference` (FastAPI) melayani prediksi live memakai model TF-IDF
@@ -9,24 +13,25 @@
 # `ml/artifacts/models/tfidf-aspect-silver-v1/`.
 
 services:
-  web:
-    build: .
-    image: sipature-app:demo
-    container_name: martahuta-web
-    ports:
-      - "3000:3000"
-    environment:
-      NODE_ENV: production
-      # Dipakai route /api/analyze untuk memanggil service inference (opsional).
-      INFERENCE_URL: http://inference:8000
+  db:
+    image: postgres:16-alpine
+    container_name: sipature-db
     restart: unless-stopped
-    depends_on:
-      - inference
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Auto-init schema saat volume pertama kali dibuat.
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]
-      interval: 30s
-      timeout: 3s
-      retries: 3
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
       start_period: 10s
 
   inference:
@@ -35,14 +40,40 @@ services:
       dockerfile: sipature-api/Dockerfile
     image: sipature-inference:demo
     container_name: sipature-inference
-    ports:
-      - "8000:8000"
-    environment:
-      MODEL_DIR: /app/model
     restart: unless-stopped
+    ports:
+      - "${INFERENCE_PORT}:8000"
+    environment:
+      MODEL_DIR: ${INFERENCE_MODEL_DIR:-/app/model}
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
       interval: 30s
       timeout: 5s
       retries: 3
       start_period: 15s
+
+  web:
+    build: .
+    image: sipature-app:demo
+    container_name: martahuta-web
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT}:3000"
+    environment:
+      NODE_ENV: production
+      # URL internal antar-container (network compose). Port internal selalu 8000.
+      INFERENCE_URL: http://inference:8000
+      # Connection string Postgres (host = nama service `db`, port internal 5432).
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+    depends_on:
+      - db
+      - inference
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  pgdata:

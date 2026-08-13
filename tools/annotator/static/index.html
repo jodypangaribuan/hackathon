@@ -13,7 +13,7 @@
   * { box-sizing: border-box; }
   body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, sans-serif;
          background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; }
-  header { display: flex; align-items: center; gap: 16px; padding: 12px 16px;
+  header { display: flex; align-items: center; gap: 14px; padding: 12px 16px;
            border-bottom: 1px solid var(--hairline); background: var(--panel); flex-wrap: wrap; }
   header h1 { font-size: 16px; margin: 0; }
   header select, header button { padding: 6px 10px; border-radius: 6px; border: 1px solid var(--hairline);
@@ -34,7 +34,6 @@
   .review-text { font-size: 15px; line-height: 1.7; white-space: pre-wrap; }
   .review-text span.word { cursor: pointer; border-radius: 3px; }
   .review-text span.word:hover { background: var(--accent); }
-  .review-text span.word.marked { background: rgba(42,120,214,0.35); }
   .meta { color: var(--muted); font-size: 12px; margin-bottom: 12px; }
   h3 { font-size: 14px; margin: 20px 0 10px; }
   .labels { display: flex; flex-direction: column; gap: 10px; }
@@ -59,6 +58,20 @@
   button.primary { background: var(--accent); color: white; border: none; font-weight: 600; }
   .empty { color: var(--muted); text-align: center; padding: 60px 20px; font-size: 14px; }
   .hint { color: var(--muted); font-size: 11px; margin-top: 4px; }
+  .aspect-help { background: var(--panel2); border: 1px solid var(--hairline); border-radius: 6px;
+           padding: 8px 10px; font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .aspect-help strong { color: var(--text); }
+  details.panduan { background: var(--panel); border: 1px solid var(--hairline); border-radius: 10px;
+           padding: 14px 16px; margin-bottom: 16px; }
+  details.panduan summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+  details.panduan .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-top: 12px; }
+  details.panduan .card { background: var(--panel2); border: 1px solid var(--hairline); border-radius: 8px; padding: 10px 12px; }
+  details.panduan .card h4 { margin: 0 0 4px; font-size: 13px; }
+  details.panduan .card p { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.5; }
+  details.panduan .card .kw { font-size: 11px; color: #7dd3fc; }
+  details.panduan table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 12px; }
+  details.panduan th, details.panduan td { border: 1px solid var(--hairline); padding: 6px 10px; text-align: left; }
+  details.panduan th { background: var(--panel2); color: var(--muted); }
 </style>
 </head>
 <body>
@@ -68,6 +81,7 @@
     <select id="annotator"></select>
   </label>
   <span class="progress" id="progress">–</span>
+  <button id="guide" onclick="toggleGuide()">Panduan</button>
   <button id="export" style="margin-left:auto" disabled>Export JSONL</button>
 </header>
 <main>
@@ -78,7 +92,7 @@
 <script>
 const state = {
   annotators: [], aspects: [], polarities: [], severities: [],
-  annotator: null, reviews: [], current: null, currentLabels: [], editingEvidence: null,
+  annotator: null, reviews: [], current: null, currentLabels: [],
 };
 
 async function api(path, opts) {
@@ -90,13 +104,59 @@ async function api(path, opts) {
 async function init() {
   const meta = await api("/api/annotators");
   state.annotators = meta.annotators;
-  state.aspects = meta.aspects;
-  state.polarities = meta.polarities;
-  state.severities = meta.severities;
+  state.aspects = meta.aspects;       // [{key, label, definition, hint}]
+  state.polarities = meta.polarities; // [{key, desc}]
+  state.severities = meta.severities; // [{key, desc}]
   const sel = document.getElementById("annotator");
   sel.innerHTML = '<option value="">— pilih —</option>' +
     state.annotators.map(a => `<option>${a}</option>`).join("");
   sel.onchange = () => selectAnnotator(sel.value);
+  renderGuide();
+}
+
+function aspectMeta(key) { return state.aspects.find(a => a.key === key); }
+function polarityDesc(key) { const p = state.polarities.find(x => x.key === key); return p ? p.desc : ""; }
+function severityDesc(key) { const s = state.severities.find(x => x.key === key); return s ? s.desc : ""; }
+
+function renderGuide() {
+  // panel panduan disisipkan di awal .detail bila belum ada
+  const el = document.getElementById("detail");
+  const asp = state.aspects.map(a => `
+    <div class="card">
+      <h4>${esc(a.label)} <span style="color:#64748b">(${esc(a.key)})</span></h4>
+      <p>${esc(a.definition)}</p>
+      <div class="kw">kata kunci: ${esc(a.hint)}</div>
+    </div>`).join("");
+  const pol = state.polarities.map(p => `<tr><td><strong>${esc(p.key)}</strong></td><td>${esc(p.desc)}</td></tr>`).join("");
+  const sev = state.severities.map(s => `<tr><td><strong>${esc(s.key)}</strong></td><td>${esc(s.desc)}</td></tr>`).join("");
+  const guide = `
+  <details class="panduan" id="panduan">
+    <summary>📘 Panduan Anotasi</summary>
+    <h3>Cara kerja</h3>
+    <p class="hint" style="font-size:13px;color:var(--muted);line-height:1.7">
+      1. Baca teks review.<br>
+      2. Tentukan <strong>aspek</strong> apa saja yang dibahas (boleh lebih dari satu).<br>
+      3. Untuk tiap aspek, tentukan <strong>polarity</strong> (positive/negative/neutral).<br>
+      4. Kalau <strong>negative</strong>, wajib tentukan <strong>severity</strong> (low/medium/high).<br>
+      5. Isi <strong>evidence</strong> = kutipan verbatim dari teks (klik kata di teks untuk mengisinya).<br>
+      6. Simpan otomatis; lanjut ke review berikutnya.
+    </p>
+    <h3>Polarity</h3>
+    <table>${pol}</table>
+    <h3>Severity (hanya untuk polarity negative)</h3>
+    <table>${sev}</table>
+    <h3>Definisi 14 aspek</h3>
+    <div class="grid">${asp}</div>
+  </details>`;
+  // Simpan ke state untuk dipakai saat renderDetail
+  state.guideHtml = guide;
+}
+
+function toggleGuide() {
+  const el = document.getElementById("detail");
+  const existing = document.getElementById("panduan");
+  if (existing) { existing.remove(); return; }
+  el.insertAdjacentHTML("afterbegin", state.guideHtml);
 }
 
 async function selectAnnotator(id) {
@@ -171,7 +231,7 @@ function renderLabels() {
   el.innerHTML = state.currentLabels.map((l, i) => `
     <div class="label-row">
       <div class="top">
-        <span class="chip aspect">${esc(l.aspect)}</span>
+        <span class="chip aspect">${esc(aspectMeta(l.aspect)?.label || l.aspect)}</span>
         <span class="chip polarity-${esc(l.polarity)}">${esc(l.polarity)}</span>
         ${l.severity ? `<span class="chip severity">${esc(l.severity)}</span>` : ""}
         <button class="del" onclick="removeLabel(${i})">✕</button>
@@ -183,21 +243,34 @@ function renderLabels() {
 
 function renderAddForm() {
   const el = document.getElementById("addform");
+  const aspOptions = state.aspects.map(a => `<option value="${a.key}">${esc(a.label)}</option>`).join("");
   el.innerHTML = `
     <div class="row">
-      <select id="aspect">${state.aspects.map(a => `<option>${a}</option>`).join("")}</select>
+      <select id="aspect">${aspOptions}</select>
       <span class="seg" id="polarity">
-        ${state.polarities.map(p => `<button type="button" data-v="${p}" class="${p==='negative'?'on':''}">${p}</button>`).join("")}
+        ${state.polarities.map(p => `<button type="button" data-v="${p.key}" title="${esc(p.desc)}" class="${p.key==='negative'?'on':''}">${p.key}</button>`).join("")}
       </span>
       <span class="seg" id="severity" ${showSeverity() ? "" : "style='display:none'"}>
-        ${state.severities.map(s => `<button type="button" data-v="${s}" class="${s==='medium'?'on':''}">${s}</button>`).join("")}
+        ${state.severities.map(s => `<button type="button" data-v="${s.key}" title="${esc(s.desc)}" class="${s.key==='medium'?'on':''}">${s.key}</button>`).join("")}
       </span>
     </div>
-    <div class="row">
-      <input id="evidence" placeholder="Evidence (klik kata di teks review untuk kutip verbatim)" />
+    <div class="aspect-help" id="aspecthelp"></div>
+    <div class="row" style="margin-top:10px">
+      <input id="evidence" placeholder="Evidence — klik kata di teks review untuk kutip verbatim" />
       <button class="primary" onclick="addLabel()">Tambah label</button>
     </div>
-    <div class="hint">Evidence harus kutipan verbatim dari teks review. Klik kata di teks untuk mengisinya otomatis.</div>`;
+    <div class="hint">Evidence wajib kutipan verbatim dari teks. Polarity negative wajib severity.</div>`;
+
+  const aspectSel = document.getElementById("aspect");
+  const updateAspectHelp = () => {
+    const m = aspectMeta(aspectSel.value);
+    document.getElementById("aspecthelp").innerHTML =
+      `<strong>${esc(m.label)}</strong> — ${esc(m.definition)}<br>` +
+      `<span class="kw" style="color:#7dd3fc">kata kunci: ${esc(m.hint)}</span>`;
+  };
+  aspectSel.onchange = updateAspectHelp;
+  updateAspectHelp();
+
   let pol = "negative";
   document.querySelectorAll("#polarity button").forEach(b => b.onclick = () => {
     document.querySelectorAll("#polarity button").forEach(x => x.classList.remove("on"));
@@ -212,10 +285,7 @@ function renderAddForm() {
   window.__getPol = () => pol; window.__getSev = () => sev;
 }
 
-function showSeverity(pol) {
-  pol = pol || "negative";
-  return pol === "negative";
-}
+function showSeverity(pol) { return (pol || "negative") === "negative"; }
 
 function addLabel() {
   const aspect = document.getElementById("aspect").value;

@@ -40,6 +40,35 @@ ASPECTS = [
 POLARITIES = ["positive", "negative", "neutral"]
 SEVERITIES = ["low", "medium", "high"]
 
+ASPECT_META = {
+    "cleanliness": {"label": "Kebersihan", "definition": "Kebersihan umum area, permukaan, kamar, meja, atau lingkungan layanan.", "hint": "bersih, kotor, jorok, kumuh, bau, serangga"},
+    "waste": {"label": "Sampah & Limbah", "definition": "Sampah, limbah, plastik, atau pengelolaan/pembuangan sampah.", "hint": "sampah, limbah, plastik, berserakan, tempat sampah"},
+    "sanitation": {"label": "Toilet & Sanitasi", "definition": "Toilet, WC, kamar mandi, MCK, air bersih, drainase, atau kondisi sanitasi.", "hint": "toilet, wc, kamar mandi, mck, air mati, air bersih"},
+    "crowding": {"label": "Kepadatan & Antrean", "definition": "Kepadatan, antrean, atau keramaian yang memengaruhi pengalaman/operasi.", "hint": "ramai, padat, penuh sesak, antre, antri"},
+    "access": {"label": "Akses & Kondisi Rute", "definition": "Jalan, rute, akses transportasi, medan, penunjuk arah, atau kemudahan mencapai lokasi.", "hint": "akses, jalan, rusak, berlubang, terjal, berbatu"},
+    "parking": {"label": "Parkir", "definition": "Ketersediaan, kapasitas, keamanan, biaya, atau pengelolaan parkir.", "hint": "parkir, parkiran, lahan parkir"},
+    "public_facilities": {"label": "Fasilitas Publik & Aksesibilitas", "definition": "Fasilitas publik selain sanitasi/parkir: tempat duduk, gazebo, penerangan, aksesibilitas, tempat ibadah.", "hint": "fasilitas, gazebo, kursi, penerangan, mushola, difabel"},
+    "scenery": {"label": "Pemandangan", "definition": "Pemandangan, panorama, keindahan alam/visual, sunrise, atau sunset.", "hint": "pemandangan, panorama, view, indah, sunrise, sunset"},
+    "comfort": {"label": "Kenyamanan", "definition": "Kenyamanan fisik/atmosfer yang tidak lebih spesifik pada fasilitas, crowding, atau safety.", "hint": "nyaman, panas, sejuk, bising, tenang"},
+    "safety": {"label": "Keselamatan & Keamanan", "definition": "Risiko cedera, kriminalitas, ancaman, kondisi berbahaya, atau rasa aman.", "hint": "aman, bahaya, rawan, licin, preman, maling"},
+    "price_transparency": {"label": "Harga & Transparansi Pungutan", "definition": "Kejelasan/kewajaran relatif biaya, tiket, pungutan, perubahan harga.", "hint": "harga, tarif, tiket, pungli, pungutan, mahal"},
+    "staff_service": {"label": "Pelayanan Petugas", "definition": "Sikap, respons, komunikasi, kecepatan, atau profesionalitas staf/petugas/pengelola.", "hint": "pelayanan, petugas, staf, ramah, kasar, lambat"},
+    "maintenance": {"label": "Perawatan & Kerusakan", "definition": "Kondisi perawatan, kerusakan, keusangan, atau fasilitas/objek terbengkalai.", "hint": "terawat, perawatan, rusak, usang, terbengkalai"},
+    "opening_hours": {"label": "Jam Operasional", "definition": "Kesesuaian informasi dan realisasi jam/hari buka atau tutup.", "hint": "jam buka, jam operasional, tutup, belum buka"},
+}
+
+POLARITY_META = {
+    "positive": "review memuji / menyebut kelebihan",
+    "negative": "review mengeluh / menyebut masalah",
+    "neutral": "menyebut aspek tanpa penilaian jelas",
+}
+
+SEVERITY_META = {
+    "low": "gangguan kecil, tidak menghambat",
+    "medium": "masalah nyata, mengurangi kenyamanan",
+    "high": "berbahaya / menghalangi operasional",
+}
+
 app = FastAPI(title="SIPATURE Annotator", version="1.0.0")
 
 
@@ -94,7 +123,12 @@ def validate_labels(labels: List[LabelIn]) -> None:
 
 @app.get("/api/annotators")
 def annotators() -> Dict[str, Any]:
-    return {"annotators": ANNOTATORS, "aspects": ASPECTS, "polarities": POLARITIES, "severities": SEVERITIES}
+    return {
+        "annotators": ANNOTATORS,
+        "aspects": [{"key": k, **ASPECT_META[k]} for k in ASPECTS],
+        "polarities": [{"key": p, "desc": POLARITY_META[p]} for p in POLARITIES],
+        "severities": [{"key": s, "desc": SEVERITY_META[s]} for s in SEVERITIES],
+    }
 
 
 @app.get("/api/annotator/{annotator_id}/reviews")

@@ -65,13 +65,17 @@ Catatan teknis penting:
 - Update `a9.yaml` hash model TF-IDF → `a10bddb1…` (model) + `072b4346…` (manifest).
 - Buat service **`sipature-api/`** (FastAPI, struktur clean: config/schemas/service/routers/dependencies).
   - `GET /health`, `POST /predict-review` (load `model.joblib` via `load_tfidf_contract`).
-- Update `docker-compose.yml` → 2 service: `web` (Next.js) + `inference` (FastAPI).
+- Update `docker-compose.yml` → 3 service: `web` (Next.js) + `inference` (FastAPI) + `db` (PostgreSQL 16).
 - Wiring: `/api/analyze` proxy ke FastAPI (`INFERENCE_URL`), fallback ke sandbox leksikal.
 - Regenerate data dashboard dari export A9 baru (`8037d072…`).
+- Tambah **`.env` / `.env.example`** (config terpusat, credential tidak di-commit).
+- Buat **schema PostgreSQL** (`sipature-app/db/schema.sql`) + **Drizzle ORM** (`src/db/schema.ts`, `src/db/index.ts`, `drizzle.config.ts`).
+- Setup **rclone** untuk sinkronisasi Drive ↔ lokal (`scripts/sync-drive.sh pull/push`).
 
 ### 3.4 Dokumentasi
 - Update `SIPATURE-Hackathon-TODO.md` (F1–F3 checklist + gap items).
 - Selaraskan 8 file docs/report terkait keputusan expert-review & gold annotation.
+- Tambah section "Local ↔ Drive Sync (rclone)" di `docs/reproducibility-runbook.md`.
 
 ---
 
@@ -95,13 +99,16 @@ Catatan teknis penting:
 cd sipature-app && docker compose up -d --build
 # web        : http://localhost:3000  (Next.js)
 # inference  : http://localhost:8000  (FastAPI)
+# db         : postgres:16-alpine :5432 (schema auto-init)
 ```
 - Analyzer: live model (TF-IDF, `mode: "production"`).
 - Dashboard/map: data A9 baru (`generatedAt: 2026-08-13`).
+- DB: schema + Drizzle ORM siap; **app belum query ke DB** (masih precomputed JSON).
 
 ### Prasyarat build ulang (jangan lupa)
-1. Model TF-IDF baru (`a10bddb1…`) harus ada di `ml/artifacts/models/tfidf-aspect-silver-v1/`.
+1. Model TF-IDF baru (`a10bddb1…`) harus ada di `ml/artifacts/models/tfidf-aspect-silver-v1/` (atau `scripts/sync-drive.sh pull`).
 2. Data `src/data/generated/*.json` harus ada (jangan di-`gitignore` dari Docker build).
+3. `cp .env.example .env` sebelum `docker compose up` (jika belum ada).
 
 ---
 

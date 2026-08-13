@@ -64,6 +64,48 @@ SIPATURE/
 └── runs/
 ```
 
+## Local ↔ Drive Sync (rclone)
+
+Google Drive adalah *source of truth* untuk artifact restricted (hasil Colab).
+Folder lokal `ml/` perlu disinkronkan agar tidak memakai data lama. Pakai rclone.
+
+Setup (sekali saja):
+
+```bash
+brew install rclone
+rclone config create gdrive drive scope drive   # non-interaktif
+rclone lsd gdrive:SIPATURE                      # trigger OAuth browser (login Google)
+```
+
+Token OAuth tersimpan di `~/.config/rclone/rclone.conf` (jangan di-commit).
+Setiap anggota tim harus menjalankan `rclone config` sendiri.
+
+Catatan: rclone memakai shared `client_id` yang dipensiunkan selama 2026.
+Untuk jangka panjang, buat client_id sendiri
+(https://rclone.org/drive/#making-your-own-client-id).
+
+Sync:
+
+```bash
+scripts/sync-drive.sh pull   # Google Drive -> lokal (ambil data terbaru)
+scripts/sync-drive.sh push   # lokal -> Google Drive (unggah hasil lokal)
+```
+
+Mapping direktori:
+
+| Drive (`gdrive:SIPATURE/…`) | Lokal (repo root) |
+| --- | --- |
+| `data/{raw,interim,processed,annotations,splits}` | `ml/data/…` |
+| `models` | `ml/artifacts/models` |
+| `metrics` | `ml/artifacts/metrics` |
+| `figures` | `ml/artifacts/figures` |
+| `reports` | `ml/artifacts/reports` |
+| `a9` | `ml/artifacts/a9` |
+| `predictions` | `ml/artifacts/predictions` |
+
+`runs/` (model IndoBERT, ~GB) sengaja tidak disinkronkan. Folder yang belum
+ada di Drive (mis. `predictions`) otomatis di-skip.
+
 ## Notebook Setup Contract
 
 Every notebook starts with:

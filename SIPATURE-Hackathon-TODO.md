@@ -486,6 +486,7 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [x] Sampling manifest. (notebook `03`: pilot/main audit + assignments + `annotation_sampling_summary.json`)
 - [x] Annotation JSONL. (`silver-v1.0.0.jsonl` — AI-assisted weak supervision, bukan human gold)
 - [ ] Agreement dan annotation-audit report. (opsional; workflow saat ini memakai silver, bukan human gold)
+- [ ] Mini-gold human validation: double-annotate 40–60 review oleh 3 anggota, hitung Cohen's kappa + silver-vs-gold agreement. (menutup kelemahan "silver bukan gold" pada rubric D3 — high impact)
 - [x] Split manifest dan data hashes. (notebook `04`: `split_manifest_silver_v1.json`, leakage-safe, terkunci)
 - [x] Keyword artifact/metrics. (notebook `05`: `keyword-silver-v1-test-metrics.json`)
 - [x] TF-IDF model/vectorizer/metrics. (notebook `05`: `tfidf-aspect-silver-v1/model.joblib` + metrics)
@@ -501,6 +502,10 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [x] Intervention queue dan formula/config. (notebook `09`: `expert-review-queue.csv` + `scoring.yaml`)
 - [x] Evidence provenance table. (notebook `08`/`09`: `evidence.parquet` + evidence di `app-export.json`)
 - [x] Expert/system evaluation. (notebook `09`: queue 25 destinasi + sensitivity disiapkan; penilaian manual pending)
+- [ ] Selesaikan penilaian ahli 25 destinasi + hitung evidence correctness / unsupported alerts / intervention relevance. (menutup "human gate" A9 — high priority)
+- [ ] Facility gap analysis dari metadata `Fasilitas` (isi komponen `facility_gap` yang saat ini `None` — rubric D5 pemanfaatan data)
+- [ ] Integrasi data transportasi (aksesibilitas/konektivitas) ke analisis geospasial. (rubric D5)
+- [ ] Evaluasi penggunaan IndoBERT polarity model (Macro F1 0.7459) menggantikan `lexical-polarity-v1` di A9. (memanfaatkan model terlatih yang belum dipakai)
 - [ ] SIPATURE source code.
 - [ ] API source/schema/docs.
 - [ ] Dockerfiles/compose/runbook.
@@ -516,6 +521,7 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [ ] Demo script dan backup recording.
 - [ ] Responsible AI document.
 - [ ] Pilot and impact plan.
+- [ ] Impact quantification: destinasi terjangkau, review diproses, estimasi eksposur wisatawan, dan time-to-verification. (KPI terukur untuk rubric D2 — 20 poin)
 - [ ] Q&A answer bank.
 
 ---

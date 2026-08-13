@@ -14,4 +14,3 @@ service-account*.json
 secrets*.json
 coverage
 npm-debug.log*
-src/data/generated

@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import OpportunityList from "@/components/OpportunityList";
-import { interventions } from "@/lib/data";
+import { getInterventions } from "@/lib/data";
 import { num } from "@/lib/format";
 export const metadata: Metadata = {
   title: "Kandidat Intervensi — SIPATURE",
   description: "Kandidat tindakan dari reported issues SIPATURE Intelligence.",
 };
-export default function CandidatePage() {
+export const dynamic = "force-dynamic";
+export default async function CandidatePage() {
+  const interventions = await getInterventions();
   const kabupatenList = Array.from(
     new Set(interventions.map((item) => item.kabupaten)),
   ).sort();

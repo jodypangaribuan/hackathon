@@ -57,6 +57,7 @@ CREATE TABLE "data_exports" (
 	"actionable_destinations" integer,
 	"actionable_issues" integer,
 	"limitations" jsonb DEFAULT '[]'::jsonb NOT NULL,
+	"corpus_json" jsonb DEFAULT '{}'::jsonb NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint

@@ -132,6 +132,7 @@ export const dataExports = pgTable(
     actionableDestinations: integer("actionable_destinations"),
     actionableIssues: integer("actionable_issues"),
     limitations: jsonb("limitations").notNull().default([]),
+    corpusJson: jsonb("corpus_json").notNull().default({}),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

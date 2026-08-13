@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ClipboardCheck, EyeOff } from "lucide-react";
-import { rankedPlaces } from "@/lib/data";
+import { getRankedPlaces } from "@/lib/data";
 import { ASPECT_LABEL, levelOfPlace, num, score } from "@/lib/format";
 import { AspectIcon } from "@/components/AppIcon";
 import { Card, LevelBadge, Note, SectionTitle } from "@/components/ui";
 export const metadata: Metadata = { title: "Antrean Intervensi — SIPATURE" };
-export default function InterventionsPage() {
+export const dynamic = "force-dynamic";
+export default async function InterventionsPage() {
+  const rankedPlaces = await getRankedPlaces();
   return (
     <div className="space-y-5">
       <section className="flex flex-wrap items-end justify-between gap-3">

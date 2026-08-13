@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
-import { corpus, interventions } from "@/lib/data";
+import { getCorpus, getInterventions } from "@/lib/data";
 export async function GET(req: Request) {
+  const [corpus, interventions] = await Promise.all([
+    getCorpus(),
+    getInterventions(),
+  ]);
   const params = new URL(req.url).searchParams;
   const category = params.get("category");
   const kabupaten = params.get("kabupaten");

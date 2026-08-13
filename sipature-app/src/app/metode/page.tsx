@@ -2,35 +2,38 @@ import type { Metadata } from "next";
 import { Check, Circle, EyeOff, TriangleAlert } from "lucide-react";
 import { AspectIcon } from "@/components/AppIcon";
 import { Card, Note, SectionTitle } from "@/components/ui";
-import { corpus } from "@/lib/data";
+import { getCorpus } from "@/lib/data";
 import { dateTime, num } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Model & Keterbatasan — SIPATURE",
   description: "Kontrak model SIPATURE Intelligence, formula prioritas, dan Responsible AI.",
 };
+export const dynamic = "force-dynamic";
 
-const pipeline = [
-  "12.234 review berteks",
-  `TF-IDF multilabel aspect (${corpus.aspectModel})`,
-  `Lexical polarity fallback (${corpus.polarityModel})`,
-  "Duplicate + freshness weights",
-  "Bayesian-smoothed complaint rate",
-  "Support / identity / evidence gate",
-  "Missing-aware priority",
-  "Human field verification",
-].join("\n→ ");
+export default async function MethodPage() {
+  const corpus = await getCorpus();
 
-const formula = [
-  "priority = 0,3333 × complaint_frequency",
-  "         + 0,2500 × model_confidence",
-  "         + 0,2500 × persistence",
-  "         + 0,1667 × visitor_exposure",
-  "",
-  "severity, facility_gap, feasibility = unavailable",
-].join("\n");
+  const pipeline = [
+    "12.234 review berteks",
+    `TF-IDF multilabel aspect (${corpus.aspectModel})`,
+    `Lexical polarity fallback (${corpus.polarityModel})`,
+    "Duplicate + freshness weights",
+    "Bayesian-smoothed complaint rate",
+    "Support / identity / evidence gate",
+    "Missing-aware priority",
+    "Human field verification",
+  ].join("\n→ ");
 
-export default function MethodPage() {
+  const formula = [
+    "priority = 0,3333 × complaint_frequency",
+    "         + 0,2500 × model_confidence",
+    "         + 0,2500 × persistence",
+    "         + 0,1667 × visitor_exposure",
+    "",
+    "severity, facility_gap, feasibility = unavailable",
+  ].join("\n");
+
   return (
     <div className="mx-auto max-w-4xl space-y-5">
       <section>

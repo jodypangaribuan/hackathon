@@ -79,6 +79,7 @@ CREATE TABLE data_exports (
     actionable_destinations   INTEGER,
     actionable_issues         INTEGER,
     limitations       JSONB NOT NULL DEFAULT '[]',
+    corpus_json       JSONB NOT NULL DEFAULT '{}',
     created_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
     UNIQUE (export_sha256)
 );

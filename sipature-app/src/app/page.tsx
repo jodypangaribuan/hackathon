@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import FrictionExplorer, { type MapPlace } from "@/components/FrictionExplorer";
 import {
-  corpus,
-  headlineStats,
-  kabupatenList,
-  mappablePlaces,
+  getCorpus,
+  getHeadlineStats,
+  getKabupatenList,
+  getMappablePlaces,
 } from "@/lib/data";
 import { dateTime, num } from "@/lib/format";
 import { StatTile } from "@/components/ui";
@@ -12,8 +12,14 @@ export const metadata: Metadata = {
   title: "Regional Overview — SIPATURE",
   description: "Sinyal prioritas SIPATURE untuk destinasi kawasan Danau Toba.",
 };
-export default function HomePage() {
-  const stats = headlineStats();
+export const dynamic = "force-dynamic";
+export default async function HomePage() {
+  const [corpus, stats, mappablePlaces, kabupatenList] = await Promise.all([
+    getCorpus(),
+    getHeadlineStats(),
+    getMappablePlaces(),
+    getKabupatenList(),
+  ]);
   const mapPlaces: MapPlace[] = mappablePlaces.map((place) => ({
     id: place.id,
     name: place.name,

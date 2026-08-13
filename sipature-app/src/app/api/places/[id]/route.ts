@@ -10,14 +10,14 @@
  * generateStaticParams dihitung per permintaan.
  */
 import { NextResponse } from "next/server";
-import { getPlace, interventionsForPlace } from "@/lib/data";
+import { getInterventionsForPlace, getPlace } from "@/lib/data";
 
 export async function GET(
   _req: Request,
   ctx: { params: Promise<{ id: string }> },
 ) {
   const { id } = await ctx.params;
-  const place = getPlace(id);
+  const place = await getPlace(id);
 
   if (!place) {
     return NextResponse.json(
@@ -29,9 +29,10 @@ export async function GET(
     );
   }
 
+  const interventions = await getInterventionsForPlace(place.id);
   return NextResponse.json({
     ...place,
     // Tautan silang ke Layar 3; kosong bila tempat ini tidak menghasilkan peluang.
-    interventionIds: interventionsForPlace(place.id).map((item) => item.id),
+    interventionIds: interventions.map((item) => item.id),
   });
 }

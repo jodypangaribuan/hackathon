@@ -14,9 +14,9 @@ import {
   SectionTitle,
 } from "@/components/ui";
 import {
-  corpus,
+  getCorpus,
+  getInterventionsForPlace,
   getPlace,
-  interventionsForPlace,
   KIND_LABEL,
 } from "@/lib/data";
 import {
@@ -32,7 +32,7 @@ interface Props {
 }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const place = getPlace(id);
+  const place = await getPlace(id);
   return {
     title: place
       ? `${place.name} — SIPATURE`
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 export default async function DestinationPage({ params }: Props) {
   const { id } = await params;
-  const place = getPlace(id);
+  const [place, corpus] = await Promise.all([getPlace(id), getCorpus()]);
   if (!place) notFound();
   const actionable = place.issues.filter(
     (issue) => issue.priority !== "Insufficient Data",
@@ -50,7 +50,7 @@ export default async function DestinationPage({ params }: Props) {
     ...actionable.map((issue) => issue.priorityScore ?? 0),
     0.01,
   );
-  const candidates = interventionsForPlace(place.id);
+  const candidates = await getInterventionsForPlace(place.id);
   return (
     <div className="space-y-5">
       <nav className="text-[12px] text-muted">

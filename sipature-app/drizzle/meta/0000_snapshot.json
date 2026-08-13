@@ -1,5 +1,5 @@
 {
-  "id": "2880d4ae-62bd-46f5-b6a9-5762ef028a29",
+  "id": "d6177dd5-1cb1-4149-a6c1-0bb23d8b3507",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -395,6 +395,13 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'[]'::jsonb"
+        },
+        "corpus_json": {
+          "name": "corpus_json",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
         },
         "created_at": {
           "name": "created_at",

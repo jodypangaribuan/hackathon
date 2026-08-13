@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
-import { corpus, places, rankedPlaces } from "@/lib/data";
+import { getCorpus, getPlaces, getRankedPlaces } from "@/lib/data";
 export async function GET() {
+  const [corpus, places, rankedPlaces] = await Promise.all([
+    getCorpus(),
+    getPlaces(),
+    getRankedPlaces(),
+  ]);
   return NextResponse.json({
     status: "ok",
-    mode: "precomputed_batch",
+    mode: "database",
     modelVersion: corpus.modelVersion,
     generatedAt: corpus.generatedAt,
     placesLoaded: places.length,

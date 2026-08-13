@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { corpus, filterPlaces, places } from "@/lib/data";
+import { filterPlaces, getCorpus, getPlaces } from "@/lib/data";
 import { SIGNAL_ASPECTS } from "@/lib/format";
 import type { AspectKey, Confidence, PlaceKind } from "@/lib/types";
 export async function GET(req: Request) {
+  const [places, corpus] = await Promise.all([getPlaces(), getCorpus()]);
   const params = new URL(req.url).searchParams;
   const aspect = params.get("aspect");
   if (aspect && !SIGNAL_ASPECTS.includes(aspect as AspectKey))

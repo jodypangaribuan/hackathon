@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import SimulatorExplorer from "@/components/SimulatorExplorer";
-import { rankedPlaces } from "@/lib/data";
+import { getRankedPlaces } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Simulator Intervensi — SIPATURE" };
+export const dynamic = "force-dynamic";
 
-export default function SimulatorPage() {
+export default async function SimulatorPage() {
+  const rankedPlaces = await getRankedPlaces();
   const candidates = rankedPlaces
     .filter((place) => place.topAspects.length > 0)
     .slice(0, 80);

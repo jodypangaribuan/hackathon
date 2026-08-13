@@ -31,7 +31,7 @@ export async function POST(req: Request) {
       { error: "Invalid placeId or fixes", code: "INVALID_REQUEST" },
       { status: 400 },
     );
-  const place = getPlace(placeId);
+  const place = await getPlace(placeId);
   if (!place)
     return NextResponse.json(
       { error: "Place not found", code: "PLACE_NOT_FOUND" },

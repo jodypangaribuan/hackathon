@@ -8,8 +8,8 @@ marked "pipeline" and have no notebook file.
 | --- | --- | --- | --- | --- |
 | `01_data_inventory_and_eda.ipynb` | CPU | Raw CSV | Inventory, EDA figures, known issues | Done (run 2026-08-13) |
 | `02_cleaning_and_entity_resolution.ipynb` | CPU | Raw CSV | Interim/processed Parquet, entity audit | Done (run 2026-08-13) |
-| `03_annotation_sampling.ipynb` | CPU | Canonical reviews | Sampling candidates | Pipeline (`sipature-ml annotation-sample`) |
-| `04_annotation_quality_and_split.ipynb` | CPU | Human labels | Gold labels, agreement, locked splits | Pipeline (`sipature-ml silver-annotate` / `split-silver`) |
+| `03_annotation_sampling_and_silver.ipynb` | CPU | Canonical reviews | Sampling candidates + AI-assisted silver labels | Created (not yet run) |
+| `04_annotation_quality_and_split.ipynb` | CPU | Silver labels | Gold labels, agreement, locked splits | Pipeline (`sipature-ml split-silver`) |
 | `05_keyword_tfidf_baselines.ipynb` | CPU | Splits | Baseline artifacts and metrics | Pipeline (`sipature-ml train-baselines`) |
 | `06_indobert_aspect_training.ipynb` | GPU | Splits | Aspect checkpoint and logs | Done (`20260801-1024_indobert-silver-v1`) |
 | `07_polarity_severity_training.ipynb` | GPU | Aspect instances | Polarity/severity checkpoints | Stub |

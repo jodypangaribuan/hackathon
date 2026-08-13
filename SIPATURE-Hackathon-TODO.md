@@ -471,9 +471,9 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 
 ## F1. Data dan EDA
 
-- [ ] Project charter.
-- [ ] Data inventory dan dictionary.
-- [ ] Known issues dan external-data register.
+- [x] Project charter. (`SIPATURE-Project-Charter.md`)
+- [x] Data inventory dan dictionary. (`docs/data-inventory.md` + `docs/data-dictionary.md`)
+- [x] Known issues dan external-data register. (`docs/known-data-issues.md`)
 - [x] EDA notebook/report dan figures. (notebook `01` + `docs/eda-report.md`, 16 figures)
 - [x] Cleaning pipeline dan funnel. (notebook `02` + `docs/cleaning-entity-resolution-report.md`, `17_cleaning_funnel.png`)
 - [x] Clean/quarantine datasets. (`data/interim/*.parquet`)
@@ -485,14 +485,15 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [x] Taxonomy dan annotation guideline. (`taxonomy.yaml` RC1 + `docs/annotation-guideline.md`)
 - [x] Sampling manifest. (notebook `03`: pilot/main audit + assignments + `annotation_sampling_summary.json`)
 - [x] Annotation JSONL. (`silver-v1.0.0.jsonl` — AI-assisted weak supervision, bukan human gold)
-- [ ] Agreement dan annotation-audit report. (gold annotation oleh 3 anggota tim sendiri: double-annotate subset, hitung Cohen's kappa + agreement, freeze gold via `annotation-agreement`/`freeze-gold`)
+- [ ] Agreement dan annotation-audit report. (gold annotation 3 anggota tim via `tools/annotator/` — tool web siap; tinggal annotate → `annotation-agreement`/`freeze-gold`)
 - [x] Split manifest dan data hashes. (notebook `04`: `split_manifest_silver_v1.json`, leakage-safe, terkunci)
 - [x] Keyword artifact/metrics. (notebook `05`: `keyword-silver-v1-test-metrics.json`)
 - [x] TF-IDF model/vectorizer/metrics. (notebook `05`: `tfidf-aspect-silver-v1/model.joblib` + metrics)
 - [x] IndoBERT model/tokenizer/config. (notebook `06`: run `20260813-1050_indobert-silver-v1`)
 - [x] Thresholds dan calibration artifacts. (notebook `07`: `20260813-1050_indobert-silver-v1_calibration-v1`)
 - [x] Locked test metrics dan diagrams. (notebook `07`: `20260813-1050_indobert-silver-v1_locked-test-v1`)
-- [ ] Error analysis dan model card.
+- [x] Model card. (`docs/model-card.md` — metrik silver terisi, human-gold pending)
+- [ ] Error analysis manual (audit FP/FN 50, kategorisasi negation/implicit/typo, reputational risk).
 
 ## F3. Intelligence Engine dan Product
 
@@ -504,10 +505,10 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [ ] Facility gap analysis dari metadata `Fasilitas` (isi komponen `facility_gap` yang saat ini `None` — rubric D5 pemanfaatan data)
 - [ ] Integrasi data transportasi (aksesibilitas/konektivitas) ke analisis geospasial. (rubric D5)
 - [ ] Evaluasi penggunaan IndoBERT polarity model (Macro F1 0.7459) menggantikan `lexical-polarity-v1` di A9. (memanfaatkan model terlatih yang belum dipakai)
-- [ ] SIPATURE source code.
-- [ ] API source/schema/docs.
-- [ ] Dockerfiles/compose/runbook.
-- [ ] Offline model/data/map fallback.
+- [x] SIPATURE source code. (`sipature-app/` + `sipature-api/` + `ml/src/sipature_ml/`)
+- [x] API source/schema/docs. (FastAPI `sipature-api` + PostgreSQL `db/schema.sql` + Drizzle ORM)
+- [x] Dockerfiles/compose/runbook. (3-service: `web` + `inference` + `db`; `docker-compose.yml`)
+- [x] Offline model/data/map fallback. (model & data dibundle di image; `scripts/refresh.sh` satu perintah)
 - [ ] Smoke/performance test results.
 
 ## F4. Submission dan Presentation
@@ -517,10 +518,10 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [ ] Product source ZIP.
 - [ ] Slide pitch/final presentation.
 - [ ] Demo script dan backup recording.
-- [ ] Responsible AI document.
+- [x] Responsible AI document. (`docs/responsible-ai.md` + section etika di `docs/model-card.md`)
 - [ ] Pilot and impact plan.
 - [ ] Impact quantification: destinasi terjangkau, review diproses, estimasi eksposur wisatawan, dan time-to-verification. (KPI terukur untuk rubric D2 — 20 poin)
-- [ ] Q&A answer bank.
+- [x] Q&A answer bank. (`docs/qa-answer-bank.md`)
 
 ---
 

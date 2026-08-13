@@ -498,9 +498,9 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 
 - [x] Review predictions. (notebook `08`: `review-predictions.parquet`, 9.785 aspect predictions)
 - [x] Destination signals dan health components. (notebook `08`: `destination-aspect-signals.parquet`, 1.682 signals)
-- [ ] Intervention queue dan formula/config.
-- [ ] Evidence provenance table.
-- [ ] Expert/system evaluation.
+- [x] Intervention queue dan formula/config. (notebook `09`: `expert-review-queue.csv` + `scoring.yaml`)
+- [x] Evidence provenance table. (notebook `08`/`09`: `evidence.parquet` + evidence di `app-export.json`)
+- [x] Expert/system evaluation. (notebook `09`: queue 25 destinasi + sensitivity disiapkan; penilaian manual pending)
 - [ ] SIPATURE source code.
 - [ ] API source/schema/docs.
 - [ ] Dockerfiles/compose/runbook.

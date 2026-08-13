@@ -14,7 +14,7 @@ marked "pipeline" and have no notebook file.
 | `06_indobert_aspect_training.ipynb` | GPU | Splits | Aspect checkpoint and logs | Done (run `20260813-1050_indobert-silver-v1`) |
 | `07_calibration_and_evaluation.ipynb` | GPU/CPU | Validation/test | Thresholds, locked metrics, figures | Done (run `20260813-1050_indobert-silver-v1_locked-test-v1`) |
 | `08_batch_inference_and_aggregation.ipynb` | CPU | All clean reviews | Predictions, destination signals | Done (run 2026-08-13) |
-| `09_prioritization_and_export.ipynb` | CPU | Signals/expert review | Priority, app export, sensitivity | Created (not yet run) |
+| `09_prioritization_and_export.ipynb` | CPU | Signals/expert review | Priority, app export, sensitivity | Done (run 2026-08-13) |
 
 ## Executed runs (notebooks 01–05)
 
@@ -69,6 +69,11 @@ pinned `requirements-colab.lock.txt`) against the raw CSVs staged in
   destination-aspect signals, 598 evidence items across 280 destinations.
   Persisted (restricted) to `SIPATURE/a9/<run>-infer/` and
   `SIPATURE/a9/<run>-aggregate/`.
+- `09`: (CPU) A9 prioritization + privacy-safe export. Produced 388 prioritized
+  destinations (175 with priority), the `app-export.json` (schema 1.0.0, 388
+  destinations), a 25-destination expert review queue, and weight-sensitivity
+  top-20 Jaccard 0.8182–1.0000. Persisted to `SIPATURE/a9/<run>-prioritize/`
+  and `SIPATURE/a9/<run>-export/`.
 
 Notebook rules:
 

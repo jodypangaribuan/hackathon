@@ -12,7 +12,7 @@ marked "pipeline" and have no notebook file.
 | `04_split.ipynb` | CPU | Silver labels + canonical reviews | Locked leakage-safe train/validation/test | Done (run 2026-08-13) |
 | `05_keyword_tfidf_baselines.ipynb` | CPU | Splits | Baseline artifacts and metrics | Done (run 2026-08-13) |
 | `06_indobert_aspect_training.ipynb` | GPU | Splits | Aspect checkpoint and logs | Done (run `20260813-1050_indobert-silver-v1`) |
-| `07_calibration_and_evaluation.ipynb` | GPU/CPU | Validation/test | Thresholds, locked metrics, figures | Done (`20260801_indobert-silver-v1_locked-test-v1`) |
+| `07_calibration_and_evaluation.ipynb` | GPU/CPU | Validation/test | Thresholds, locked metrics, figures | Cleaned for re-run (prior: `20260801_indobert-silver-v1_locked-test-v1`) |
 | `08_batch_inference_and_aggregation.ipynb` | GPU | All clean reviews | Predictions, destination signals | Pipeline (`infer-corpus` / `aggregate-destinations`) |
 | `09_system_evaluation_and_export.ipynb` | CPU | Signals/expert review | System metrics and app export | Pipeline (`export-app`) |
 

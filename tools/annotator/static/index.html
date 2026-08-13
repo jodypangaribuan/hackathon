@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SIPATURE Annotator</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel2: #273449; --hairline: #334155;
+    --text: #e2e8f0; --muted: #94a3b8; --accent: #2a78d6; --good: #16a34a;
+    --bad: #dc2626; --warn: #d97706;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, sans-serif;
+         background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; }
+  header { display: flex; align-items: center; gap: 16px; padding: 12px 16px;
+           border-bottom: 1px solid var(--hairline); background: var(--panel); flex-wrap: wrap; }
+  header h1 { font-size: 16px; margin: 0; }
+  header select, header button { padding: 6px 10px; border-radius: 6px; border: 1px solid var(--hairline);
+           background: var(--panel2); color: var(--text); font-size: 13px; cursor: pointer; }
+  .progress { font-size: 13px; color: var(--muted); }
+  .progress strong { color: var(--text); }
+  main { flex: 1; display: grid; grid-template-columns: 320px 1fr; overflow: hidden; }
+  .sidebar { border-right: 1px solid var(--hairline); overflow-y: auto; background: var(--panel); }
+  .sidebar .item { padding: 10px 14px; border-bottom: 1px solid var(--hairline); cursor: pointer; font-size: 13px; }
+  .sidebar .item:hover { background: var(--panel2); }
+  .sidebar .item.active { background: var(--panel2); border-left: 3px solid var(--accent); }
+  .sidebar .item .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; }
+  .dot.done { background: var(--good); } .dot.pending { background: var(--warn); }
+  .sidebar .item .snip { color: var(--muted); font-size: 12px; margin-top: 3px;
+           overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .detail { overflow-y: auto; padding: 20px; }
+  .review-card { background: var(--panel); border: 1px solid var(--hairline); border-radius: 10px; padding: 18px; }
+  .review-text { font-size: 15px; line-height: 1.7; white-space: pre-wrap; }
+  .review-text span.word { cursor: pointer; border-radius: 3px; }
+  .review-text span.word:hover { background: var(--accent); }
+  .review-text span.word.marked { background: rgba(42,120,214,0.35); }
+  .meta { color: var(--muted); font-size: 12px; margin-bottom: 12px; }
+  h3 { font-size: 14px; margin: 20px 0 10px; }
+  .labels { display: flex; flex-direction: column; gap: 10px; }
+  .label-row { border: 1px solid var(--hairline); border-radius: 8px; padding: 12px; background: var(--panel2); }
+  .label-row .top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .chip { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .chip.aspect { background: rgba(42,120,214,0.2); color: #93c5fd; }
+  .chip.polarity-positive { background: rgba(22,163,74,0.2); color: #86efac; }
+  .chip.polarity-negative { background: rgba(220,38,38,0.2); color: #fca5a5; }
+  .chip.polarity-neutral { background: rgba(148,163,184,0.2); color: #cbd5e1; }
+  .chip.severity { background: rgba(217,119,6,0.2); color: #fcd34d; }
+  .label-row .evid { color: var(--muted); font-size: 12px; margin-top: 8px; font-style: italic; }
+  .label-row button.del { margin-left: auto; background: transparent; border: none; color: var(--bad); cursor: pointer; font-size: 14px; }
+  .add-form { border: 1px dashed var(--hairline); border-radius: 8px; padding: 14px; margin-top: 14px; }
+  .add-form .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .add-form select, .add-form input, .add-form button { padding: 7px 10px; border-radius: 6px;
+           border: 1px solid var(--hairline); background: var(--panel2); color: var(--text); font-size: 13px; }
+  .add-form input { flex: 1; min-width: 200px; }
+  .seg { display: inline-flex; border: 1px solid var(--hairline); border-radius: 6px; overflow: hidden; }
+  .seg button { border: none; border-radius: 0; padding: 7px 12px; cursor: pointer; background: var(--panel2); color: var(--text); }
+  .seg button.on { background: var(--accent); color: white; }
+  button.primary { background: var(--accent); color: white; border: none; font-weight: 600; }
+  .empty { color: var(--muted); text-align: center; padding: 60px 20px; font-size: 14px; }
+  .hint { color: var(--muted); font-size: 11px; margin-top: 4px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>SIPATURE Annotator</h1>
+  <label>Annotator:
+    <select id="annotator"></select>
+  </label>
+  <span class="progress" id="progress">–</span>
+  <button id="export" style="margin-left:auto" disabled>Export JSONL</button>
+</header>
+<main>
+  <div class="sidebar" id="sidebar"><div class="empty">Pilih annotator untuk mulai.</div></div>
+  <div class="detail" id="detail"><div class="empty">Pilih review di daftar.</div></div>
+</main>
+
+<script>
+const state = {
+  annotators: [], aspects: [], polarities: [], severities: [],
+  annotator: null, reviews: [], current: null, currentLabels: [], editingEvidence: null,
+};
+
+async function api(path, opts) {
+  const res = await fetch(path, opts);
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+async function init() {
+  const meta = await api("/api/annotators");
+  state.annotators = meta.annotators;
+  state.aspects = meta.aspects;
+  state.polarities = meta.polarities;
+  state.severities = meta.severities;
+  const sel = document.getElementById("annotator");
+  sel.innerHTML = '<option value="">— pilih —</option>' +
+    state.annotators.map(a => `<option>${a}</option>`).join("");
+  sel.onchange = () => selectAnnotator(sel.value);
+}
+
+async function selectAnnotator(id) {
+  if (!id) return;
+  state.annotator = id;
+  const data = await api(`/api/annotator/${id}/reviews`);
+  state.reviews = data.reviews;
+  renderSidebar();
+  document.getElementById("export").disabled = false;
+}
+
+function renderSidebar() {
+  const sb = document.getElementById("sidebar");
+  const done = state.reviews.filter(r => r.status === "completed").length;
+  document.getElementById("progress").innerHTML =
+    `Progress: <strong>${done}</strong> / ${state.reviews.length}`;
+  sb.innerHTML = state.reviews.map((r, i) => `
+    <div class="item ${state.current === i ? 'active' : ''}" onclick="openReview(${i})">
+      <span class="dot ${r.status === 'completed' ? 'done' : 'pending'}"></span>
+      ${r.status === 'completed' ? '✓' : '•'} ${r.review_id.slice(-8)}
+      <div class="snip">${esc(r.text.slice(0, 70))}</div>
+    </div>`).join("");
+}
+
+function openReview(index) {
+  state.current = index;
+  const r = state.reviews[index];
+  state.currentLabels = JSON.parse(JSON.stringify(r.labels || []));
+  renderDetail(r);
+  renderSidebar();
+}
+
+function renderDetail(r) {
+  const el = document.getElementById("detail");
+  el.innerHTML = `
+    <div class="review-card">
+      <div class="meta">
+        Review <code>${esc(r.review_id)}</code> ·
+        destination <code>${esc(r.destination_id || "-")}</code> ·
+        rating ${r.rating_context ?? "-"}
+      </div>
+      <div class="review-text" id="text">${renderText(r.text)}</div>
+      <h3>Labels</h3>
+      <div class="labels" id="labels"></div>
+      <div class="add-form" id="addform"></div>
+    </div>`;
+  renderLabels();
+  renderAddForm();
+  bindTextClicks();
+}
+
+function renderText(text) {
+  return text.split(/\s+/).filter(Boolean).map(w =>
+    `<span class="word" data-w="${esc(w)}">${esc(w)}</span>`).join(" ");
+}
+
+function bindTextClicks() {
+  document.querySelectorAll(".review-text .word").forEach(span => {
+    span.onclick = () => {
+      const w = span.getAttribute("data-w");
+      const input = document.getElementById("evidence");
+      if (input) {
+        input.value = (input.value ? input.value + " " : "") + w;
+        input.focus();
+      }
+    };
+  });
+}
+
+function renderLabels() {
+  const el = document.getElementById("labels");
+  el.innerHTML = state.currentLabels.map((l, i) => `
+    <div class="label-row">
+      <div class="top">
+        <span class="chip aspect">${esc(l.aspect)}</span>
+        <span class="chip polarity-${esc(l.polarity)}">${esc(l.polarity)}</span>
+        ${l.severity ? `<span class="chip severity">${esc(l.severity)}</span>` : ""}
+        <button class="del" onclick="removeLabel(${i})">✕</button>
+      </div>
+      ${l.evidence_text ? `<div class="evid">“${esc(l.evidence_text)}”</div>` : ""}
+    </div>`).join("") ||
+    '<div class="empty">Belum ada label. Tambahkan di bawah.</div>';
+}
+
+function renderAddForm() {
+  const el = document.getElementById("addform");
+  el.innerHTML = `
+    <div class="row">
+      <select id="aspect">${state.aspects.map(a => `<option>${a}</option>`).join("")}</select>
+      <span class="seg" id="polarity">
+        ${state.polarities.map(p => `<button type="button" data-v="${p}" class="${p==='negative'?'on':''}">${p}</button>`).join("")}
+      </span>
+      <span class="seg" id="severity" ${showSeverity() ? "" : "style='display:none'"}>
+        ${state.severities.map(s => `<button type="button" data-v="${s}" class="${s==='medium'?'on':''}">${s}</button>`).join("")}
+      </span>
+    </div>
+    <div class="row">
+      <input id="evidence" placeholder="Evidence (klik kata di teks review untuk kutip verbatim)" />
+      <button class="primary" onclick="addLabel()">Tambah label</button>
+    </div>
+    <div class="hint">Evidence harus kutipan verbatim dari teks review. Klik kata di teks untuk mengisinya otomatis.</div>`;
+  let pol = "negative";
+  document.querySelectorAll("#polarity button").forEach(b => b.onclick = () => {
+    document.querySelectorAll("#polarity button").forEach(x => x.classList.remove("on"));
+    b.classList.add("on"); pol = b.getAttribute("data-v");
+    document.getElementById("severity").style.display = showSeverity(pol) ? "" : "none";
+  });
+  let sev = "medium";
+  document.querySelectorAll("#severity button").forEach(b => b.onclick = () => {
+    document.querySelectorAll("#severity button").forEach(x => x.classList.remove("on"));
+    b.classList.add("on"); sev = b.getAttribute("data-v");
+  });
+  window.__getPol = () => pol; window.__getSev = () => sev;
+}
+
+function showSeverity(pol) {
+  pol = pol || "negative";
+  return pol === "negative";
+}
+
+function addLabel() {
+  const aspect = document.getElementById("aspect").value;
+  const polarity = window.__getPol();
+  const severity = polarity === "negative" ? window.__getSev() : null;
+  const evidence = document.getElementById("evidence").value.trim();
+  state.currentLabels.push({ aspect, polarity, severity, evidence_text: evidence });
+  saveCurrent();
+  renderLabels();
+  renderAddForm();
+}
+
+function removeLabel(i) {
+  state.currentLabels.splice(i, 1);
+  saveCurrent();
+  renderLabels();
+}
+
+function saveCurrent() {
+  const r = state.reviews[state.current];
+  r.labels = state.currentLabels;
+  r.status = state.currentLabels.length ? "completed" : "pending";
+  api(`/api/annotator/${state.annotator}/reviews/${r.review_id}`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ labels: state.currentLabels, status: r.status }),
+  }).catch(err => console.error(err));
+  renderSidebar();
+}
+
+document.getElementById("export").onclick = () => {
+  window.location.href = `/api/annotator/${state.annotator}/export`;
+};
+
+function esc(s) {
+  return (s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+}
+
+init();
+</script>
+</body>
+</html>

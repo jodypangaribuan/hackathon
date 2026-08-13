@@ -96,6 +96,9 @@ ml/artifacts/a9/*
 Datasets/
 Datasets.zip
 
+# Annotator progress + completed gold JSONL (mengandung teks review, restricted)
+tools/annotator/data/
+
 # Next.js generated files
 sipature-app/.next/
 sipature-app/node_modules/

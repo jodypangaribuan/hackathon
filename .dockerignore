@@ -1,0 +1,28 @@
+# Build context untuk service `inference` (sipature-api/Dockerfile).
+# Kecualikan artefak besar yang tidak diperlukan saat build image inference.
+# Catatan: `ml/README.md` harus tetap ada (dibaca pyproject.toml saat editable install).
+.git
+.gitignore
+.DS_Store
+Datasets
+Datasets.zip
+*.pdf
+Del-AI-Hackathon-2026.md
+Del-AI-TechnicalMeeting.md
+SIPATURE-Hackathon-TODO.md
+SIPATURE-Implementation-Plan.md
+SIPATURE-Laporan-Analisis-Draft.md
+SIPATURE-Laporan-Analisis-Template.md
+SIPATURE-Project-Charter.md
+TobaPulse-Idea.md
+docs
+ml/.venv
+ml/.pytest_cache
+ml/.ruff_cache
+ml/data
+ml/artifacts/a9
+ml/artifacts/figures
+ml/artifacts/metrics
+ml/artifacts/reports
+sipature-app/node_modules
+sipature-app/.next

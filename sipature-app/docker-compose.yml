@@ -1,10 +1,12 @@
 # Deployment satu perintah untuk DGX B200:
 #   docker compose up -d --build
 #   curl http://<dgx-host>:3000/api/health
+#   curl http://<dgx-host>:8000/health
 #
-# Catatan: aplikasi ini murni membaca data precomputed, jadi tidak butuh GPU.
-# Bila lapisan IndoBERT sudah masuk, tambahkan service kedua "inference"
-# dengan `deploy.resources.reservations.devices` untuk GPU.
+# Catatan: aplikasi `web` murni membaca data precomputed, jadi tidak butuh GPU.
+# Service `inference` (FastAPI) melayani prediksi live memakai model TF-IDF
+# (CPU-only). Sebelum build, salin model TF-IDF terbaru dari Drive ke
+# `ml/artifacts/models/tfidf-aspect-silver-v1/`.
 
 services:
   web:
@@ -15,10 +17,33 @@ services:
       - "3000:3000"
     environment:
       NODE_ENV: production
+      # Dipakai route /api/analyze untuk memanggil service inference (opsional).
+      INFERENCE_URL: http://inference:8000
     restart: unless-stopped
+    depends_on:
+      inference:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]
       interval: 30s
       timeout: 3s
       retries: 3
       start_period: 10s
+
+  inference:
+    build:
+      context: ..
+      dockerfile: sipature-api/Dockerfile
+    image: sipature-inference:demo
+    container_name: sipature-inference
+    ports:
+      - "8000:8000"
+    environment:
+      MODEL_DIR: /app/model
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s

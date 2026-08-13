@@ -496,8 +496,8 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 
 ## F3. Intelligence Engine dan Product
 
-- [ ] Review predictions.
-- [ ] Destination signals dan health components.
+- [x] Review predictions. (notebook `08`: `review-predictions.parquet`, 9.785 aspect predictions)
+- [x] Destination signals dan health components. (notebook `08`: `destination-aspect-signals.parquet`, 1.682 signals)
 - [ ] Intervention queue dan formula/config.
 - [ ] Evidence provenance table.
 - [ ] Expert/system evaluation.

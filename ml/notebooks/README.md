@@ -13,7 +13,7 @@ marked "pipeline" and have no notebook file.
 | `05_keyword_tfidf_baselines.ipynb` | CPU | Splits | Baseline artifacts and metrics | Done (run 2026-08-13) |
 | `06_indobert_aspect_training.ipynb` | GPU | Splits | Aspect checkpoint and logs | Done (run `20260813-1050_indobert-silver-v1`) |
 | `07_calibration_and_evaluation.ipynb` | GPU/CPU | Validation/test | Thresholds, locked metrics, figures | Done (run `20260813-1050_indobert-silver-v1_locked-test-v1`) |
-| `08_batch_inference_and_aggregation.ipynb` | CPU | All clean reviews | Predictions, destination signals | Created (not yet run) |
+| `08_batch_inference_and_aggregation.ipynb` | CPU | All clean reviews | Predictions, destination signals | Done (run 2026-08-13) |
 | `09_system_evaluation_and_export.ipynb` | CPU | Signals/expert review | System metrics and app export | Pipeline (`export-app`) |
 
 ## Executed runs (notebooks 01–05)
@@ -63,6 +63,12 @@ pinned `requirements-colab.lock.txt`) against the raw CSVs staged in
   Brier 0.1258; severity `unavailable_no_model`. Persisted to
   `SIPATURE/calibration/`, `SIPATURE/evaluation/`, and `SIPATURE/evidence/`;
   results match the prior A8 run `20260801_indobert-silver-v1_locked-test-v1`.
+- `08`: (CPU) A9 full-corpus inference + aggregation using the notebook `05`
+  TF-IDF model (`a9-tfidf-lexical-v1.0.4`). Inference produced 9,785 aspect
+  predictions over 5,942 of 12,234 textual reviews; aggregation produced 1,682
+  destination-aspect signals, 598 evidence items across 280 destinations.
+  Persisted (restricted) to `SIPATURE/a9/<run>-infer/` and
+  `SIPATURE/a9/<run>-aggregate/`.
 
 Notebook rules:
 

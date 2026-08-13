@@ -7,9 +7,9 @@ const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const workspace = resolve(appRoot, "..");
 const sourcePath = resolve(
   process.argv[2] ??
-    join(workspace, "ml/artifacts/a9/20260801-a9-tfidf-lexical-v1-r5/export/app-export.json"),
+    join(workspace, "ml/artifacts/a9/20260813-1713_a9-tfidf-lexical-v1-export/app-export.json"),
 );
-const expectedHash = "f349a499afe04cdb9fafde8101e136470a41ca53815bd0c829dd62f07ca812b0";
+const expectedHash = "8037d072adcd124d7aa74bd38af8a27623b255894675d0fe653f7ca6b758359f";
 const outputDir = join(appRoot, "src/data/generated");
 const publicModelVersion = "SIPATURE Intelligence v1.0.4";
 

@@ -55,6 +55,17 @@ A: (1) Oversampling berbobot saat sampling anotasi (rare aspect ×3, complaint �
 negatives/positives. Rare aspect tetap dilaporkan jujur (mis. `opening_hours`
 support 2 di test — F1 tidak stabil, kami tidak klaim).
 
+### Q: Kenapa cuma 1.320 review yang di-anotasi, bukan semua 12.234?
+A: Karena anotasi dan inferensi adalah dua proses berbeda. Anotasi (1.320 review
+= 120 pilot triple-annotated + 1.200 main) dipakai untuk **melatih** dan
+**mengukur** model — bukan untuk memberi label ke seluruh data. Sisanya
+(~11.000 review) tetap diproses lewat **inferensi model** (12.234 textual →
+9.785 prediksi aspek), jadi dashboard tetap mencakup seluruh review. Sample 1.320
+sudah representatif karena stratified (destination, rating, panjang, bahasa,
+recency) + oversampling rare-aspect; dan anotasi penuh 12.234 × 14 aspek tidak
+feasible untuk 3 orang. Prinsipnya: label manusia cukup untuk benchmark, model
+yang menggeneralisasi ke seluruh korpus.
+
 ---
 
 ## 3. Model & Evaluasi

@@ -12,7 +12,7 @@ marked "pipeline" and have no notebook file.
 | `04_split.ipynb` | CPU | Silver labels + canonical reviews | Locked leakage-safe train/validation/test | Done (run 2026-08-13) |
 | `05_keyword_tfidf_baselines.ipynb` | CPU | Splits | Baseline artifacts and metrics | Done (run 2026-08-13) |
 | `06_indobert_aspect_training.ipynb` | GPU | Splits | Aspect checkpoint and logs | Done (run `20260813-1050_indobert-silver-v1`) |
-| `07_calibration_and_evaluation.ipynb` | GPU/CPU | Validation/test | Thresholds, locked metrics, figures | Cleaned for re-run (prior: `20260801_indobert-silver-v1_locked-test-v1`) |
+| `07_calibration_and_evaluation.ipynb` | GPU/CPU | Validation/test | Thresholds, locked metrics, figures | Done (run `20260813-1050_indobert-silver-v1_locked-test-v1`) |
 | `08_batch_inference_and_aggregation.ipynb` | GPU | All clean reviews | Predictions, destination signals | Pipeline (`infer-corpus` / `aggregate-destinations`) |
 | `09_system_evaluation_and_export.ipynb` | CPU | Signals/expert review | System metrics and app export | Pipeline (`export-app`) |
 
@@ -56,6 +56,13 @@ pinned `requirements-colab.lock.txt`) against the raw CSVs staged in
   passed. Run `20260813-1050_indobert-silver-v1` persisted to
   `SIPATURE/runs/` plus an evidence bundle; results match the prior A7 run
   `20260801-1024_indobert-silver-v1`.
+- `07`: (GPU, Tesla T4) A8 calibration + one-shot locked evaluation on run
+  `20260813-1050_indobert-silver-v1`. Calibration froze temperature 0.6 on
+  validation only (test not read). Locked test evaluated exactly once: aspect
+  Macro F1 0.5247 / Micro 0.5241, polarity Macro F1 0.7459 (248), ECE 0.2021,
+  Brier 0.1258; severity `unavailable_no_model`. Persisted to
+  `SIPATURE/calibration/`, `SIPATURE/evaluation/`, and `SIPATURE/evidence/`;
+  results match the prior A8 run `20260801_indobert-silver-v1_locked-test-v1`.
 
 Notebook rules:
 

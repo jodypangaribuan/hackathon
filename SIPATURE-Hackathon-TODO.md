@@ -490,8 +490,8 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [x] Keyword artifact/metrics. (notebook `05`: `keyword-silver-v1-test-metrics.json`)
 - [x] TF-IDF model/vectorizer/metrics. (notebook `05`: `tfidf-aspect-silver-v1/model.joblib` + metrics)
 - [x] IndoBERT model/tokenizer/config. (notebook `06`: run `20260813-1050_indobert-silver-v1`)
-- [ ] Thresholds dan calibration artifacts.
-- [ ] Locked test metrics dan diagrams.
+- [x] Thresholds dan calibration artifacts. (notebook `07`: `20260813-1050_indobert-silver-v1_calibration-v1`)
+- [x] Locked test metrics dan diagrams. (notebook `07`: `20260813-1050_indobert-silver-v1_locked-test-v1`)
 - [ ] Error analysis dan model card.
 
 ## F3. Intelligence Engine dan Product

@@ -224,5 +224,5 @@ bukan model utama. Kami ungkap semua ini di `/metode` dan model card.
 | IndoBERT aspect (locked test) | Macro F1 0,5247 |
 | IndoBERT polarity | Macro F1 0,7459 |
 | Keyword (circular) | Macro F1 0,9768 |
-| A9 inference | 9.785 prediksi · 1.682 sinyal · 103 actionable · 210 isu |
+| Inferensi full-corpus | 9.785 prediksi · 1.682 sinyal · 103 actionable · 210 isu |
 | Sensitivity | top-20 Jaccard 0,8182–1,0000 |

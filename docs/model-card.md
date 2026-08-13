@@ -63,7 +63,7 @@ Semua metrik = **agreement terhadap silver reference**, bukan human-gold
 | IndoBERT polarity (kandidat) | Macro F1 0,7459 (support 248) |
 | Kalibrasi (IndoBERT) | temperature 0,6 · ECE 0,2021 · Brier 0,1258 |
 | Entity resolution | reviewed-pair precision 0,9714 · recall 0,4304 · false-merge 0,0286 |
-| A9 inferensi | 9.785 prediksi · 1.682 sinyal · 103 destinasi actionable · 210 isu |
+| Inferensi full-corpus (produksi) | 9.785 prediksi · 1.682 sinyal · 103 destinasi actionable · 210 isu |
 | Sensitivity bobot | top-20 Jaccard 0,8182–1,0000 |
 
 Artifact metrik: `ml/artifacts/metrics/{keyword,tfidf}-silver-v1-test-metrics.json`,

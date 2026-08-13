@@ -10,7 +10,7 @@ marked "pipeline" and have no notebook file.
 | `02_cleaning_and_entity_resolution.ipynb` | CPU | Raw CSV | Interim/processed Parquet, entity audit | Done (run 2026-08-13) |
 | `03_annotation_sampling_and_silver.ipynb` | CPU | Canonical reviews | Sampling candidates + AI-assisted silver labels | Done (run 2026-08-13) |
 | `04_split.ipynb` | CPU | Silver labels + canonical reviews | Locked leakage-safe train/validation/test | Done (run 2026-08-13) |
-| `05_keyword_tfidf_baselines.ipynb` | CPU | Splits | Baseline artifacts and metrics | Pipeline (`sipature-ml train-baselines`) |
+| `05_keyword_tfidf_baselines.ipynb` | CPU | Splits | Baseline artifacts and metrics | Created (not yet run) |
 | `06_indobert_aspect_training.ipynb` | GPU | Splits | Aspect checkpoint and logs | Done (`20260801-1024_indobert-silver-v1`) |
 | `07_polarity_severity_training.ipynb` | GPU | Aspect instances | Polarity/severity checkpoints | Stub |
 | `08_calibration_and_evaluation.ipynb` | GPU/CPU | Validation/test | Thresholds, locked metrics, figures | Done (`20260801_indobert-silver-v1_locked-test-v1`) |

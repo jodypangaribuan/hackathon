@@ -11,7 +11,7 @@ marked "pipeline" and have no notebook file.
 | `03_annotation_sampling_and_silver.ipynb` | CPU | Canonical reviews | Sampling candidates + AI-assisted silver labels | Done (run 2026-08-13) |
 | `04_split.ipynb` | CPU | Silver labels + canonical reviews | Locked leakage-safe train/validation/test | Done (run 2026-08-13) |
 | `05_keyword_tfidf_baselines.ipynb` | CPU | Splits | Baseline artifacts and metrics | Done (run 2026-08-13) |
-| `06_indobert_aspect_training.ipynb` | GPU | Splits | Aspect checkpoint and logs | Cleaned for re-run (prior: `20260801-1024_indobert-silver-v1`) |
+| `06_indobert_aspect_training.ipynb` | GPU | Splits | Aspect checkpoint and logs | Done (run `20260813-1050_indobert-silver-v1`) |
 | `07_polarity_severity_training.ipynb` | GPU | Aspect instances | Polarity/severity checkpoints | Stub |
 | `08_calibration_and_evaluation.ipynb` | GPU/CPU | Validation/test | Thresholds, locked metrics, figures | Done (`20260801_indobert-silver-v1_locked-test-v1`) |
 | `09_batch_inference_and_aggregation.ipynb` | GPU | All clean reviews | Predictions, destination signals | Pipeline (`infer-corpus` / `aggregate-destinations`) |
@@ -51,6 +51,12 @@ pinned `requirements-colab.lock.txt`) against the raw CSVs staged in
   0.8040. Persisted metrics, `tfidf-aspect-silver-v1/model.joblib`, and 3
   figures to `SIPATURE/metrics/`, `SIPATURE/models/`, `SIPATURE/reports/`,
   and `SIPATURE/figures/baselines/`.
+- `06`: (GPU, Tesla T4) trained IndoBERT on train/validation only (test not
+  read) — aspect validation Macro F1 0.4012, polarity validation Macro F1
+  0.7044, severity skipped by support gate (high 19 < 20), offline reload
+  passed. Run `20260813-1050_indobert-silver-v1` persisted to
+  `SIPATURE/runs/` plus an evidence bundle; results match the prior A7 run
+  `20260801-1024_indobert-silver-v1`.
 
 Notebook rules:
 

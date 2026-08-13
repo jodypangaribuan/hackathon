@@ -489,7 +489,7 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [x] Split manifest dan data hashes. (notebook `04`: `split_manifest_silver_v1.json`, leakage-safe, terkunci)
 - [x] Keyword artifact/metrics. (notebook `05`: `keyword-silver-v1-test-metrics.json`)
 - [x] TF-IDF model/vectorizer/metrics. (notebook `05`: `tfidf-aspect-silver-v1/model.joblib` + metrics)
-- [ ] IndoBERT model/tokenizer/config.
+- [x] IndoBERT model/tokenizer/config. (notebook `06`: run `20260813-1050_indobert-silver-v1`)
 - [ ] Thresholds dan calibration artifacts.
 - [ ] Locked test metrics dan diagrams.
 - [ ] Error analysis dan model card.

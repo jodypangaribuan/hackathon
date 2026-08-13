@@ -11,8 +11,7 @@
 #
 #   # Bila remote menunjuk ke folder SIPATURE langsung, set:
 #   export RCLONE_REMOTE="gdrive:SIPATURE"
-#   # Bila remote menunjuk ke My Drive root:
-#   export RCLONE_REMOTE="gdrive:/My Drive/SIPATURE"
+#   # (default script ini sudah "gdrive:SIPATURE")
 #
 # Penggunaan:
 #   scripts/sync-drive.sh pull   # Drive -> lokal (ambil data terbaru)
@@ -20,7 +19,7 @@
 # ============================================================================
 set -euo pipefail
 
-RCLONE_REMOTE="${RCLONE_REMOTE:-gdrive:/My Drive/SIPATURE}"
+RCLONE_REMOTE="${RCLONE_REMOTE:-gdrive:SIPATURE}"
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 # Mapping "<drive-subdir>|<local-subdir>" (relatif terhadap REPO_ROOT).
@@ -52,6 +51,11 @@ case "$mode" in
     for pair in "${MAPPINGS[@]}"; do
       drive_rel="${pair%%|*}"; local_rel="${pair##*|}"
       local_dir="$REPO_ROOT/$local_rel"
+      # Lewati folder yang belum ada di Drive (mis. `predictions` belum dipakai).
+      if ! rclone lsf "$RCLONE_REMOTE/$drive_rel" --max-depth 1 >/dev/null 2>&1; then
+        echo "· $drive_rel  ⇒  (skip, tidak ada di Drive)"
+        continue
+      fi
       mkdir -p "$local_dir"
       echo "▼ $drive_rel  ⇒  $local_rel"
       rclone sync "$RCLONE_REMOTE/$drive_rel" "$local_dir" "${EXCLUDES[@]}"

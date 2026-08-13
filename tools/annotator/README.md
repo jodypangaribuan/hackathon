@@ -7,10 +7,11 @@ Web tool anotasi gold untuk 3 anggota tim (A1, A2, A3).
 ```bash
 cd tools/annotator
 pip install -r requirements.txt
-uvicorn app:app --host 0.0.0.0 --port 8001
+python3 -m uvicorn app:app --host 0.0.0.0 --port 8001
 ```
 
-Buka `http://localhost:8001`.
+Buka `http://localhost:8001` (atau `http://<ip-host>:8001` untuk anggota lain).
+Lihat `tools/README.md` untuk panduan lengkap.
 
 ## Alur
 

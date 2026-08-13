@@ -486,7 +486,7 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [x] Sampling manifest. (notebook `03`: pilot/main audit + assignments + `annotation_sampling_summary.json`)
 - [x] Annotation JSONL. (`silver-v1.0.0.jsonl` — AI-assisted weak supervision, bukan human gold)
 - [ ] Agreement dan annotation-audit report. (opsional; workflow saat ini memakai silver, bukan human gold)
-- [ ] Split manifest dan data hashes.
+- [x] Split manifest dan data hashes. (notebook `04`: `split_manifest_silver_v1.json`, leakage-safe, terkunci)
 - [ ] Keyword artifact/metrics.
 - [ ] TF-IDF model/vectorizer/metrics.
 - [ ] IndoBERT model/tokenizer/config.

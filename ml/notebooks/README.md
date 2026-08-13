@@ -9,7 +9,7 @@ marked "pipeline" and have no notebook file.
 | `01_data_inventory_and_eda.ipynb` | CPU | Raw CSV | Inventory, EDA figures, known issues | Done (run 2026-08-13) |
 | `02_cleaning_and_entity_resolution.ipynb` | CPU | Raw CSV | Interim/processed Parquet, entity audit | Done (run 2026-08-13) |
 | `03_annotation_sampling_and_silver.ipynb` | CPU | Canonical reviews | Sampling candidates + AI-assisted silver labels | Done (run 2026-08-13) |
-| `04_split.ipynb` | CPU | Silver labels + canonical reviews | Locked leakage-safe train/validation/test | Created (not yet run) |
+| `04_split.ipynb` | CPU | Silver labels + canonical reviews | Locked leakage-safe train/validation/test | Done (run 2026-08-13) |
 | `05_keyword_tfidf_baselines.ipynb` | CPU | Splits | Baseline artifacts and metrics | Pipeline (`sipature-ml train-baselines`) |
 | `06_indobert_aspect_training.ipynb` | GPU | Splits | Aspect checkpoint and logs | Done (`20260801-1024_indobert-silver-v1`) |
 | `07_polarity_severity_training.ipynb` | GPU | Aspect instances | Polarity/severity checkpoints | Stub |
@@ -17,13 +17,14 @@ marked "pipeline" and have no notebook file.
 | `09_batch_inference_and_aggregation.ipynb` | GPU | All clean reviews | Predictions, destination signals | Pipeline (`infer-corpus` / `aggregate-destinations`) |
 | `10_system_evaluation_and_export.ipynb` | CPU | Signals/expert review | System metrics and app export | Pipeline (`export-app`) |
 
-## Executed runs (notebooks 01–03)
+## Executed runs (notebooks 01–04)
 
-Notebooks `01`–`03` were executed on Google Colab CPU (Python 3.12.13,
+Notebooks `01`–`04` were executed on Google Colab CPU (Python 3.12.13,
 pinned `requirements-colab.lock.txt`) against the raw CSVs staged in
 `SIPATURE/data/raw` on Drive. Results match the existing reports
-`docs/eda-report.md`, `docs/cleaning-entity-resolution-report.md`, and
-`docs/taxonomy-annotation-report.md`.
+`docs/eda-report.md`, `docs/cleaning-entity-resolution-report.md`,
+`docs/taxonomy-annotation-report.md`, and
+`docs/leakage-safe-split-baseline-report.md`.
 
 - `01`: 14 CSVs inventoried; 16 EDA figures generated; persisted to
   `SIPATURE/reports/` and `SIPATURE/figures/eda/`.
@@ -39,6 +40,11 @@ pinned `requirements-colab.lock.txt`) against the raw CSVs staged in
   consensus / 497 no-supported-aspect / 334 review-recommended, mean pass
   agreement 0.8827) plus 11 figures. Persisted to `SIPATURE/data/annotations/`,
   `SIPATURE/reports/`, and `SIPATURE/figures/annotation/`.
+- `04`: created and locked the leakage-safe split `silver-split-1.0.0`
+  (922 train / 196 validation / 202 test; 187/40/40 destinations; all
+  leakage checks 0; 219 components, 10 multi-destination, 23 cross-destination
+  repeated-text groups). Persisted to `SIPATURE/data/splits/` and
+  `SIPATURE/reports/`; the test split remains locked until A8.
 
 Notebook rules:
 

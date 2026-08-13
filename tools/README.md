@@ -28,6 +28,28 @@ cd tools/annotator
 python3 -m uvicorn app:app --host 0.0.0.0 --port 8001
 ```
 
+Dengan auto-restart (rekomendasi, server bangkit sendiri bila crash):
+
+```bash
+bash tools/annotator/run.sh
+```
+
+### 2b. Backup progress
+
+```bash
+bash tools/annotator/backup.sh   # salin data/*.json ke backups/<timestamp>/
+```
+
+### Ketahanan data (kenapa progress aman)
+
+- Progress tersimpan **server-side** ke `tools/annotator/data/<id>.json` setiap
+  kali ada perubahan (auto-save). Bukan di browser.
+- Penulisan file bersifat **atomic** (temp + rename) — aman dari korupsi bila
+  server mati di tengah tulis.
+- Bila tunnel (ngrok) putus: data aman; teman tinggal buka ulang URL setelah
+  tunnel up lagi, progress otomatis ter-load.
+- `run.sh` menjalankan server dalam loop restart (crash → bangkit lagi).
+
 ### 3. Buka di browser
 
 ```bash

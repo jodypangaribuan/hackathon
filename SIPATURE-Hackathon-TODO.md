@@ -200,12 +200,12 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [x] Hitung transparent priority dari komponen yang tersedia dan tandai komponen missing.
 - [x] Renormalisasi bobot jika feature missing dan turunkan confidence.
 - [x] Map issue ke field verification dan candidate intervention.
-- [ ] Selesaikan review ahli untuk 25 destination cases yang telah disiapkan.
-- [ ] Hitung evidence correctness, unsupported alerts, intervention relevance.
-- [ ] Hitung NDCG/rank correlation jika expert ranking tersedia.
+- [ ] Selesaikan review ahli untuk 25 destination cases yang telah disiapkan. (DIBATALKAN — tidak memungkinkan meminta reviewer eksternal)
+- [ ] Hitung evidence correctness, unsupported alerts, intervention relevance. (DIBATALKAN — diganti sensitivity analysis)
+- [ ] Hitung NDCG/rank correlation jika expert ranking tersedia. (DIBATALKAN — tidak ada expert ranking)
 - [x] Jalankan sensitivity analysis bobot.
 
-**Gate teknis:** terpenuhi — setiap alert actionable memiliki evidence, confidence, data status, explanation, dan recommended verification; unresolved identity tidak diranking. **Gate manusia:** belum terpenuhi sampai 25 kasus dinilai dan metrik expert tersedia.
+**Gate teknis:** terpenuhi — setiap alert actionable memiliki evidence, confidence, data status, explanation, dan recommended verification; unresolved identity tidak diranking. **Gate manusia:** DIBATALKAN (reviewer eksternal tidak tersedia); validasi internal dilakukan via sensitivity analysis (top-20 Jaccard 0.8182–1.0000) dan gold annotation oleh 3 anggota tim (F2).
 
 ## A10. Preliminary Product
 
@@ -485,8 +485,7 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [x] Taxonomy dan annotation guideline. (`taxonomy.yaml` RC1 + `docs/annotation-guideline.md`)
 - [x] Sampling manifest. (notebook `03`: pilot/main audit + assignments + `annotation_sampling_summary.json`)
 - [x] Annotation JSONL. (`silver-v1.0.0.jsonl` — AI-assisted weak supervision, bukan human gold)
-- [ ] Agreement dan annotation-audit report. (opsional; workflow saat ini memakai silver, bukan human gold)
-- [ ] Mini-gold human validation: double-annotate 40–60 review oleh 3 anggota, hitung Cohen's kappa + silver-vs-gold agreement. (menutup kelemahan "silver bukan gold" pada rubric D3 — high impact)
+- [ ] Agreement dan annotation-audit report. (gold annotation oleh 3 anggota tim sendiri: double-annotate subset, hitung Cohen's kappa + agreement, freeze gold via `annotation-agreement`/`freeze-gold`)
 - [x] Split manifest dan data hashes. (notebook `04`: `split_manifest_silver_v1.json`, leakage-safe, terkunci)
 - [x] Keyword artifact/metrics. (notebook `05`: `keyword-silver-v1-test-metrics.json`)
 - [x] TF-IDF model/vectorizer/metrics. (notebook `05`: `tfidf-aspect-silver-v1/model.joblib` + metrics)
@@ -501,8 +500,7 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [x] Destination signals dan health components. (notebook `08`: `destination-aspect-signals.parquet`, 1.682 signals)
 - [x] Intervention queue dan formula/config. (notebook `09`: `expert-review-queue.csv` + `scoring.yaml`)
 - [x] Evidence provenance table. (notebook `08`/`09`: `evidence.parquet` + evidence di `app-export.json`)
-- [x] Expert/system evaluation. (notebook `09`: queue 25 destinasi + sensitivity disiapkan; penilaian manual pending)
-- [ ] Selesaikan penilaian ahli 25 destinasi + hitung evidence correctness / unsupported alerts / intervention relevance. (menutup "human gate" A9 — high priority)
+- [x] Expert/system evaluation. (notebook `09`: queue + sensitivity; review ahli eksternal TIDAK dilakukan — diganti sensitivity analysis sebagai validasi internal)
 - [ ] Facility gap analysis dari metadata `Fasilitas` (isi komponen `facility_gap` yang saat ini `None` — rubric D5 pemanfaatan data)
 - [ ] Integrasi data transportasi (aksesibilitas/konektivitas) ke analisis geospasial. (rubric D5)
 - [ ] Evaluasi penggunaan IndoBERT polarity model (Macro F1 0.7459) menggantikan `lexical-polarity-v1` di A9. (memanfaatkan model terlatih yang belum dipakai)

@@ -482,10 +482,10 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 
 ## F2. Annotation dan Model
 
-- [ ] Taxonomy dan annotation guideline.
-- [ ] Sampling manifest.
-- [ ] Gold annotation JSONL.
-- [ ] Agreement dan annotation-audit report.
+- [x] Taxonomy dan annotation guideline. (`taxonomy.yaml` RC1 + `docs/annotation-guideline.md`)
+- [x] Sampling manifest. (notebook `03`: pilot/main audit + assignments + `annotation_sampling_summary.json`)
+- [x] Annotation JSONL. (`silver-v1.0.0.jsonl` — AI-assisted weak supervision, bukan human gold)
+- [ ] Agreement dan annotation-audit report. (opsional; workflow saat ini memakai silver, bukan human gold)
 - [ ] Split manifest dan data hashes.
 - [ ] Keyword artifact/metrics.
 - [ ] TF-IDF model/vectorizer/metrics.

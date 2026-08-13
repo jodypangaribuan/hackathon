@@ -98,6 +98,7 @@ Datasets.zip
 
 # Annotator progress + completed gold JSONL (mengandung teks review, restricted)
 tools/annotator/data/
+tools/annotator/backups/
 
 # Next.js generated files
 sipature-app/.next/

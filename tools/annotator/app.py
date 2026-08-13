@@ -92,9 +92,12 @@ def load_state(annotator_id: str) -> Dict[str, dict]:
 
 
 def save_state(annotator_id: str, state: Dict[str, dict]) -> None:
-    (STATE_DIR / f"{annotator_id}.json").write_text(
+    path = STATE_DIR / f"{annotator_id}.json"
+    tmp = path.with_suffix(".tmp")
+    tmp.write_text(
         json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
     )
+    os.replace(tmp, path)  # atomic: mencegah korupsi bila crash di tengah tulis
 
 
 class LabelIn(BaseModel):

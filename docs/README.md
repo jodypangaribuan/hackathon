@@ -12,6 +12,7 @@ Authoritative documentation index for the data, model, product, evaluation, and 
 | `responsible-ai.md` | Privacy, bias, human oversight, misuse safeguards | Research | Draft |
 | `app-integration-contract.md` | ML-to-Next.js export and versioning contract | ML + Engineering | Draft |
 | `deployment-runbook.md` | Offline Docker/DGX deployment and rollback | Engineering | Draft |
+| `dgx-deployment-runbook.md` | Step-by-step DGX B200 deploy (diisi saat staging rehearsal) | Engineering | Draft |
 | `experiment-log.md` | Append-only experiment and decision history | Data/ML | Active |
 | `status-and-decisions.md` | Session handoff log: decisions, current status, remaining work, north star | Data/ML | Active |
 | `qa-answer-bank.md` | Final-round Q&A answers (juri), grounded in actual metrics | Data/ML | Active |

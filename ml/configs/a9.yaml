@@ -6,8 +6,8 @@ models:
   aspect:
     version: "tfidf-aspect-silver-v1"
     required_sklearn_version: "1.7.2"
-    model_sha256: "9132efbf60f24c234571902026d9d0e1d88a0a4911098efb955d50e2c5a07606"
-    manifest_sha256: "61df6aa0b0064b163d86b88f197731ff179c7217e8d1d8d428dc95fe3c8097ce"
+    model_sha256: "a10bddb1432d93e9b041c6821e669001c5db8b8fd372b519f6f31b0111aac7ce"
+    manifest_sha256: "072b4346d0d1efb0b32573ca3cfb926cd2cf40d3b8168e4acae9dabdacb9a976"
   polarity:
     version: "lexical-polarity-v1"
     method: "aspect_conditioned_context_cues"

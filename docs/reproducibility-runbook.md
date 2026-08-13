@@ -106,6 +106,34 @@ Mapping direktori:
 `runs/` (model IndoBERT, ~GB) sengaja tidak disinkronkan. Folder yang belum
 ada di Drive (mis. `predictions`) otomatis di-skip.
 
+## Full Refresh (satu perintah, untuk final/lockdown)
+
+Setelah experiment ML baru (data/export/model berubah), jalankan satu perintah
+untuk memperbarui seluruh stack:
+
+```bash
+scripts/refresh.sh            # sync Drive → regenerate → seed → rebuild
+scripts/refresh.sh --no-sync  # lewati sinkronisasi Drive
+```
+
+Siklus yang dilakukan:
+
+1. Sinkronisasi artifact dari Google Drive (`rclone`, opsional).
+2. Regenerate bundle aplikasi (`npm run data:generate`).
+3. Pastikan PostgreSQL hidup + seed ulang (atomic, satu transaksi).
+4. Rebuild & restart service `web` + `inference`.
+
+Catatan ketahanan (scalability untuk iterasi cepat):
+
+- Seed dibungkus **satu transaksi** (`db.transaction`) sehingga app tidak pernah
+  membaca tabel setengah-isi saat seed berlangsung.
+- Data dashboard dibaca **live** dari PostgreSQL (Drizzle), jadi re-seed cukup
+  untuk memperbarui tampilan tanpa rebuild image `web`.
+- Model TF-IDF di-bake ke image `inference`; bila model di-train ulang (hash
+  berubah), update `ml/configs/a9.yaml` lalu `scripts/refresh.sh` untuk rebuild.
+- Ganti batch/experiment cukup jalankan ulang `scripts/refresh.sh`; tabel
+  `data_exports` + `model_versions` menyimpan provenance tiap batch.
+
 ## Notebook Setup Contract
 
 Every notebook starts with:

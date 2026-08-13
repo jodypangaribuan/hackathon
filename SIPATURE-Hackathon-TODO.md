@@ -474,11 +474,11 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [ ] Project charter.
 - [ ] Data inventory dan dictionary.
 - [ ] Known issues dan external-data register.
-- [ ] EDA notebook/report dan figures.
-- [ ] Cleaning pipeline dan funnel.
-- [ ] Clean/quarantine datasets.
-- [ ] Canonical destinations dan entity links.
-- [ ] Entity-resolution metrics.
+- [x] EDA notebook/report dan figures. (notebook `01` + `docs/eda-report.md`, 16 figures)
+- [x] Cleaning pipeline dan funnel. (notebook `02` + `docs/cleaning-entity-resolution-report.md`, `17_cleaning_funnel.png`)
+- [x] Clean/quarantine datasets. (`data/interim/*.parquet`)
+- [x] Canonical destinations dan entity links. (`data/processed/canonical_destinations.parquet`, `entity_links.parquet`)
+- [x] Entity-resolution metrics. (`entity_resolution_metrics.json`)
 
 ## F2. Annotation dan Model
 

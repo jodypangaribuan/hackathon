@@ -13,6 +13,7 @@ Authoritative documentation index for the data, model, product, evaluation, and 
 | `app-integration-contract.md` | ML-to-Next.js export and versioning contract | ML + Engineering | Draft |
 | `deployment-runbook.md` | Offline Docker/DGX deployment and rollback | Engineering | Draft |
 | `experiment-log.md` | Append-only experiment and decision history | Data/ML | Active |
+| `status-and-decisions.md` | Session handoff log: decisions, current status, remaining work, north star | Data/ML | Active |
 | `restricted-data-policy.md` | Git, secret, dataset, and artifact handling policy | Engineering + Data | Active |
 | `reproducibility-runbook.md` | Environment, Drive, commands, checkpoints, and locked-test runbook | Data/ML | Active |
 | `eda-report.md` | Current EDA findings with report-ready figures and source-data references | Data/ML | Complete v0.1 |

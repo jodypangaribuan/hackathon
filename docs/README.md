@@ -8,7 +8,7 @@ Authoritative documentation index for the data, model, product, evaluation, and 
 | `data-inventory.md` | Source files, semantic row/schema notes, mappings, and restricted fields | Data/ML | Complete v0.1 |
 | `known-data-issues.md` | Known defects, impact, handling, residual risk | Data/ML | Draft |
 | `annotation-guideline.md` | Taxonomy boundaries used by silver labeling; also supports optional human review | Data/ML + Research | RC1 |
-| `model-card.md` | Intended use, metrics, limitations, license, risks | Data/ML | Draft |
+| `model-card.md` | Intended use, metrics, limitations, license, risks | Data/ML | Complete v1 (silver; gold pending) |
 | `responsible-ai.md` | Privacy, bias, human oversight, misuse safeguards | Research | Draft |
 | `app-integration-contract.md` | ML-to-Next.js export and versioning contract | ML + Engineering | Draft |
 | `deployment-runbook.md` | Offline Docker/DGX deployment and rollback | Engineering | Draft |

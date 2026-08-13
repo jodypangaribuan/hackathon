@@ -2,7 +2,7 @@
 
 ## Scope
 
-The active A5 workflow produces **AI-assisted weak-supervision silver labels**. It does not produce human annotations, inter-annotator agreement, adjudicated labels, or a gold dataset. The human commands remain available only as a future quality upgrade.
+The active A5 workflow produces **AI-assisted weak-supervision silver labels**. It does not, on its own, produce human annotations, inter-annotator agreement, adjudicated labels, or a gold dataset. A small human-gold validation (double-annotation by the three team members via the built-in `annotation-agreement` / `freeze-gold` commands) is planned to produce a real inter-annotator agreement metric and a separate gold reference. External expert review is out of scope.
 
 ## Inputs
 
@@ -62,6 +62,6 @@ sipature-ml silver-figures --figure-dir ../docs/figures/eda
 
 Figures are aggregate only and must not expose review text or reviewer identity.
 
-## Optional Human Upgrade
+## Human Gold Upgrade (team internal)
 
-Human pilot, agreement, adjudication, and gold-freeze commands remain implemented but are not part of the active run. If used later, three annotators must work independently, agreement gates must pass, all disagreements must be adjudicated, and the resulting artifact must be versioned separately. AI pass agreement must never be reported as human agreement.
+Human pilot, agreement, adjudication, and gold-freeze commands remain implemented and are the intended path for a small gold reference. The three team members act as the three independent annotators: they must work independently, agreement gates must pass, all disagreements must be adjudicated, and the resulting artifact must be versioned separately from the silver artifact. AI pass agreement must never be reported as human agreement.

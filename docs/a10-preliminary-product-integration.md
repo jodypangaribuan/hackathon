@@ -90,9 +90,9 @@ Semantic smoke assertions verified:
 
 ## Remaining Human Gates
 
-- Complete expert review of 25 prepared cases.
-- Calculate evidence correctness, unsupported alert rate, and intervention
-  relevance.
+- External expert review of 25 prepared cases is out of scope; internal validation relies on sensitivity analysis and a team gold-annotation reference.
+- Evidence correctness, unsupported alert rate, and intervention relevance remain
+  unavailable against external expert judgment (see `docs/a9-inference-priority-report.md`).
 - Complete evidence privacy review before enabling verbatim snippets.
 - Perform manual visual QA on target phones/tablets in addition to responsive
   code and route checks.

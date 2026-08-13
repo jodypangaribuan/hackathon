@@ -36,7 +36,7 @@ These are triage signals against weak-supervision-trained components, not proof 
 
 A one-at-a-time +20% perturbation was run for all seven configured priority weights. Top-20 Jaccard overlap ranged from 0.8182 to 1.0000. This is an initial mechanical stability check, not stakeholder validation.
 
-A deterministic restricted queue of 25 destinations was prepared for expert review. All judgment fields remain empty. Evidence correctness, unsupported-alert rate, intervention relevance, NDCG, and rank correlation are therefore unavailable and must not be claimed.
+A deterministic restricted queue of 25 destinations was prepared for expert review. All judgment fields remain empty. External expert review is not possible for this team, so evidence correctness, unsupported-alert rate, intervention relevance, NDCG, and rank correlation remain unavailable and must not be claimed. Internal validation is limited to the mechanical sensitivity check above plus a small team gold-annotation reference (see `docs/annotation-runbook.md`).
 
 ## Privacy and Integration Status
 

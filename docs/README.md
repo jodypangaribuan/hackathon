@@ -18,7 +18,7 @@ Authoritative documentation index for the data, model, product, evaluation, and 
 | `eda-report.md` | Current EDA findings with report-ready figures and source-data references | Data/ML | Complete v0.1 |
 | `cleaning-entity-resolution-report.md` | Cleaning funnel, canonical linkage, reviewed metrics, and report figures | Data/ML | Complete v0.1 |
 | `taxonomy-annotation-report.md` | Taxonomy RC1, sampling, AI-assisted silver labels, consistency, audit, and limitations | Data/ML | Complete silver v1.0.0 |
-| `annotation-runbook.md` | Active silver generation/validation plus optional future human workflow | Data/ML | Active |
+| `annotation-runbook.md` | Active silver generation/validation plus team gold-annotation upgrade (3-member double-annotation) | Data/ML | Active |
 | `leakage-safe-split-baseline-report.md` | Destination/repeated-text-safe split, keyword/TF-IDF silver benchmark, metrics, and risks | Data/ML | Complete A6 |
 
 Related planning documents at workspace root:

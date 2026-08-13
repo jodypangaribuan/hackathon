@@ -223,7 +223,7 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 
 **Output:** `sipature-app/src/data/generated/a9-*`, `sipature-app/scripts/generate-a9-data.mjs`, aplikasi A9-native, dan `docs/a10-preliminary-product-integration.md`.
 
-**Gate:** terpenuhi untuk integrasi teknis — data generation, typecheck, production build, route/API smoke tests, semantic assertions, dan static privacy scan lulus. Evidence text tetap restricted sampai privacy review dan expert gate A9 selesai.
+**Gate:** terpenuhi untuk integrasi teknis — data generation, typecheck, production build, route/API smoke tests, semantic assertions, dan static privacy scan lulus. Evidence text tetap restricted sampai privacy review selesai (review ahli eksternal di luar cakupan).
 
 ## A11. Laporan, Visual, dan Video
 

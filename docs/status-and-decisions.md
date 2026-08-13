@@ -102,8 +102,8 @@ cd sipature-app && docker compose up -d --build
 # db         : postgres:16-alpine :5432 (schema auto-init)
 ```
 - Analyzer: live model (TF-IDF, `mode: "production"`).
-- Dashboard/map: data A9 baru (`generatedAt: 2026-08-13`).
-- DB: schema + Drizzle ORM siap; **app belum query ke DB** (masih precomputed JSON).
+- Dashboard/map: **live query** dari PostgreSQL via Drizzle (`src/lib/data.ts` async).
+- DB: schema + Drizzle ORM aktif; seed via `npm run db:seed`.
 
 ### Prasyarat build ulang (jangan lupa)
 1. Model TF-IDF baru (`a10bddb1…`) harus ada di `ml/artifacts/models/tfidf-aspect-silver-v1/` (atau `scripts/sync-drive.sh pull`).

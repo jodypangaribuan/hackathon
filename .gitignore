@@ -88,6 +88,9 @@ ml/artifacts/a9/*
 *.sqlite3
 *.db
 
+# Codebase memory MCP index (regenerate locally via index_repository)
+.codebase-memory/
+
 # Organizer/restricted source datasets stay local. These patterns do not
 # untrack files that were already committed; see docs/restricted-data-policy.md.
 Datasets/

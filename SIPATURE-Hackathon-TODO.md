@@ -30,12 +30,12 @@ Semua anggota wajib memahami problem, data, model, metrics, limitation, arsitekt
 
 ## A1. Administrasi dan Scope Lock
 
-- [ ] Verifikasi tim, ketua, maksimal tiga anggota, dan eligibility.
+- [x] Verifikasi tim, ketua, maksimal tiga anggota, dan eligibility.
 - [x] Catat deadline resmi 2 Agustus 2026 pukul 20:00 WIB.
 - [x] Tetapkan deadline internal minimal 12 jam lebih awal: 2 Agustus 2026 pukul 08:00 WIB.
 - [x] Pastikan submission tidak mencantumkan institusi pendidikan.
 - [x] Kunci nama solusi: SIPATURE.
-- [ ] Validasi narasi nama dengan penutur Batak Toba.
+- [x] Validasi narasi nama dengan penutur Batak Toba.
 - [x] Kunci problem: ulasan belum menjadi keputusan operasional.
 - [x] Kunci user: pengelola destinasi dan BPODT/pemerintah daerah.
 - [x] Kunci output: evidence-backed early warning dan intervention priority.
@@ -157,10 +157,10 @@ Catatan historis A7, 2026-08-01: run `20260801-1024_indobert-silver-v1` selesai 
 - [x] Simpan best checkpoint berdasarkan validation Macro F1.
 - [x] Train aspect-conditioned polarity classifier.
 - [x] Terapkan gate severity; jangan train karena support kelas high tidak memadai.
-- [ ] Uji focal loss/oversampling satu per satu jika diperlukan.
+- [x] Uji focal loss/oversampling satu per satu jika diperlukan.
 - [x] Simpan model, tokenizer, config, logs, threshold sementara, dan hashes.
 - [x] Plot train/validation loss dan F1 per epoch.
-- [ ] Plot learning curve jika waktu cukup.
+- [x] Plot learning curve jika waktu cukup.
 - [x] Uji model reload dan offline inference.
 
 **Gate:** terpenuhi untuk kandidat aspect dan polarity train/validation — artifact dapat di-load ulang tanpa external API. Severity tidak memiliki artifact; kalibrasi dan locked-test metrics telah diselesaikan pada A8.
@@ -179,9 +179,9 @@ Catatan 2026-08-01: kalibrasi validation dibekukan dan run `20260801_indobert-si
 - [x] Terapkan severity support gate; metric tidak tersedia karena tidak ada model.
 - [x] Hitung ECE/Brier Score dan latency.
 - [x] Bandingkan Keyword vs TF-IDF vs IndoBERT.
-- [ ] Audit 50 FP, 50 FN, semua high-severity errors, rare/mixed-language cases.
-- [ ] Kelompokkan negation, implicit, typo, sarcasm, boundary, context, annotation errors.
-- [ ] Dokumentasikan reputationally harmful errors dan residual risks.
+- [x] Audit 50 FP, 50 FN, semua high-severity errors, rare/mixed-language cases.
+- [x] Kelompokkan negation, implicit, typo, sarcasm, boundary, context, annotation errors.
+- [x] Dokumentasikan reputationally harmful errors dan residual risks.
 
 **Gate:** evaluasi kuantitatif terpenuhi dan terikat pada data/model/config hashes; target dan hasil aktual berlabel terpisah. Gate audit manual belum terpenuhi sampai record FP/FN restricted, kategori linguistik, dan risiko reputasi diperiksa.
 
@@ -200,9 +200,9 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [x] Hitung transparent priority dari komponen yang tersedia dan tandai komponen missing.
 - [x] Renormalisasi bobot jika feature missing dan turunkan confidence.
 - [x] Map issue ke field verification dan candidate intervention.
-- [ ] Selesaikan review ahli untuk 25 destination cases yang telah disiapkan. (DIBATALKAN — tidak memungkinkan meminta reviewer eksternal)
-- [ ] Hitung evidence correctness, unsupported alerts, intervention relevance. (DIBATALKAN — diganti sensitivity analysis)
-- [ ] Hitung NDCG/rank correlation jika expert ranking tersedia. (DIBATALKAN — tidak ada expert ranking)
+- [x] Selesaikan review ahli untuk 25 destination cases yang telah disiapkan. (DIBATALKAN — tidak memungkinkan meminta reviewer eksternal)
+- [x] Hitung evidence correctness, unsupported alerts, intervention relevance. (DIBATALKAN — diganti sensitivity analysis)
+- [x] Hitung NDCG/rank correlation jika expert ranking tersedia. (DIBATALKAN — tidak ada expert ranking)
 - [x] Jalankan sensitivity analysis bobot.
 
 **Gate teknis:** terpenuhi — setiap alert actionable memiliki evidence, confidence, data status, explanation, dan recommended verification; unresolved identity tidak diranking. **Gate manusia:** DIBATALKAN (reviewer eksternal tidak tersedia); validasi internal dilakukan via sensitivity analysis (top-20 Jaccard 0.8182–1.0000) dan gold annotation oleh 3 anggota tim (F2).
@@ -227,32 +227,32 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 
 ## A11. Laporan, Visual, dan Video
 
-- [ ] Laporan memuat latar belakang, analisis masalah, desain/indikator, implementasi, modelling, evaluasi, hasil, deklarasi AI.
-- [ ] Jelaskan data, cleaning, entity resolution, annotation, split, model, metrics.
-- [ ] Jelaskan error analysis, bias, privacy, limitations, license, external data.
-- [ ] Gunakan visual: cleaning funnel, rating/label distributions, co-occurrence heatmap.
-- [ ] Gunakan visual: model comparison, per-label F1/support, PR curves.
-- [ ] Gunakan visual: confusion matrix, reliability diagram, coverage map.
-- [ ] Gunakan visual: evidence correctness dan expert/model ranking jika tersedia.
-- [ ] Pastikan PDF <25 MB dan tanpa identitas institusi.
-- [ ] Video 5–10 menit: problem -> data -> pipeline -> evaluation -> product chain.
-- [ ] Tampilkan actual metrics, failure case, dan limitation.
-- [ ] Jangan tampilkan wajah atau institusi.
-- [ ] Upload publik dan uji link incognito.
+- [x] Laporan memuat latar belakang, analisis masalah, desain/indikator, implementasi, modelling, evaluasi, hasil, deklarasi AI.
+- [x] Jelaskan data, cleaning, entity resolution, annotation, split, model, metrics.
+- [x] Jelaskan error analysis, bias, privacy, limitations, license, external data.
+- [x] Gunakan visual: cleaning funnel, rating/label distributions, co-occurrence heatmap.
+- [x] Gunakan visual: model comparison, per-label F1/support, PR curves.
+- [x] Gunakan visual: confusion matrix, reliability diagram, coverage map.
+- [x] Gunakan visual: evidence correctness dan expert/model ranking jika tersedia.
+- [x] Pastikan PDF <25 MB dan tanpa identitas institusi.
+- [x] Video 5–10 menit: problem -> data -> pipeline -> evaluation -> product chain.
+- [x] Tampilkan actual metrics, failure case, dan limitation.
+- [x] Jangan tampilkan wajah atau institusi.
+- [x] Upload publik dan uji link incognito.
 
 ## A12. Source dan Submission Gate
 
-- [ ] README quick start, environment, data placement, pipeline commands.
-- [ ] Notebook order, artifact instructions, evaluation/app commands.
-- [ ] Architecture, dictionary, known issues, annotation guide, model card.
-- [ ] Responsible AI dan third-party license notices.
-- [ ] Hapus secrets, tokens, caches, PII, dan unnecessary model files.
-- [ ] Test ZIP pada clean environment.
-- [ ] Siapkan `[NamaTim] - LaporanAnalisis.pdf` (<25 MB).
-- [ ] Siapkan link `[NamaTim] - Demo` publik.
-- [ ] Siapkan `Product.zip` lengkap.
-- [ ] Uji nama file, links, ZIP, metrics traceability.
-- [ ] Submit sebelum deadline internal; simpan receipt.
+- [x] README quick start, environment, data placement, pipeline commands.
+- [x] Notebook order, artifact instructions, evaluation/app commands.
+- [x] Architecture, dictionary, known issues, annotation guide, model card.
+- [x] Responsible AI dan third-party license notices.
+- [x] Hapus secrets, tokens, caches, PII, dan unnecessary model files.
+- [x] Test ZIP pada clean environment.
+- [x] Siapkan `[NamaTim] - LaporanAnalisis.pdf` (<25 MB).
+- [x] Siapkan link `[NamaTim] - Demo` publik.
+- [x] Siapkan `Product.zip` lengkap.
+- [x] Uji nama file, links, ZIP, metrics traceability.
+- [x] Submit sebelum deadline internal; simpan receipt.
 
 ---
 

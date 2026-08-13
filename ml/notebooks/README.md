@@ -10,16 +10,16 @@ marked "pipeline" and have no notebook file.
 | `02_cleaning_and_entity_resolution.ipynb` | CPU | Raw CSV | Interim/processed Parquet, entity audit | Done (run 2026-08-13) |
 | `03_annotation_sampling_and_silver.ipynb` | CPU | Canonical reviews | Sampling candidates + AI-assisted silver labels | Done (run 2026-08-13) |
 | `04_split.ipynb` | CPU | Silver labels + canonical reviews | Locked leakage-safe train/validation/test | Done (run 2026-08-13) |
-| `05_keyword_tfidf_baselines.ipynb` | CPU | Splits | Baseline artifacts and metrics | Created (not yet run) |
+| `05_keyword_tfidf_baselines.ipynb` | CPU | Splits | Baseline artifacts and metrics | Done (run 2026-08-13) |
 | `06_indobert_aspect_training.ipynb` | GPU | Splits | Aspect checkpoint and logs | Done (`20260801-1024_indobert-silver-v1`) |
 | `07_polarity_severity_training.ipynb` | GPU | Aspect instances | Polarity/severity checkpoints | Stub |
 | `08_calibration_and_evaluation.ipynb` | GPU/CPU | Validation/test | Thresholds, locked metrics, figures | Done (`20260801_indobert-silver-v1_locked-test-v1`) |
 | `09_batch_inference_and_aggregation.ipynb` | GPU | All clean reviews | Predictions, destination signals | Pipeline (`infer-corpus` / `aggregate-destinations`) |
 | `10_system_evaluation_and_export.ipynb` | CPU | Signals/expert review | System metrics and app export | Pipeline (`export-app`) |
 
-## Executed runs (notebooks 01–04)
+## Executed runs (notebooks 01–05)
 
-Notebooks `01`–`04` were executed on Google Colab CPU (Python 3.12.13,
+Notebooks `01`–`05` were executed on Google Colab CPU (Python 3.12.13,
 pinned `requirements-colab.lock.txt`) against the raw CSVs staged in
 `SIPATURE/data/raw` on Drive. Results match the existing reports
 `docs/eda-report.md`, `docs/cleaning-entity-resolution-report.md`,
@@ -45,6 +45,12 @@ pinned `requirements-colab.lock.txt`) against the raw CSVs staged in
   leakage checks 0; 219 components, 10 multi-destination, 23 cross-destination
   repeated-text groups). Persisted to `SIPATURE/data/splits/` and
   `SIPATURE/reports/`; the test split remains locked until A8.
+- `05`: trained keyword + TF-IDF baselines on train, selected `word_char`
+  representation on validation, and evaluated the locked silver test once —
+  Keyword Macro F1 0.9768 / Micro 0.9783; TF-IDF Macro F1 0.7201 / Micro
+  0.8040. Persisted metrics, `tfidf-aspect-silver-v1/model.joblib`, and 3
+  figures to `SIPATURE/metrics/`, `SIPATURE/models/`, `SIPATURE/reports/`,
+  and `SIPATURE/figures/baselines/`.
 
 Notebook rules:
 

@@ -269,6 +269,27 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 - [ ] Konfirmasi penggunaan preliminary artifacts selama lockdown.
 - [ ] Dokumentasikan jawaban resmi panitia.
 
+## B2. Staging Rehearsal (1:1 production, sebelum B200)
+
+Latihan deployment produksi penuh di environment yang menyerupai DGX B200
+(Linux + Docker), dilakukan SETELAH gold annotation selesai. Tujuannya: saat
+final di B200 tinggal salin langkah yang sudah teruji. Catatan: aplikasi
+CPU-only (TF-IDF), jadi GPU T4/B200 tidak terpakai — yang diuji adalah alur
+Linux + Docker + offline, bukan GPU.
+
+- [ ] Siapkan environment staging (Linux + Docker; kalau pakai T4/Colab, gunakan VM/box Linux dengan Docker, bukan notebook).
+- [ ] Build ketiga image: `web`, `inference`, `db` (`docker compose build`).
+- [ ] `docker compose up -d` → ketiga service healthy (`docker compose ps`).
+- [ ] Seed DB + verifikasi data (388 destinasi, 103 actionable, 14 aspek).
+- [ ] Smoke test endpoint: `/api/health`, `/api/places`, `/api/analyze` (live inference TF-IDF).
+- [ ] Uji fallback: matikan `inference` → analyzer tetap jalan via sandbox leksikal.
+- [ ] Uji offline: putus internet → app tetap jalan (model + data sudah dibundle).
+- [ ] Uji cold start + restart: `docker compose down && up` → data persist (volume).
+- [ ] Uji refresh data: jalankan `scripts/refresh.sh` → data/DB ter-update tanpa error.
+- [ ] Uji regenerasi setelah gold: `data:generate` + `db:seed` dengan export terbaru.
+- [ ] Catat HASIL & langkah persis (build, up, seed, cek) → `docs/dgx-deployment-runbook.md` (salin-tempel untuk B200).
+- [ ] Konfirmasi versi/hash model & data yang ter-bundle (audit sebelum freeze).
+
 ---
 
 # C. Final Round

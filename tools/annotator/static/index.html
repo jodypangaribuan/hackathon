@@ -40,6 +40,7 @@
   .aspect-list { display: flex; flex-direction: column; gap: 8px; }
   .aspect-card { border: 1px solid var(--hairline); border-radius: 8px; background: var(--panel2); overflow: hidden; }
   .aspect-card.on { border-color: var(--accent); }
+  .aspect-card.focus { box-shadow: 0 0 0 2px var(--good); border-color: var(--good); }
   .aspect-head { display: flex; align-items: flex-start; gap: 10px; padding: 11px 12px; cursor: pointer; }
   .aspect-head:hover { background: rgba(42,120,214,0.08); }
   .aspect-head input[type=checkbox] { width: 16px; height: 16px; margin-top: 2px; accent-color: var(--accent); cursor: pointer; }
@@ -217,7 +218,7 @@ function renderAspects() {
     const evidence = lab?.evidence_text || "";
     const sevVisible = polarity === "negative";
     return `
-      <div class="aspect-card ${on ? 'on' : ''}" data-k="${a.key}" onmouseenter="highlightSeeds('${a.key}', true)" onmouseleave="highlightSeeds('${a.key}', false)">
+      <div class="aspect-card ${on ? 'on' : ''} ${state.evidenceFocus === a.key ? 'focus' : ''}" data-k="${a.key}" onmouseenter="highlightSeeds('${a.key}', true)" onmouseleave="highlightSeeds('${a.key}', false)">
         <div class="aspect-head" onclick="toggleAspect('${a.key}')">
           <input type="checkbox" ${on ? 'checked' : ''} onclick="event.stopPropagation(); toggleAspect('${a.key}')" />
           <div>
@@ -251,8 +252,12 @@ function renderAspects() {
 
 function toggleAspect(key) {
   const idx = state.currentLabels.findIndex(l => l.aspect === key);
-  if (idx >= 0) state.currentLabels.splice(idx, 1);
-  else state.currentLabels.push({ aspect: key, polarity: "negative", severity: "medium", evidence_text: "" });
+  if (idx >= 0) {
+    state.currentLabels.splice(idx, 1);
+  } else {
+    state.currentLabels.push({ aspect: key, polarity: "negative", severity: "medium", evidence_text: "" });
+    state.evidenceFocus = key; // klik kata di teks langsung isi evidence aspek ini
+  }
   saveCurrent();
   renderAspects();
 }

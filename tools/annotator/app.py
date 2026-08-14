@@ -84,6 +84,15 @@ def load_template(annotator_id: str) -> List[dict]:
     return records
 
 
+_TEMPLATE_CACHE: Dict[str, List[dict]] = {}
+
+
+def get_template(annotator_id: str) -> List[dict]:
+    if annotator_id not in _TEMPLATE_CACHE:
+        _TEMPLATE_CACHE[annotator_id] = load_template(annotator_id)
+    return _TEMPLATE_CACHE[annotator_id]
+
+
 def load_state(annotator_id: str) -> Dict[str, dict]:
     path = STATE_DIR / f"{annotator_id}.json"
     if path.is_file():
@@ -161,6 +170,19 @@ def reviews(annotator_id: str) -> Dict[str, Any]:
         "done": done,
         "reviews": items,
     }
+
+
+@app.get("/api/progress")
+def progress() -> Dict[str, Any]:
+    result = {}
+    for aid in ANNOTATORS:
+        records = get_template(aid)
+        state = load_state(aid)
+        done = sum(
+            1 for r in records if state.get(r["review_id"], {}).get("status") == "completed"
+        )
+        result[aid] = {"done": done, "total": len(records)}
+    return result
 
 
 @app.post("/api/annotator/{annotator_id}/reviews/{review_id}")

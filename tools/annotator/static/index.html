@@ -20,6 +20,10 @@
            background: var(--panel2); color: var(--text); font-size: 13px; cursor: pointer; }
   .progress { font-size: 13px; color: var(--muted); }
   .progress strong { color: var(--text); }
+  .progress.team { display: flex; gap: 10px; flex-wrap: wrap; }
+  .progress.team .p { padding: 3px 9px; border-radius: 999px; background: var(--panel2);
+    border: 1px solid var(--hairline); font-size: 12px; }
+  .progress.team .p.me { border-color: var(--accent); color: #93c5fd; }
   main { flex: 1; display: grid; grid-template-columns: 320px 1fr; overflow: hidden; }
   .sidebar { border-right: 1px solid var(--hairline); overflow-y: auto; background: var(--panel); }
   .sidebar .item { padding: 10px 14px; border-bottom: 1px solid var(--hairline); cursor: pointer; font-size: 13px; }
@@ -79,6 +83,7 @@
     <select id="annotator"></select>
   </label>
   <span class="progress" id="progress">–</span>
+  <span class="progress team" id="team-progress"></span>
   <button id="guide" onclick="toggleGuide()">Panduan</button>
   <button id="export" style="margin-left:auto" disabled>Export JSONL</button>
 </header>
@@ -109,6 +114,33 @@ async function init() {
   sel.innerHTML = '<option value="">— pilih —</option>' +
     state.annotators.map(a => `<option>${a}</option>`).join("");
   sel.onchange = () => selectAnnotator(sel.value);
+
+  startProgressPolling();
+
+  // Restore state per browser (persist antar refresh).
+  const saved = localStorage.getItem("annotator");
+  if (saved && state.annotators.includes(saved)) {
+    sel.value = saved;
+    await selectAnnotator(saved, false);
+    const savedIdx = parseInt(localStorage.getItem("currentReview") || "0", 10);
+    if (state.reviews[savedIdx]) openReview(savedIdx);
+  }
+}
+
+function startProgressPolling() {
+  const tick = async () => {
+    try { renderTeamProgress(await api("/api/progress")); } catch (e) {}
+  };
+  tick();
+  setInterval(tick, 3000);
+}
+
+function renderTeamProgress(p) {
+  const el = document.getElementById("team-progress");
+  if (!p || !el) return;
+  el.innerHTML = state.annotators.map(a =>
+    `<span class="p ${a === state.annotator ? 'me' : ''}">${a} ${p[a]?.done ?? 0}/${p[a]?.total ?? 0}</span>`
+  ).join("");
 }
 
 function aspectMeta(key) { return state.aspects.find(a => a.key === key); }
@@ -148,14 +180,15 @@ function toggleGuide() {
     </details>`);
 }
 
-async function selectAnnotator(id) {
+async function selectAnnotator(id, autoOpen = true) {
   if (!id) return;
   state.annotator = id;
+  localStorage.setItem("annotator", id);
   const data = await api(`/api/annotator/${id}/reviews`);
   state.reviews = data.reviews;
   renderSidebar();
   document.getElementById("export").disabled = false;
-  openReview(0);
+  if (autoOpen && state.reviews.length) openReview(0);
 }
 
 function renderSidebar() {
@@ -173,6 +206,7 @@ function renderSidebar() {
 
 function openReview(index) {
   state.current = index;
+  localStorage.setItem("currentReview", String(index));
   const r = state.reviews[index];
   state.currentLabels = JSON.parse(JSON.stringify(r.labels || []));
   renderDetail(r);

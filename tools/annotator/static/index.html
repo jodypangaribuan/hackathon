@@ -243,7 +243,7 @@ function renderAspects() {
           </div>` : ''}
           <div class="row">
             <span class="lbl">Evidence</span>
-            <input value="${esc(evidence)}" placeholder="klik kata di teks di atas" onfocus="state.evidenceFocus='${a.key}'" oninput="setEvidence('${a.key}', this.value)" />
+            <input class="evidence-input" value="${esc(evidence)}" placeholder="klik kata di teks di atas" onfocus="state.evidenceFocus='${a.key}'" oninput="setEvidence('${a.key}', this.value)" />
           </div>
         </div>
       </div>`;
@@ -292,7 +292,7 @@ function bindTextClicks() {
       if (!lab) return;
       lab.evidence_text = (lab.evidence_text ? lab.evidence_text + " " : "") + w;
       // Update nilai input langsung, tanpa re-render & tanpa focus (agar tidak auto-scroll).
-      const input = document.querySelector(`.aspect-card[data-k="${focus}"] input`);
+      const input = document.querySelector(`.aspect-card[data-k="${focus}"] input.evidence-input`);
       if (input) input.value = lab.evidence_text;
       saveCurrent();
     };

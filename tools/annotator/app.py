@@ -29,9 +29,16 @@ _annotation_dir = os.environ.get("ANNOTATION_DIR")
 if _annotation_dir:
     ANNOTATION_DIR = Path(_annotation_dir).resolve()
 else:
-    ANNOTATION_DIR = (
-        Path(__file__).resolve().parents[2] / "ml" / "data" / "annotations"
-    ).resolve()
+    # Fallback aman: cari folder ml/data/annotations dari lokasi file (naik),
+    # lalu fallback ke ./annotations bila tidak ditemukan. Tidak memakai
+    # parents[2] agar tidak IndexError di environment selain repo lokal.
+    base = Path(__file__).resolve().parent
+    ANNOTATION_DIR = (base / "annotations").resolve()
+    for parent in base.parents:
+        candidate = parent / "ml" / "data" / "annotations"
+        if candidate.is_dir():
+            ANNOTATION_DIR = candidate.resolve()
+            break
 STATE_DIR = Path(os.environ.get("STATE_DIR", str(Path(__file__).parent / "data"))).resolve()
 STATE_DIR.mkdir(parents=True, exist_ok=True)
 STATIC_DIR = Path(__file__).parent / "static"

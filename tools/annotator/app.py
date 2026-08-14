@@ -16,6 +16,7 @@ import base64
 import json
 import os
 import secrets
+import shutil
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -34,6 +35,18 @@ else:
 STATE_DIR = Path(os.environ.get("STATE_DIR", str(Path(__file__).parent / "data"))).resolve()
 STATE_DIR.mkdir(parents=True, exist_ok=True)
 STATIC_DIR = Path(__file__).parent / "static"
+SEED_DIR = Path(__file__).parent / "seed"
+
+
+def seed_annotations() -> None:
+    """Salin template bawaan ke ANNOTATION_DIR bila volume/alamat masih kosong."""
+    ANNOTATION_DIR.mkdir(parents=True, exist_ok=True)
+    if not any(ANNOTATION_DIR.glob("*_annotations.jsonl")) and SEED_DIR.is_dir():
+        for path in SEED_DIR.glob("*_annotations.jsonl"):
+            shutil.copy2(path, ANNOTATION_DIR / path.name)
+
+
+seed_annotations()
 
 AUTH_USERNAME = os.environ.get("ANNOTATOR_USERNAME", "")
 AUTH_PASSWORD = os.environ.get("ANNOTATOR_PASSWORD", "")

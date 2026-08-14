@@ -286,10 +286,10 @@ function bindTextClicks() {
       const lab = labelOf(focus);
       if (!lab) return;
       lab.evidence_text = (lab.evidence_text ? lab.evidence_text + " " : "") + w;
-      saveCurrent();
-      renderAspects();
+      // Update nilai input langsung, tanpa re-render & tanpa focus (agar tidak auto-scroll).
       const input = document.querySelector(`.aspect-card[data-k="${focus}"] input`);
-      if (input) input.focus();
+      if (input) input.value = lab.evidence_text;
+      saveCurrent();
     };
   });
 }

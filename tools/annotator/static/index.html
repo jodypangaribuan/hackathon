@@ -112,6 +112,19 @@ async function init() {
 
 function aspectMeta(key) { return state.aspects.find(a => a.key === key); }
 
+function seedWords(key) {
+  const meta = aspectMeta(key);
+  return (meta?.hint || "").toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+}
+
+function highlightSeeds(key, on) {
+  const terms = seedWords(key);
+  document.querySelectorAll(".review-text .word").forEach(span => {
+    const w = (span.getAttribute("data-w") || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (w && terms.includes(w)) span.classList.toggle("hl", on);
+  });
+}
+
 function toggleGuide() {
   const el = document.getElementById("detail");
   const existing = document.getElementById("panduan");
@@ -176,6 +189,13 @@ function renderDetail(r) {
       </div>
       <div class="review-text" id="text">${renderText(r.text)}</div>
       <h3>Aspek yang dibahas <span class="hint">(centang yang relevan)</span></h3>
+      <p class="hint" style="margin-bottom:8px;line-height:1.6">
+        Satu aspek = satu label. Kalau aspek yang sama muncul <strong>beberapa kali</strong>
+        dengan polarity/severity berbeda, pilih yang <strong>paling parah</strong>
+        (negative &gt; positive/neutral; severity high &gt; medium &gt; low), lalu ambil
+        evidence dari sebutan yang paling parah. Hover kartu aspek untuk melihat
+        kata kuncinya tersorot di teks.
+      </p>
       <div class="aspect-list" id="aspects"></div>
     </div>`;
   renderAspects();
@@ -197,12 +217,13 @@ function renderAspects() {
     const evidence = lab?.evidence_text || "";
     const sevVisible = polarity === "negative";
     return `
-      <div class="aspect-card ${on ? 'on' : ''}" data-k="${a.key}">
+      <div class="aspect-card ${on ? 'on' : ''}" data-k="${a.key}" onmouseenter="highlightSeeds('${a.key}', true)" onmouseleave="highlightSeeds('${a.key}', false)">
         <div class="aspect-head" onclick="toggleAspect('${a.key}')">
           <input type="checkbox" ${on ? 'checked' : ''} onclick="event.stopPropagation(); toggleAspect('${a.key}')" />
           <div>
             <div class="name">${esc(a.label)}</div>
             <div class="def">${esc(a.definition)}</div>
+            <div class="kw" style="font-size:11px;color:#7dd3fc;margin-top:2px">kata kunci: ${esc(a.hint)}</div>
           </div>
         </div>
         <div class="aspect-body">

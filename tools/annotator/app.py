@@ -12,22 +12,27 @@ Jalankan:
 
 from __future__ import annotations
 
+import base64
 import json
 import os
+import secrets
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 ANNOTATION_DIR = Path(
     os.environ.get("ANNOTATION_DIR", str(Path(__file__).resolve().parents[2] / "ml" / "data" / "annotations"))
 ).resolve()
-STATE_DIR = Path(__file__).parent / "data"
+STATE_DIR = Path(os.environ.get("STATE_DIR", str(Path(__file__).parent / "data"))).resolve()
 STATE_DIR.mkdir(parents=True, exist_ok=True)
 STATIC_DIR = Path(__file__).parent / "static"
+
+AUTH_USERNAME = os.environ.get("ANNOTATOR_USERNAME", "")
+AUTH_PASSWORD = os.environ.get("ANNOTATOR_PASSWORD", "")
 
 ANNOTATORS = ["A1", "A2", "A3"]
 PHASES = ["pilot", "main"]
@@ -70,6 +75,26 @@ SEVERITY_META = {
 }
 
 app = FastAPI(title="SIPATURE Annotator", version="1.0.0")
+
+
+@app.middleware("http")
+async def basic_auth_middleware(request: Request, call_next):
+    if AUTH_USERNAME and AUTH_PASSWORD and request.url.path != "/health":
+        authorization = request.headers.get("Authorization", "")
+        expected = "Basic " + base64.b64encode(
+            f"{AUTH_USERNAME}:{AUTH_PASSWORD}".encode()
+        ).decode()
+        if not secrets.compare_digest(authorization, expected):
+            return Response(
+                status_code=401,
+                headers={"WWW-Authenticate": 'Basic realm="SIPATURE"'},
+            )
+    return await call_next(request)
+
+
+@app.get("/health")
+def health() -> Dict[str, Any]:
+    return {"status": "ok"}
 
 
 def load_template(annotator_id: str) -> List[dict]:

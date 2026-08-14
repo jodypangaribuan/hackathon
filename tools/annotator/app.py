@@ -24,9 +24,13 @@ from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-ANNOTATION_DIR = Path(
-    os.environ.get("ANNOTATION_DIR", str(Path(__file__).resolve().parents[2] / "ml" / "data" / "annotations"))
-).resolve()
+_annotation_dir = os.environ.get("ANNOTATION_DIR")
+if _annotation_dir:
+    ANNOTATION_DIR = Path(_annotation_dir).resolve()
+else:
+    ANNOTATION_DIR = (
+        Path(__file__).resolve().parents[2] / "ml" / "data" / "annotations"
+    ).resolve()
 STATE_DIR = Path(os.environ.get("STATE_DIR", str(Path(__file__).parent / "data"))).resolve()
 STATE_DIR.mkdir(parents=True, exist_ok=True)
 STATIC_DIR = Path(__file__).parent / "static"

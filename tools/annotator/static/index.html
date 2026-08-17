@@ -56,8 +56,9 @@
   .seg { display: inline-flex; border: 1px solid var(--hairline); border-radius: 6px; overflow: hidden; }
   .seg button { border: none; border-radius: 0; padding: 6px 12px; cursor: pointer; background: var(--panel2); color: var(--text); font-size: 12px; }
   .seg button.on { background: var(--accent); color: white; }
-  .seg.pos button.on { background: var(--good); }
-  .seg.neg button.on { background: var(--bad); }
+  .seg.polarity button[data-p="positive"].on { background: var(--good); }
+  .seg.polarity button[data-p="negative"].on { background: var(--bad); }
+  .seg.polarity button[data-p="neutral"].on { background: var(--muted); }
   .seg.sev button.on { background: var(--warn); }
   .aspect-body input { flex: 1; min-width: 180px; padding: 7px 10px; border-radius: 6px;
            border: 1px solid var(--hairline); background: var(--panel); color: var(--text); font-size: 12.5px; }
@@ -264,7 +265,7 @@ function renderAspects() {
         <div class="aspect-body">
           <div class="row">
             <span class="lbl">Polarity</span>
-            <span class="seg pos">
+            <span class="seg polarity">
               ${state.polarities.map(p => `<button type="button" data-p="${p.key}" class="${p.key===polarity?'on':''}" onclick="event.stopPropagation(); setPolarity('${a.key}','${p.key}')">${p.key}</button>`).join("")}
             </span>
           </div>

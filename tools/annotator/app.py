@@ -144,18 +144,41 @@ def get_template(annotator_id: str) -> List[dict]:
 
 def load_state(annotator_id: str) -> Dict[str, dict]:
     path = STATE_DIR / f"{annotator_id}.json"
-    if path.is_file():
-        return json.loads(path.read_text(encoding="utf-8"))
-    return {}
+    if not path.is_file():
+        return {}
+    raw = path.read_text(encoding="utf-8")
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        # Recovery: file bisa ter-append (race condition). Gabungkan semua objek
+        # JSON utuh yang ada; entry terakhir menimpa yang sebelumnya (paling baru).
+        result: Dict[str, dict] = {}
+        decoder = json.JSONDecoder()
+        idx = 0
+        length = len(raw)
+        while idx < length:
+            while idx < length and raw[idx] in " \t\r\n":
+                idx += 1
+            if idx >= length:
+                break
+            try:
+                obj, end = decoder.raw_decode(raw, idx)
+            except json.JSONDecodeError:
+                break  # sisa file korup, hentikan
+            if isinstance(obj, dict):
+                result.update(obj)
+            idx = end
+        return result
 
 
 def save_state(annotator_id: str, state: Dict[str, dict]) -> None:
     path = STATE_DIR / f"{annotator_id}.json"
-    tmp = path.with_suffix(".tmp")
+    # Nama tmp unik per proses agar tidak tabrakan saat save bersamaan.
+    tmp = path.with_name(f"{path.name}.tmp.{secrets.token_hex(6)}")
     tmp.write_text(
         json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
     )
-    os.replace(tmp, path)  # atomic: mencegah korupsi bila crash di tengah tulis
+    os.replace(tmp, path)  # atomic; mencegah korupsi bila crash di tengah tulis
 
 
 class LabelIn(BaseModel):

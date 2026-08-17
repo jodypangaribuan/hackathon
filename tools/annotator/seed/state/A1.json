@@ -1,0 +1,24 @@
+{
+  "review_02ada56ff4e64a9f": {
+    "labels": [
+      {
+        "aspect": "cleanliness",
+        "evidence_text": "serangga di dalam tempat tidur,",
+        "polarity": "negative",
+        "severity": "medium"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_02b4549b8cc3b006": {
+    "labels": [
+      {
+        "aspect": "comfort",
+        "evidence_text": "Aman dan nyaman utk penginapan keluarga.",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  }
+}

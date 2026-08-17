@@ -1,0 +1,1114 @@
+{
+  "review_02ada56ff4e64a9f": {
+    "labels": [
+      {
+        "aspect": "sanitation",
+        "evidence_text": "toilet dan pancuran kotor...).",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "cleanliness",
+        "evidence_text": "serangga di dalam tempat tidur,",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "maintenance",
+        "evidence_text": "Fasilitas dan kamar terawat sangat buruk.",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "staff_service",
+        "evidence_text": "pelayanannya juga tidak bagus.",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "price_transparency",
+        "evidence_text": "",
+        "polarity": "neutral",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_02b4549b8cc3b006": {
+    "labels": [
+      {
+        "aspect": "comfort",
+        "evidence_text": "Aman dan nyaman utk penginapan keluarga.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "safety",
+        "evidence_text": "Aman dan nyaman utk penginapan keluarga.",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_02f01f33e1399283": {
+    "labels": [
+      {
+        "aspect": "comfort",
+        "evidence_text": "Semoga makin lancar dirumah makan \"Family Resto\"",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_04c906ab2dc42754": {
+    "labels": [
+      {
+        "aspect": "scenery",
+        "evidence_text": "View di tempat ini tidak perlu diragukan lagi.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "public_facilities",
+        "evidence_text": "Ada beberapa pilihan permainan dan sarana lainnya seperti naik banana boat, speed boat atau motor ATV untuk keliling di hamparan pasir pinggir pantai.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "sanitation",
+        "evidence_text": "fasilitas kamar mandi beayar juga banyak disekitaran pantai, jadi tidak perlu kuatir.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "crowding",
+        "evidence_text": "Saya kesini pas weekday jadi tidak terlalu ramai",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "price_transparency",
+        "evidence_text": "Belum ada standard harga yg sama, jadi harus tanya 2 atau 3 tempat",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "opening_hours",
+        "evidence_text": "warung banyak yang tutup.",
+        "polarity": "negative",
+        "severity": "medium"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_064e603116400f5b": {
+    "labels": [
+      {
+        "aspect": "staff_service",
+        "evidence_text": "pelayanannya sangat tidak profesional. mulai dari makanan yang diantar tidak sesuai pesanan, waktu menunggu SANGAT LAMA. pelayannya bad attitude,",
+        "polarity": "negative",
+        "severity": "high"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_07cdecde9980349d": {
+    "labels": [
+      {
+        "aspect": "comfort",
+        "evidence_text": "Tempat yang Bagus untuk yang Hobi bepergian dan Berkemah",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_0ba629f52c6ec0b3": {
+    "labels": [
+      {
+        "aspect": "crowding",
+        "evidence_text": "Ramai",
+        "polarity": "neutral",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_0cc5e7bbbae9b61d": {
+    "labels": [
+      {
+        "aspect": "access",
+        "evidence_text": "Jalan nya licin kalo basah",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "safety",
+        "evidence_text": "Jalan nya licin kalo basah",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "waste",
+        "evidence_text": ",banyak sampah daun berserakan",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "maintenance",
+        "evidence_text": "patung nya banyak yg udah rusak",
+        "polarity": "negative",
+        "severity": "high"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_0d69fa43d4cd471e": {
+    "labels": [
+      {
+        "aspect": "comfort",
+        "evidence_text": "Menarik",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_0fbfd67e47256d86": {
+    "labels": [
+      {
+        "aspect": "scenery",
+        "evidence_text": "Viewnya seperti di luar negeri",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "waste",
+        "evidence_text": "...sayangnya pengunjung masih buang sampah sembarangan.",
+        "polarity": "negative",
+        "severity": "medium"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_13c64e8e039787e9": {
+    "labels": [
+      {
+        "aspect": "maintenance",
+        "evidence_text": "Tolong dapat dirawat sesuai dengan karaktetistik koleksinya",
+        "polarity": "neutral",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_14360312d4704754": {
+    "labels": [
+      {
+        "aspect": "parking",
+        "evidence_text": "baiknya jangan kutip parkir lagi",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "scenery",
+        "evidence_text": "Lumayan bagus dibanding dengan Sipaholon.",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_156182a91ce2d3ce": {
+    "labels": [
+      {
+        "aspect": "cleanliness",
+        "evidence_text": "kamar bau toilet, seprei dan selimut bau keringat,",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "sanitation",
+        "evidence_text": "tdk ada fasilitas kamar Mandi,",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "comfort",
+        "evidence_text": "tdk bisa tidur sampai subuh,",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "staff_service",
+        "evidence_text": "mau komplain tdk ada yg menunggu hotelnya,",
+        "polarity": "negative",
+        "severity": "high"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_1713c191ce2479b6": {
+    "labels": [
+      {
+        "aspect": "cleanliness",
+        "evidence_text": "semua yang ada di kamar dan toilet dll kotor, seperti tidak ada yang bersihkan,",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "sanitation",
+        "evidence_text": "Air di salah satu kamar kami mati.",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "comfort",
+        "evidence_text": "musik keras sampai jam 11 malam. Dari jam 4.30 pagi, ada seekor ayam jantan berkokok dengan keras di sebelah hotel.",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "price_transparency",
+        "evidence_text": "losmen tidak bersih dengan harga mahal.",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "staff_service",
+        "evidence_text": "tidak ramah staffs-nya",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "maintenance",
+        "evidence_text": "Kunci pintu rusak dan hanya diperbaiki seadanya",
+        "polarity": "negative",
+        "severity": "high"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_19b49bbae50ffed5": {
+    "labels": [
+      {
+        "aspect": "scenery",
+        "evidence_text": "Lumayan",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_1bf94a48e5f3715d": {
+    "labels": [
+      {
+        "aspect": "price_transparency",
+        "evidence_text": "50000 untuk ayam penyet dan soto ayam Harganya sedikit mahal",
+        "polarity": "negative",
+        "severity": "medium"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_2156c88b9f4552f2": {
+    "labels": [
+      {
+        "aspect": "access",
+        "evidence_text": "Akses jalan nya bagus ber aspal dan masih terawat,",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "scenery",
+        "evidence_text": "Pemandangan nya indah luar biasa",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "public_facilities",
+        "evidence_text": "fasilitas yang lengkap dan bersih",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "parking",
+        "evidence_text": "-lahan parkir yang bisa digunakan untuk camping ground saat malam hari.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "price_transparency",
+        "evidence_text": "harga yang sangat terjangkau.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "opening_hours",
+        "evidence_text": "Semua warung umkm tutup pada malam hari",
+        "polarity": "neutral",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_24cd4d8b03b3fa80": {
+    "labels": [
+      {
+        "aspect": "staff_service",
+        "evidence_text": "pelayan nya sok sombong tidak beretika",
+        "polarity": "negative",
+        "severity": "high"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_263c56285d87c114": {
+    "labels": [
+      {
+        "aspect": "comfort",
+        "evidence_text": "Makanan khas Batak yang sangat di Pangururan asli di Pangururan",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_294151e3be8af369": {
+    "labels": [
+      {
+        "aspect": "comfort",
+        "evidence_text": "Sayur gulai nangka nya maknyuss",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_2ae11308a550412d": {
+    "labels": [
+      {
+        "aspect": "scenery",
+        "evidence_text": "Asliii, indah banget pemandangannya.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "parking",
+        "evidence_text": "Nggak ada biaya tiket masuk dan parkir. Nggak ada biaya parkir. Nggak ada biaya parkir.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "price_transparency",
+        "evidence_text": "Nggak ada biaya tiket masuk dan parkir.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "maintenance",
+        "evidence_text": "Tempat wisata ini terbengkalai.",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "sanitation",
+        "evidence_text": "toilet sangat buruk, sudah tidak bisa dipakai.",
+        "polarity": "negative",
+        "severity": "high"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_2b2f331441298833": {
+    "labels": [
+      {
+        "aspect": "scenery",
+        "evidence_text": "An amazing panorama",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_2b3db282623ad0fa": {
+    "labels": [
+      {
+        "aspect": "cleanliness",
+        "evidence_text": "Entah kenapa tidak dibersihkan,",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "waste",
+        "evidence_text": "kolam dikelilingi sampah,",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "sanitation",
+        "evidence_text": "lampu toilet ada,",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "maintenance",
+        "evidence_text": "Potensi besar, perawatan minus.",
+        "polarity": "negative",
+        "severity": "high"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_3010e0249d7fb67d": {
+    "labels": [
+      {
+        "aspect": "scenery",
+        "evidence_text": "Air terjun yang sangat indah,",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "crowding",
+        "evidence_text": "tidak terlalu ramai wisatawan; kami hanya sendiri di sana.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "access",
+        "evidence_text": "Jalan menuju ke sana tampaknya tidak terawat lagi,",
+        "polarity": "negative",
+        "severity": "medium"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_30bf9ece1acc4f26": {
+    "labels": [
+      {
+        "aspect": "price_transparency",
+        "evidence_text": "Gratis tempatnya,",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "parking",
+        "evidence_text": "bayar parkir.",
+        "polarity": "neutral",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_315306a2b87a0eb7": {
+    "labels": [
+      {
+        "aspect": "comfort",
+        "evidence_text": "Sejuk.",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_3425a1771e950eed": {
+    "labels": [
+      {
+        "aspect": "scenery",
+        "evidence_text": "Tempat yang bagus. Keindahan alam nya",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_390336f1c9d65b75": {
+    "labels": [
+      {
+        "aspect": "access",
+        "evidence_text": "Dekat dari hotel labersa",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_3c4f59f8fbaf345d": {
+    "labels": [
+      {
+        "aspect": "public_facilities",
+        "evidence_text": "Sudah ada fasilitas bermain untuk anak,",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "parking",
+        "evidence_text": "Sudah ada fasilitas tempat parkir",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "crowding",
+        "evidence_text": "masih terasa crowded.",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "maintenance",
+        "evidence_text": "perawatan terasa kurang untuk gedung dan sarana lainnya.",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "sanitation",
+        "evidence_text": "air yg tidak mengalir di toilet.",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "cleanliness",
+        "evidence_text": "Kebersihan yg tidak terjaga,",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "price_transparency",
+        "evidence_text": "ada petugas yg mengutip uang kebersihan di pintu toilet.",
+        "polarity": "negative",
+        "severity": "medium"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_43824c5b229b2be6": {
+    "labels": [
+      {
+        "aspect": "comfort",
+        "evidence_text": "Suka dengan hotel ini,,",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "opening_hours",
+        "evidence_text": "terlalu bebas dalam jam bertamu",
+        "polarity": "negative",
+        "severity": "medium"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_46b08f736c7c3668": {
+    "labels": [
+      {
+        "aspect": "cleanliness",
+        "evidence_text": "Pemilik area camping juga sangat perduli terhadap kebersihan.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "sanitation",
+        "evidence_text": "kamar mandi sangat sedikit. Hanya 6 unit.",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "crowding",
+        "evidence_text": "antrian kamar mandi yang sangat membludak.",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "access",
+        "evidence_text": "akses untuk bus juga sangat memadai",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "parking",
+        "evidence_text": "Area parkir sangat luas.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "public_facilities",
+        "evidence_text": "Area mushola yang sangat kecil.",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "scenery",
+        "evidence_text": "Pemandangan luar biasa bagus.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "comfort",
+        "evidence_text": "speaker yang sangat kencang bahkan sampai di subuh hari.",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "safety",
+        "evidence_text": "Area camping bagian jurang tidak ada pagar pembatas,",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "price_transparency",
+        "evidence_text": "Biaya camping juga tergolong terjangkau.",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_46fe49d596a149ce": {
+    "labels": [
+      {
+        "aspect": "staff_service",
+        "evidence_text": "Makanan keluar sampe 1 jam lebih. ",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "crowding",
+        "evidence_text": "lama sekali keluar makannya apalagi waktu rame.",
+        "polarity": "negative",
+        "severity": "medium"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_4db6fe26a5d97abe": {
+    "labels": [
+      {
+        "aspect": "scenery",
+        "evidence_text": "Kereeen view nyaa",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_4f20367ea99f29e9": {
+    "labels": [
+      {
+        "aspect": "price_transparency",
+        "evidence_text": "Tiket masuk 20rb/orang.",
+        "polarity": "neutral",
+        "severity": null
+      },
+      {
+        "aspect": "parking",
+        "evidence_text": "Tidak ada biaya parkir.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "public_facilities",
+        "evidence_text": "Gazebo/pondok/lesehan apapun itu bebas pakai selagi kosong.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "cleanliness",
+        "evidence_text": "Tempatnya luas dan bersih.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "staff_service",
+        "evidence_text": "Penjaganya gercep bersihin.",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_58a6580a5ddf2807": {
+    "labels": [
+      {
+        "aspect": "staff_service",
+        "evidence_text": "Pelayanan lama....",
+        "polarity": "negative",
+        "severity": "high"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_5b0c44883f1e8950": {
+    "labels": [
+      {
+        "aspect": "scenery",
+        "evidence_text": "Very beautiful scenery.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "sanitation",
+        "evidence_text": "Quite clean toilet.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "access",
+        "evidence_text": "the path is quite steep.",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "safety",
+        "evidence_text": "Do not go here when it is raining since it will be slippery",
+        "polarity": "negative",
+        "severity": "high"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_5c8079c3a4daa440": {
+    "labels": [
+      {
+        "aspect": "price_transparency",
+        "evidence_text": "Tiket masuk 1000/orang,",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "parking",
+        "evidence_text": "parkir mobil 1000",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "scenery",
+        "evidence_text": "bisa menikmati pemandangan danau",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "cleanliness",
+        "evidence_text": "masih banyak yg kurang menjaga kebersihan.",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "waste",
+        "evidence_text": "Sampah berserakan.",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "crowding",
+        "evidence_text": "Suasana lebih ramai,",
+        "polarity": "neutral",
+        "severity": null
+      },
+      {
+        "aspect": "public_facilities",
+        "evidence_text": "ada playground (walau kurang terawat), jogging track, food court.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "maintenance",
+        "evidence_text": "playground (walau kurang terawat),",
+        "polarity": "negative",
+        "severity": "medium"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_5eccd900dd972c18": {
+    "labels": [
+      {
+        "aspect": "comfort",
+        "evidence_text": "Hot tea and cofee",
+        "polarity": "neutral",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_618a67eeddca4489": {
+    "labels": [
+      {
+        "aspect": "cleanliness",
+        "evidence_text": "Tempatnya bersih dan terawat.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "maintenance",
+        "evidence_text": "Tempatnya terawat.",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "price_transparency",
+        "evidence_text": "Tiket masuk 20rb/ orang, biaya guide 100rb",
+        "polarity": "neutral",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_61a4d5560312cfbe": {
+    "labels": [
+      {
+        "aspect": "cleanliness",
+        "evidence_text": "kurang bersih",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "sanitation",
+        "evidence_text": "wc jorok.",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "parking",
+        "evidence_text": "areal parkiran harusnya dibuat paving blok.",
+        "polarity": "negative",
+        "severity": "medium"
+      },
+      {
+        "aspect": "scenery",
+        "evidence_text": "sebagian bukitnya ditanam singkong, kurang elok.",
+        "polarity": "negative",
+        "severity": "medium"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_629c7cbeabba6cea": {
+    "labels": [
+      {
+        "aspect": "staff_service",
+        "evidence_text": "Makanan lamaaaa sekali datangnyaa pelayannya jutek dan gak sigap",
+        "polarity": "negative",
+        "severity": "high"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_64ab352b9f5b268c": {
+    "labels": [
+      {
+        "aspect": "access",
+        "evidence_text": "Jalan nya sebagian rusak",
+        "polarity": "negative",
+        "severity": "high"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_66e94c7d602ff107": {
+    "labels": [
+      {
+        "aspect": "comfort",
+        "evidence_text": "Nice",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_6a71de0e3e82ad2c": {
+    "labels": [
+      {
+        "aspect": "scenery",
+        "evidence_text": "Mantap betul",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_6f7acfd541591f3d": {
+    "labels": [
+      {
+        "aspect": "staff_service",
+        "evidence_text": "pelayanannya memuaskan,",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "parking",
+        "evidence_text": "lapangan parkir luas,",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "public_facilities",
+        "evidence_text": "fasilitas lengkap",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "cleanliness",
+        "evidence_text": "fasilitas lengkap dan bersih,",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "price_transparency",
+        "evidence_text": "harga tiket masuk terjangkau,",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_6fcf04d8e5d06def": {
+    "labels": [
+      {
+        "aspect": "staff_service",
+        "evidence_text": "sangat baik dan ramah",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "comfort",
+        "evidence_text": "restoran yang nyaman",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "opening_hours",
+        "evidence_text": "buka sepanjang hari.",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_714c6c4297b47f55": {
+    "labels": [
+      {
+        "aspect": "scenery",
+        "evidence_text": "pemandangan indah dari puncak tugu toga Aritonang",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "comfort",
+        "evidence_text": "udara sejuk",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_715697c55cbc49e8": {
+    "labels": [
+      {
+        "aspect": "price_transparency",
+        "evidence_text": "Gubuk, parkir+tiket masuk, pasilitas lain murah,",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "parking",
+        "evidence_text": "parkir+tiket masuk, masih murah,",
+        "polarity": "positive",
+        "severity": null
+      },
+      {
+        "aspect": "waste",
+        "evidence_text": "sampah banyak,",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "safety",
+        "evidence_text": "batu2 pn licin.",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "cleanliness",
+        "evidence_text": "airnya sedikit kotor,",
+        "polarity": "negative",
+        "severity": "medium"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_735c8fbd2caecb39": {
+    "labels": [
+      {
+        "aspect": "scenery",
+        "evidence_text": "indah,,, asri",
+        "polarity": "positive",
+        "severity": null
+      }
+    ],
+    "status": "completed"
+  },
+  "review_7381256a3fc4e350": {
+    "labels": [
+      {
+        "aspect": "maintenance",
+        "evidence_text": "sudah kurang terawat,lebih bagus waktu dl,kamar mandi bilas bau,bnyak sampah.kurang bersih",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "sanitation",
+        "evidence_text": "dl,kamar mandi bilas bau,bnyak sampah.kurang bersih",
+        "polarity": "negative",
+        "severity": "high"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_75fe39bd8db069a9": {
+    "labels": [
+      {
+        "aspect": "safety",
+        "evidence_text": "dengan kesadaran penuh memberi makanan basi.",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "staff_service",
+        "evidence_text": "pelayan itu menanyakan, \" ada berapa yg basi kak?\"",
+        "polarity": "negative",
+        "severity": "high"
+      }
+    ],
+    "status": "completed"
+  },
+  "review_780d5f95d68c05b7": {
+    "labels": [
+      {
+        "aspect": "sanitation",
+        "evidence_text": "Toilet kotor",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "waste",
+        "evidence_text": "sampah dibuang sembarangan",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "cleanliness",
+        "evidence_text": "akses ke kolam kotor dan licin.",
+        "polarity": "negative",
+        "severity": "high"
+      },
+      {
+        "aspect": "safety",
+        "evidence_text": "akses ke kolam kotor dan licin.",
+        "polarity": "negative",
+        "severity": "high"
+      }
+    ],
+    "status": "completed"
+  }
+}

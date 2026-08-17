@@ -53,7 +53,22 @@ def seed_annotations() -> None:
             shutil.copy2(path, ANNOTATION_DIR / path.name)
 
 
+SEED_STATE_DIR = SEED_DIR / "state"
+
+
+def seed_state() -> None:
+    """Impor progress bawaan bila STATE_DIR belum punya file state."""
+    if not SEED_STATE_DIR.is_dir():
+        return
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    for path in SEED_STATE_DIR.glob("*.json"):
+        target = STATE_DIR / path.name
+        if not target.exists():
+            shutil.copy2(path, target)
+
+
 seed_annotations()
+seed_state()
 
 AUTH_USERNAME = os.environ.get("ANNOTATOR_USERNAME", "")
 AUTH_PASSWORD = os.environ.get("ANNOTATOR_PASSWORD", "")

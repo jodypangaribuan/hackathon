@@ -244,6 +244,34 @@ def reviews(annotator_id: str) -> Dict[str, Any]:
     }
 
 
+@app.get("/api/debug")
+def debug() -> Dict[str, Any]:
+    def ls(path: Path) -> List[str]:
+        if not path.is_dir():
+            return [f"(not a dir) {path}"]
+        return sorted(
+            f"{p.name}{'/' if p.is_dir() else f' ({p.stat().st_size} B)'}"
+            for p in path.iterdir()
+        )
+
+    result: Dict[str, Any] = {
+        "STATE_DIR": str(STATE_DIR),
+        "ANNOTATION_DIR": str(ANNOTATION_DIR),
+        "state_dir_listing": ls(STATE_DIR),
+        "annotation_dir_listing": ls(ANNOTATION_DIR),
+    }
+    for aid in ANNOTATORS:
+        try:
+            state = load_state(aid)
+            result[f"{aid}_completed"] = sum(
+                1 for v in state.values() if v.get("status") == "completed"
+            )
+            result[f"{aid}_total_entries"] = len(state)
+        except Exception as error:  # noqa: BLE001
+            result[f"{aid}_error"] = str(error)
+    return result
+
+
 @app.get("/api/progress")
 def progress() -> Dict[str, Any]:
     result = {}

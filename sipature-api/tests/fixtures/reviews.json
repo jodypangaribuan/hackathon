@@ -1,0 +1,29 @@
+{
+  "reviews": [
+    {
+      "id": "negative_parking_access",
+      "text": "Parkir sangat buruk dan mahal, jalan menuju lokasi rusak parah.",
+      "note": "expect parking/access/price_transparency negative"
+    },
+    {
+      "id": "positive_scenery_clean",
+      "text": "Pemandangan indah, tempat bersih dan terawat.",
+      "note": "expect scenery/cleanliness/maintenance positive"
+    },
+    {
+      "id": "mixed_language",
+      "text": "View is beautiful but the road is very bad, banyak lubang.",
+      "note": "mixed id/en, contrast marker"
+    },
+    {
+      "id": "negation_positive",
+      "text": "Tempatnya tidak kotor, kamar mandi bersih dan nyaman.",
+      "note": "negation handling"
+    },
+    {
+      "id": "empty",
+      "text": "",
+      "note": "400/422 empty input"
+    }
+  ]
+}

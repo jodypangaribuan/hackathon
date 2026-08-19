@@ -8,7 +8,7 @@ Authoritative documentation index for the data, model, product, evaluation, and 
 | `data-inventory.md` | Source files, semantic row/schema notes, mappings, and restricted fields | Data/ML | Complete v0.1 |
 | `known-data-issues.md` | Known defects, impact, handling, residual risk | Data/ML | Draft |
 | `annotation-guideline.md` | Taxonomy boundaries used by silver labeling; also supports optional human review | Data/ML + Research | RC1 |
-| `model-card.md` | Intended use, metrics, limitations, license, risks | Data/ML | Complete v1 (silver; gold pending) |
+| `model-card.md` | Intended use, metrics, limitations, license, risks | Data/ML | Complete v1 (silver + gold-v1) |
 | `responsible-ai.md` | Privacy, bias, human oversight, misuse safeguards | Research | Draft |
 | `app-integration-contract.md` | ML-to-Next.js export and versioning contract | ML + Engineering | Draft |
 | `deployment-runbook.md` | Offline Docker/DGX deployment and rollback | Engineering | Draft |
@@ -17,6 +17,7 @@ Authoritative documentation index for the data, model, product, evaluation, and 
 | `status-and-decisions.md` | Session handoff log: decisions, current status, remaining work, north star | Data/ML | Active |
 | `qa-answer-bank.md` | Final-round Q&A answers (juri), grounded in actual metrics | Data/ML | Active |
 | `model-selection-and-evaluation.md` | Silver (locked) vs gold comparison strategy + production model decision | Data/ML | Active |
+| `c1-final-scope-lock.md` | Final-round scope lock: chain, production model, demo cases (nilai A9 final), mandatory features, freeze | Data/ML + Engineering | Active |
 | `restricted-data-policy.md` | Git, secret, dataset, and artifact handling policy | Engineering + Data | Active |
 | `reproducibility-runbook.md` | Environment, Drive, commands, checkpoints, and locked-test runbook | Data/ML | Active |
 | `eda-report.md` | Current EDA findings with report-ready figures and source-data references | Data/ML | Complete v0.1 |

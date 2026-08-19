@@ -296,13 +296,13 @@ Linux + Docker + offline, bukan GPU.
 
 ## C1. Scope dan Production Model
 
-- [ ] Kunci chain: review -> model -> signal -> evidence -> priority -> verification.
-- [ ] Kunci main/backup demo cases dan mandatory features.
-- [ ] Tetapkan internal freeze sebelum batas lockdown.
-- [ ] Export local model, tokenizer, thresholds, labels, hashes.
-- [ ] Buat inference fixtures, batch CLI, real-time endpoint.
-- [ ] Validasi empty/invalid/long input dan latency logs tanpa PII.
-- [ ] Uji CPU fallback dan reload setelah restart.
+- [x] Kunci chain: review -> model -> signal -> evidence -> priority -> verification. (`docs/c1-final-scope-lock.md` §1)
+- [x] Kunci main/backup demo cases dan mandatory features. (`docs/c1-final-scope-lock.md` §2–3; nilai A9 final)
+- [x] Tetapkan internal freeze sebelum batas lockdown. (`docs/c1-final-scope-lock.md` §5; TBD konfirmasi tim)
+- [x] Export local model, tokenizer, thresholds, labels, hashes. (model `a10bddb1…` + manifest `072b4346…` cocok `a9.yaml`; vectorizer=tokenizer di `model.joblib`)
+- [x] Buat inference fixtures, batch CLI, real-time endpoint. (`sipature-api/tests/fixtures/`; CLI `infer-corpus` + endpoint `/predict-review`)
+- [x] Validasi empty/invalid/long input dan latency logs tanpa PII. (400/422 terverifikasi; latency log `latency_ms`/`input_chars` tanpa teks)
+- [x] Uji CPU fallback dan reload setelah restart. (rebuild+restart container healthy; 9 pytest pass di container inference)
 
 ## C2. API, Data, dan Workflow
 

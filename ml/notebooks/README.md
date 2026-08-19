@@ -15,6 +15,7 @@ marked "pipeline" and have no notebook file.
 | `07_calibration_and_evaluation.ipynb` | GPU/CPU | Validation/test | Thresholds, locked metrics, figures | Done (run `20260813-1050_indobert-silver-v1_locked-test-v1`) |
 | `08_batch_inference_and_aggregation.ipynb` | CPU | All clean reviews | Predictions, destination signals | Done (run 2026-08-13) |
 | `09_prioritization_and_export.ipynb` | CPU | Signals/expert review | Priority, app export, sensitivity | Done (run 2026-08-13) |
+| `10_gold_baselines.ipynb` | CPU | `gold.jsonl` + splits | Gold keyword/TF-IDF metrics + silver-vs-gold comparison | Done (run 2026-08-19) |
 
 ## Executed runs (notebooks 01–05)
 
@@ -74,6 +75,14 @@ pinned `requirements-colab.lock.txt`) against the raw CSVs staged in
   destinations), a 25-destination expert review queue, and weight-sensitivity
   top-20 Jaccard 0.8182–1.0000. Persisted to `SIPATURE/a9/<run>-prioritize/`
   and `SIPATURE/a9/<run>-export/`.
+- `10`: (CPU) gold baseline evaluation. Reused the locked leakage-safe split
+  assignment verbatim and swapped silver labels for human-gold `gold.jsonl`
+  (1,320 records; agreement aspect Jaccard 0.8638 / polarity 0.9757 / severity κ
+  1.0). Keyword recomputed and TF-IDF retrained on gold: Keyword Macro F1
+  0.7797 / Micro 0.7102; TF-IDF Macro F1 0.6379 / Micro 0.7445. Silver→gold
+  Macro F1 delta: keyword −0.197 (silver was circular), TF-IDF −0.082. Persisted
+  `keyword-gold-v1-test-metrics.json`, `tfidf-gold-v1-test-metrics.json`, and
+  `gold_baseline_summary.json` to `SIPATURE/metrics/` and `SIPATURE/reports/`.
 
 Notebook rules:
 

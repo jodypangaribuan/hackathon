@@ -21,6 +21,7 @@ from .eda import run_eda
 from .entity_resolution import run_entity_resolution
 from .environment import build_environment_snapshot, write_environment_snapshot
 from .evaluation import run_calibration, run_locked_test_evaluation
+from .gold_baselines import run_gold_baselines
 from .indobert import run_indobert_training
 from .inventory import inventory_dataset, write_inventory
 from .paths import PATHS
@@ -106,6 +107,13 @@ def build_parser() -> argparse.ArgumentParser:
     baselines.add_argument("--split-dir", type=Path, default=PATHS.splits)
     baselines.add_argument("--artifact-dir", type=Path, default=PATHS.artifacts)
     baselines.add_argument("--figure-dir", type=Path, required=True)
+
+    gold_baselines = subparsers.add_parser(
+        "evaluate-gold-baselines", help="Evaluate keyword/TF-IDF baselines against human-gold labels"
+    )
+    gold_baselines.add_argument("--split-dir", type=Path, default=PATHS.splits)
+    gold_baselines.add_argument("--gold", type=Path, default=PATHS.annotations / "gold" / "gold.jsonl")
+    gold_baselines.add_argument("--artifact-dir", type=Path, default=PATHS.artifacts)
 
     indobert = subparsers.add_parser(
         "train-indobert", help="Train IndoBERT tasks on train/validation only (GPU)"
@@ -236,6 +244,10 @@ def main() -> int:
         return 0
     if args.command == "train-baselines":
         result = run_baselines(args.split_dir, args.artifact_dir, args.figure_dir)
+        print(json.dumps(result, indent=2))
+        return 0
+    if args.command == "evaluate-gold-baselines":
+        result = run_gold_baselines(args.split_dir, args.gold, args.artifact_dir)
         print(json.dumps(result, indent=2))
         return 0
     if args.command == "train-indobert":

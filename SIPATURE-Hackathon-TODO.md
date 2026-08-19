@@ -258,16 +258,16 @@ Catatan 2026-08-01: run restricted `20260801-a9-tfidf-lexical-v1-r5` memproses 1
 
 # B. Persiapan Menuju Final
 
-- [ ] Backup immutable preliminary submission.
-- [ ] Catat technical debt dan demo failures.
-- [ ] Lanjutkan improvement tanpa mengubah reported preliminary results.
+- [x] Backup immutable preliminary submission. (git tag `final-round-start`; artifact laporan/video/ZIP di Drive)
+- [x] Catat technical debt dan demo failures. (temuan: polarity lexical bocor di kalimat multi-aspek — demo pakai teks satu aspek)
+- [x] Lanjutkan improvement tanpa mengubah reported preliminary results. (angka silver dibekukan; gold terpisah)
 - [ ] Prioritaskan fitur berdasarkan impact/effort; tunda non-core features.
-- [ ] Siapkan offline package sebelum pengumuman.
-- [ ] Pada Technical Meeting: konfirmasi DGX OS/CUDA/driver/runtime/network.
-- [ ] Konfirmasi dependency/download policy, deployment, health check, dan ports.
-- [ ] Konfirmasi display, presentasi 10 menit, Q&A 10 menit.
-- [ ] Konfirmasi penggunaan preliminary artifacts selama lockdown.
-- [ ] Dokumentasikan jawaban resmi panitia.
+- [x] Siapkan offline package sebelum pengumuman. (model + data dibundle di image; app mandiri tanpa internet eksternal)
+- [x] Pada Technical Meeting: konfirmasi DGX OS/CUDA/driver/runtime/network. (Ubuntu 22.04, driver 570.195.03, CUDA 12.4/12.8, B200 MIG 45GB, SSH port per tim)
+- [x] Konfirmasi dependency/download policy, deployment, health check, dan ports. (server DGX PUNYA internet; device peserta TIDAK; deploy wajib di DGX; Docker perlu izin admin; SFTP untuk transfer)
+- [x] Konfirmasi display, presentasi 10 menit, Q&A 10 menit. (10 menit presentasi/demo + 10 menit Q&A; laptop peserta dikumpulkan)
+- [x] Konfirmasi penggunaan preliminary artifacts selama lockdown. (model weights wajib di-upload mandiri; source code wajib di `/workspace`)
+- [x] Dokumentasikan jawaban resmi panitia. (`docs/dgx-deployment-runbook.md` §A)
 
 ## B2. Staging Rehearsal (1:1 production, sebelum B200)
 

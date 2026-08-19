@@ -1,12 +1,31 @@
 # DGX B200 Deployment Runbook
 
 Panduan deploy step-by-step untuk final round di DGX B200. Diisi dari hasil
-**staging rehearsal** (2026-08-19, macOS + Docker/OrbStack, CPU). Saat final
-tinggal **salin-tempel** persis.
+**staging rehearsal** (2026-08-19, macOS + Docker/OrbStack, CPU) + **ketentuan
+panitia** (Technical Meeting 19 Agustus 2026). Saat final tinggal **salin-tempel**
+persis.
 
 > Rehearsal dijalankan dengan Docker 29.4.0 / Compose v5.1.2. Di DGX (Linux)
 > mesin Docker-nya native, command-nya identik. Aplikasi CPU-only (TF-IDF),
 > GPU B200 tidak dipakai untuk inference.
+
+---
+
+## A. Infrastruktur DGX (dari panitia)
+
+- **OS:** Ubuntu 22.04 LTS · Python 3.10.12 · GCC/G++ 11.4.0 · CUDA 12.4/12.8
+- **GPU:** 1× MIG NVIDIA B200 (VRAM 45 GB) — **tidak dipakai** (app CPU-only).
+- **Akses SSH:** `ssh <team_name>@<IP> -p <Port>` (kredensial diberikan panitia saat registrasi 21 Agustus).
+- **Transfer file:** SFTP (WinSCP/FileZilla) dari laptop → server. Gunakan SFTP, **bukan `git clone`** (device peserta tanpa internet).
+- **Direktori:** `/workspace` (private, tempat project/source) · `/data` (dataset read-only).
+- **Internet:** server DGX **punya akses internet** (bisa `docker pull`/`pip install`); device peserta tidak.
+- **Docker:** ⚠️ wajib konfirmasi ke admin HPC apakah Docker + Compose terpasang / diizinkan (custom image perlu formulir pengajuan). **Pastikan sebelum lockdown.**
+
+## B. Checklist sebelum lockdown (kerjakan SEKARANG)
+
+- [ ] Konfirmasi ke panitia/admin HPC: Docker Engine + Compose terpasang di server DGX? Versi?
+- [ ] Siapkan kredensial SSH + port tim (didapat saat registrasi).
+- [ ] Siapkan arsip repo (source code) untuk di-SFTP ke `/workspace`.
 
 ---
 
@@ -17,6 +36,16 @@ tinggal **salin-tempel** persis.
 - [ ] Model TF-IDF `a10bddb1432d93e9b041c6821e669001c5db8b8fd372b519f6f31b0111aac7ce` ada di `ml/artifacts/models/tfidf-aspect-silver-v1/model.joblib` (hash diverifikasi `load_tfidf_contract` terhadap `ml/configs/a9.yaml`).
 - [ ] Bundle data `sipature-app/src/data/generated/{places,interventions,corpus}.json` sudah ter-generate.
 - [ ] `.env` sudah disalin dari `.env.example` dan `POSTGRES_PASSWORD` diganti.
+
+## 0b. Transfer repo ke DGX (via SFTP)
+
+```bash
+# Dari laptop (tanpa internet): upload repo ke /workspace via SFTP/WinSCP.
+# Pastikan folder ter-upload: ml/  sipature-api/  sipature-app/  (termasuk model + generated data)
+```
+
+Karena server punya internet, langkah build (§1) bisa langsung di server —
+base image ditarik dari Docker Hub saat build. Tidak perlu `docker save`/`load`.
 
 ## 1. Build image
 

@@ -40,9 +40,12 @@
   h3 { font-size: 14px; margin: 22px 0 10px; }
   .anno-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
   .anno-card { border: 1px solid var(--hairline); border-radius: 8px; background: var(--panel2); padding: 10px 12px; position: relative; }
+  .anno-card.active { border-color: var(--good); box-shadow: 0 0 0 2px rgba(22,163,74,0.35); }
+  .anno-card.active .who::after { content: " ✓ terpakai"; color: var(--good); font-weight: 600; }
   .anno-card .who { font-size: 12px; font-weight: 700; color: #7dd3fc; margin-bottom: 6px; }
   .anno-card button { margin-top: 8px; padding: 4px 10px; font-size: 12px; border-radius: 6px;
     border: 1px solid var(--hairline); background: var(--panel); color: var(--text); cursor: pointer; }
+  .anno-card button.used { background: var(--good); border-color: var(--good); color: white; }
   .chip { display: inline-block; margin: 2px 3px 2px 0; padding: 2px 8px; border-radius: 6px;
     font-size: 11.5px; background: var(--panel); border: 1px solid var(--hairline); }
   .chip .ev { color: var(--muted); font-size: 10.5px; display: block; margin-top: 2px; }
@@ -100,7 +103,7 @@
 <script>
 const state = {
   aspects: [], polarities: [], severities: [],
-  reviews: [], current: null, currentLabels: [], evidenceFocus: null,
+  reviews: [], current: null, currentLabels: [], evidenceFocus: null, currentSource: null,
 };
 
 async function api(path, opts) {
@@ -142,6 +145,7 @@ function openReview(index) {
   state.current = index;
   const r = state.reviews[index];
   state.currentLabels = JSON.parse(JSON.stringify(r.labels || []));
+  state.currentSource = null;
   renderDetail(r);
   renderSidebar();
 }
@@ -176,10 +180,10 @@ function renderDetail(r) {
       <h3>Label per annotator <span class="hint">(klik "Pakai" untuk menyalin ke label final)</span></h3>
       <div class="anno-grid">
         ${annos.map(([aid, a]) => `
-          <div class="anno-card">
+          <div class="anno-card ${state.currentSource === aid ? 'active' : ''}" data-aid="${esc(aid)}">
             <div class="who">${esc(aid)}</div>
             ${(a.labels || []).length ? (a.labels || []).map(chipHTML).join("") : '<div class="hint">(tidak ada label)</div>'}
-            <div><button type="button" onclick="useAnnotator('${esc(aid)}')">Pakai ${esc(aid)}</button></div>
+            <div><button type="button" class="${state.currentSource === aid ? 'used' : ''}" onclick="useAnnotator('${esc(aid)}')">${state.currentSource === aid ? '✓ Terpakai' : 'Pakai ' + esc(aid)}</button></div>
           </div>`).join("")}
       </div>
     </div>
@@ -196,8 +200,22 @@ function useAnnotator(aid) {
   const a = r.annotators[aid];
   if (!a) return;
   state.currentLabels = JSON.parse(JSON.stringify(a.labels || []));
+  state.currentSource = aid;
   saveCurrent();
   renderDetail(r);
+}
+
+function updateSourceUI() {
+  document.querySelectorAll(".anno-card").forEach(card => {
+    const who = card.getAttribute("data-aid");
+    const active = who === state.currentSource;
+    card.classList.toggle("active", active);
+    const btn = card.querySelector("button");
+    if (btn) {
+      btn.classList.toggle("used", active);
+      btn.textContent = active ? "✓ Terpakai" : "Pakai " + who;
+    }
+  });
 }
 
 function renderText(text) {
@@ -247,7 +265,14 @@ function renderAspects() {
   }).join("");
 }
 
+function clearSource() {
+  if (state.currentSource === null) return;
+  state.currentSource = null;
+  updateSourceUI();
+}
+
 function toggleAspect(key) {
+  clearSource();
   const idx = state.currentLabels.findIndex(l => l.aspect === key);
   if (idx >= 0) state.currentLabels.splice(idx, 1);
   else {
@@ -259,6 +284,7 @@ function toggleAspect(key) {
 }
 
 function setPolarity(key, pol) {
+  clearSource();
   const lab = labelOf(key); if (!lab) return;
   lab.polarity = pol;
   if (pol !== "negative") lab.severity = null;
@@ -267,12 +293,14 @@ function setPolarity(key, pol) {
 }
 
 function setSeverity(key, sev) {
+  clearSource();
   const lab = labelOf(key); if (!lab) return;
   lab.severity = sev;
   saveCurrent(); renderAspects();
 }
 
 function setEvidence(key, text) {
+  clearSource();
   const lab = labelOf(key); if (!lab) return;
   lab.evidence_text = text;
   saveCurrent();
@@ -327,6 +355,7 @@ function bindTextClicks() {
       if (!focus) return;
       const lab = labelOf(focus);
       if (!lab) return;
+      clearSource();
       lab.evidence_text = (lab.evidence_text ? lab.evidence_text + " " : "") + w;
       const input = document.querySelector(`.aspect-card[data-k="${focus}"] input.evidence-input`);
       if (input) input.value = lab.evidence_text;

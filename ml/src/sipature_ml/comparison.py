@@ -40,6 +40,13 @@ def _round(value: float | None, digits: int = 4) -> float | None:
     return None if value is None else round(value, digits)
 
 
+def _indobert_gold(metrics_dir: Path) -> dict[str, Any] | None:
+    metric = _load_metric(metrics_dir / "indobert-gold-v1-test-metrics.json")
+    if metric is None or "macro_f1" not in metric:
+        return None
+    return {"macro_f1": metric["macro_f1"], "micro_f1": metric["micro_f1"]}
+
+
 def run_preliminary_final_comparison(
     metrics_dir: Path,
     figure_dir: Path,
@@ -66,8 +73,17 @@ def run_preliminary_final_comparison(
         }
     models["IndoBERT (aspek)"] = {
         "preliminary": INDOBERT_SILVER["aspect"],
-        "final": None,  # gold evaluation pending (GPU/Colab)
+        "final": _indobert_gold(metrics_dir),
     }
+
+    notes = [
+        "Keyword silver Macro F1 0.9768 is circular against silver rules.",
+        "IndoBERT polarity (silver 0.7459) is a separate task and not in the aspect comparison.",
+    ]
+    if models["IndoBERT (aspek)"]["final"] is None:
+        notes.append("IndoBERT final (gold) is pending GPU/Colab execution.")
+    else:
+        notes.append("IndoBERT final (gold) is inference-only (silver-trained A7 model, no re-tune).")
 
     summary = {
         "reference": {
@@ -76,11 +92,7 @@ def run_preliminary_final_comparison(
             "split_version": "silver-split-1.0.0",
         },
         "models": models,
-        "notes": [
-            "Keyword silver Macro F1 0.9768 is circular against silver rules.",
-            "IndoBERT final (gold) is pending GPU/Colab execution.",
-            "IndoBERT polarity (silver 0.7459) is a separate task and not in the aspect comparison.",
-        ],
+        "notes": notes,
     }
 
     figure_dir.mkdir(parents=True, exist_ok=True)
@@ -101,16 +113,17 @@ def run_preliminary_final_comparison(
     ax.set_title("Preliminary (silver) vs Final (gold) — Macro F1", loc="left", fontweight="bold")
     ax.legend(frameon=False)
     ax.spines[["top", "right"]].set_visible(False)
-    # Mark IndoBERT gold as pending.
-    ax.annotate(
-        "gold pending (GPU)",
-        xy=(x[-1] + width / 2, 0.02),
-        xytext=(x[-1] + width / 2, 0.14),
-        ha="center",
-        fontsize=9,
-        color="#2A78D6",
-        arrowprops={"arrowstyle": "->", "color": "#2A78D6"},
-    )
+    # Mark IndoBERT gold as pending when not yet evaluated.
+    if models["IndoBERT (aspek)"]["final"] is None:
+        ax.annotate(
+            "gold pending (GPU)",
+            xy=(x[-1] + width / 2, 0.02),
+            xytext=(x[-1] + width / 2, 0.14),
+            ha="center",
+            fontsize=9,
+            color="#2A78D6",
+            arrowprops={"arrowstyle": "->", "color": "#2A78D6"},
+        )
     fig.tight_layout()
     path = figure_dir / "37_preliminary_vs_final_macro_f1.png"
     fig.savefig(path, dpi=180, bbox_inches="tight")

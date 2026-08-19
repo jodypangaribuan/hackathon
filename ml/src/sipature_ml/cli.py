@@ -24,6 +24,7 @@ from .environment import build_environment_snapshot, write_environment_snapshot
 from .evaluation import run_calibration, run_locked_test_evaluation
 from .gold_baselines import run_gold_baselines
 from .indobert import run_indobert_training
+from .indobert_gold import run_gold_indobert_evaluation
 from .inventory import inventory_dataset, write_inventory
 from .paths import PATHS
 from .quality_figures import (
@@ -121,6 +122,15 @@ def build_parser() -> argparse.ArgumentParser:
     )
     compare.add_argument("--metrics-dir", type=Path, default=PATHS.artifacts / "metrics")
     compare.add_argument("--figure-dir", type=Path, default=PATHS.artifacts / "figures" / "comparison")
+
+    gold_indobert = subparsers.add_parser(
+        "evaluate-gold-indobert", help="Evaluate the frozen A7 IndoBERT against human-gold labels (GPU)"
+    )
+    gold_indobert.add_argument("--split-dir", type=Path, default=PATHS.splits)
+    gold_indobert.add_argument("--model-run-dir", type=Path, required=True)
+    gold_indobert.add_argument("--calibration-dir", type=Path, required=True)
+    gold_indobert.add_argument("--gold", type=Path, default=PATHS.annotations / "gold" / "gold.jsonl")
+    gold_indobert.add_argument("--output-dir", type=Path, required=True)
 
     indobert = subparsers.add_parser(
         "train-indobert", help="Train IndoBERT tasks on train/validation only (GPU)"
@@ -259,6 +269,12 @@ def main() -> int:
         return 0
     if args.command == "compare-preliminary-final":
         result = run_preliminary_final_comparison(args.metrics_dir, args.figure_dir)
+        print(json.dumps(result, indent=2))
+        return 0
+    if args.command == "evaluate-gold-indobert":
+        result = run_gold_indobert_evaluation(
+            args.split_dir, args.model_run_dir, args.calibration_dir, args.gold, args.output_dir
+        )
         print(json.dumps(result, indent=2))
         return 0
     if args.command == "train-indobert":

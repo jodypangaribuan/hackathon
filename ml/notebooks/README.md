@@ -17,6 +17,7 @@ marked "pipeline" and have no notebook file.
 | `09_prioritization_and_export.ipynb` | CPU | Signals/expert review | Priority, app export, sensitivity | Done (run 2026-08-13) |
 | `10_gold_baselines.ipynb` | CPU | `gold.jsonl` + splits | Gold keyword/TF-IDF metrics + silver-vs-gold comparison | Done (run 2026-08-19) |
 | `11_preliminary_vs_final_comparison.ipynb` | CPU | Silver + gold metrics | Preliminary-vs-final table + figure | Done (run 2026-08-19) |
+| `12_gold_indobert.ipynb` | GPU | `gold.jsonl` + A7 model + calibration | IndoBERT-vs-gold metrics (inference-only) | To run |
 
 ## Executed runs (notebooks 01–05)
 

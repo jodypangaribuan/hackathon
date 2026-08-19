@@ -340,15 +340,15 @@ Linux + Docker + offline, bukan GPU.
 
 ## C5. Docker dan DGX B200
 
-- [ ] Buat reproducible Dockerfile dengan compatible CUDA base.
-- [ ] Pin Node/Python dependencies.
-- [ ] Jangan download model saat startup.
-- [ ] Bundle/mount model dan tokenizer lokal.
-- [ ] Konfigurasi GPU runtime dan health checks.
-- [ ] Test `docker compose up --build`, cold start, restart, ports, networking.
-- [ ] Deploy ke DGX dan verifikasi GPU detection.
-- [ ] Jalankan inference fixtures dan route smoke tests.
-- [ ] Dokumentasikan deployment dan rollback commands.
+- [x] Buat reproducible Dockerfile dengan compatible CUDA base. (CPU-only: TF-IDF → `python:3.10-slim` + `node:22-alpine`; CUDA tidak diperlukan)
+- [x] Pin Node/Python dependencies. (Python `==` pinned; Node `package-lock.json` + `npm ci`)
+- [x] Jangan download model saat startup. (model di-`COPY` saat build; log startup tanpa pip/download)
+- [x] Bundle/mount model dan tokenizer lokal. (`COPY ml/artifacts/models/tfidf-aspect-silver-v1 → /app/model`)
+- [x] Konfigurasi GPU runtime dan health checks. (GPU N/A; healthcheck di compose + web Dockerfile, 3× healthy)
+- [x] Test `docker compose up --build`, cold start, restart, ports, networking. (cold start `down`+`up --build` → 3× healthy, data persist 388/210)
+- [ ] Deploy ke DGX dan verifikasi GPU detection. (perlu DGX hari-H; app CPU-only jadi GPU detection N/A — lihat runbook §A)
+- [x] Jalankan inference fixtures dan route smoke tests. (9 pytest pass di container; semua route 200, `/api/analyze` mode production)
+- [x] Dokumentasikan deployment dan rollback commands. (`docs/dgx-deployment-runbook.md` §8 rollback)
 
 ## C6. Performance dan Reliability
 

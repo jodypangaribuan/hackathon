@@ -108,7 +108,7 @@ Dua file *review* utama (`wisata-v2.csv` 12.691 + `resto-hotel-v2.csv` 9.611) ad
 
 Rantai lengkap dari ulasan mentah hingga tindak lanjut terverifikasi:
 
-![Rantai solusi SIPATURE](docs/figures/diagrams/solution-chain.html)
+![Rantai solusi SIPATURE](docs/figures/diagrams/solution-chain.png)
 
 **Gambar 1. Rantai solusi SIPATURE — dari ulasan menjadi tindak lanjut terverifikasi.**
 
@@ -174,7 +174,7 @@ Tujuh tahap: ulasan mentah dibersihkan dan dihubungkan ke destinasi (*entity res
 
 ## 5.1 Arsitektur
 
-![Deployment tiga layanan di DGX B200](docs/figures/diagrams/deployment-dgx.html)
+![Deployment tiga layanan di DGX B200](docs/figures/diagrams/deployment-dgx.png)
 
 **Gambar 2. Deployment tiga layanan di host DGX B200.**
 
@@ -209,7 +209,7 @@ Docker Compose tiga layanan; model & data di-*bundle* ke image (tanpa *download*
 
 ## 6.1 Benchmark Gold-v1 (human)
 
-![Benchmark deteksi aspek silver vs gold-v1](docs/figures/diagrams/benchmark-gold-v1.html)
+![Benchmark deteksi aspek silver vs gold-v1](docs/figures/diagrams/benchmark-gold-v1.png)
 
 **Gambar 3. Perbandingan Macro F1 deteksi aspek pada silver (locked) vs gold-v1 (human).**
 
@@ -272,7 +272,7 @@ Arsitektur *batch-first* + SQL; TF-IDF inferensi linear; *entity resolution* ber
 
 ## 8.1 Kebijakan Data Terbatas (Restricted Data Policy)
 
-![Lapisan data dan kebijakan akses](docs/figures/diagrams/data-pipeline-restricted.html)
+![Lapisan data dan kebijakan akses](docs/figures/diagrams/data-pipeline-restricted.png)
 
 **Gambar 4. Lima lapisan data — dari mentah (restricted) ke agregat aman (published).**
 
@@ -286,7 +286,7 @@ Data SIPATURE dibagi lima lapisan dengan tingkat akses berbeda. Lapisan mentah h
 | Aggregate | 1.682 sinyal + evidence | evidence verbatim | restricted |
 | Safe product | app bundle (103 destinasi, 210 isu) | **TIDAK ADA** | published |
 
-![Matriks akses data terbatas](docs/figures/diagrams/restricted-data-policy.html)
+![Matriks akses data terbatas](docs/figures/diagrams/restricted-data-policy.png)
 
 **Gambar 5. Matriks akses tiga peran × lima komponen data.**
 

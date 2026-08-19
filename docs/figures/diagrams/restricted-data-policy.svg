@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 740 404" role="img" aria-labelledby="dp-security-matrix-title dp-security-matrix-desc" xmlns="http://www.w3.org/2000/svg"><defs><style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');</style></defs>
+        <title id="dp-security-matrix-title">Matriks akses data terbatas SIPATURE</title><desc id="dp-security-matrix-desc">Matriks izin tiga peran dan lima komponen data, menunjukkan admin, read, atau none.</desc>
+        <rect width="740" height="404" fill="#f5f5f5"/>
+
+        <rect class="component-head" x="12" y="72" width="208" height="52" rx="6"/><text class="head-name" x="116" y="96" text-anchor="middle">Komponen</text><text class="head-sub" x="116" y="112" text-anchor="middle">vs. peran</text>
+        <rect class="role" x="232" y="72" width="148" height="52" rx="6"/><text class="role-name" x="306" y="92" text-anchor="middle">Publik / Juri</text><text class="role-code" x="306" y="108" text-anchor="middle">GRP-PUBLIC</text>
+        <rect class="role" x="396" y="72" width="148" height="52" rx="6"/><text class="role-name" x="470" y="92" text-anchor="middle">Pengelola</text><text class="role-code" x="470" y="108" text-anchor="middle">GRP-OPERATOR</text>
+        <rect class="role" x="560" y="72" width="148" height="52" rx="6"/><text class="role-name" x="634" y="92" text-anchor="middle">Tim Data / ML</text><text class="role-code" x="634" y="108" text-anchor="middle">GRP-ML</text>
+
+        <rect class="component" x="12" y="140" width="208" height="36" rx="4"/><text class="component-name" x="24" y="162">Raw CSV</text><text class="hint" x="208" y="162" text-anchor="end">reviewer-id</text>
+        <rect class="cell none" x="232" y="140" width="148" height="36" rx="4"/><text class="value none-text" x="306" y="162" text-anchor="middle">None</text>
+        <rect class="cell none" x="396" y="140" width="148" height="36" rx="4"/><text class="value none-text" x="470" y="162" text-anchor="middle">None</text>
+        <rect class="cell full" x="560" y="140" width="148" height="36" rx="4"/><text class="value full-text" x="634" y="162" text-anchor="middle">Admin</text>
+
+        <rect class="component" x="12" y="180" width="208" height="36" rx="4"/><text class="component-name" x="24" y="202">Clean Parquet</text><text class="hint" x="208" y="202" text-anchor="end">canonical</text>
+        <rect class="cell none" x="232" y="180" width="148" height="36" rx="4"/><text class="value none-text" x="306" y="202" text-anchor="middle">None</text>
+        <rect class="cell none" x="396" y="180" width="148" height="36" rx="4"/><text class="value none-text" x="470" y="202" text-anchor="middle">None</text>
+        <rect class="cell full" x="560" y="180" width="148" height="36" rx="4"/><text class="value full-text" x="634" y="202" text-anchor="middle">Admin</text>
+
+        <rect class="component" x="12" y="220" width="208" height="36" rx="4"/><text class="component-name" x="24" y="242">Annotation</text><text class="hint" x="208" y="242" text-anchor="end">silver+gold</text>
+        <rect class="cell none" x="232" y="220" width="148" height="36" rx="4"/><text class="value none-text" x="306" y="242" text-anchor="middle">None</text>
+        <rect class="cell none" x="396" y="220" width="148" height="36" rx="4"/><text class="value none-text" x="470" y="242" text-anchor="middle">None</text>
+        <rect class="cell full" x="560" y="220" width="148" height="36" rx="4"/><text class="value full-text" x="634" y="242" text-anchor="middle">Admin</text>
+
+        <rect class="component" x="12" y="260" width="208" height="36" rx="4"/><text class="component-name" x="24" y="282">Evidence</text><text class="hint" x="208" y="282" text-anchor="end">verbatim</text>
+        <rect class="cell none" x="232" y="260" width="148" height="36" rx="4"/><text class="value none-text" x="306" y="282" text-anchor="middle">None</text>
+        <rect class="cell none" x="396" y="260" width="148" height="36" rx="4"/><text class="value none-text" x="470" y="282" text-anchor="middle">None</text>
+        <rect class="cell full" x="560" y="260" width="148" height="36" rx="4"/><text class="value full-text" x="634" y="282" text-anchor="middle">Admin</text>
+
+        <rect class="component" x="12" y="300" width="208" height="36" rx="4"/><text class="component-name" x="24" y="322">Safe aggregate</text><text class="hint" x="208" y="322" text-anchor="end">app bundle</text>
+        <rect class="focal" x="232" y="300" width="148" height="36" rx="4"/><text class="value focal-text" x="306" y="318" text-anchor="middle">Read</text><text class="focal-sub" x="306" y="330" text-anchor="middle">dipublikasikan</text>
+        <rect class="cell read" x="396" y="300" width="148" height="36" rx="4"/><text class="value read-text" x="470" y="322" text-anchor="middle">Read</text>
+        <rect class="cell full" x="560" y="300" width="148" height="36" rx="4"/><text class="value full-text" x="634" y="322" text-anchor="middle">Admin</text>
+
+        <line x1="12" y1="356" x2="728" y2="356" stroke="rgba(45,49,66,.12)" stroke-width=".8"/><text class="legend-text" x="12" y="380" letter-spacing=".14em">LEGEND</text>
+        <rect class="cell full" x="96" y="368" width="16" height="12" rx="2"/><text class="legend-text" x="120" y="380">Admin (tim ML)</text>
+        <rect class="cell read" x="256" y="368" width="16" height="12" rx="2"/><text class="legend-text" x="280" y="380">Read</text>
+        <rect class="cell none" x="360" y="368" width="16" height="12" rx="2"/><text class="legend-text" x="384" y="380">None</text>
+        <rect class="focal" x="448" y="368" width="16" height="12" rx="2"/><text class="legend-text" x="472" y="380">batas publikasi</text>
+      </svg>

@@ -1,41 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIPATURE · Data Pipeline &amp; Restricted Data</title>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --paper: #f5f5f5; --paper-2: #ececec; --ink: #2d3142; --muted: #4f5d75;
-      --soft: #7a8399; --rule: rgba(45,49,66,0.12); --accent: #eb6c36;
-      --accent-tint: rgba(235,108,54,0.08); --link: #2e5aa8;
-      --sans: 'Geist', system-ui, sans-serif; --serif: 'Instrument Serif', serif;
-      --mono: 'Geist Mono', ui-monospace, monospace;
-    }
-    body { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; background: var(--paper); color: var(--ink); font-family: var(--sans); }
-    .frame { width: 100%; max-width: 1200px; }
-    .eyebrow { margin-bottom: 0.5rem; color: var(--muted); font: 500 0.66rem var(--mono); letter-spacing: 0.18em; text-transform: uppercase; }
-    h1 { margin-bottom: 1.5rem; color: var(--ink); font: 400 clamp(1.5rem, 2.4vw + 0.75rem, 2rem)/1.15 var(--serif); letter-spacing: -0.02em; }
-    svg { display: block; width: 100%; min-width: 1040px; }
-    .tier-title { fill: var(--ink); font: 600 13px var(--sans); text-anchor: middle; }
-    .bucket { fill: var(--muted); font: 400 9px var(--mono); text-anchor: middle; }
-    .field-label { fill: var(--ink); font: 600 11px var(--sans); }
-    .field-value { fill: var(--muted); font: 400 9px var(--mono); }
-    .focal-text { fill: var(--accent); }
-    .arc-label { font-family: var(--mono); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; font-size: 10px; text-anchor: middle; }
-  </style>
-</head>
-<body>
-  <main class="frame">
-    <p class="eyebrow">Medallion · Diagram Design</p>
-    <h1>Lapisan data dan kebijakan akses</h1>
-
-    <svg viewBox="0 0 1040 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="medallion-title medallion-desc">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1040 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="medallion-title medallion-desc">
       <title id="medallion-title">Lapisan data SIPATURE dari mentah hingga agregat aman</title>
       <desc id="medallion-desc">Lima lapisan data mengalir dari CSV mentah yang memuat identitas reviewer, melalui pembersihan, anotasi, dan agregasi, menuju bundle agregat aman yang dipublikasikan tanpa identitas reviewer.</desc>
-      <defs>
+      <defs><style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');</style>
         <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
         <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/></marker>
         <clipPath id="clip-raw"><rect x="16" y="80" width="172" height="280" rx="6"/></clipPath>
@@ -119,6 +86,3 @@
       <text x="508" y="408" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif">Live</text>
       <text x="508" y="420" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace">/predict-review · FastAPI · p50 2.1 ms</text>
     </svg>
-  </main>
-</body>
-</html>

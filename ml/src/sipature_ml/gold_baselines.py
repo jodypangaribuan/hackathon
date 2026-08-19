@@ -24,6 +24,43 @@ from .manifest import sha256_file
 SPLIT_NAMES = ("train", "validation", "test")
 
 
+def validate_gold_records(gold_path: Path) -> dict[str, Any]:
+    """Validate frozen gold.jsonl records (no `annotator_id`, unlike annotation files).
+
+    Checks status, taxonomy membership, polarity/severity rules, and verbatim
+    evidence. Returns ``{records, invalid_records, errors}``.
+    """
+    taxonomy = load_config("taxonomy")
+    records = _read_jsonl(gold_path)
+    invalid: list[dict[str, Any]] = []
+    for record in records:
+        errors: list[str] = []
+        if record.get("annotation_status") not in {"completed", "adjudicated"}:
+            errors.append(f"invalid status: {record.get('annotation_status')}")
+        seen: set[str] = set()
+        for label in record.get("labels", []):
+            aspect = label.get("aspect")
+            polarity = label.get("polarity")
+            severity = label.get("severity")
+            if aspect not in taxonomy["aspect_definitions"]:
+                errors.append(f"invalid aspect: {aspect}")
+            if aspect in seen:
+                errors.append(f"duplicate aspect: {aspect}")
+            seen.add(aspect)
+            if polarity not in taxonomy["polarity_labels"]:
+                errors.append(f"invalid polarity: {polarity}")
+            if polarity == "negative" and severity not in taxonomy["severity_labels"]:
+                errors.append(f"negative label requires severity: {aspect}")
+            if polarity != "negative" and severity is not None:
+                errors.append(f"nonnegative label severity must be null: {aspect}")
+            evidence = label.get("evidence_text")
+            if evidence and evidence not in record.get("text", ""):
+                errors.append(f"evidence is not verbatim substring: {aspect}")
+        if errors:
+            invalid.append({"review_id": record.get("review_id"), "errors": errors})
+    return {"records": len(records), "invalid_records": len(invalid), "errors": invalid}
+
+
 def load_gold_labels(gold_path: Path) -> dict[str, list[dict[str, Any]]]:
     """Map review_id -> gold labels, validating the frozen gold artifact."""
     records = _read_jsonl(gold_path)

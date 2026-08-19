@@ -306,13 +306,13 @@ Linux + Docker + offline, bukan GPU.
 
 ## C2. API, Data, dan Workflow
 
-- [ ] Implement `/health`, `/predict-review`, `/destinations`, `/destinations/{id}`.
-- [ ] Implement `/interventions`, `/simulate`, `/model-card`.
-- [ ] Tambahkan schema validation, bounded payload, consistent errors, timeout/retry.
-- [ ] Load destinations, signals, evidence, interventions ke DB/SQLite.
-- [ ] Simpan model version, provenance, alert status, rejection reason.
-- [ ] Jangan simpan reviewer identity.
-- [ ] Siapkan reproducible seed dan JSON/SQLite fallback.
+- [x] Implement `/health`, `/predict-review`, `/destinations`, `/destinations/{id}`. (FastAPI `/health`+`/predict-review`; Next.js `/api/places` + `/api/places/[id]` sesuai contract)
+- [x] Implement `/interventions`, `/simulate`, `/model-card`. (`/api/opportunities` + `/api/simulate` + `/api/model-card` baru)
+- [x] Tambahkan schema validation, bounded payload, consistent errors, timeout/retry. (analyze timeout 5s + fallback; places limit; verify/alerts validasi)
+- [x] Load destinations, signals, evidence, interventions ke DB/SQLite. (destinations + signals + data_exports di-seed; evidence di-tahan `withheld_pending_privacy_review`; interventions diturunkan dari signals)
+- [x] Simpan model version, provenance, alert status, rejection reason. (`model_versions`+`data_exports` provenance; workflow `alerts`+`alert_verifications` via `/api/alerts` + `/api/alerts/verify`)
+- [x] Jangan simpan reviewer identity. (evidence di-tahan; `verified_by` opaque/null)
+- [x] Siapkan reproducible seed dan JSON/SQLite fallback. (`db:seed` idempotent; bundle JSON `src/data/generated/` sebagai source of truth)
 
 ## C3. Product Integration
 

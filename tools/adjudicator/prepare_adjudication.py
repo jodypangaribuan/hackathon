@@ -71,7 +71,31 @@ def main() -> int:
     parser.add_argument("paths", nargs="+", type=Path)
     parser.add_argument("--agreement", type=Path, required=True)
     parser.add_argument("--out-dir", type=Path, required=True)
+    parser.add_argument(
+        "--destinations",
+        type=Path,
+        default=Path("data/processed/canonical_destinations.parquet"),
+        help="Parquet canonical_destinations untuk nama/kind/kategori destinasi",
+    )
     args = parser.parse_args()
+
+    destination_meta: dict[str, dict] = {}
+    if args.destinations.is_file():
+        import pandas as pd
+
+        dest_df = pd.read_parquet(args.destinations)
+        for row in dest_df.to_dict(orient="records"):
+            destination_meta[row["destination_id"]] = {
+                "destination_name": row.get("canonical_name"),
+                "destination_kind": row.get("kind"),
+                "destination_category": row.get("category"),
+            }
+
+    def _dest_meta(destination_id: str) -> dict:
+        return destination_meta.get(
+            destination_id,
+            {"destination_name": None, "destination_kind": None, "destination_category": None},
+        )
 
     by_review: dict[str, list[dict]] = collections.defaultdict(list)
     for path in args.paths:
@@ -130,6 +154,7 @@ def main() -> int:
                 "text": first["text"],
                 "rating_context": first.get("rating_context"),
                 "annotation_version": first["annotation_version"],
+                **_dest_meta(first["destination_id"]),
                 "annotators": {
                     r["annotator_id"]: {"labels": r["labels"]} for r in ordered
                 },

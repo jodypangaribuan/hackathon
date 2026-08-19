@@ -70,12 +70,26 @@
   .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
   .empty { color: var(--muted); text-align: center; padding: 60px 20px; font-size: 14px; }
   .hint { color: var(--muted); font-size: 11px; margin-top: 4px; }
+  .dest-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; background: var(--panel2);
+    border: 1px solid var(--hairline); font-size: 12px; font-weight: 600; color: #7dd3fc; margin-right: 8px; }
+  details.panduan { background: var(--panel); border: 1px solid var(--hairline); border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 16px; }
+  details.panduan summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+  details.panduan .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-top: 12px; }
+  details.panduan .card { background: var(--panel2); border: 1px solid var(--hairline); border-radius: 8px; padding: 10px 12px; }
+  details.panduan .card h4 { margin: 0 0 4px; font-size: 13px; }
+  details.panduan .card p { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.5; }
+  details.panduan .card .kw { color: #7dd3fc; font-size: 11px; margin-top: 4px; }
+  details.panduan table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 12px; }
+  details.panduan th, details.panduan td { border: 1px solid var(--hairline); padding: 6px 10px; text-align: left; }
+  details.panduan th { background: var(--panel2); color: var(--muted); }
 </style>
 </head>
 <body>
 <header>
   <h1>SIPATURE Adjudicator</h1>
   <span class="progress" id="progress">–</span>
+  <button id="guide" onclick="toggleGuide()">Panduan</button>
   <button id="export" style="margin-left:auto" disabled>Export adjudicated.jsonl</button>
 </header>
 <main>
@@ -119,7 +133,7 @@ function renderSidebar() {
   sb.innerHTML = state.reviews.map((r, i) => `
     <div class="item ${state.current === i ? 'active' : ''}" onclick="openReview(${i})">
       <span class="dot ${r.status === 'adjudicated' ? 'done' : 'pending'}"></span>
-      ${r.status === 'adjudicated' ? '✓' : '•'} ${r.review_id.slice(-8)}
+      ${r.status === 'adjudicated' ? '✓' : '•'} ${esc(r.destination_name || r.review_id.slice(-8))}
       <div class="snip">${esc(r.text.slice(0, 70))}</div>
     </div>`).join("");
 }
@@ -146,9 +160,16 @@ function chipHTML(label) {
 function renderDetail(r) {
   const el = document.getElementById("detail");
   const annos = Object.entries(r.annotators || {});
+  const kindLabel = r.destination_kind ? (r.destination_kind === "wisata" ? "Wisata" : r.destination_kind === "hotel" ? "Hotel" : r.destination_kind === "resto" ? "Restoran" : r.destination_kind) : "";
+  const category = r.destination_category || "";
   el.innerHTML = `
     <div class="review-card">
-      <div class="meta">Review <code>${esc(r.review_id)}</code> · rating ${r.rating_context ?? "-"}</div>
+      <div class="meta">
+        ${kindLabel ? `<span class="dest-badge">${esc(kindLabel)}</span>` : ""}
+        <strong style="font-size:15px">${esc(r.destination_name || "(tanpa nama)")}</strong>
+        ${category ? ` · ${esc(category)}` : ""}
+        <br><span style="opacity:.75">Review <code>${esc(r.review_id)}</code> · rating ${r.rating_context ?? "-"}</span>
+      </div>
       <div class="review-text" id="text">${renderText(r.text)}</div>
     </div>
     <div class="review-card">
@@ -194,26 +215,27 @@ function renderAspects() {
     const evidence = lab?.evidence_text || "";
     const sevVisible = polarity === "negative";
     return `
-      <div class="aspect-card ${on ? 'on' : ''} ${state.evidenceFocus === a.key ? 'focus' : ''}" data-k="${a.key}">
+      <div class="aspect-card ${on ? 'on' : ''} ${state.evidenceFocus === a.key ? 'focus' : ''}" data-k="${a.key}" onmouseenter="highlightSeeds('${a.key}', true)" onmouseleave="highlightSeeds('${a.key}', false)">
         <div class="aspect-head" onclick="toggleAspect('${a.key}')">
           <input type="checkbox" ${on ? 'checked' : ''} onclick="event.stopPropagation(); toggleAspect('${a.key}')" />
           <div>
             <div class="name">${esc(a.label)}</div>
             <div class="def">${esc(a.definition)}</div>
+            <div class="kw" style="font-size:11px;color:#7dd3fc;margin-top:2px">kata kunci: ${esc(a.hint)}</div>
           </div>
         </div>
         <div class="aspect-body">
           <div class="row">
             <span class="lbl">Polarity</span>
             <span class="seg polarity">
-              ${state.polarities.map(p => `<button type="button" data-p="${p}" class="${p===polarity?'on':''}" onclick="event.stopPropagation(); setPolarity('${a.key}','${p}')">${p}</button>`).join("")}
+              ${state.polarities.map(p => `<button type="button" data-p="${p.key}" class="${p.key===polarity?'on':''}" onclick="event.stopPropagation(); setPolarity('${a.key}','${p.key}')">${p.key}</button>`).join("")}
             </span>
           </div>
           ${sevVisible ? `
           <div class="row">
             <span class="lbl">Severity</span>
             <span class="seg sev">
-              ${state.severities.map(s => `<button type="button" data-s="${s}" class="${s===severity?'on':''}" onclick="event.stopPropagation(); setSeverity('${a.key}','${s}')">${s}</button>`).join("")}
+              ${state.severities.map(s => `<button type="button" data-s="${s.key}" class="${s.key===severity?'on':''}" onclick="event.stopPropagation(); setSeverity('${a.key}','${s.key}')">${s.key}</button>`).join("")}
             </span>
           </div>` : ''}
           <div class="row">
@@ -254,6 +276,47 @@ function setEvidence(key, text) {
   const lab = labelOf(key); if (!lab) return;
   lab.evidence_text = text;
   saveCurrent();
+}
+
+function seedWords(key) {
+  const meta = aspectMeta(key);
+  return (meta?.hint || "").toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+}
+
+function highlightSeeds(key, on) {
+  const terms = seedWords(key);
+  document.querySelectorAll(".review-text .word").forEach(span => {
+    const w = (span.getAttribute("data-w") || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (w && terms.includes(w)) span.classList.toggle("hl", on);
+  });
+}
+
+function toggleGuide() {
+  const el = document.getElementById("detail");
+  const existing = document.getElementById("panduan");
+  if (existing) { existing.remove(); return; }
+  const pol = state.polarities.map(p => `<tr><td><strong>${esc(p.key)}</strong></td><td>${esc(p.desc)}</td></tr>`).join("");
+  const sev = state.severities.map(s => `<tr><td><strong>${esc(s.key)}</strong></td><td>${esc(s.desc)}</td></tr>`).join("");
+  const aspects = state.aspects.map(a =>
+    `<div class="card"><h4>${esc(a.label)}</h4><p>${esc(a.definition)}</p><div class="kw">kata kunci: ${esc(a.hint)}</div></div>`
+  ).join("");
+  el.insertAdjacentHTML("afterbegin", `
+    <details class="panduan" id="panduan" open>
+      <summary>📘 Panduan Adjudikasi</summary>
+      <p class="hint" style="font-size:13px;color:var(--muted);line-height:1.7">
+        1. Baca <strong>nama tempat</strong> (badge di atas) + teks review. Jenis tempat membantu menebak aspek:
+        hotel → kamar/kenyamanan; wisata → akses/pemandangan; resto → harga/pelayanan.<br>
+        2. Lihat label tiap annotator (A1/A2/A3). Kalau setuju salah satu → klik <strong>"Pakai A…"</strong>.<br>
+        3. Kalau perlu ubah: centang <strong>aspek</strong> → pilih <strong>polarity</strong> →
+           kalau negative pilih <strong>severity</strong> → isi <strong>evidence</strong> (klik kata di teks).<br>
+        4. Satu aspek = satu label. Evidence harus <strong>verbatim</strong> (klik kata, jangan ketik bebas).<br>
+        5. Tersimpan otomatis — kerjakan sampai semua hijau (51/51), lalu <strong>Export adjudicated.jsonl</strong>.
+      </p>
+      <h3>Aspek (14)</h3>
+      <div class="grid">${aspects}</div>
+      <h3>Polarity</h3><table>${pol}</table>
+      <h3>Severity (hanya negative)</h3><table>${sev}</table>
+    </details>`);
 }
 
 function bindTextClicks() {

@@ -5,6 +5,9 @@
     "text": "Ikan bakarnya okey banget",
     "rating_context": 4.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Rumah Makan Lomak",
+    "destination_kind": "resto",
+    "destination_category": "Restoran",
     "annotators": {
       "A2": {
         "labels": [
@@ -34,6 +37,9 @@
     "text": "Kurang perawatan",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Air Terjun Janji",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -63,6 +69,9 @@
     "text": "Nice place buat ngadem dari hiruk pikuk kota medan",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Labersa Hotel and Convention Center Toba, Balige",
+    "destination_kind": "hotel",
+    "destination_category": "Hotel Resor",
     "annotators": {
       "A2": {
         "labels": [
@@ -92,6 +101,9 @@
     "text": "Sayang kurang terawat pada hal bagus untuk edukasi, dan harus di kembangkan lagi biar tidak bosan.. parkiran jg di pinggir jln",
     "rating_context": 4.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Simalungun Museum",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Budaya / Sejarah",
     "annotators": {
       "A1": {
         "labels": [
@@ -133,6 +145,9 @@
     "text": "Kamar nya lumayan bagus..area parkiran kurang lebar",
     "rating_context": 3.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "RAP Hotel Balige",
+    "destination_kind": "hotel",
+    "destination_category": "Hotel",
     "annotators": {
       "A1": {
         "labels": [
@@ -162,6 +177,9 @@
     "text": "Viewnya bagus, tempatnya bersih, cocok untuk camping bersama teman dan keluarga. Area parkir yang memadai, kamar mandi yg bersih, dan tersedia banyak tempat sampah dibeagai titik sehingga area tetap bersih. Harga terjangkau. Sudah tersedia banyak pondok untuk berteduh atau duduk2 santai. Tidak terlalu ramai pengunjung sehingga bisa menikmati suasana santai di sana. Harus ke sini sih pokoknya",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Bukit Senyum",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -287,6 +305,9 @@
     "text": "Pokoknya harus coba kesini kalau ke P samosir , ikan nila dan lobster . Top Banget",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Widya Restaurant",
+    "destination_kind": "resto",
+    "destination_category": "Restoran",
     "annotators": {
       "A2": {
         "labels": [
@@ -316,6 +337,9 @@
     "text": "Bagus ramah ramah",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Tiara Bunga Hotel",
+    "destination_kind": "hotel",
+    "destination_category": "Hotel",
     "annotators": {
       "A1": {
         "labels": [
@@ -345,6 +369,9 @@
     "text": "Pemndian aek manigom ini agak masuk kdlm dia jalnny .sehrusny d dpn ad pnunjuk pas msuk dri jalan besar jd lbih myakin kn ada tmpt wsta ddlm .. tp untg ada google map dan titikny pas... prtma msuk parkir kereta 5000 .. uang masuk gada cman ...",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Manigom Nauli",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -374,6 +401,9 @@
     "text": "saya ingin kontak restoran ini untuk booking tempat apakah ada nomor yang dapat dihubung. saya sdh kontak ke nomor yang ada di plank dan di nota yang ada di foto ini tapi tidak aktif semua",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Sinar Minang Restaurant & Convention Hall",
+    "destination_kind": "resto",
+    "destination_category": "",
     "annotators": {
       "A1": {
         "labels": [
@@ -403,6 +433,9 @@
     "text": "Great food",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Lago Hotel & Resto",
+    "destination_kind": "hotel",
+    "destination_category": "Hotel",
     "annotators": {
       "A1": {
         "labels": [
@@ -432,6 +465,9 @@
     "text": "Segelas kopi menceritakan sejuta cerita",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "BMW Coffee",
+    "destination_kind": "resto",
+    "destination_category": "Restoran",
     "annotators": {
       "A1": {
         "labels": [
@@ -461,6 +497,9 @@
     "text": "Beberapa tahun yang lalu saya pernah berkunjung ke tempat ini, sangat beeda dengan keadaan sekarang. Sudah ada fasilitas bermain untuk anak, tempat parkir dan juga tempat menjual makanan. Sayangnya masih terasa crowded. Juga perawatan terasa kurang untuk gedung dan sarana lainnya. Saat ke toilet, terasa kecewa dengan aroma yang menyengat, pesing, ditambah air yg tidak mengalir di toilet. Kebersihan yg tidak terjaga, padahal ada petugas yg mengutip uang kebersihan di pintu toilet. Kl air tidak mengalir seharusnya diupayakan untuk disiram secara berkala. Harapan akan ada peaikan pelayanan nantinya.",
     "rating_context": 3.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Geosite Sipinsur",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -566,6 +605,9 @@
     "text": "pizza so small and dough so dry , fries so dry and hard , only fish good and fresh , expensive",
     "rating_context": 2.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Rumba Restaurant",
+    "destination_kind": "resto",
+    "destination_category": "Restoran",
     "annotators": {
       "A2": {
         "labels": [
@@ -595,6 +637,9 @@
     "text": "Hanya Lewat..",
     "rating_context": 4.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Hotel Dizomn",
+    "destination_kind": "hotel",
+    "destination_category": "Hotel",
     "annotators": {
       "A2": {
         "labels": [
@@ -624,6 +669,9 @@
     "text": "Tempatnya bagus, tetapi jalan menuju ke lokasi astaga parah banget gak rekoment lah pokoknya.., Apalagi punglinya kayak ngerampok, awal masuk dia bilang 35k satu orang satu ...",
     "rating_context": 2.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Kawah Putih Dolok Tinggi Raja",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -653,6 +701,9 @@
     "text": "Hotel berada dekat dengan lokasi wisata danau Toba dan pantai sekitarnya, pelayanannya terbilang ramah dan menyenangkan, kamar nyaman, penerangan sesuai, tersedia berbagai informasi secara lengkap. Parkiran tersedia, serta konsumsi lumayan enak. Terima kasih",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Labersa Hotel and Convention Center Toba, Balige",
+    "destination_kind": "hotel",
+    "destination_category": "Hotel Resor",
     "annotators": {
       "A1": {
         "labels": [
@@ -712,6 +763,9 @@
     "text": "Satu2nya tempat wisata di sekitar danau toba parapat yg terawat rapi bersih. Akses jalan pun ga susah ga sempit. Kalau ada singgah di parapat lagi pasti akan main kesini lagi. Mungkin nginap. Utk parkir VIP ga worth it ya. Krn lebih dekat masuk dari parkiran bawah dibanding atas. Vip parking itu hanya utk tamu yg nginap lebih cocok. Kalo kunjungan harian lebih baik parkir dibawah aja",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Caldera toba nomadic escape (glamour camping)",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -777,6 +831,9 @@
     "text": "bukit bagus. tapi kurang bersih areal parkiran harusnya dibuat paving blok. wc jorok. sampah. pekarangan gereja harusnya dibersihkan dan ditanam bunga. sebagian bukitnya ditanam singkong, kurang elok.",
     "rating_context": 3.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Bukit Sidihoni",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -900,6 +957,9 @@
     "text": "Homestaynya homee sekali",
     "rating_context": 4.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Brain Homestay",
+    "destination_kind": "hotel",
+    "destination_category": "Hotel",
     "annotators": {
       "A1": {
         "labels": [
@@ -929,6 +989,9 @@
     "text": "Mengenang sejarah perkembangan Gereja di Sumut",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Makam DR. I.L. Nommensen",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Rohani",
     "annotators": {
       "A2": {
         "labels": [
@@ -958,6 +1021,9 @@
     "text": "Cukup capek karena jalan kaki untuk mencapai ke puncak Gunungnya.",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Gunung Pusuk Buhit",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -987,6 +1053,9 @@
     "text": "Greatest batak",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Batak Museum",
+    "destination_kind": "wisata",
+    "destination_category": "Museum",
     "annotators": {
       "A1": {
         "labels": [
@@ -1016,6 +1085,9 @@
     "text": "Saya memiliki hidangan utama Indonesia yang cukup bagus. Tapi mangkuk smoothie benar-benar palsu. Tidak ada isinya tetapi 90% buahnya dibentangkan dengan es di dalam batok kelapa. ...",
     "rating_context": 3.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Bagus Bay Guest House",
+    "destination_kind": "hotel",
+    "destination_category": "Hotel",
     "annotators": {
       "A1": {
         "labels": [
@@ -1045,6 +1117,9 @@
     "text": "Sopo Guru Tatea Bulan berdiri sebagai simbol ketahanan budaya, mengajarkan kita untuk tidak melupakan akar dan identitas kita sebagai bangsa.",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Sopo Guru Tatea Bulan | ᯘᯬᯇᯬ ᯎᯮᯒᯮ ᯖᯖᯩᯀ ᯅᯮᯞᯉ᯲",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Budaya / Sejarah",
     "annotators": {
       "A1": {
         "labels": [
@@ -1074,6 +1149,9 @@
     "text": "Kamar terlihat bersih tapi ada cicak dan banyak serangga. AC tidak bisa diatur (untung dingin). Channel tv buram semua di setiap kamar. Pilihan makanan terbatas dan seadanya. Tidak ada wifi di kamar. Lokasi hotel ditempuh pakai kapal. Pemandangan bagus tapi terpencil dengan jadwal kapal yang terbatas. Ada price list watersport tapi overprice dan tidak kelihatan peralatannya (kecuali bbrp bebek2an yang terlihat usang dan boat). All in all, harga yang ditawarkan terlalu mahal dibanding fasilitas yang didapatkan.",
     "rating_context": 1.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Tiara Bunga Hotel",
+    "destination_kind": "hotel",
+    "destination_category": "Hotel",
     "annotators": {
       "A2": {
         "labels": [
@@ -1157,6 +1235,9 @@
     "text": "Terbaik di kota ini. Rasanya seperti masuk.",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Rumah Makan Islam Murni TukTuk Siadong",
+    "destination_kind": "resto",
+    "destination_category": "Restoran",
     "annotators": {
       "A1": {
         "labels": [
@@ -1186,6 +1267,9 @@
     "text": "Tempatnya bagus dan sangat kaya akan sejarah. Namun sekarang bangunan utamanya sedang dalam perbaikan",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Rumah Bolon Pematang Purba",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Budaya / Sejarah",
     "annotators": {
       "A1": {
         "labels": [
@@ -1215,6 +1299,9 @@
     "text": "Luar Biasa",
     "rating_context": 4.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Bukit Holbung",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -1244,6 +1331,9 @@
     "text": "Once in a live time aja. Airnya bersih, tempatnya jorok, hati2 banyak ular berkeliaran. Parkir mobil 15k, tiket/o 5k, sewa tmpt 50k, toilet 2k/o. ...",
     "rating_context": 1.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Pemandian alam Bah Damanik",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -1297,6 +1387,9 @@
     "text": "Salah satu tempat untuk menikmati pemandangan Danau Toba dari atas bukit. Lahan parkir cukup tersedia. Tempat cukup bersih, terawat dan tertata rapi. Tiket masuk murah. Perlu ditambah lagi fasilitas toilet.",
     "rating_context": 4.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Geosite Sipinsur",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -1392,6 +1485,9 @@
     "text": "28 tahun yang lalu itu adalah tempat yang bagus dan bersih. Sekarang kotor, ramai dan taman patung tomok sudah hilang, semua patung ditempatkan berukuran 4 kali 4 meter.",
     "rating_context": 1.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Pasar Tomok",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Bisnis",
     "annotators": {
       "A2": {
         "labels": [
@@ -1433,6 +1529,9 @@
     "text": "Family gathering",
     "rating_context": 4.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Wisata Rumah Pohon",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -1462,6 +1561,9 @@
     "text": "Tempatnya sudah lebih ramai dari yang dulu sebelum jembatan tano ponggol selesai di bangun, Cuma jalan nya sekarang menjadi sangat buruk banyak lubang dalam nya, Kalau hujan air menggenang mirip kubangan kerbau, Untuk pemandian nya sudah lebih banyak tempat untuk mandi nya, Dan fasilitas sudah lebih baik seperti parkiran dan penginapan nya, Untuk penginapan nya,mungkin bisa lebih meningkatkan pelayanan nya, Untuk harga 300 per malam dengan kipas angin mungkin bisa di sediakan handuk dan sikat gigi di setiap kamarnya, Demi meningkatkan minat wisatawan",
     "rating_context": 4.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Aek Rangat Pangururan",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -1521,6 +1623,9 @@
     "text": "Puncak sidiangkat yang terdapat di jalan runding yang menuju ke provinsi Aceh",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Parhonasan",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Buatan",
     "annotators": {
       "A2": {
         "labels": [
@@ -1550,6 +1655,9 @@
     "text": "Cocok utk istirahat berkeluarga..",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Mutiara Balige Hotel",
+    "destination_kind": "hotel",
+    "destination_category": "Hotel",
     "annotators": {
       "A1": {
         "labels": [
@@ -1579,6 +1687,9 @@
     "text": "The Léo restaurant is incredibly good. We eat well with good music and atmosphere. Very lovely waiter !!!",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "LEO'S Restaurant",
+    "destination_kind": "resto",
+    "destination_category": "Restoran",
     "annotators": {
       "A2": {
         "labels": [
@@ -1608,6 +1719,9 @@
     "text": "Saya memesan jus semangka dan baru dihidangkan setelah 1 jam. Ini merupakan sebuah koreksi bagi pengelola untuk memperhatikan manajemen order,pembuatan dan penyajian makanan bagi konsumen. Disamping hal diatas, pemandangan dan suasana daripada cafe ini patut mendapat apresiasi. View menghadap danau toba nya bagus sekali, untuk fasilitas cafe nya ada toilet, mushola dan parkir yang luas.",
     "rating_context": 3.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Biwa Cafe & Resto",
+    "destination_kind": "resto",
+    "destination_category": "Restoran",
     "annotators": {
       "A1": {
         "labels": [
@@ -1713,6 +1827,9 @@
     "text": "Harga 350, gak sesuai dengan fasilitas yg ada. Tidak dapat handuk,tidak dapat peralatan mandi dll. Pintu kamar mandi bolong. Tidak ada air panas. Extra bed harga 100rb tidak pakai sprei.",
     "rating_context": 1.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Rumah Makan Muslim Penginapan",
+    "destination_kind": "resto",
+    "destination_category": "Restoran",
     "annotators": {
       "A2": {
         "labels": [
@@ -1760,6 +1877,9 @@
     "text": "Historical places",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Gereja Tua HKBP SIgumpar",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Rohani",
     "annotators": {
       "A1": {
         "labels": [
@@ -1789,6 +1909,9 @@
     "text": "Rekomended.",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Hotel Nabasa",
+    "destination_kind": "hotel",
+    "destination_category": "Hotel",
     "annotators": {
       "A2": {
         "labels": [
@@ -1818,6 +1941,9 @@
     "text": "Nilai Jual ke pengunjung : * View Sangat Bagus dan Nyaman, memanjakan pengunjung dengan tiupan angin. * Tiket Masuk 5k - 10k (masih relatif murah). * Fasilitas (toilet/kamar mandi/tong sampah/listrik) dapat dikatakan komplit dan cukup memadai. * Akses : Sangat Bagus Saran ke pengunjung : 1. Diharapkan agar TIDAK membuang sampah sembarangan dan Buanglah sampah ke Tong Sampah yang disediakan. 2. Parkikanlah kendaraan di lokasi parkir yang disediakan (jangan di atas rumput), karena akan berakibatkan kerusakan pada rumput. Terimakasih Kepada pemilik dan penjaga yang sudah menyuguhkan keindahan Danau Toba dari Sisi Tenggara.",
     "rating_context": 4.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Bukit Senyum",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -1977,6 +2103,9 @@
     "text": "Good food!!!",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "ijabu Coffee & Roastery",
+    "destination_kind": "resto",
+    "destination_category": "Restoran",
     "annotators": {
       "A2": {
         "labels": [
@@ -2006,6 +2135,9 @@
     "text": "Tiket masuk 10 ribu per orang tanpa tiket.. Lokasinya tidak terawat dan kotor sekali.. Fasilitas tdk terawat dgn baik",
     "rating_context": 2.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Air Terjun Sipisopiso",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A2": {
         "labels": [
@@ -2065,6 +2197,9 @@
     "text": "Alhamdulillah setelah bingung cari2 Hotel Pilihan jatuh ke sini (krna ulasan google bagus2). Dan Alhamdulillah Gak kecewa. ...",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Thyesza Hotel Resort",
+    "destination_kind": "hotel",
+    "destination_category": "Restoran",
     "annotators": {
       "A1": {
         "labels": [
@@ -2094,6 +2229,9 @@
     "text": "It's good and interesting enough if we evaluate in everages point of views. The accessibilty spot is needed to repair especially from lower road. In the weekend there must be a good coordination for vehicle traffics between top and lower road. Otherwise it would be annoying and terrible traffic jump🙂 ...",
     "rating_context": 4.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Air Terjun Efrata",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A2": {
         "labels": [
@@ -2123,6 +2261,9 @@
     "text": "Parkir nyaman dan luas..Tempat bersih dan terawat...Pelayanan baik...Air terjun cukup besar dan curam...Hanya mungkin perlu ditambahkan sarana pendukung lain, seperti info grafis dan tambahan artistik agar lebih menarik...",
     "rating_context": 4.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Air Terjun Janji",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A1": {
         "labels": [
@@ -2224,6 +2365,9 @@
     "text": "The place is good for family",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Pantai Kenangan",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A2": {
         "labels": [
@@ -2253,6 +2397,9 @@
     "text": "Gak mengecewakan",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Wisata Anugerah Indah Sippan",
+    "destination_kind": "wisata",
+    "destination_category": "Wisata Alam",
     "annotators": {
       "A2": {
         "labels": [
@@ -2282,6 +2429,9 @@
     "text": "Maruba Restaurant and Maruba Inn is a true gem in TukTuk. We enjoyed delicious food at the restaurant, served by humble and kind staff who made us feel very welcome. The views from the property are absolutely beautiful — the perfect setting to relax and unwind. We stayed at the inn and loved the cozy rooms, each with easy access to the lake. Waking up to the peaceful water and natural surroundings was a highlight of our trip. Highly recommended for anyone looking for great food, warm hospitality, and a relaxing place to stay by the lake.",
     "rating_context": 5.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Maruba Restaurant",
+    "destination_kind": "resto",
+    "destination_category": "Restoran",
     "annotators": {
       "A2": {
         "labels": [
@@ -2311,6 +2461,9 @@
     "text": "Lumayan",
     "rating_context": 4.0,
     "annotation_version": "1.0.0-rc1",
+    "destination_name": "Hotel Santo Djaya",
+    "destination_kind": "hotel",
+    "destination_category": "Hotel",
     "annotators": {
       "A1": {
         "labels": [

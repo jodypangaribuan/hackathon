@@ -361,11 +361,11 @@ Linux + Docker + offline, bukan GPU.
 
 ## C7. Evidence dan Demo Audit
 
-- [ ] Cocokkan semua demo evidence dengan source rows.
-- [ ] Hapus reviewer identity.
-- [ ] Manual-check predictions pada main/backup cases.
-- [ ] Verifikasi metadata conflicts, priority formula, intervention mapping.
-- [ ] Siapkan satu rejected/false-positive alert untuk human oversight.
+- [x] Cocokkan semua demo evidence dengan source rows. (verbatim + `source_file`/`source_row`; offset +2 konsisten — lihat `docs/c7-evidence-demo-audit.md`)
+- [x] Hapus reviewer identity. (evidence hanya `review_id` hash; export publik tanpa identitas/provenance)
+- [x] Manual-check predictions pada main/backup cases. (kawah-putih & bagus-bay benar; paralayang insufficient — benar)
+- [x] Verifikasi metadata conflicts, priority formula, intervention mapping. (renormalisasi 0,3333/0,2500/0,2500/0,1667 cocok; 14 aspek → verifikasi+kandidat)
+- [x] Siapkan satu rejected/false-positive alert untuk human oversight. (Danau Sidihoni scenery — 4 review positif ter-flag negatif; di-reject via `/api/alerts/verify`)
 
 ## C8. Presentasi dan Live Demo
 

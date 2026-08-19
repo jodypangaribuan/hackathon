@@ -14,10 +14,10 @@
 - **Polarity (produksi):** `lexical-polarity-v1` — fallback leksikal
   aspect-conditioned (konteks + isyarat negatif/positif + kontras), **tanpa
   probabilitas**.
-- **Kandidat (belum produksi):** IndoBERT `indobenchmark/indobert-base-p1`
-  (revisi `c2cd0b51…`, MIT, 124,5M param) — aspect & polarity. Polarity 0,7459
-  (silver) tidak menggantikan fallback; evaluasi terhadap human-gold baru
-  masih pending GPU/Colab (lihat §Metrics).
+- **Kandidat (ditolak):** IndoBERT `indobenchmark/indobert-base-p1`
+  (revisi `c2cd0b51…`, MIT, 124,5M param) — aspect & polarity. Pada gold-v1
+  aspect Macro F1 0,4254 dan polarity 0,5077 (≈ chance), di bawah TF-IDF dan
+  keyword — tidak dipakai produksi (lihat §Metrics).
 - **Severity:** tidak tersedia (`unavailable_no_supported_model`) — support
   kelas `high` 19 < gate 20.
 - **License/model pihak ketiga:** IndoBERT MIT; TF-IDF/sklearn BSD-3.
@@ -79,7 +79,8 @@ rule-pass, bukan akurasi manusia; angka gold adalah F1 terhadap label manusia.
 |---|---|
 | Keyword baseline | Macro F1 0,7056 · Micro 0,6509 |
 | TF-IDF aspek (produksi) | Macro F1 0,5777 · Micro 0,6910 |
-| IndoBERT aspek (kandidat) | PENDING (GPU/Colab) |
+| IndoBERT aspek (kandidat, ditolak) | Macro F1 0,4254 · Micro 0,4174 |
+| IndoBERT polarity (kandidat, ditolak) | Macro F1 0,5077 |
 
 ### Non-model metrics
 
@@ -126,6 +127,6 @@ Artifact metrik: `ml/artifacts/metrics/{keyword,tfidf}-{silver,gold}-v1-test-met
 ## Rencana Update (gold-v1 terpasang)
 
 1. ✅ Metrik human-gold keyword/TF-IDF terisi (0,7056 / 0,5777).
-2. ⏳ Evaluasi IndoBERT vs gold-v1 (GPU/Colab, `notebooks/12_gold_indobert.ipynb`).
-3. ⏳ Keputusan polarity (lexical vs IndoBERT) berdasarkan hasil IndoBERT-gold.
+2. ✅ Evaluasi IndoBERT vs gold-v1 selesai (aspect 0,4254 / polarity 0,5077).
+3. ✅ Keputusan polarity: IndoBERT 0,5077 (≈ chance) → lexical fallback tetap.
 4. ⏳ Sinkronisasi angka gold ke laporan analisis, `/metode`, dan `qa-answer-bank.md`.

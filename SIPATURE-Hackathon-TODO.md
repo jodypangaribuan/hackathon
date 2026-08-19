@@ -514,7 +514,7 @@ Linux + Docker + offline, bukan GPU.
 - [x] Thresholds dan calibration artifacts. (notebook `07`: `20260813-1050_indobert-silver-v1_calibration-v1`)
 - [x] Locked test metrics dan diagrams. (notebook `07`: `20260813-1050_indobert-silver-v1_locked-test-v1`)
 - [x] Model card. (`docs/model-card.md` — metrik silver + gold-v1 terisi; evaluasi IndoBERT-vs-gold-v1 masih follow-up GPU)
-- [x] Gold baseline evaluation. (notebook `10`: keyword 0,7056 / TF-IDF 0,5777 vs gold-v1; notebook `11`: tabel preliminary-vs-final; notebook `12`: IndoBERT-vs-gold-v1 BELUM dijalankan — pending GPU)
+- [x] Gold baseline evaluation. (notebook `10`: keyword 0,7056 / TF-IDF 0,5777 vs gold-v1; notebook `11`: tabel preliminary-vs-final; notebook `12`: IndoBERT-vs-gold-v1 aspect 0,4254 / polarity 0,5077 — inference-only)
 - [ ] Error analysis manual (audit FP/FN 50, kategorisasi negation/implicit/typo, reputational risk).
 
 ## F3. Intelligence Engine dan Product
@@ -526,7 +526,7 @@ Linux + Docker + offline, bukan GPU.
 - [x] Expert/system evaluation. (notebook `09`: queue + sensitivity; review ahli eksternal TIDAK dilakukan — diganti sensitivity analysis sebagai validasi internal)
 - [ ] Facility gap analysis dari metadata `Fasilitas` (isi komponen `facility_gap` yang saat ini `None` — rubric D5 pemanfaatan data)
 - [ ] Integrasi data transportasi (aksesibilitas/konektivitas) ke analisis geospasial. (rubric D5)
-- [ ] Evaluasi penggunaan IndoBERT polarity model menggantikan `lexical-polarity-v1` di A9. (gold-v1 polarity BELUM dihitung — pending GPU/Colab; keputusan final setelah notebook `12` dijalankan ulang terhadap gold-v1)
+- [x] Evaluasi penggunaan IndoBERT polarity model menggantikan `lexical-polarity-v1` di A9. (gold-v1 polarity 0,5077 ≈ chance vs silver 0,7459 — TIDAK layak dipakai, lexical tetap; notebook `12`)
 - [x] SIPATURE source code. (`sipature-app/` + `sipature-api/` + `ml/src/sipature_ml/`)
 - [x] API source/schema/docs. (FastAPI `sipature-api` + PostgreSQL `db/schema.sql` + Drizzle ORM)
 - [x] Dockerfiles/compose/runbook. (3-service: `web` + `inference` + `db`; `docker-compose.yml`)

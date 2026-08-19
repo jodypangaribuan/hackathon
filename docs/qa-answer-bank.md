@@ -75,7 +75,7 @@ yang menggeneralisasi ke seluruh korpus.
 ### Q: Kenapa TF-IDF, bukan deep learning?
 A: Kami **mencoba** IndoBERT (base-p1, 124,5M param, fine-tune 4 epoch). Hasil
 locked silver-test aspect Macro F1 **0,5247 vs TF-IDF 0,7201**. Pada human-gold,
-TF-IDF **0,5777** (IndoBERT pending GPU). TF-IDF dipilih karena interpretable,
+TF-IDF **0,5777** vs IndoBERT **0,4254**. TF-IDF dipilih karena interpretable,
 deterministik, CPU-only (latency 0,1 ms/review), dan offline. Ini bukti kami
 memilih metode karena cocok, bukan karena tren.
 
@@ -220,9 +220,9 @@ growth untuk prototype.
 ### Q: Apa yang belum selesai / limitation terbesar?
 A: (1) Model dilatih pada label **silver** (weak supervision); human-gold dipakai
 sebagai benchmark evaluasi, bukan data training. (2) Evidence belum dinilai
-manusia. (3) Severity/facility-gap/feasibility belum tersedia. (4) IndoBERT-vs-gold
-belum dihitung (pending GPU). (5) Analyzer (sandbox leksikal) bukan model utama.
-Kami ungkap semua ini di `/metode` dan model card.
+manusia. (3) Severity/facility-gap/feasibility belum tersedia. (4) Analyzer
+(sandbox leksikal) bukan model utama. Kami ungkap semua ini di `/metode` dan
+model card.
 
 ---
 
@@ -239,8 +239,8 @@ Kami ungkap semua ini di `/metode` dan model card.
 | Keyword (silver, circular) | Macro F1 0,9768 |
 | Keyword (human-gold) | Macro F1 0,7056 |
 | IndoBERT aspect (silver locked test) | Macro F1 0,5247 |
-| IndoBERT aspect (human-gold) | PENDING (GPU) |
-| IndoBERT polarity | Macro F1 0,7459 (silver) |
+| IndoBERT aspect (human-gold) | Macro F1 0,4254 · Micro 0,4174 |
+| IndoBERT polarity | Macro F1 0,7459 (silver) · 0,5077 (gold) |
 | Gold inter-annotator agreement | aspect Jaccard 0,9664 · polarity 0,9804 · severity κ 1,0 |
 | Inferensi full-corpus | 9.785 prediksi · 1.682 sinyal · 103 actionable · 210 isu |
 | Sensitivity | top-20 Jaccard 0,8182–1,0000 |

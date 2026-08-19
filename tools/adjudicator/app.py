@@ -55,14 +55,19 @@ SEED_DIR = Path(__file__).parent / "seed"
 
 
 def seed_gold() -> None:
-    """Salin queue + auto-adjudikasi bawaan ke GOLD_DIR bila belum ada."""
+    """Salin queue + auto-adjudikasi bawaan ke GOLD_DIR setiap startup.
+
+    Queue dan auto adalah input statis (bukan state pengguna), jadi selalu
+    ditimpa agar seed terbaru dari image terpakai. Progress pengguna tersimpan
+    terpisah di STATE_DIR.
+    """
     GOLD_DIR.mkdir(parents=True, exist_ok=True)
     if not SEED_DIR.is_dir():
         return
     for name in ("adjudication_queue.json", "adjudicated_auto.jsonl"):
         src = SEED_DIR / name
         target = GOLD_DIR / name
-        if src.is_file() and not target.exists():
+        if src.is_file():
             shutil.copy2(src, target)
 
 

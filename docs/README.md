@@ -18,6 +18,7 @@ Authoritative documentation index for the data, model, product, evaluation, and 
 | `qa-answer-bank.md` | Final-round Q&A answers (juri), grounded in actual metrics | Data/ML | Active |
 | `model-selection-and-evaluation.md` | Silver (locked) vs gold comparison strategy + production model decision | Data/ML | Active |
 | `c1-final-scope-lock.md` | Final-round scope lock: chain, production model, demo cases (nilai A9 final), mandatory features, freeze | Data/ML + Engineering | Active |
+| `c6-performance-reliability.md` | Final-round performance & reliability: latency, memory, fallback, offline | Engineering | Active |
 | `restricted-data-policy.md` | Git, secret, dataset, and artifact handling policy | Engineering + Data | Active |
 | `reproducibility-runbook.md` | Environment, Drive, commands, checkpoints, and locked-test runbook | Data/ML | Active |
 | `eda-report.md` | Current EDA findings with report-ready figures and source-data references | Data/ML | Complete v0.1 |

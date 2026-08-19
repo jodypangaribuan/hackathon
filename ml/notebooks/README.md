@@ -16,6 +16,7 @@ marked "pipeline" and have no notebook file.
 | `08_batch_inference_and_aggregation.ipynb` | CPU | All clean reviews | Predictions, destination signals | Done (run 2026-08-13) |
 | `09_prioritization_and_export.ipynb` | CPU | Signals/expert review | Priority, app export, sensitivity | Done (run 2026-08-13) |
 | `10_gold_baselines.ipynb` | CPU | `gold.jsonl` + splits | Gold keyword/TF-IDF metrics + silver-vs-gold comparison | Done (run 2026-08-19) |
+| `11_preliminary_vs_final_comparison.ipynb` | CPU | Silver + gold metrics | Preliminary-vs-final table + figure | Done (run 2026-08-19) |
 
 ## Executed runs (notebooks 01–05)
 
@@ -83,6 +84,12 @@ pinned `requirements-colab.lock.txt`) against the raw CSVs staged in
   Macro F1 delta: keyword −0.197 (silver was circular), TF-IDF −0.082. Persisted
   `keyword-gold-v1-test-metrics.json`, `tfidf-gold-v1-test-metrics.json`, and
   `gold_baseline_summary.json` to `SIPATURE/metrics/` and `SIPATURE/reports/`.
+- `11`: (CPU) preliminary-vs-final score comparison. Loads silver + gold metric
+  files and produces a grouped bar figure (`37_preliminary_vs_final_macro_f1.png`)
+  plus `preliminary_final_comparison.json`. Key result: Keyword silver 0.9768 →
+  gold 0.7797 (silver was circular); TF-IDF 0.7201 → 0.6379 (more robust);
+  IndoBERT aspect silver 0.5247 with gold pending (GPU). Persisted to
+  `SIPATURE/figures/comparison/`.
 
 Notebook rules:
 

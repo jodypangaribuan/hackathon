@@ -16,6 +16,7 @@ from .annotation import (
 from .baselines import run_baselines
 from .cleaning import run_cleaning
 from .colab import bootstrap_drive
+from .comparison import run_preliminary_final_comparison
 from .config import load_config
 from .eda import run_eda
 from .entity_resolution import run_entity_resolution
@@ -114,6 +115,12 @@ def build_parser() -> argparse.ArgumentParser:
     gold_baselines.add_argument("--split-dir", type=Path, default=PATHS.splits)
     gold_baselines.add_argument("--gold", type=Path, default=PATHS.annotations / "gold" / "gold.jsonl")
     gold_baselines.add_argument("--artifact-dir", type=Path, default=PATHS.artifacts)
+
+    compare = subparsers.add_parser(
+        "compare-preliminary-final", help="Compare preliminary (silver) vs final (gold) model scores"
+    )
+    compare.add_argument("--metrics-dir", type=Path, default=PATHS.artifacts / "metrics")
+    compare.add_argument("--figure-dir", type=Path, default=PATHS.artifacts / "figures" / "comparison")
 
     indobert = subparsers.add_parser(
         "train-indobert", help="Train IndoBERT tasks on train/validation only (GPU)"
@@ -248,6 +255,10 @@ def main() -> int:
         return 0
     if args.command == "evaluate-gold-baselines":
         result = run_gold_baselines(args.split_dir, args.gold, args.artifact_dir)
+        print(json.dumps(result, indent=2))
+        return 0
+    if args.command == "compare-preliminary-final":
+        result = run_preliminary_final_comparison(args.metrics_dir, args.figure_dir)
         print(json.dumps(result, indent=2))
         return 0
     if args.command == "train-indobert":

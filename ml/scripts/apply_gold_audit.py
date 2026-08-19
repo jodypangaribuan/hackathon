@@ -6,7 +6,7 @@ negative sentiment was often labeled `positive`, and "tidak ada pungli" (no
 illegal fee) was labeled `negative`.
 
 This script applies a deterministic, documented correction to `gold.jsonl` and
-produces `gold-v2.jsonl` + a correction audit log. The per-annotator files and
+produces `gold-v3.jsonl` + a correction audit log. The per-annotator files and
 the original `gold.jsonl` are left untouched (immutable). The correction is
 transparent and recorded per-label.
 
@@ -72,6 +72,14 @@ def correct_polarity(evidence: str, polarity: str) -> tuple[str, str | None, str
     return None
 
 
+def correct_severity(evidence: str, severity: str | None) -> tuple[str, str] | None:
+    """Return (new_severity, reason) if a low-severity label has a strong cue."""
+    ev = (evidence or "").lower()
+    if severity == "low" and any(re.search(r"\b" + re.escape(s) + r"\b", ev) for s in STRONG_CUES):
+        return "medium", "low severity but strong cue present"
+    return None
+
+
 def main() -> int:
     gold_dir = Path("data/annotations/gold")
     gold_path = gold_dir / "gold.jsonl"
@@ -83,25 +91,43 @@ def main() -> int:
             if "evidence_text" not in label:
                 continue
             result = correct_polarity(label.get("evidence_text", ""), label["polarity"])
-            if result is None:
+            if result is not None:
+                new_polarity, new_severity, reason = result
+                corrections.append(
+                    {
+                        "review_id": record["review_id"],
+                        "aspect": label["aspect"],
+                        "kind": "polarity",
+                        "before_polarity": label["polarity"],
+                        "after_polarity": new_polarity,
+                        "before_severity": label.get("severity"),
+                        "after_severity": new_severity,
+                        "reason": reason,
+                        "evidence": label.get("evidence_text", ""),
+                    }
+                )
+                label["polarity"] = new_polarity
+                label["severity"] = new_severity
                 continue
-            new_polarity, new_severity, reason = result
-            corrections.append(
-                {
-                    "review_id": record["review_id"],
-                    "aspect": label["aspect"],
-                    "before_polarity": label["polarity"],
-                    "after_polarity": new_polarity,
-                    "before_severity": label.get("severity"),
-                    "after_severity": new_severity,
-                    "reason": reason,
-                    "evidence": label.get("evidence_text", ""),
-                }
-            )
-            label["polarity"] = new_polarity
-            label["severity"] = new_severity
+            sev_result = correct_severity(label.get("evidence_text", ""), label.get("severity"))
+            if sev_result is not None:
+                new_severity, reason = sev_result
+                corrections.append(
+                    {
+                        "review_id": record["review_id"],
+                        "aspect": label["aspect"],
+                        "kind": "severity",
+                        "before_polarity": label["polarity"],
+                        "after_polarity": label["polarity"],
+                        "before_severity": label.get("severity"),
+                        "after_severity": new_severity,
+                        "reason": reason,
+                        "evidence": label.get("evidence_text", ""),
+                    }
+                )
+                label["severity"] = new_severity
 
-    output_path = gold_dir / "gold-v2.jsonl"
+    output_path = gold_dir / "gold-v3.jsonl"
     output_path.write_text(
         "".join(json.dumps(record, ensure_ascii=False, sort_keys=True) + "\n" for record in records),
         encoding="utf-8",
@@ -111,23 +137,24 @@ def main() -> int:
         "rule": "negation/hedging polarity correction (documented systematic audit)",
         "corrections": corrections,
     }
-    (gold_dir / "gold-v2-audit-log.json").write_text(
+    (gold_dir / "gold-v3-audit-log.json").write_text(
         json.dumps(audit_log, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
     manifest = {
         "gold_records": len(records),
         "annotation_version": "1.0.0-rc1",
-        "gold_v2_sha256": sha256_file(output_path),
+        "gold_v3_sha256": sha256_file(output_path),
         "source_gold_sha256": sha256_file(gold_path),
         "corrections_applied": len(corrections),
     }
-    (gold_dir / "gold-v2.manifest.json").write_text(
+    (gold_dir / "gold-v3.manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
 
     print(f"corrections applied: {len(corrections)}")
     print(f"output: {output_path}")
-    print("flip distribution:", dict(Counter(c["before_polarity"] + "->" + c["after_polarity"] for c in corrections)))
+    print("by kind:", dict(Counter(c["kind"] for c in corrections)))
+    print("polarity flip:", dict(Counter(c["before_polarity"] + "->" + c["after_polarity"] for c in corrections if c["kind"] == "polarity")))
     return 0
 
 

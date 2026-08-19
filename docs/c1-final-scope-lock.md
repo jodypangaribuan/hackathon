@@ -41,6 +41,23 @@ agreement aspect Jaccard 0,9664 / polarity 0,9804 / severity κ 1,0):
 | TF-IDF (produksi) | 0,7201 | 0,5777 |
 | IndoBERT (aspek) | 0,5247 | 0,4254 |
 
+### Kenapa model produksi dilatih silver, bukan gold
+
+Gold-v1 adalah **benchmark evaluasi**, bukan data training. Model produksi tetap
+`tfidf-aspect-silver-v1` (dilatih silver), bukan "model gold":
+
+1. **Independensi gold.** Gold dibuat justru untuk mengukur model secara objektif;
+   memakainya sebagai training data menghancurkan independensinya.
+2. **Circular / leakage.** 1.320 review gold adalah persis split evaluasi.
+   "Latih di gold lalu uji di gold" = model menghafal jawaban — sirkular persis
+   seperti keyword 0,9768 di silver (diungkap sebagai ceiling, bukan prestasi).
+3. **Generalisasi.** Gold hanya 1.320 review vs korpus 12.234 berteks; produksi
+   harus memprediksi seluruh korpus.
+4. **Alur yang benar:** `silver → latih TF-IDF → prediksi 12.234 → agregasi (A9)`,
+   lalu `gold → audit model terlatih` (TF-IDF gold-v1 = 0,5777).
+5. **Jalan upgrade yang benar:** retrain di gold + sediakan *held-out human set
+   baru* untuk uji ulang — membutuhkan anotasi manusia tambahan (pasca-hackathon).
+
 ## 2. Demo Case Terkunci (nilai A9 final)
 
 ### Utama — Kawah Putih Dolok Tinggi Raja

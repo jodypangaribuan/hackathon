@@ -277,18 +277,18 @@ final di B200 tinggal salin langkah yang sudah teruji. Catatan: aplikasi
 CPU-only (TF-IDF), jadi GPU T4/B200 tidak terpakai — yang diuji adalah alur
 Linux + Docker + offline, bukan GPU.
 
-- [ ] Siapkan environment staging (Linux + Docker; kalau pakai T4/Colab, gunakan VM/box Linux dengan Docker, bukan notebook).
-- [ ] Build ketiga image: `web`, `inference`, `db` (`docker compose build`).
-- [ ] `docker compose up -d` → ketiga service healthy (`docker compose ps`).
-- [ ] Seed DB + verifikasi data (388 destinasi, 103 actionable, 14 aspek).
-- [ ] Smoke test endpoint: `/api/health`, `/api/places`, `/api/analyze` (live inference TF-IDF).
-- [ ] Uji fallback: matikan `inference` → analyzer tetap jalan via sandbox leksikal.
-- [ ] Uji offline: putus internet → app tetap jalan (model + data sudah dibundle).
-- [ ] Uji cold start + restart: `docker compose down && up` → data persist (volume).
-- [ ] Uji refresh data: jalankan `scripts/refresh.sh` → data/DB ter-update tanpa error.
-- [ ] Uji regenerasi setelah gold: `data:generate` + `db:seed` dengan export terbaru.
-- [ ] Catat HASIL & langkah persis (build, up, seed, cek) → `docs/dgx-deployment-runbook.md` (salin-tempel untuk B200).
-- [ ] Konfirmasi versi/hash model & data yang ter-bundle (audit sebelum freeze).
+- [x] Siapkan environment staging (rehearsal 2026-08-19: macOS + Docker/OrbStack; command identik untuk Linux DGX).
+- [x] Build ketiga image: `web`, `inference`, `db` (`docker compose build`).
+- [x] `docker compose up -d` → ketiga service healthy (`docker compose ps`).
+- [x] Seed DB + verifikasi data (388 destinasi, 103 actionable, 14 aspek, 210 issues).
+- [x] Smoke test endpoint: `/api/health`, `/api/places`, `/api/analyze` (live inference TF-IDF).
+- [x] Uji fallback: matikan `inference` → analyzer tetap jalan via sandbox leksikal (`mode:baseline`).
+- [x] Uji offline: model + data sudah dibundle di image (COPY saat build, tanpa runtime download).
+- [x] Uji cold start + restart: `docker compose down && up` → data persist (volume) 388/103/210.
+- [x] Uji refresh data: jalankan `scripts/refresh.sh` → data/DB ter-update tanpa error.
+- [ ] Uji regenerasi setelah gold: `data:generate` + `db:seed` dengan export A9 baru (gold) — belum, perlu export gold.
+- [x] Catat HASIL & langkah persis (build, up, seed, cek) → `docs/dgx-deployment-runbook.md` (salin-tempel untuk B200).
+- [x] Konfirmasi versi/hash model & data yang ter-bundle (model `a10bddb1…`, app-export `8037d072…`).
 
 ---
 
@@ -506,14 +506,15 @@ Linux + Docker + offline, bukan GPU.
 - [x] Taxonomy dan annotation guideline. (`taxonomy.yaml` RC1 + `docs/annotation-guideline.md`)
 - [x] Sampling manifest. (notebook `03`: pilot/main audit + assignments + `annotation_sampling_summary.json`)
 - [x] Annotation JSONL. (`silver-v1.0.0.jsonl` — AI-assisted weak supervision, bukan human gold)
-- [ ] Agreement dan annotation-audit report. (gold annotation 3 anggota tim via `tools/annotator/` — tool web siap; tinggal annotate → `annotation-agreement`/`freeze-gold`)
+- [x] Agreement dan annotation-audit report. (gold annotation 3 anggota tim selesai → `agreement.json`: aspect Jaccard 0,8638 / polarity 0,9757 / severity κ 1,0; `freeze-gold` → `gold.jsonl` 1.320 records, 235 disagreement adjudicated)
 - [x] Split manifest dan data hashes. (notebook `04`: `split_manifest_silver_v1.json`, leakage-safe, terkunci)
 - [x] Keyword artifact/metrics. (notebook `05`: `keyword-silver-v1-test-metrics.json`)
 - [x] TF-IDF model/vectorizer/metrics. (notebook `05`: `tfidf-aspect-silver-v1/model.joblib` + metrics)
 - [x] IndoBERT model/tokenizer/config. (notebook `06`: run `20260813-1050_indobert-silver-v1`)
 - [x] Thresholds dan calibration artifacts. (notebook `07`: `20260813-1050_indobert-silver-v1_calibration-v1`)
 - [x] Locked test metrics dan diagrams. (notebook `07`: `20260813-1050_indobert-silver-v1_locked-test-v1`)
-- [x] Model card. (`docs/model-card.md` — metrik silver terisi, human-gold pending)
+- [x] Model card. (`docs/model-card.md` — metrik silver terisi; metrik gold sudah dihitung via notebook `10`/`11`/`12`, pembaruan model-card masih follow-up)
+- [x] Gold baseline evaluation. (notebook `10`: keyword 0,7797 / TF-IDF 0,6379 vs gold; notebook `11`: tabel preliminary-vs-final; notebook `12`: IndoBERT-vs-gold 0,4848 — inference-only)
 - [ ] Error analysis manual (audit FP/FN 50, kategorisasi negation/implicit/typo, reputational risk).
 
 ## F3. Intelligence Engine dan Product
@@ -525,12 +526,12 @@ Linux + Docker + offline, bukan GPU.
 - [x] Expert/system evaluation. (notebook `09`: queue + sensitivity; review ahli eksternal TIDAK dilakukan — diganti sensitivity analysis sebagai validasi internal)
 - [ ] Facility gap analysis dari metadata `Fasilitas` (isi komponen `facility_gap` yang saat ini `None` — rubric D5 pemanfaatan data)
 - [ ] Integrasi data transportasi (aksesibilitas/konektivitas) ke analisis geospasial. (rubric D5)
-- [ ] Evaluasi penggunaan IndoBERT polarity model (Macro F1 0.7459) menggantikan `lexical-polarity-v1` di A9. (memanfaatkan model terlatih yang belum dipakai)
+- [x] Evaluasi penggunaan IndoBERT polarity model menggantikan `lexical-polarity-v1` di A9. (gold polarity 0,5019 vs silver 0,7459 — TIDAK layak dipakai, lexical tetap; notebook `12`)
 - [x] SIPATURE source code. (`sipature-app/` + `sipature-api/` + `ml/src/sipature_ml/`)
 - [x] API source/schema/docs. (FastAPI `sipature-api` + PostgreSQL `db/schema.sql` + Drizzle ORM)
 - [x] Dockerfiles/compose/runbook. (3-service: `web` + `inference` + `db`; `docker-compose.yml`)
 - [x] Offline model/data/map fallback. (model & data dibundle di image; `scripts/refresh.sh` satu perintah)
-- [ ] Smoke/performance test results.
+- [x] Smoke/performance test results. (staging rehearsal 2026-08-19: `/health`, `/api/places` 388, `/api/analyze` live TF-IDF + fallback; lihat `docs/dgx-deployment-runbook.md`)
 
 ## F4. Submission dan Presentation
 
@@ -552,7 +553,7 @@ Gunakan tabel ini setiap hari. Tambahkan baris, bukan mengganti history.
 
 | Tanggal | Fokus | PIC | Output target | Status | Blocker | Keputusan |
 | --- | --- | --- | --- | --- | --- | --- |
-| YYYY-MM-DD | Contoh: Entity resolution | Nama | `entity_links.parquet` | Not started | - | - |
+| 2026-08-19 | Gold annotation → agreement → freeze-gold; gold baselines (keyword/TF-IDF/IndoBERT); staging rehearsal B2 | Tim | `gold.jsonl`, `agreement.json`, notebook `10`/`11`/`12`, `docs/dgx-deployment-runbook.md` | Done | - | Keyword menang di gold (0.78 > TF-IDF 0.64 > IndoBERT 0.48); IndoBERT polarity (0.50) tidak dipakai; deploy verifikasi (388/103/210) |
 
 Status yang diperbolehkan:
 

@@ -106,17 +106,13 @@ Dua file *review* utama (`wisata-v2.csv` 12.691 + `resto-hotel-v2.csv` 9.611) ad
 
 ## 3.1 Rantai Solusi
 
-```text
-Raw review
-→ cleaning & entity resolution
-→ annotation (silver untuk training, gold untuk benchmark)
-→ model (TF-IDF aspect + lexical polarity)
-→ destination signal (aggregation + smoothing + missing-aware)
-→ verbatim evidence
-→ explainable priority
-→ human verification (confirmed/rejected/uncertain)
-→ candidate intervention
-```
+Rantai lengkap dari ulasan mentah hingga tindak lanjut terverifikasi:
+
+![Rantai solusi SIPATURE](docs/figures/diagrams/solution-chain.html)
+
+**Gambar 1. Rantai solusi SIPATURE — dari ulasan menjadi tindak lanjut terverifikasi.**
+
+Tujuh tahap: ulasan mentah dibersihkan dan dihubungkan ke destinasi (*entity resolution*), diproses model deteksi aspek (TF-IDF + lexical polarity), diagregasi menjadi sinyal dan bukti verbatim per destinasi, diprioritaskan secara *missing-aware*, diverifikasi manusia (`confirmed`/`rejected`/`uncertain`), lalu menjadi kandidat tindak lanjut. *Severity* tidak tersedia (support kelas `high` < 20) sehingga tidak diimputasi.
 
 ## 3.2 Taxonomy
 
@@ -178,11 +174,11 @@ Raw review
 
 ## 5.1 Arsitektur
 
-```text
-web (Next.js, precomputed) → inference (FastAPI TF-IDF) → db (PostgreSQL)
-```
+![Deployment tiga layanan di DGX B200](docs/figures/diagrams/deployment-dgx.html)
 
-Aplikasi *web* membaca data precomputed dari *bundle* A9 yang di-seed ke PostgreSQL; *inference* melayani prediksi live (analyzer) dengan *fallback* leksikal.
+**Gambar 2. Deployment tiga layanan di host DGX B200.**
+
+Aplikasi *web* (Next.js) membaca data precomputed dari *bundle* A9 yang di-seed ke PostgreSQL, dan memanggil layanan *inference* (FastAPI TF-IDF) untuk analisis *review* live. Ketiga layanan berjalan dalam satu host DGX B200 secara offline.
 
 ## 5.2 Fitur
 
@@ -212,6 +208,10 @@ Docker Compose tiga layanan; model & data di-*bundle* ke image (tanpa *download*
 # 6. Evaluasi dan Hasil
 
 ## 6.1 Benchmark Gold-v1 (human)
+
+![Benchmark deteksi aspek silver vs gold-v1](docs/figures/diagrams/benchmark-gold-v1.html)
+
+**Gambar 3. Perbandingan Macro F1 deteksi aspek pada silver (locked) vs gold-v1 (human).**
 
 | Model | Silver (locked) | Gold-v1 |
 | --- | ---: | ---: |
@@ -263,12 +263,38 @@ Arsitektur *batch-first* + SQL; TF-IDF inferensi linear; *entity resolution* ber
 
 # 8. Responsible AI dan Etika
 
-- **Privasi:** identitas reviewer, *review ID*, *source file/row* tidak masuk bundle aplikasi; `verified_by` opaque.
+- **Privasi:** identitas reviewer, review ID, source file/row tidak masuk bundle aplikasi; `verified_by` opaque.
 - **Evidence:** verbatim + provenance internal; teks ditahan dari aplikasi publik (`withheld_pending_privacy_review`).
-- **Bahasa:** *reported issue* / *early-warning signal*, bukan vonis "kotor/berbahaya/tidak layak".
-- **Low-support:** `Insufficient Data`, tidak diranking; *unresolved identity* tidak diberi prioritas.
-- **Human oversight:** setiap *alert* = kandidat verifikasi; *rejected-alert workflow* tersedia.
+- **Bahasa:** reported issue / early-warning signal, bukan vonis "kotor/berbahaya/tidak layak".
+- **Low-support:** Insufficient Data, tidak diranking; unresolved identity tidak diberi prioritas.
+- **Human oversight:** setiap alert = kandidat verifikasi; rejected-alert workflow tersedia.
 - **Simulator:** non-kausal, asumsi eksplisit.
+
+## 8.1 Kebijakan Data Terbatas (Restricted Data Policy)
+
+![Lapisan data dan kebijakan akses](docs/figures/diagrams/data-pipeline-restricted.html)
+
+**Gambar 4. Lima lapisan data — dari mentah (restricted) ke agregat aman (published).**
+
+Data SIPATURE dibagi lima lapisan dengan tingkat akses berbeda. Lapisan mentah hingga *evidence* hanya dapat diakses tim ML (`restricted`); hanya **agregat aman** yang dipublikasikan ke aplikasi tanpa identitas reviewer:
+
+| Lapisan | Konten | Identitas reviewer | Akses |
+| --- | --- | --- | --- |
+| Raw CSV | 22.302 record (`wisata-v2`, `resto-hotel-v2`) | ADA (`reviewer-id`, `name`) | restricted |
+| Clean Parquet | 22.169 canonical | `review_id` hash | restricted |
+| Annotation | 1.320 silver + gold | teks review | restricted |
+| Aggregate | 1.682 sinyal + evidence | evidence verbatim | restricted |
+| Safe product | app bundle (103 destinasi, 210 isu) | **TIDAK ADA** | published |
+
+![Matriks akses data terbatas](docs/figures/diagrams/restricted-data-policy.html)
+
+**Gambar 5. Matriks akses tiga peran × lima komponen data.**
+
+- **Publik / juri** → hanya agregat aman (*read*).
+- **Pengelola destinasi** → agregat aman + workflow verifikasi.
+- **Tim Data/ML** → seluruh artefak (*admin*), termasuk raw/annotation/evidence untuk audit.
+
+Prinsip inti: identitas reviewer, review ID, source file/row, teks *evidence*, dan prediksi tingkat *review* **tidak pernah** masuk *bundle* aplikasi publik. *Evidence* ditahan sampai pemeriksaan privasi dan hak akses selesai; generator ekspor memverifikasi *forbidden privacy keys* sebelum publikasi (lihat `docs/restricted-data-policy.md`).
 
 ---
 
@@ -311,7 +337,8 @@ AI generatif digunakan untuk membantu perancangan solusi, pengembangan kode, *de
 6. *Evidence & demo audit*: `docs/c7-evidence-demo-audit.md`.
 7. *Deployment runbook*: `docs/dgx-deployment-runbook.md`.
 8. *Responsible AI*: `docs/responsible-ai.md`.
-9. *Reproducibility*: `docs/reproducibility-runbook.md`.
+9. *Restricted data policy*: `docs/restricted-data-policy.md`.
+10. *Reproducibility*: `docs/reproducibility-runbook.md`.
 
 **Tabel 20. Hubungan klaim dengan artifact teknis**
 

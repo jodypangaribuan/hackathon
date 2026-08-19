@@ -352,12 +352,12 @@ Linux + Docker + offline, bukan GPU.
 
 ## C6. Performance dan Reliability
 
-- [ ] Ukur model/API p50 dan p95 latency.
-- [ ] Ukur page load, memory, GPU memory.
-- [ ] Uji repeated, malformed, dan long requests.
-- [ ] Uji map tile, API, dan DB failures beserta fallback.
-- [ ] Siapkan precomputed demo data.
-- [ ] Pastikan demo berjalan tanpa internet eksternal.
+- [x] Ukur model/API p50 dan p95 latency. (`/predict-review` p50 2,1ms / p95 3,1ms; `/api/analyze` p50 6,5ms / p95 9,8ms)
+- [x] Ukur page load, memory, GPU memory. (page 0,05–0,14s; web 95MiB · inference 133MiB · db 23MiB; GPU N/A)
+- [x] Uji repeated, malformed, dan long requests. (100 request OK; malformed/empty/long 400/422 — lihat C1)
+- [x] Uji map tile, API, dan DB failures beserta fallback. (map tile → SVG luring; API → baseline leksikal verified; DB → restart/re-seed runbook, tanpa fallback in-app)
+- [x] Siapkan precomputed demo data. (`src/data/generated/{places,interventions,corpus}.json` di-seed ke DB)
+- [x] Pastikan demo berjalan tanpa internet eksternal. (model+data di-bundle; map tile eksternal turun ke SVG luring saat offline)
 
 ## C7. Evidence dan Demo Audit
 

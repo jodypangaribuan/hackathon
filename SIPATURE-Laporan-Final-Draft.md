@@ -112,7 +112,7 @@ Rantai lengkap dari ulasan mentah hingga tindak lanjut terverifikasi:
 
 **Gambar 1. Rantai solusi SIPATURE — dari ulasan menjadi tindak lanjut terverifikasi.**
 
-Tujuh tahap: ulasan mentah dibersihkan dan dihubungkan ke destinasi (*entity resolution*), diproses model deteksi aspek (TF-IDF + lexical polarity), diagregasi menjadi sinyal dan bukti verbatim per destinasi, diprioritaskan secara *missing-aware*, diverifikasi manusia (`confirmed`/`rejected`/`uncertain`), lalu menjadi kandidat tindak lanjut. *Severity* tidak tersedia (support kelas `high` < 20) sehingga tidak diimputasi.
+**Interpretasi Gambar 1.** Tujuh tahap: ulasan mentah dibersihkan dan dihubungkan ke destinasi (*entity resolution*), diproses model deteksi aspek (TF-IDF + lexical polarity, ditandai *focal*), diagregasi menjadi sinyal dan bukti verbatim per destinasi, diprioritaskan secara *missing-aware*, diverifikasi manusia (`confirmed`/`rejected`/`uncertain`), lalu menjadi kandidat tindak lanjut. *Severity* tidak tersedia (support kelas `high` < 20) sehingga tidak diimputasi.
 
 ## 3.2 Taxonomy
 
@@ -178,7 +178,7 @@ Tujuh tahap: ulasan mentah dibersihkan dan dihubungkan ke destinasi (*entity res
 
 **Gambar 2. Deployment tiga layanan di host DGX B200.**
 
-Aplikasi *web* (Next.js) membaca data precomputed dari *bundle* A9 yang di-seed ke PostgreSQL, dan memanggil layanan *inference* (FastAPI TF-IDF) untuk analisis *review* live. Ketiga layanan berjalan dalam satu host DGX B200 secara offline.
+**Interpretasi Gambar 2.** Browser (juri/demo) memanggil *web* Next.js melalui HTTPS. *Web* membaca data precomputed dari PostgreSQL (`READ`), dan untuk analisis *review* live memanggil layanan *inference* FastAPI yang memuat model TF-IDF ter-bundle (`LIVE`). Ketiga layanan berjalan dalam satu host DGX B200; model dan data sudah di-*bundle* ke image sehingga tidak ada *download* saat *startup* dan demo berjalan penuh tanpa internet eksternal.
 
 ## 5.2 Fitur
 
@@ -220,9 +220,21 @@ Docker Compose tiga layanan; model & data di-*bundle* ke image (tanpa *download*
 | IndoBERT (aspek) | 0,5247 | 0,4254 |
 | IndoBERT (polarity) | 0,7459 | 0,5077 (≈ chance) |
 
-## 6.2 Keputusan Model
+**Interpretasi Gambar 3.** Bar kiri adalah *agreement* terhadap *silver* (weak supervision), bar kanan terhadap *gold-v1* (manusia). *Keyword* turun drastis dari 0,9768 ke 0,7056 — menegaskan bahwa skor *silver*-nya sirkular. TF-IDF turun dari 0,7201 ke 0,5777, penurunan yang wajar karena *gold* lebih ketat; angka ini adalah ukuran jujur terhadap penilaian manusia. IndoBERT tetap paling rendah (0,4254). Karena itu TF-IDF dipertahankan sebagai model produksi, dengan alasan lengkap pada §6.2.
 
-TF-IDF tetap menjadi detektor aspek karena merupakan **model yang belajar dari data** (interpretable, CPU-only, cepat), sedangkan *gold* dipakai sebagai **benchmark evaluasi**, bukan data *training*. Menggunakan *gold* untuk melatih akan membuat evaluasi sirkular (1.320 *review* yang sama dipakai evaluasi). *Keyword* lebih tinggi di gold (0,7056) tetapi merupakan *rule engine* yang sama dengan pembuat *silver* — dilaporkan terpisah sebagai *ceiling*.
+## 6.2 Keputusan Model — mengapa TF-IDF (dilatih silver) dipilih
+
+**Mengapa model produksi dilatih pada *silver labels*, bukan *gold*?** Karena *gold* adalah *benchmark evaluasi*, bukan data *training*. Ketiga alasan berikut menjawab pertanyaan juri yang paling sering muncul:
+
+1. **Circularity / leakage.** 1.320 *review* *gold* adalah persis *split* yang dipakai evaluasi. Melatih di *gold* lalu menguji di *gold* berarti model menghafal jawaban — persis seperti *Keyword* 0,9768 di *silver* yang kami ungkap sebagai *ceiling*, bukan prestasi. Nilai F1 yang dihasilkan tidak akan bermakna.
+2. **Generalisasi.** *Gold* hanya 1.320 *review*, sedangkan produksi harus memprediksi 12.234 *review* berteks. *Silver* menyediakan data *training* yang sama besarnya dan sudah dipakai sejak awal untuk melatih.
+3. **Independensi *benchmark*.** *Gold* dibuat justru agar independen dari model; memakainya untuk melatih akan menghancurkan fungsinya sebagai pengukur yang jujur.
+
+**Lalu mengapa bukan *Keyword* (0,7056 > TF-IDF 0,5777 di gold)?** *Keyword* adalah *rule engine* leksikal yang *sama* dengan pembuat *silver labels* — bukan model yang belajar dari data. Ia tinggi di *silver* (0,9768) justru karena sirkular, dan tetap tinggi di *gold* karena lexikon *taxonomy*-nya kebetulan cocok dengan penilaian manusia. Memilih *Keyword* berarti memilih *rules* yang sudah kami tulis sendiri, bukan model yang menggeneralisasi. Kami melaporkan keduanya secara terpisah dan tidak menyembunyikan gap ini.
+
+**Dan mengapa bukan IndoBERT?** IndoBERT (124,5M param, fine-tune 4 *epoch*) memperoleh aspek 0,4254 dan *polarity* 0,5077 (≈ *chance*) di *gold-v1* — keduanya di bawah TF-IDF. Pada data kecil (922 *train*) dengan label lemah dan distribusi aspek timpang, kompleksitas tidak otomatis memberi hasil lebih baik; IndoBERT juga lebih mahal (GPU) dan kurang interpretable.
+
+**Kesimpulan:** TF-IDF + *One-vs-Rest Logistic Regression* dipilih sebagai detektor aspek karena (a) model yang benar-benar belajar dari data, (b) *interpretable* dan deterministik, (c) CPU-only dengan *latency* p50 2,1 ms, (d) dapat dimuat ulang secara offline, dan (e) hasil *gold-v1*-nya (0,5777) adalah angka jujur terhadap penilaian manusia. *Upgrade* yang benar di masa depan adalah menambah anotasi manusia (held-out set baru) lalu melatih ulang — bukan memakai *gold* yang sama sebagai *training*.
 
 ## 6.3 Entity Resolution
 
@@ -276,6 +288,8 @@ Arsitektur *batch-first* + SQL; TF-IDF inferensi linear; *entity resolution* ber
 
 **Gambar 4. Lima lapisan data — dari mentah (restricted) ke agregat aman (published).**
 
+**Interpretasi Gambar 4.** Data mengalir dari kiri ke kanan melalui empat transformasi, dengan **PRIVACY GATE** (ditandai aksen) sebagai batas kritis: hanya agregat aman yang menyeberang ke sisi publik. Identitas reviewer berangsur hilang — dari `reviewer-id`/`name` di lapisan *raw*, menjadi `review_id` hash, teks *review*, *evidence* verbatim, hingga **tidak ada sama sekali** di *bundle* produk. Dua jalur konsumsi (*batch* dan *live*) memakai data yang sama secara deterministik dan hash-verified.
+
 Data SIPATURE dibagi lima lapisan dengan tingkat akses berbeda. Lapisan mentah hingga *evidence* hanya dapat diakses tim ML (`restricted`); hanya **agregat aman** yang dipublikasikan ke aplikasi tanpa identitas reviewer:
 
 | Lapisan | Konten | Identitas reviewer | Akses |
@@ -289,6 +303,8 @@ Data SIPATURE dibagi lima lapisan dengan tingkat akses berbeda. Lapisan mentah h
 ![Matriks akses data terbatas](docs/figures/diagrams/restricted-data-policy.png)
 
 **Gambar 5. Matriks akses tiga peran × lima komponen data.**
+
+**Interpretasi Gambar 5.** Empat komponen terbatas (`raw`, `clean`, *annotation*, *evidence*) hanya `Admin` bagi tim ML — publik dan pengelola `None`. Hanya **safe aggregate** yang `Read` oleh publik (sel yang ditandai aksen = batas publikasi). Matriks ini membuktikan privasi-by-design: meskipun pipeline menyimpan data mentah untuk audit, aplikasi publik hanya pernah menerima agregat tanpa identitas reviewer.
 
 - **Publik / juri** → hanya agregat aman (*read*).
 - **Pengelola destinasi** → agregat aman + workflow verifikasi.

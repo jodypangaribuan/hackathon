@@ -403,55 +403,70 @@ Linux + Docker + offline, bukan GPU.
 
 ---
 
-# D. Rubric Alignment Gate
+# D. Rubrik Penilaian Final Round (resmi)
 
-## D1. Kebaruan dan Problem Framing — 20
+| Kriteria | Bobot | Sub-Indikator |
+| :--- | :---: | :--- |
+| **1. Inovasi & Orisinalitas Solusi** | **15%** | Kebaruan ide, keunikan pendekatan dibanding solusi yang sudah ada, kreativitas menjawab permasalahan pariwisata. |
+| **2. Implementasi & Kematangan Teknologi AI** | **20%** | Ketepatan pendekatan/model AI, kualitas modelling & akurasi, keberhasilan deployment ke DGX B200, kompleksitas teknis yang relevan (bukan sekadar rumit). |
+| **3. Kualitas Produk & User Experience** | **15%** | Fungsionalitas produk (mobile/web/app berjalan baik saat demo), kemudahan penggunaan (UX/UI), stabilitas sistem. |
+| **4. Skalabilitas & Kelayakan Implementasi** | **15%** | Potensi diperluas (jumlah pengguna/wilayah), kelayakan biaya & model bisnis, kesiapan infrastruktur untuk diterapkan nyata. |
+| **5. Dampak terhadap Sektor Pariwisata** | **20%** | Relevansi terhadap kebutuhan nyata destinasi wisata (khususnya kawasan Danau Toba), manfaat bagi wisatawan/pelaku pariwisata/pemda, keselarasan dengan program pengembangan pariwisata. |
+| **6. Kemampuan Presentasi & Komunikasi** | **10%** | Kejelasan penyampaian, penguasaan materi, kualitas menjawab pertanyaan juri, kekompakan tim. |
+| **7. Etika, Keamanan Data & Deklarasi Penggunaan AI** | **5%** | Transparansi sumber data, deklarasi penggunaan (atau tidak menggunakan) AI, keamanan data pengguna dalam solusi. |
+| **Total Bobot** | **100%** | |
+
+## Alignment Gate (dipetakan ke rubrik resmi)
+
+## D1. Inovasi & Orisinalitas — 15%
 
 - [ ] Decision gap spesifik dan didukung EDA.
 - [ ] Perbedaan dari sentiment dashboard/chatbot jelas.
 - [ ] Complete review-to-intervention chain terbukti.
 - [ ] Scope sempit, koheren, dan tidak mengikuti tren tanpa alasan.
 
-## D2. Dampak dan Relevansi — 20
-
-- [ ] Target user dan beneficiary jelas.
-- [ ] Manfaat operasional terukur.
-- [ ] Pilot dan KPI realistis.
-- [ ] Dampak lokal Toba eksplisit.
-- [ ] Rekomendasi dapat ditindaklanjuti dan diverifikasi.
-
-## D3. Kualitas Teknis AI dan Data — 20
+## D2. Implementasi & Kematangan AI — 20%
 
 - [ ] Cleaning/entity resolution reproducible.
 - [ ] Annotation dan agreement terukur.
 - [ ] Leakage-safe split dan locked test.
 - [ ] Keyword/TF-IDF/IndoBERT comparison.
 - [ ] Actual metrics, calibration, latency, error analysis.
+- [ ] Deployment ke DGX B200 (rehearsal selesai; deploy hari-H pending).
 - [ ] Robust offline demo dan model card.
 
-## D4. Kelayakan dan Keberlanjutan — 15
+## D3. Kualitas Produk & User Experience — 15%
 
-- [ ] Scope realistis untuk hackathon.
-- [ ] Docker/DGX deployment berhasil.
-- [ ] Batch-first architecture dan offline fallback tersedia.
-- [ ] Pilot, feedback loop, dan resource plan tersedia.
-- [ ] Future roadmap tidak bergantung pada klaim yang belum terbukti.
+- [ ] Fungsionalitas produk berjalan baik saat demo.
+- [ ] Kemudahan penggunaan (UX/UI).
+- [ ] Stabilitas sistem.
 
-## D5. Pemanfaatan Data Toba — 15
+## D4. Skalabilitas & Kelayakan Implementasi — 15%
 
-- [ ] Reviews dipakai sebagai model input utama.
-- [ ] Metadata, facilities, hours, transport terintegrasi.
-- [ ] Coordinates dipakai untuk geospatial analytics.
-- [ ] Cleaning, entity links, evidence, provenance dapat diaudit.
-- [ ] Data eksternal hanya enrichment dan lisensinya terdokumentasi.
+- [ ] Potensi diperluas (batch-first, jumlah pengguna/wilayah).
+- [ ] Kelayakan biaya dan model bisnis.
+- [ ] Kesiapan infrastruktur (Docker/DGX).
 
-## D6. Komunikasi, Demo, Dokumentasi — 10
+## D5. Dampak terhadap Sektor Pariwisata — 20%
+
+- [ ] Relevansi terhadap kebutuhan nyata destinasi (Danau Toba).
+- [ ] Manfaat bagi wisatawan/pelaku pariwisata/pemda.
+- [ ] Pilot dan KPI realistis.
+- [ ] Keselarasan dengan program pengembangan pariwisata.
+
+## D6. Presentasi & Komunikasi — 10%
 
 - [ ] Narasi ringkas dan konsisten.
 - [ ] Diagram evaluasi terbaca dan berisi hasil aktual.
 - [ ] Demo end-to-end stabil.
-- [ ] README, model card, Responsible AI, limitations lengkap.
 - [ ] Semua anggota siap Q&A.
+
+## D7. Etika, Keamanan Data & Deklarasi AI — 5%
+
+- [ ] Transparansi sumber data.
+- [ ] Deklarasi penggunaan AI.
+- [ ] Keamanan data pengguna (no reviewer identity).
+- [ ] Responsible AI dan limitations lengkap.
 
 ---
 
@@ -524,8 +539,8 @@ Linux + Docker + offline, bukan GPU.
 - [x] Intervention queue dan formula/config. (notebook `09`: `expert-review-queue.csv` + `scoring.yaml`)
 - [x] Evidence provenance table. (notebook `08`/`09`: `evidence.parquet` + evidence di `app-export.json`)
 - [x] Expert/system evaluation. (notebook `09`: queue + sensitivity; review ahli eksternal TIDAK dilakukan — diganti sensitivity analysis sebagai validasi internal)
-- [ ] Facility gap analysis dari metadata `Fasilitas` (isi komponen `facility_gap` yang saat ini `None` — rubric D5 pemanfaatan data)
-- [ ] Integrasi data transportasi (aksesibilitas/konektivitas) ke analisis geospasial. (rubric D5)
+- [ ] Facility gap analysis dari metadata `Fasilitas` (isi komponen `facility_gap` yang saat ini `None` — rubric D5 dampak pariwisata)
+- [ ] Integrasi data transportasi (aksesibilitas/konektivitas) ke analisis geospasial. (rubric D5 dampak pariwisata)
 - [x] Evaluasi penggunaan IndoBERT polarity model menggantikan `lexical-polarity-v1` di A9. (gold-v1 polarity 0,5077 ≈ chance vs silver 0,7459 — TIDAK layak dipakai, lexical tetap; notebook `12`)
 - [x] SIPATURE source code. (`sipature-app/` + `sipature-api/` + `ml/src/sipature_ml/`)
 - [x] API source/schema/docs. (FastAPI `sipature-api` + PostgreSQL `db/schema.sql` + Drizzle ORM)
@@ -542,7 +557,7 @@ Linux + Docker + offline, bukan GPU.
 - [ ] Demo script dan backup recording.
 - [x] Responsible AI document. (`docs/responsible-ai.md` + section etika di `docs/model-card.md`)
 - [ ] Pilot and impact plan.
-- [ ] Impact quantification: destinasi terjangkau, review diproses, estimasi eksposur wisatawan, dan time-to-verification. (KPI terukur untuk rubric D2 — 20 poin)
+- [ ] Impact quantification: destinasi terjangkau, review diproses, estimasi eksposur wisatawan, dan time-to-verification. (KPI terukur untuk rubric D5 dampak — 20%)
 - [x] Q&A answer bank. (`docs/qa-answer-bank.md`)
 
 ---

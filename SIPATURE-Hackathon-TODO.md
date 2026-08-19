@@ -506,15 +506,15 @@ Linux + Docker + offline, bukan GPU.
 - [x] Taxonomy dan annotation guideline. (`taxonomy.yaml` RC1 + `docs/annotation-guideline.md`)
 - [x] Sampling manifest. (notebook `03`: pilot/main audit + assignments + `annotation_sampling_summary.json`)
 - [x] Annotation JSONL. (`silver-v1.0.0.jsonl` — AI-assisted weak supervision, bukan human gold)
-- [x] Agreement dan annotation-audit report. (gold annotation 3 anggota tim selesai → `agreement.json`: aspect Jaccard 0,8638 / polarity 0,9757 / severity κ 1,0; `freeze-gold` → `gold.jsonl` 1.320 records, 235 disagreement adjudicated)
+- [x] Agreement dan annotation-audit report. (gold annotation 3 anggota tim selesai → `agreement.json`: aspect Jaccard 0,9664 / polarity 0,9804 / severity κ 1,0; `freeze-gold` → `gold.jsonl` 1.320 records, 117 adjudicated (97 auto + 20 manual), SHA `7b5b6057…`; gold lama diarsip ke `gold-human-v1/`)
 - [x] Split manifest dan data hashes. (notebook `04`: `split_manifest_silver_v1.json`, leakage-safe, terkunci)
 - [x] Keyword artifact/metrics. (notebook `05`: `keyword-silver-v1-test-metrics.json`)
 - [x] TF-IDF model/vectorizer/metrics. (notebook `05`: `tfidf-aspect-silver-v1/model.joblib` + metrics)
 - [x] IndoBERT model/tokenizer/config. (notebook `06`: run `20260813-1050_indobert-silver-v1`)
 - [x] Thresholds dan calibration artifacts. (notebook `07`: `20260813-1050_indobert-silver-v1_calibration-v1`)
 - [x] Locked test metrics dan diagrams. (notebook `07`: `20260813-1050_indobert-silver-v1_locked-test-v1`)
-- [x] Model card. (`docs/model-card.md` — metrik silver terisi; metrik gold sudah dihitung via notebook `10`/`11`/`12`, pembaruan model-card masih follow-up)
-- [x] Gold baseline evaluation. (notebook `10`: keyword 0,7797 / TF-IDF 0,6379 vs gold; notebook `11`: tabel preliminary-vs-final; notebook `12`: IndoBERT-vs-gold 0,4848 — inference-only)
+- [x] Model card. (`docs/model-card.md` — metrik silver + gold-v1 terisi; evaluasi IndoBERT-vs-gold-v1 masih follow-up GPU)
+- [x] Gold baseline evaluation. (notebook `10`: keyword 0,7056 / TF-IDF 0,5777 vs gold-v1; notebook `11`: tabel preliminary-vs-final; notebook `12`: IndoBERT-vs-gold-v1 BELUM dijalankan — pending GPU)
 - [ ] Error analysis manual (audit FP/FN 50, kategorisasi negation/implicit/typo, reputational risk).
 
 ## F3. Intelligence Engine dan Product
@@ -526,7 +526,7 @@ Linux + Docker + offline, bukan GPU.
 - [x] Expert/system evaluation. (notebook `09`: queue + sensitivity; review ahli eksternal TIDAK dilakukan — diganti sensitivity analysis sebagai validasi internal)
 - [ ] Facility gap analysis dari metadata `Fasilitas` (isi komponen `facility_gap` yang saat ini `None` — rubric D5 pemanfaatan data)
 - [ ] Integrasi data transportasi (aksesibilitas/konektivitas) ke analisis geospasial. (rubric D5)
-- [x] Evaluasi penggunaan IndoBERT polarity model menggantikan `lexical-polarity-v1` di A9. (gold polarity 0,5019 vs silver 0,7459 — TIDAK layak dipakai, lexical tetap; notebook `12`)
+- [ ] Evaluasi penggunaan IndoBERT polarity model menggantikan `lexical-polarity-v1` di A9. (gold-v1 polarity BELUM dihitung — pending GPU/Colab; keputusan final setelah notebook `12` dijalankan ulang terhadap gold-v1)
 - [x] SIPATURE source code. (`sipature-app/` + `sipature-api/` + `ml/src/sipature_ml/`)
 - [x] API source/schema/docs. (FastAPI `sipature-api` + PostgreSQL `db/schema.sql` + Drizzle ORM)
 - [x] Dockerfiles/compose/runbook. (3-service: `web` + `inference` + `db`; `docker-compose.yml`)
@@ -554,6 +554,7 @@ Gunakan tabel ini setiap hari. Tambahkan baris, bukan mengganti history.
 | Tanggal | Fokus | PIC | Output target | Status | Blocker | Keputusan |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-08-19 | Gold annotation → agreement → freeze-gold; gold baselines (keyword/TF-IDF/IndoBERT); staging rehearsal B2 | Tim | `gold.jsonl`, `agreement.json`, notebook `10`/`11`/`12`, `docs/dgx-deployment-runbook.md` | Done | - | Keyword menang di gold (0.78 > TF-IDF 0.64 > IndoBERT 0.48); IndoBERT polarity (0.50) tidak dipakai; deploy verifikasi (388/103/210) |
+| 2026-08-19 | Switch gold → gold-v1 (human label revisi); re-eval baseline; update model card + TODO | Tim | `gold.jsonl` (SHA `7b5b6057`), keyword/TF-IDF gold metrics, `model-card.md` | Done | - | Gold baru agreement 0.9664 > lama 0.8638; keyword 0.7056 / TF-IDF 0.5777; IndoBERT-vs-gold-v1 pending GPU |
 
 Status yang diperbolehkan:
 

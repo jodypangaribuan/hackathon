@@ -34,19 +34,21 @@ tidak pernah menganggap data hilang sebagai kondisi sehat.
 ## 2. Data & Anotasi
 
 ### Q: Label Anda dari mana? Apa ini human-gold?
-A: Bukan. Label kami **AI-assisted weak supervision (silver)**: 3 rule-pass
-deterministik (`strict`, `balanced`, `recall`) dengan konsensus minimal 2/3 suara
-pada 1.320 review (mean pass-agreement 0,8827). Ini *bukan* inter-annotator
-agreement. Karena itu seluruh metrik kami dilaporkan sebagai "agreement terhadap
-silver reference", bukan akurasi human-gold. Rencana lanjut: gold annotation oleh 3
-anggota tim untuk mengukur kualitas silver.
+A: Ada dua lapis. **Training/baseline** memakai AI-assisted weak supervision
+(silver): 3 rule-pass deterministik + konsensus 2/3 pada 1.320 review (mean
+pass-agreement 0,8827) — ini *bukan* inter-annotator agreement. **Benchmark final**
+memakai **human-gold** dari 3 anggota tim (A1–A3) pada sample yang sama: 1.320
+record, inter-annotator agreement aspect Jaccard **0,9664**, polarity **0,9804**,
+severity weighted-κ **1,0**; 117 record di-adjudikasi. Metrik gold dilaporkan
+terpisah dari silver dan terikat `gold_sha256` (`7b5b6057…`).
 
 ### Q: Kenapa tidak annotate manual penuh?
 A: 12.234 review berteks × 14 aspek multilabel tidak feasible untuk anotasi penuh
 dalam waktu hackathon. Kami pakai weak supervision untuk membangun benchmark awal
-yang deterministik dan reproducibility, dan membiarkan human-gold sebagai upgrade
-berikutnya dengan threshold agreement yang jelas (aspect Jaccard ≥0,70, polarity
-≥0,75, severity kappa ≥0,60).
+yang deterministik, lalu memvalidasinya dengan **human-gold 3 annotator** pada
+sample 1.320 review yang sama. Hasil agreement memenuhi threshold yang kami
+tetapkan sebelumnya (aspect Jaccard ≥0,70 → aktual 0,9664; polarity ≥0,75 → 0,9804;
+severity κ ≥0,60 → 1,0).
 
 ### Q: Bagaimana menangani imbalance / rare aspect?
 A: (1) Oversampling berbobot saat sampling anotasi (rare aspect ×3, complaint ×2.5).
@@ -72,9 +74,18 @@ yang menggeneralisasi ke seluruh korpus.
 
 ### Q: Kenapa TF-IDF, bukan deep learning?
 A: Kami **mencoba** IndoBERT (base-p1, 124,5M param, fine-tune 4 epoch). Hasil
-locked-test aspect Macro F1 **0,5247 vs TF-IDF 0,7201**. TF-IDF menang, lebih
-interpretable, deterministik, CPU-only (latency 0,1 ms/review), dan offline. Ini
-bukti kami memilih metode karena cocok, bukan karena tren.
+locked silver-test aspect Macro F1 **0,5247 vs TF-IDF 0,7201**. Pada human-gold,
+TF-IDF **0,5777** (IndoBERT pending GPU). TF-IDF dipilih karena interpretable,
+deterministik, CPU-only (latency 0,1 ms/review), dan offline. Ini bukti kami
+memilih metode karena cocok, bukan karena tren.
+
+### Q: Kenapa keyword malah lebih tinggi dari TF-IDF di human-gold?
+A: Benar, keyword baseline 0,7056 > TF-IDF 0,5777 pada gold-v1. Keyword adalah
+rule leksikal yang sangat dekat dengan definisi aspek di taxonomy, sehingga
+cenderung cocok dengan penilaian manusia; di silver angka itu sirkular (0,9768),
+di gold ia menjadi ukuran yang jujur. TF-IDF adalah model *yang dilatih* — lebih
+general dan tidak bergantung lexicon, tapi pada label manusia ia belum mengungguli
+keyword. Kami laporkan keduanya secara terpisah dan tidak menyembunyikan gap ini.
 
 ### Q: Tapi TF-IDF itu kan metode lama / bukan "AI"?
 A: TF-IDF adalah *feature extraction*; classifier-nya adalah Logistic Regression
@@ -95,7 +106,8 @@ repeated-text/review di train/validation/test (922/196/202). Test terkunci
 A: Justru sebaliknya — angka itu **peringatan**, bukan prestasi. Keyword baseline
 berbagi vocabulary dengan silver rules, jadi 0,9768 itu *sirkular* (mengukur
 dirinya sendiri). Kami memakainya sebagai *ceiling* referensi, dan memilih TF-IDF
-(0,7201) yang lebih independen. Ini bagian dari kejujuran evaluasi.
+(0,7201) yang lebih independen. Pada human-gold, keyword turun ke 0,7056 — barulah
+ini ukuran yang jujur terhadap penilaian manusia.
 
 ### Q: Bagaimana kalibrasi / confidence?
 A: Aspect detection pakai threshold per-aspek yang di-tune di validation.
@@ -206,9 +218,11 @@ intervention adoption, waktu tersimpan. Kami **tidak** menjanjikan revenue/visit
 growth untuk prototype.
 
 ### Q: Apa yang belum selesai / limitation terbesar?
-A: (1) Label silver, bukan human-gold. (2) Evidence belum dinilai manusia.
-(3) Severity/facility-gap/feasibility belum tersedia. (4) Analyzer (sandbox leksikal)
-bukan model utama. Kami ungkap semua ini di `/metode` dan model card.
+A: (1) Model dilatih pada label **silver** (weak supervision); human-gold dipakai
+sebagai benchmark evaluasi, bukan data training. (2) Evidence belum dinilai
+manusia. (3) Severity/facility-gap/feasibility belum tersedia. (4) IndoBERT-vs-gold
+belum dihitung (pending GPU). (5) Analyzer (sandbox leksikal) bukan model utama.
+Kami ungkap semua ini di `/metode` dan model card.
 
 ---
 
@@ -220,9 +234,13 @@ bukan model utama. Kami ungkap semua ini di `/metode` dan model card.
 | Canonical destinations | 388 (322 anchor + 66 unresolved) |
 | Entity resolution | precision 0,9714 · false-merge 0,0286 |
 | Split | 922/196/202 · leakage 0 |
-| TF-IDF aspect (locked test) | Macro F1 0,7201 · Micro 0,8040 |
-| IndoBERT aspect (locked test) | Macro F1 0,5247 |
-| IndoBERT polarity | Macro F1 0,7459 |
-| Keyword (circular) | Macro F1 0,9768 |
+| TF-IDF aspect (silver locked test) | Macro F1 0,7201 · Micro 0,8040 |
+| TF-IDF aspect (human-gold) | Macro F1 0,5777 · Micro 0,6910 |
+| Keyword (silver, circular) | Macro F1 0,9768 |
+| Keyword (human-gold) | Macro F1 0,7056 |
+| IndoBERT aspect (silver locked test) | Macro F1 0,5247 |
+| IndoBERT aspect (human-gold) | PENDING (GPU) |
+| IndoBERT polarity | Macro F1 0,7459 (silver) |
+| Gold inter-annotator agreement | aspect Jaccard 0,9664 · polarity 0,9804 · severity κ 1,0 |
 | Inferensi full-corpus | 9.785 prediksi · 1.682 sinyal · 103 actionable · 210 isu |
 | Sensitivity | top-20 Jaccard 0,8182–1,0000 |

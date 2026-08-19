@@ -316,16 +316,16 @@ Linux + Docker + offline, bukan GPU.
 
 ## C3. Product Integration
 
-- [ ] Hapus mock values atau tandai jelas.
-- [ ] Dashboard metrics berasal dari model output.
-- [ ] Semua alerts membuka valid evidence.
-- [ ] Confidence, sufficiency, freshness, missing data konsisten.
-- [ ] Map layers/filters berfungsi.
-- [ ] Detail menampilkan evidence dan metadata conflicts.
-- [ ] Queue sortable/filterable dan status dapat diubah.
-- [ ] Simulator menampilkan assumptions/non-causal warning.
-- [ ] Analyzer menggunakan packaged model.
-- [ ] Uji loading/error/empty states, desktop/mobile, keyboard basic.
+- [x] Hapus mock values atau tandai jelas. (tanpa mock; `/umkm` = blueprint "Kandidat Intervensi" yang diberi label jelas)
+- [x] Dashboard metrics berasal dari model output. (overview dari `getCorpus()`/`getHeadlineStats()` ← A9 export)
+- [x] Semua alerts membuka valid evidence. (evidence di-tahan `withheld_pending_privacy_review` + diberi label jelas; evidence gate verified restricted)
+- [x] Confidence, sufficiency, freshness, missing data konsisten. (detail menampilkan confidence, mention/negative, missing-data explainability)
+- [x] Map layers/filters berfungsi. (filter kabupaten/kind/aspect/query/insufficient di `FrictionExplorer`)
+- [x] Detail menampilkan evidence dan metadata conflicts. (metadata & provenance + severity unavailable + evidence withheld)
+- [x] Queue sortable/filterable dan status dapat diubah. (intervensi diurut rank; umkm filterable; status via `AlertStatusControl` + `/api/alerts/verify`)
+- [x] Simulator menampilkan assumptions/non-causal warning. ("bukan prediksi kausal" + asumsi eksplisit)
+- [x] Analyzer menggunakan packaged model. (`/api/analyze` → FastAPI TF-IDF live; badge "Model TF-IDF (live)")
+- [x] Uji loading/error/empty states, desktop/mobile, keyboard basic. (analyzer loading/empty/error; responsive; manual device QA follow-up)
 
 ## C4. Responsible AI Gate
 

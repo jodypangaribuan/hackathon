@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ClipboardCheck, EyeOff, MapPin, ShieldAlert } from "lucide-react";
 import InterventionSim from "@/components/InterventionSim";
+import AlertStatusControl from "@/components/AlertStatusControl";
 import { AspectIcon } from "@/components/AppIcon";
 import {
   Badge,
@@ -178,6 +179,10 @@ export default async function DestinationPage({ params }: Props) {
                         secara restricted.
                       </Note>
                     </div>
+                    <AlertStatusControl
+                      destinationId={place.id}
+                      aspect={issue.aspect}
+                    />
                   </li>
                 ))}
               </ol>

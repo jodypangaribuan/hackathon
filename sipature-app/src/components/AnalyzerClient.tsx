@@ -104,7 +104,7 @@ export default function AnalyzerClient() {
               className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] text-ink-2"
               style={{ borderColor: "var(--hairline)" }}
             >
-              <FlaskConical size={12} /> Baseline aktif
+              <FlaskConical size={12} /> Model TF-IDF (live)
             </span>
           </div>
 

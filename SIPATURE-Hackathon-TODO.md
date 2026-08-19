@@ -329,14 +329,14 @@ Linux + Docker + offline, bukan GPU.
 
 ## C4. Responsible AI Gate
 
-- [ ] Reviewer identity tidak muncul di UI/API/log.
-- [ ] Evidence verbatim dan memiliki provenance.
-- [ ] Gunakan istilah reported issue/early-warning signal.
-- [ ] Jangan klaim destination polluted/dangerous/clean tanpa verifikasi.
-- [ ] Low-support alerts disembunyikan atau berlabel insufficient.
-- [ ] Popularity bias, freshness, intended use, limitations, misuse risks tersedia.
-- [ ] Human verification tampil pada recommendation.
-- [ ] Rejected alert workflow tersedia.
+- [x] Reviewer identity tidak muncul di UI/API/log. (grep privacy keys pada generated data + UI = kosong; `verified_by` opaque/null)
+- [x] Evidence verbatim dan memiliki provenance. (provenance source_file/row di A9 restricted; teks ditahan publik — evidence gate verified restricted)
+- [x] Gunakan istilah reported issue/early-warning signal. (footer + detail + queue pakai "reported issue", "early-warning", "sinyal triase")
+- [x] Jangan klaim destination polluted/dangerous/clean tanpa verifikasi. (disclaimer "bukan vonis/bukti kondisi lapangan" di `/metode` + footer)
+- [x] Low-support alerts disembunyikan atau berlabel insufficient. (minimum-mention gate → "Insufficient Data", tidak diranking)
+- [x] Popularity bias, freshness, intended use, limitations, misuse risks tersedia. (`/metode` Batas Kejujuran + `docs/model-card.md` + `docs/responsible-ai.md`)
+- [x] Human verification tampil pada recommendation. (queue/detail tampilkan recommendedVerification + "wajib verifikasi manusia")
+- [x] Rejected alert workflow tersedia. (`AlertStatusControl` + `/api/alerts/verify` dengan rejection reason)
 
 ## C5. Docker dan DGX B200
 

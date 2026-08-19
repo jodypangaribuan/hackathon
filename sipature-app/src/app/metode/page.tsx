@@ -138,8 +138,9 @@ export default async function MethodPage() {
         <ul className="space-y-2.5 text-[13px] leading-relaxed text-ink-2">
           <li>
             <TriangleAlert size={14} className="mr-1 inline" />
-            TF-IDF Macro F1 0,7201 diukur terhadap held-out weak-supervision
-            silver labels, bukan human gold.
+            Benchmark aspek vs human-gold 3 annotator (gold-v1): keyword 0,7056 ·
+            TF-IDF 0,5777 · IndoBERT 0,4254. TF-IDF tetap dipilih sebagai model
+            terlatih; gold adalah benchmark evaluasi, bukan data training.
           </li>
           <li>
             <Circle size={12} className="mr-1 inline" />
@@ -182,8 +183,8 @@ export default async function MethodPage() {
           </li>
           <li>Simulator adalah analisis skenario non-kausal.</li>
           <li>
-            Analyzer adalah sandbox leksikal terpisah dan tidak mengaku sebagai
-            model intelligence utama.
+            Analyzer memakai model TF-IDF ter-package (fallback leksikal bila
+            service inference tidak tersedia); mode aktual tercermin di respons.
           </li>
         </ul>
       </Card>

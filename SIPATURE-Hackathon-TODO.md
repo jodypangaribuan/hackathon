@@ -513,7 +513,7 @@ Linux + Docker + offline, bukan GPU.
 - [x] IndoBERT model/tokenizer/config. (notebook `06`: run `20260813-1050_indobert-silver-v1`)
 - [x] Thresholds dan calibration artifacts. (notebook `07`: `20260813-1050_indobert-silver-v1_calibration-v1`)
 - [x] Locked test metrics dan diagrams. (notebook `07`: `20260813-1050_indobert-silver-v1_locked-test-v1`)
-- [x] Model card. (`docs/model-card.md` — metrik silver + gold-v1 terisi; evaluasi IndoBERT-vs-gold-v1 masih follow-up GPU)
+- [x] Model card. (`docs/model-card.md` — metrik silver + gold-v1 terisi lengkap; IndoBERT-vs-gold-v1 0,4254 / polarity 0,5077 ditandai "ditolak")
 - [x] Gold baseline evaluation. (notebook `10`: keyword 0,7056 / TF-IDF 0,5777 vs gold-v1; notebook `11`: tabel preliminary-vs-final; notebook `12`: IndoBERT-vs-gold-v1 aspect 0,4254 / polarity 0,5077 — inference-only)
 - [ ] Error analysis manual (audit FP/FN 50, kategorisasi negation/implicit/typo, reputational risk).
 
@@ -554,7 +554,7 @@ Gunakan tabel ini setiap hari. Tambahkan baris, bukan mengganti history.
 | Tanggal | Fokus | PIC | Output target | Status | Blocker | Keputusan |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-08-19 | Gold annotation → agreement → freeze-gold; gold baselines (keyword/TF-IDF/IndoBERT); staging rehearsal B2 | Tim | `gold.jsonl`, `agreement.json`, notebook `10`/`11`/`12`, `docs/dgx-deployment-runbook.md` | Done | - | Keyword menang di gold (0.78 > TF-IDF 0.64 > IndoBERT 0.48); IndoBERT polarity (0.50) tidak dipakai; deploy verifikasi (388/103/210) |
-| 2026-08-19 | Switch gold → gold-v1 (human label revisi); re-eval baseline; update model card + TODO | Tim | `gold.jsonl` (SHA `7b5b6057`), keyword/TF-IDF gold metrics, `model-card.md` | Done | - | Gold baru agreement 0.9664 > lama 0.8638; keyword 0.7056 / TF-IDF 0.5777; IndoBERT-vs-gold-v1 pending GPU |
+| 2026-08-19 | Switch gold → gold-v1 (human label revisi); re-eval baseline; update model card + TODO | Tim | `gold.jsonl` (SHA `7b5b6057`), keyword/TF-IDF gold metrics, `model-card.md` | Done | - | Gold baru agreement 0.9664 > lama 0.8638; keyword 0.7056 / TF-IDF 0.5777; IndoBERT-vs-gold-v1 0.4254 / polarity 0.5077 (ditolak) |
 
 Status yang diperbolehkan:
 

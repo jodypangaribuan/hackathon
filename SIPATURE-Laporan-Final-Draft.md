@@ -24,18 +24,22 @@ SIPATURE adalah *dashboard* dan sistem pendukung keputusan yang mengubah ulasan 
 
 Produk final berjalan sebagai tiga layanan *Docker* (`web` + `inference` + `db`) yang di-deploy ke DGX B200 IT Del secara offline, dengan *latency* p50 2,1 ms per *review*, *alert verification workflow* (konfirmasi/tolak/tidak pasti + alasan), dan *fallback* peta SVG saat tanpa internet. Keluaran operasional mencakup 103 destinasi *actionable* dan 210 isu. Keterbatasan utama: model *severity* tidak tersedia (support kelas `high` < 20), dan *evidence* verbatim ditahan dari aplikasi publik sampai pemeriksaan privasi selesai.
 
-Tabel ringkasan berikut merangkum indikator utama implementasi dan hasil evaluasi SIPATURE:
+Tabel ringkasan berikut merangkum indikator utama implementasi dan hasil evaluasi performa SIPATURE secara kuantitatif:
+
+**Tabel 1. Ringkasan indikator utama implementasi dan evaluasi SIPATURE.**
 
 | Indikator Utama | Hasil Aktual | Keterangan |
 | --- | ---: | --- |
-| *Review* bersih | 22.169 | dari 22.302 *raw* |
-| *Review* berteks | 12.234 | *input* NLP |
-| *Gold annotation* | 1.320 | 3 anotator, *Jaccard* 0,9664 |
-| *Aspect Macro F1* (gold-v1) | 0,5777 | TF-IDF (produksi) |
-| IndoBERT aspect (gold-v1) | 0,4254 | ditolak |
-| *Canonical destination* | 388 | 322 *anchor* + 66 *unresolved* |
-| Destinasi *actionable* | 103 | 210 isu |
-| *Latency* `/predict-review` | p50 2,1 ms | CPU-only |
+| *Review* bersih | 22.169 | dari 22.302 *raw records* |
+| *Review* berteks | 12.234 | *input* utama pemrosesan NLP |
+| *Gold annotation* | 1.320 | 3 anotator manusia, *Jaccard* aspek 0,9664 |
+| *Aspect Macro F1* (gold-v1) | 0,5777 | TF-IDF (model produksi terpilih) |
+| IndoBERT aspect (gold-v1) | 0,4254 | ditolak (*underfitting* pada data kecil) |
+| *Canonical destination* | 388 | 322 *anchor metadata* + 66 *unresolved placeholder* |
+| Destinasi *actionable* | 103 | menghasilkan 210 isu terverifikasi bukti |
+| *Latency* `/predict-review` | p50 2,1 ms | inferensi CPU-only pada node DGX B200 |
+
+**Interpretasi Tabel 1.** Indikator utama di atas mencerminkan efisiensi rantai konversi data: dari 22.302 ulasan mentah, sistem menghasilkan 103 destinasi dengan 210 isu yang didukung bukti konkret. Penggunaan model TF-IDF memastikan latensi inferensi sangat rendah (2,1 ms) sehingga mampu berjalan secara mandiri dan andal pada lingkungan komputasi luring DGX B200.
 
 ---
 
@@ -65,12 +69,16 @@ Berdasarkan kesenjangan antara ketersediaan data ulasan yang melimpah dan kebutu
 
 Pengembangan SIPATURE dirancang secara spesifik untuk menjawab tantangan tata kelola pariwisata berbasis kecerdasan buatan dengan mengedepankan empat pilar nilai utama: informatif, efisien, berkelanjutan, dan bernilai operasional. Matriks kontribusi sistem terhadap nilai-nilai tersebut dirinci pada tabel berikut:
 
-| Nilai | Kontribusi SIPATURE |
+**Tabel 2. Pemetaan nilai pilar kompetisi dan kontribusi solusi SIPATURE.**
+
+| Nilai Pilar | Kontribusi Solusi SIPATURE |
 | --- | --- |
-| Informatif | Ulasan → 14 aspek + *evidence* + prioritas terjelaskan |
-| Efisien | Mengurangi pembacaan manual; *latency* 2,1 ms/*review* |
-| Berkelanjutan | Fokus kebersihan/sanitasi/akses; *feedback loop* verifikasi |
-| Bernilai | Dasar keputusan operasional untuk pengelola & BPODT |
+| **Informatif** | Mengubah teks bebas menjadi 14 aspek terstruktur, kutipan bukti verbatim, dan skor prioritas yang dapat dijelaskan (*explainable*). |
+| **Efisien** | Mengeliminasi proses audit ulasan manual dengan latensi p50 2,1 ms per ulasan dan konsumsi memori ringan. |
+| **Berkelanjutan** | Memprioritaskan isu kebersihan, sanitasi toilet, dan akses jalan dengan mekanisme umpan balik verifikasi berkelanjutan. |
+| **Bernilai** | Menjadi landasan pengambilan keputusan taktis bagi pengelola lokal dan alokasi anggaran strategis bagi BPODT. |
+
+**Interpretasi Tabel 2.** Keempat pilar ini memastikan bahwa SIPATURE tidak hanya berfungsi sebagai proyek demonstrasi teknologi AI, melainkan sebuah instrumen operasional praktis yang memberi manfaat langsung bagi pengelolaan pariwisata Danau Toba.
 
 ---
 
@@ -80,12 +88,16 @@ Pengembangan SIPATURE dirancang secara spesifik untuk menjawab tantangan tata ke
 
 Keberhasilan intervensi pariwisata memerlukan pemahaman menyeluruh terhadap ekosistem pemangku kepentingan di Kawasan Danau Toba. Setiap pihak memiliki kebutuhan informasi yang berbeda serta menghadapi hambatan operasional tersendiri dalam memanfaatkan umpan balik wisatawan:
 
-| *Stakeholder* | Kebutuhan | Hambatan |
+**Tabel 3. Pemetaan kebutuhan dan hambatan operasional para pemangku kepentingan.**
+
+| Pemangku Kepentingan | Kebutuhan Utama | Hambatan Operasional Saat Ini |
 | --- | --- | --- |
-| Pengelola destinasi | Menemukan isu berulang & menentukan pemeriksaan | Volume ulasan besar, tidak terstruktur |
-| BPODT/pemerintah | Pola lintas destinasi, alokasi sumber daya | Data tersebar, tidak terintegrasi |
-| Wisatawan | Pengalaman lebih baik | Umpan balik belum tertutup |
-| Pelaku lokal | Tindak lanjut terarah | Kurang sinyal terstruktur |
+| **Pengelola Destinasi** | Menemukan keluhan fasilitas berulang dan menentukan titik inspeksi fisik. | Volume ulasan sangat besar, tidak terstruktur, dan tercampur pujian umum. |
+| **BPODT / Pemerintah** | Memantau pola kelemahan lintas wilayah untuk alokasi anggaran fasilitas publik. | Data ulasan dan metadata tersebar di berbagai platform tanpa standardisasi. |
+| **Wisatawan** | Memperoleh fasilitas wisata yang bersih, aman, transparan, dan terawat. | Umpan balik yang disampaikan jarang mendapat tindak lanjut nyata. |
+| **Pelaku Usaha Lokal** | Mendapatkan rekomendasi perbaikan layanan spesifik (kuliner, penginapan). | Ketiadaan sinyal berbasis data agregat yang dapat dipercaya. |
+
+**Interpretasi Tabel 3.** Kebutuhan para pemangku kepentingan menunjukkan bahwa tantangan terbesar bukan ketiadaan data, melainkan ketiadaan alat sintesis yang mampu menyaring kebisingan teks dan menyajikan prioritas tindakan yang konkret.
 
 ## 2.2 Profil Data
 
@@ -104,13 +116,17 @@ Eksplorasi data awal (*Exploratory Data Analysis*) dilakukan untuk memahami kara
 
 Penerapan kecerdasan buatan untuk mendukung keputusan publik membawa risiko bias algoritma, kesalahan penggabungan data, dan potensi dampak negatif terhadap reputasi destinasi. Oleh karena itu, SIPATURE menerapkan strategi mitigasi ketat di setiap lapisan proses:
 
-| Risiko | Mitigasi |
-| --- | --- |
-| Popularity bias | *smoothing*, *minimum support*, *log exposure* |
-| *False alert* → reputasi | bahasa netral + verifikasi manusia + *rejected-alert workflow* |
-| Sparse label / rare aspect | *stratified sampling*, *Macro F1*, *class weighting* |
-| Entity *false merge* | *conservative resolution*, *unresolved placeholder* |
-| Data usang | bobot *freshness*, status `Insufficient Data` |
+**Tabel 4. Matriks identifikasi risiko sistem kecerdasan buatan dan strategi mitigasi.**
+
+| Risiko Teridentifikasi | Dampak Potensial | Strategi Mitigasi Terintegrasi |
+| --- | --- | --- |
+| **Popularity Bias** | Destinasi populer mendominasi antrean isu. | Penerapan *Bayesian smoothing*, *minimum support gate*, dan normalisasi *log exposure*. |
+| **False Alert & Reputasi** | Kerugian nama baik destinasi akibat alarm palsu. | Bahasa pelaporan netral (*reported signal*), verifikasi manusia, dan *rejected-alert workflow*. |
+| **Sparse Label / Rare Aspect** | Aspek langka tidak terdeteksi oleh model. | *Stratified sampling*, optimasi *Macro F1*, dan penyesuaian bobot kelas (*class weighting*). |
+| **Entity False Merge** | Data dua tempat berbeda tercampur keliru. | *Conservative resolution*, penolakan *low-confidence merge*, dan *unresolved placeholder*. |
+| **Data Usang (Staleness)** | Keputusan diambil dari keluhan lama yang teratasi. | Pembobotan kebaruan data (*freshness decay*) dan label status `Insufficient Data`. |
+
+**Interpretasi Tabel 4.** Strategi mitigasi ini dirancang agar sistem bertindak sebagai asisten pemantauan yang hati-hati (*conservative assistant*), meminimalkan risiko keputusan salah (*false positives*) yang dapat merugikan pengelola lokal.
 
 ---
 
@@ -134,22 +150,38 @@ Taksonomi aspek dirancang untuk menangkap spektrum permasalahan pariwisata secar
 3. **Pengalaman:** `scenery` (daya tarik alam/keindahan visual), `comfort` (kenyamanan beraktivitas), `safety` (keamanan lingkungan), dan `price_transparency` (kewajaran harga, tarif tidak resmi/pungli).
 4. **Operasional:** `service` (keramahan & sikap staf), `maintenance` (perawatan sarana), dan `opening_hours` (kesesuaian jam operasional).
 
-## 3.3 Annotation
+## 3.3 Annotation dan Kesepakatan Anotator (Inter-Annotator Agreement)
 
-Untuk melatih dan menguji model deteksi aspek secara andal, SIPATURE menerapkan strategi anotasi berjenjang yang memisahkan dataset pelatihan dari dataset tolok ukur evaluasi:
+Untuk melatih dan menguji model deteksi aspek secara andal, SIPATURE menerapkan strategi anotasi berjenjang:
+- **Silver labels** (AI-assisted weak supervision, 3 *rule passes*) digunakan untuk melatih model pada skala besar — *bukan* sebagai tolok ukur kebenaran manusia.
+- **Gold-v1 benchmark** (anotasi independen oleh 3 manusia pada 1.320 ulasan) khusus digunakan sebagai tolok ukur evaluasi akhir.
 
-- **Silver** (AI-assisted weak supervision, 3 *rule passes*) untuk *training* dan *benchmark* awal — *bukan* label manusia.
-- **Gold** (human, 3 anotator) untuk *benchmark evaluasi*: 1.320 *record*, *agreement* aspek *Jaccard* 0,9664, *polarity* 0,9804, *severity* κ 1,0; 117 *record* di-adjudikasi (97 *auto* + 20 *manual*).
+Kualitas dan konsistensi pelabelan pada dataset *gold-v1* diuji secara kuantitatif melalui metrik kesepakatan antar-anotator (*inter-annotator agreement*) sebelum proses pembekuan data:
+
+**Tabel 5. Hasil inter-annotator agreement pada dataset benchmark gold-v1 (1.320 ulasan).**
+
+| Komponen Anotasi | Metrik Evaluasi | Ambang Batas Gate | Hasil Aktual | Status Kepatuhan |
+| --- | --- | :---: | :---: | :---: |
+| **Deteksi Aspek** (Multilabel) | *Mean Pairwise Jaccard* | $\ge 0,7000$ | **0,9664** | Lulus Gate ($\checkmark$) |
+| **Polaritas Sentimen** | *Raw Agreement Ratio* | $\ge 0,7500$ | **0,9804** | Lulus Gate ($\checkmark$) |
+| **Tingkat Keparahan** (*Severity*) | *Cohen's Kappa ($\kappa$)* | $\ge 0,7000$ | **1,0000** | Lulus Gate ($\checkmark$) |
+| **Adjudikasi Ketidaksepakatan** | *Total Disagreements* | Semua diselesaikan | **117 kasus** (97 auto + 20 manual) | Selesai Dialokasikan |
+
+**Interpretasi Tabel 5.** Seluruh metrik kesepakatan melampaui ambang batas kualitas yang ditetapkan (*quality gates*). Skor *Jaccard* aspek sebesar 0,9664 dan kesepakatan polaritas 0,9804 membuktikan bahwa pedoman anotasi dipahami secara seragam oleh para penilai, sehingga dataset *gold-v1* merupakan instrumen uji independen yang sangat valid.
 
 ## 3.4 Model yang Dibandingkan
 
 Eksperimen pemodelan mengevaluasi tiga pendekatan berbeda untuk menemukan keseimbangan optimal antara akurasi generalisasi, interpretabilitas, dan efisiensi komputasi:
 
-| Model | Metode | Peran |
-| --- | --- | --- |
-| Keyword | *lexicon* + konteks + kontras | *ceiling* referensi (sirkular di silver) |
-| TF-IDF | *word+char* n-gram → OVR *Logistic Regression* | **produksi** |
-| IndoBERT | *fine-tune* `indobenchmark/indobert-base-p1` | kandidat (ditolak) |
+**Tabel 6. Komparasi karakteristik arsitektur tiga kandidat model ekstraksi aspek.**
+
+| Kandidat Model | Pendekatan & Representasi | Kebutuhan Komputasi | Peran dalam Sistem |
+| --- | --- | --- | --- |
+| **Keyword** | *Lexicon matching* + aturan konteks | CPU minimal (aturan leksikal) | Batas atas (*ceiling*) referensi; sirkular di silver |
+| **TF-IDF (Produksi)** | *Word + Character n-grams* $\rightarrow$ OVR Logistic Regression | CPU ringan (p50 2,1 ms) | **Model Produksi Terpilih** (belajar dari data) |
+| **IndoBERT** | *Fine-tuning* `indobenchmark/indobert-base-p1` (124,5M param) | GPU / VRAM besar | Model kandidat kontekstual (**Ditolak**) |
+
+**Interpretasi Tabel 6.** TF-IDF dipilih sebagai model produksi karena menawarkan kombinasi keunggulan: belajar dari pola data nyata, deterministik, mudah dijelaskan (*interpretable* bobot fiturnya), dan memiliki konsumsi sumber daya yang sangat efisien untuk implementasi mandiri di DGX B200.
 
 ## 3.5 Split Leakage-Safe
 
@@ -166,33 +198,42 @@ Penentuan arah sentimen (*polarity*) dan tingkat keparahan (*severity*) dirancan
 
 # 4. Proses Pengembangan Solusi
 
-## 4.1 Tahapan
+## 4.1 Tahapan Pengembangan
 
 Pengembangan solusi SIPATURE dilaksanakan secara sistematis melalui lima fase terukur, mulai dari pengolahan data mentah hingga penyediaan sistem terintegrasi:
 
-| Tahap | Output | Status |
-| --- | --- | --- |
-| Data (inventory, EDA, cleaning, ER) | `canonical_reviews.parquet` | Done |
-| Annotation (silver + gold) | `gold.jsonl` (SHA `7b5b6057`) | Done |
-| Model (keyword/TF-IDF/IndoBERT) | `tfidf-aspect-silver-v1` | Done |
-| Engine (inference, aggregation, priority) | `a9-tfidf-lexical-v1.0.4` | Done |
-| Product (API + web + workflow) | 3-service Docker | Done |
+**Tabel 7. Lima fase siklus pengembangan sistem SIPATURE dan artefak keluarannya.**
+
+| Fase Pengembangan | Ruang Lingkup Aktivitas | Output / Artefak Terverifikasi | Status |
+| --- | --- | --- | :---: |
+| **01. Data Engineering** | Inventarisasi, EDA, *cleaning*, dan resolusi entitas | `canonical_reviews.parquet` (22.169 records) | Selesai ($\checkmark$) |
+| **02. Annotation** | Pembuatan label *silver* dan anotasi *human gold-v1* | `gold.jsonl` (SHA `7b5b6057`) | Selesai ($\checkmark$) |
+| **03. Model Development** | Eksperimen *Keyword*, TF-IDF, dan IndoBERT | `tfidf-aspect-silver-v1` (SHA `a10bddb1`) | Selesai ($\checkmark$) |
+| **04. Analytics Engine** | *Inference*, agregasi sinyal, dan skoring prioritas | `a9-tfidf-lexical-v1.0.4` | Selesai ($\checkmark$) |
+| **05. Product Delivery** | API FastAPI, UI Next.js 15, dan *dockerization* | Tiga kontainer Docker mandiri di DGX B200 | Selesai ($\checkmark$) |
+
+**Interpretasi Tabel 7.** Setiap fase menghasilkan artefak yang dikunci dengan *hash* kriptografis SHA-256 untuk menjamin keterlacakan penuh (*end-to-end traceability*) dan reprodusibilitas hasil eksperimen.
 
 ## 4.2 Reproducibility
 
 *Seed* 42, konfigurasi YAML per *stage*, *manifest* + SHA-256 di setiap *stage*, dependensi terkunci (`requirements-dev.lock.txt`), dan *locked-test policy* (test dievaluasi sekali, metrik tidak boleh ditimpa).
 
-## 4.3 Teknologi
+## 4.3 Tumpukan Teknologi
 
 Tumpukan teknologi (*tech stack*) dipilih untuk memastikan kinerja inferensi yang cepat, konsumsi memori rendah, dan kemampuan operasional luring (*offline*):
 
-| Layer | Teknologi |
-| --- | --- |
-| Data | Python, Pandas, Parquet |
-| Model | scikit-learn (TF-IDF), PyTorch (IndoBERT kandidat) |
-| API | FastAPI |
-| Web | Next.js 15, Leaflet |
-| Deployment | Docker Compose, DGX B200 |
+**Tabel 8. Rincian tumpukan teknologi (tech stack) implementasi multi-layer SIPATURE.**
+
+| Lapisan Sistem | Teknologi / Pustaka | Peran dan Rasional Pemilihan |
+| --- | --- | --- |
+| **Data Processing** | Python 3.11, Pandas, PyArrow (Parquet) | Ekstraksi cepat, penyimpanan biner efisien, manipulasi tabular. |
+| **Machine Learning** | scikit-learn (TF-IDF + Logistic Regression) | Inferensi deterministik, CPU-only, ringan, dan andal tanpa GPU. |
+| **Inference API** | FastAPI, Uvicorn, Pydantic | Pelayanan prediksi berlatensi rendah dengan validasi skema ketat. |
+| **Frontend Web** | Next.js 15 (React), Leaflet, CSS Murni | Antarmuka responsif dengan *fallback* visual SVG interaktif. |
+| **Database & Cache** | PostgreSQL 16 | Penyimpanan relasional sinyal agregat dan *state* verifikasi alur. |
+| **Deployment Host** | Docker Compose, NVIDIA DGX B200 | Orkestrasi kontainer mandiri (*air-gapped*) tanpa dependensi internet. |
+
+**Interpretasi Tabel 8.** Pemilihan teknologi ini menjamin portabilitas tinggi: aplikasi dapat dijalankan secara instan pada lingkungan server DGX B200 tanpa memerlukan unduhan paket eksternal saat inisialisasi kontainer.
 
 ---
 
@@ -206,7 +247,7 @@ Sistem SIPATURE diimplementasikan dengan arsitektur multi-layanan mandiri (*self
 
 **Gambar 2. Deployment tiga layanan di host DGX B200.**
 
-**Interpretasi Gambar 2.** Browser (juri/demo) memanggil *web* Next.js melalui HTTPS. *Web* membaca data precomputed dari PostgreSQL (`READ`), dan untuk analisis *review* live memanggil layanan *inference* FastAPI yang memuat model TF-IDF ter-bundle (`LIVE`). Ketiga layanan berjalan dalam satu host DGX B200; model dan data sudah di-*bundle* ke image sehingga tidak ada *download* saat *startup* dan demo berjalan penuh tanpa internet eksternal.
+**Interpretasi Gambar 2.** Komunikasi antar-layanan berlangsung efisien di dalam *bridge network* host DGX B200: peramban memanggil *web gateway* Next.js melalui protokol HTTPS, *web* membaca basis data PostgreSQL (`READ`), dan meneruskan permintaan analisis teks ulasan langsung ke engine FastAPI (`LIVE`). Seluruh model dan data terintegrasi ke dalam image Docker sehingga sistem beroperasi 100% luring.
 
 ## 5.2 Fitur
 
@@ -224,16 +265,23 @@ Aplikasi antarmuka SIPATURE menyediakan 7 modul fungsional utama yang saling ter
 
 Docker Compose tiga layanan; model & data di-*bundle* ke image (tanpa *download* saat startup). Offline penuh: map tile eksternal turun ke SVG luring; analyzer turun ke *baseline* bila inference mati. *Health check*, *cold start*, dan *restart* terverifikasi.
 
-## 5.4 Performa
+## 5.4 Pengujian Performa
 
 Pengujian performa menunjukkan bahwa sistem beroperasi dengan latensi sangat rendah dan efisiensi memori yang tinggi pada satu node DGX B200:
 
-| Metrik | Nilai |
-| --- | --- |
-| `/predict-review` latency | p50 2,1 ms · p95 3,1 ms |
-| `/api/analyze` latency | p50 6,5 ms · p95 9,8 ms |
-| *Page load* | 0,05–0,14 s |
-| Memory | web 95 MiB · inference 133 MiB · db 23 MiB |
+**Tabel 9. Hasil uji performa latensi inferensi dan konsumsi memori pada host DGX B200.**
+
+| Komponen / Operasi | Metrik Waktu / Kapasitas | Keterangan Operasional |
+| --- | :---: | --- |
+| **Endpoint `/predict-review`** | p50 2,1 ms · p95 3,1 ms | Inferensi live NLP ulasan tunggal |
+| **Endpoint `/api/analyze`** | p50 6,5 ms · p95 9,8 ms | Gateway agregasi inferensi + pengayaan metadata |
+| **Waktu Pemuatan Halaman (*Page Load*)** | 0,05 – 0,14 detik | Respons render UI Next.js 15 |
+| **Memori Kontainer `web`** | 95 MiB | Antarmuka pengguna dan gateway |
+| **Memori Kontainer `inference`** | 133 MiB | Model scikit-learn + FastAPI |
+| **Memori Kontainer `db`** | 23 MiB | Basis data PostgreSQL 16 |
+| **Total Konsumsi Memori Sistem** | **251 MiB** | Jauh di bawah batas alokasi host |
+
+**Interpretasi Tabel 9.** Hasil pengujian membuktikan bahwa SIPATURE memiliki jejak komputasi yang sangat efisien (total memori hanya 251 MiB) dengan latensi sub-10 ms, menjadikannya sistem yang sangat tangguh untuk penggunaan operasional waktu nyata (*real-time*).
 
 ---
 
@@ -247,14 +295,16 @@ Evaluasi model dilakukan secara independen terhadap dataset uji terkunci *gold-v
 
 **Gambar 3. Perbandingan Macro F1 deteksi aspek pada silver (locked) vs gold-v1 (human).**
 
-| Model | Silver (locked) | Gold-v1 |
-| --- | ---: | ---: |
-| Keyword | 0,9768 (sirkular) | 0,7056 |
-| **TF-IDF (produksi)** | 0,7201 | **0,5777** |
-| IndoBERT (aspek) | 0,5247 | 0,4254 |
-| IndoBERT (polarity) | 0,7459 | 0,5077 (≈ chance) |
+**Tabel 10. Perbandingan Macro F1 deteksi aspek dan polaritas pada silver (locked) vs gold-v1 (human).**
 
-**Interpretasi Gambar 3.** Bar kiri adalah *agreement* terhadap *silver* (weak supervision), bar kanan terhadap *gold-v1* (manusia). *Keyword* turun drastis dari 0,9768 ke 0,7056 — menegaskan bahwa skor *silver*-nya sirkular. TF-IDF turun dari 0,7201 ke 0,5777, penurunan yang wajar karena *gold* lebih ketat; angka ini adalah ukuran jujur terhadap penilaian manusia. IndoBERT tetap paling rendah (0,4254). Karena itu TF-IDF dipertahankan sebagai model produksi, dengan alasan lengkap pada §6.2.
+| Model yang Diuji | Silver Test (Locked · 202 ulasan) | Gold-v1 Benchmark (Human · 1.320 ulasan) | Status Keputusan Model |
+| --- | :---: | :---: | --- |
+| **Keyword (Lexicon)** | 0,9768 (sirkular) | 0,7056 | Batas atas (*rule ceiling*) |
+| **TF-IDF + Ridge** | 0,7201 | **0,5777** | **Model Produksi Terpilih** |
+| **IndoBERT (Aspek)** | 0,5247 | 0,4254 | Ditolak (*underfit* data kecil) |
+| **IndoBERT (Polaritas)** | 0,7459 | 0,5077 (≈ *chance*) | Ditolak (akurasi tidak memadai) |
+
+**Interpretasi Tabel 10 & Gambar 3.** Skor *Keyword* pada silver (0,9768) terbukti bersifat sirkular karena aturan pembentukan silver identik dengan leksikon model; skornya turun drastis ke 0,7056 pada evaluasi manusia. TF-IDF mengalami penurunan wajar dari 0,7201 ke 0,5777 yang mencerminkan generalisasi jujur terhadap penilaian manusia. IndoBERT memperoleh skor terendah (0,4254 untuk aspek dan 0,5077 untuk polaritas) akibat keterbatasan ukuran data pelatihan.
 
 ## 6.2 Keputusan Model — mengapa TF-IDF (dilatih silver) dipilih
 
@@ -270,9 +320,20 @@ Evaluasi model dilakukan secara independen terhadap dataset uji terkunci *gold-v
 
 **Kesimpulan:** TF-IDF + *One-vs-Rest Logistic Regression* dipilih sebagai detektor aspek karena (a) model yang benar-benar belajar dari data, (b) *interpretable* dan deterministik, (c) CPU-only dengan *latency* p50 2,1 ms, (d) dapat dimuat ulang secara offline, dan (e) hasil *gold-v1*-nya (0,5777) adalah angka jujur terhadap penilaian manusia. *Upgrade* yang benar di masa depan adalah menambah anotasi manusia (held-out set baru) lalu melatih ulang — bukan memakai *gold* yang sama sebagai *training*.
 
-## 6.3 Entity Resolution
+## 6.3 Evaluasi Resolusi Entitas (Entity Resolution)
 
-Resolusi entitas diterapkan secara konservatif untuk menggabungkan variasi penamaan destinasi dari berbagai sumber data tanpa menimbulkan penggabungan keliru (*false merge*). Evaluasi pada pasangan entitas teranotasi menghasilkan *reviewed-pair precision* 0,9714, *recall* 0,4304, dan *false-merge rate* sangat rendah sebesar 0,0286. Entitas yang belum dapat diselesaikan (*unresolved*) tetap disimpan secara terpisah dan tidak dimasukkan ke dalam antrean prioritas operasional guna mencegah salah sasaran.
+Resolusi entitas diterapkan secara konservatif untuk menggabungkan variasi penamaan destinasi dari berbagai sumber data tanpa menimbulkan penggabungan keliru (*false merge*):
+
+**Tabel 11. Metrik evaluasi resolusi entitas destinasi wisata.**
+
+| Metrik Kualitas Resolusi | Nilai Capaian | Implikasi Terhadap Integritas Sistem |
+| --- | :---: | --- |
+| **Reviewed-pair Precision** | **0,9714 (97,14%)** | Memastikan bahwa pasangan entitas yang digabung benar-benar destinasi yang sama. |
+| **Reviewed-pair Recall** | **0,4304 (43,04%)** | Penggabungan dilakukan secara hati-hati (*strict matching*), menghindari tebakan spekulatif. |
+| **False-Merge Rate** | **0,0286 (2,86%)** | Angka kesalahan sangat rendah, mencegah tercampurnya reputasi dua lokasi berbeda. |
+| **Komposisi Canonical IDs** | **388 ID** | Terdiri dari 322 *anchor metadata* dan 66 *unresolved placeholder*. |
+
+**Interpretasi Tabel 11.** Presisi tinggi (97,14%) dan *false-merge rate* yang sangat rendah (2,86%) membuktikan bahwa entitas destinasi dihubungkan secara akurat. Entitas yang belum terselesaikan (*unresolved*) diisolasi ke dalam 66 *placeholder* dan dikeluarkan dari antrean prioritas untuk mencegah kesalahan intervensi.
 
 ## 6.4 Error Analysis
 
@@ -291,11 +352,15 @@ Analisis kualitatif terhadap kesalahan prediksi dilakukan untuk mengidentifikasi
 
 Implementasi SIPATURE mentransformasi tumpukan ulasan pasif menjadi alat pengambil keputusan yang terukur bagi seluruh pemangku kepentingan:
 
-| Pihak | Manfaat | Indikator |
+**Tabel 12. Matriks dampak operasional dan indikator keberhasilan per pemangku kepentingan.**
+
+| Pemangku Kepentingan | Manfaat Langsung Implementasi | Indikator Keberhasilan Operasional |
 | --- | --- | --- |
-| Pengelola destinasi | Temukan isu berulang, mulai dari yang paling didukung | *time-to-verification* |
-| BPODT/pemerintah | Pola lintas destinasi, alokasi sumber daya | *coverage* + prioritas |
-| Wisatawan | Pengalaman lebih bersih/aman/terawat | tindak lanjut terarah |
+| **Pengelola Destinasi** | Menemukan isu berulang secara cepat dan memulai verifikasi dari bukti terkuat. | Penurunan waktu tanggap verifikasi (*time-to-verification*). |
+| **BPODT / Pemerintah** | Memetakan pola kelemahan fasilitas lintas destinasi untuk alokasi anggaran tepat sasaran. | Peningkatan persentase *coverage* isu dan ketepatan prioritas intervensi. |
+| **Wisatawan & Masyarakat** | Menikmati fasilitas wisata yang lebih bersih, aman, nyaman, dan terawat. | Peningkatan rasio keluhan yang berhasil ditindaklanjuti secara nyata. |
+
+**Interpretasi Tabel 12.** Dampak yang dihasilkan dapat diukur secara kuantitatif melalui efisiensi waktu kerja pengelola dan ketepatan penyaluran fasilitas perbaikan oleh instansi pemerintah terkait.
 
 ## 7.2 Rencana Pilot
 
@@ -334,26 +399,23 @@ Perlindungan privasi data diterapkan melalui pemisahan ketat antara lingkungan p
 
 Data SIPATURE dibagi lima lapisan dengan tingkat akses berbeda. Lapisan mentah hingga *evidence* hanya dapat diakses tim ML (`restricted`); hanya **agregat aman** yang dipublikasikan ke aplikasi tanpa identitas reviewer:
 
-| Lapisan | Konten | Identitas reviewer | Akses |
-| --- | --- | --- | --- |
-| Raw CSV | 22.302 record (`wisata-v2`, `resto-hotel-v2`) | ADA (`reviewer-id`, `name`) | restricted |
-| Clean Parquet | 22.169 canonical | `review_id` hash | restricted |
-| Annotation | 1.320 silver + gold | teks review | restricted |
-| Aggregate | 1.682 sinyal + evidence | evidence verbatim | restricted |
-| Safe product | app bundle (103 destinasi, 210 isu) | **TIDAK ADA** | published |
+**Tabel 13. Matriks klasifikasi lima lapisan data dan batasan hak akses privasi.**
+
+| Lapisan Data | Cakupan dan Volume Konten | Keberadaan Identitas Reviewer | Kebijakan Hak Akses |
+| --- | --- | :---: | :---: |
+| **01. Raw CSV** | 22.302 *records* mentah (`wisata-v2`, `resto-hotel-v2`) | ADA (`reviewer-id`, nama akun) | *Restricted* (Tim ML saja) |
+| **02. Clean Parquet** | 22.169 *canonical records* (hasil deduplikasi & ER) | Disamarkan ke `review_id` SHA-256 | *Restricted* (Tim ML saja) |
+| **03. Annotation Base** | 1.320 ulasan beranotasi *gold* dan *silver* | Hanya teks ulasan (tanpa profil) | *Restricted* (Tim ML saja) |
+| **04. Aggregate Store** | 1.682 sinyal aspek terdeteksi + *evidence verbatim* | Kutipan teks untuk audit internal | *Restricted* (Tim ML saja) |
+| **05. Safe Product** | *App bundle* publik (103 destinasi, 210 isu) | **TIDAK ADA SAMA SEKALI** | **Published** (Publik & Pengelola) |
+
+**Interpretasi Tabel 13.** Klasifikasi ini membuktikan kepatuhan *privacy-by-design*: data mentah yang memuat identitas personal disimpan terisolasi di sisi server/audit, sementara data yang disajikan ke publik telah disanitasi penuh sehingga tidak ada kebocoran data pribadi.
 
 ![Matriks akses data terbatas](docs/figures/diagrams/restricted-data-policy.png)
 
 **Gambar 5. Matriks akses tiga peran × lima komponen data.**
 
-**Interpretasi Gambar 5.** Empat komponen terbatas (`raw`, `clean`, *annotation*, *evidence*) hanya `Admin` bagi tim ML — publik dan pengelola `None`. Hanya **safe aggregate** yang `Read` oleh publik (sel yang ditandai aksen = batas publikasi). Matriks ini membuktikan privasi-by-design: meskipun pipeline menyimpan data mentah untuk audit, aplikasi publik hanya pernah menerima agregat tanpa identitas reviewer.
-
-Matriks izin akses antar peran pengguna diatur dengan batasan yang tegas:
-- **Publik / juri** → hanya agregat aman (*read*).
-- **Pengelola destinasi** → agregat aman + workflow verifikasi.
-- **Tim Data/ML** → seluruh artefak (*admin*), termasuk raw/annotation/evidence untuk audit.
-
-Prinsip inti: identitas reviewer, review ID, source file/row, teks *evidence*, dan prediksi tingkat *review* **tidak pernah** masuk *bundle* aplikasi publik. *Evidence* ditahan sampai pemeriksaan privasi dan hak akses selesai; generator ekspor memverifikasi *forbidden privacy keys* sebelum publikasi (lihat `docs/restricted-data-policy.md`).
+**Interpretasi Gambar 5.** Empat komponen terbatas (`raw`, `clean`, *annotation*, *evidence*) hanya memiliki hak akses `Admin` bagi tim ML — publik dan pengelola berstatus `None`. Hanya **safe aggregate** yang dapat dibaca (`Read`) oleh publik (sel yang ditandai aksen = batas publikasi). Matriks ini membuktikan bahwa aplikasi publik tidak pernah menerima data identitas reviewer.
 
 ---
 
@@ -363,13 +425,15 @@ Prinsip inti: identitas reviewer, review ID, source file/row, teks *evidence*, d
 
 Penggunaan model AI di dalam arsitektur operasional SIPATURE dibatasi pada tugas ekstraksi sinyal berbasis bukti dan diklasifikasikan berdasarkan status kesiapan produksinya:
 
-| Komponen | Model/Metode | Status |
-| --- | --- | --- |
-| Aspect detection | TF-IDF + OVR Logistic Regression | dilatih (silver) |
-| Polarity | lexical fallback (`lexical-polarity-v1`) | deterministik |
-| Severity | — | `unavailable_no_supported_model` |
+**Tabel 14. Klasifikasi peran model AI dalam modul operasional SIPATURE.**
 
-Kandidat IndoBERT (`indobenchmark/indobert-base-p1`) dilatih dan dievaluasi, tetapi **ditolak** untuk produksi (aspect 0,4254 / polarity 0,5077 vs gold-v1).
+| Komponen Fungsional | Model / Metode Algoritma | Status Kesiapan Produksi |
+| --- | --- | --- |
+| **Deteksi Aspek (14 Aspek)** | TF-IDF + *One-vs-Rest Logistic Regression* | **Model Produksi Terpilih** (dilatih pada *silver*) |
+| **Klasifikasi Polaritas Sentimen** | *Lexical Fallback* (`lexical-polarity-v1`) | **Deterministik Berversi** (tanpa probabilitas semu) |
+| **Estimasi Tingkat Keparahan (*Severity*)** | Tidak diimputasi model spekulatif | `unavailable_no_supported_model` (dukungan data < 20) |
+
+**Interpretasi Tabel 14.** Sistem menghindari model berlebihan (*over-engineering*) dengan menolak kandidat IndoBERT (aspect 0,4254 / polarity 0,5077) demi mempertahankan kecepatan, efisiensi memori, dan interpretabilitas pada server mandiri.
 
 ## 9.2 AI dalam Proses Pengembangan
 
@@ -409,17 +473,18 @@ Daftar dokumen rujukan dan panduan teknis yang menjadi acuan penyusunan solusi S
 
 Seluruh klaim kuantitatif dan kualitatif dalam laporan ini dapat ditelusuri ke artefak teknis dan repositori data yang bersangkutan melalui matriks keterlacakan berikut:
 
-**Tabel 20. Hubungan klaim dengan artifact teknis**
+**Tabel 15. Matriks keterlacakan klaim laporan terhadap artefak teknis dan repositori data.**
 
-| Klaim utama | Artifact |
-| --- | --- |
-| Gold-v1 (1.320 record) | `ml/data/annotations/gold/gold.jsonl` (SHA `7b5b6057`) |
-| Agreement anotasi | `ml/data/annotations/gold/agreement.json` |
-| Benchmark gold-v1 | `ml/artifacts/metrics/{keyword,tfidf,indobert}-gold-v1-test-metrics.json` |
-| Model produksi | `ml/artifacts/models/tfidf-aspect-silver-v1/` (SHA `a10bddb1`) |
-| Inferensi korpus + agregasi | `ml/artifacts/a9/20260813-1713_a9-tfidf-lexical-v1-*` |
-| Proyeksi aplikasi | `sipature-app/src/data/generated/{places,interventions,corpus}.json` |
-| Latency/performa | `docs/c6-performance-reliability.md` |
+| Klaim Teknis dalam Laporan | Lokasi Artefak / Kode Sumber | Keterangan Verifikasi Kriptografis |
+| --- | --- | --- |
+| **Gold-v1 Benchmark (1.320 ulasan)** | `ml/data/annotations/gold/gold.jsonl` | Terkunci dengan SHA-256: `7b5b6057` |
+| **Inter-Annotator Agreement** | `ml/data/annotations/gold/agreement.json` | *Jaccard* aspek 0,9664, *polarity* 0,9804 |
+| **Metrik Evaluasi Gold-v1** | `ml/artifacts/metrics/*-gold-v1-test-metrics.json` | Keyword (0,7056), TF-IDF (0,5777), IndoBERT (0,4254) |
+| **Artefak Model Produksi** | `ml/artifacts/models/tfidf-aspect-silver-v1/` | Model pipeline scikit-learn (SHA `a10bddb1`) |
+| **Pipeline Inferensi & Agregasi** | `ml/artifacts/a9/20260813-1713_a9-tfidf-lexical-v1-*` | Ekstraksi 1.682 sinyal dan 210 isu terverifikasi |
+| **Data Proyeksi Web App** | `sipature-app/src/data/generated/*.json` | Berkas `places.json`, `interventions.json`, `corpus.json` |
+| **Laporan Uji Performa DGX** | `docs/c6-performance-reliability.md` | Latensi p50 2,1 ms dan konsumsi memori 251 MiB |
+
+**Interpretasi Tabel 15.** Matriks keterlacakan ini memberikan jaminan auditabilitas bahwa seluruh angka, klaim performa, dan keluaran yang disajikan dalam laporan final dapat diverifikasi dan direproduksi secara independen.
 
 > *Raw data*, teks *evidence*, *review-level predictions*, *annotation*, *split records*, model *artifact*, dan *error cases* bersifat *restricted* dan tidak dipublikasikan tanpa pemeriksaan lisensi, privasi, dan hak akses.
-

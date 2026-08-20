@@ -98,7 +98,7 @@ export default function InterventionQueueClient({ rankedPlaces }: Props) {
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => setUrgencyFilter(urgencyFilter === "high" ? "all" : "high")}
-              className="rounded-md border px-2.5 py-1.5 text-[12px] font-medium transition-colors"
+              className="rounded-md border px-3 py-1.5 text-[12px] font-medium transition-all"
               style={{
                 borderColor: urgencyFilter === "high" ? "var(--status-critical)" : "var(--hairline)",
                 background: urgencyFilter === "high" ? "rgba(220,38,38,0.08)" : "var(--surface-2)",
@@ -177,7 +177,15 @@ export default function InterventionQueueClient({ rankedPlaces }: Props) {
           </div>
         ) : (
           <div className="thin-scroll overflow-x-auto">
-            <table className="w-full min-w-[900px] text-left text-[12.5px]">
+            <table className="w-full min-w-[1100px] table-fixed text-left text-[12.5px]">
+              <colgroup>
+                <col style={{ width: "135px" }} />
+                <col style={{ width: "230px" }} />
+                <col style={{ width: "240px" }} />
+                <col style={{ width: "130px" }} />
+                <col style={{ width: "auto" }} />
+                <col style={{ width: "160px" }} />
+              </colgroup>
               <thead
                 className="border-b text-[11px] uppercase tracking-wider text-muted"
                 style={{
@@ -191,7 +199,7 @@ export default function InterventionQueueClient({ rankedPlaces }: Props) {
                   <th className="px-3 py-2.5">Masalah Utama</th>
                   <th className="px-3 py-2.5">Bukti Keluhan</th>
                   <th className="px-3 py-2.5">Panduan Cek Lapangan</th>
-                  <th className="px-4 py-2.5 text-right">Aksi</th>
+                  <th className="px-3 py-2.5 pr-5 text-right">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y" style={{ borderColor: "var(--hairline)" }}>
@@ -205,7 +213,7 @@ export default function InterventionQueueClient({ rankedPlaces }: Props) {
                       className="transition-colors hover:bg-surface-2/60"
                     >
                       {/* Urgency Rank */}
-                      <td className="px-4 py-3.5">
+                      <td className="px-4 py-3.5 align-middle">
                         <div className="flex items-center gap-2">
                           <span className="font-bold text-ink">#{place.rank}</span>
                           <LevelBadge level={levelOfPlace(place)} size="sm" />
@@ -213,39 +221,44 @@ export default function InterventionQueueClient({ rankedPlaces }: Props) {
                       </td>
 
                       {/* Place Name & Location */}
-                      <td className="px-3 py-3.5">
+                      <td className="px-3 py-3.5 align-middle">
                         <Link
                           href={`/destinasi/${place.id}`}
-                          className="font-semibold text-ink hover:text-accent hover:underline"
+                          className="font-semibold text-ink hover:text-accent hover:underline block truncate"
+                          title={place.name}
                         >
                           {place.name}
                         </Link>
-                        <span className="block text-[11.5px] text-muted">
-                          {place.kabupaten} · Skor Urgensi {score(place.priorityScore)}
+                        <span className="block truncate text-[11.5px] text-muted">
+                          {place.kabupaten} · Skor {score(place.priorityScore)}
                         </span>
                       </td>
 
                       {/* Main Aspect Issue */}
-                      <td className="px-3 py-3.5">
+                      <td className="px-3 py-3.5 align-middle">
                         {issue ? (
-                          <span className="inline-flex items-center gap-1.5 font-medium text-ink">
-                            <AspectIcon aspect={issue.aspect} size={15} />
-                            {ASPECT_LABEL[issue.aspect]}
-                          </span>
+                          <div className="flex items-center gap-1.5 font-medium text-ink">
+                            <span className="shrink-0">
+                              <AspectIcon aspect={issue.aspect} size={15} />
+                            </span>
+                            <span className="truncate" title={ASPECT_LABEL[issue.aspect]}>
+                              {ASPECT_LABEL[issue.aspect]}
+                            </span>
+                          </div>
                         ) : (
                           "–"
                         )}
                       </td>
 
                       {/* Evidence / Support */}
-                      <td className="px-3 py-3.5">
+                      <td className="px-3 py-3.5 align-middle">
                         {issue ? (
                           <div>
-                            <span className="font-medium text-ink">
+                            <span className="font-medium text-ink block whitespace-nowrap">
                               {num(issue.negativeCount)} keluhan
                             </span>
-                            <span className="text-muted text-[11px] block">
-                              dari {num(issue.mentionCount)} sebutan ulasan
+                            <span className="text-muted text-[11px] block whitespace-nowrap">
+                              dari {num(issue.mentionCount)} sebutan
                             </span>
                           </div>
                         ) : (
@@ -254,7 +267,7 @@ export default function InterventionQueueClient({ rankedPlaces }: Props) {
                       </td>
 
                       {/* Action / Recommended Verification */}
-                      <td className="max-w-[320px] px-3 py-3.5 text-ink-2">
+                      <td className="px-3 py-3.5 align-middle text-ink-2">
                         {issue ? (
                           <div className="line-clamp-2 text-[12px] leading-relaxed">
                             {issue.recommendedVerification}
@@ -264,15 +277,18 @@ export default function InterventionQueueClient({ rankedPlaces }: Props) {
                         )}
                       </td>
 
-                      {/* Action Link */}
-                      <td className="px-4 py-3.5 text-right">
+                      {/* Action Button */}
+                      <td className="px-3 py-3.5 pr-5 align-middle text-right whitespace-nowrap">
                         <Link
                           href={`/destinasi/${place.id}`}
-                          className="inline-flex items-center gap-1 rounded-md border px-2.5 py-1.5 text-[11.5px] font-medium text-ink transition-colors hover:bg-surface-2"
-                          style={{ borderColor: "var(--hairline)" }}
+                          className="inline-flex items-center justify-center gap-1.5 rounded-lg border px-3 py-1.5 text-[12px] font-medium text-ink transition-all hover:bg-ink hover:text-plane hover:border-ink shadow-sm active:scale-[0.98] whitespace-nowrap"
+                          style={{
+                            borderColor: "var(--hairline)",
+                            background: "var(--surface-2)",
+                          }}
                         >
                           <span>Lembar Aksi</span>
-                          <ArrowRight size={12} />
+                          <ArrowRight size={13} className="shrink-0 text-accent" />
                         </Link>
                       </td>
                     </tr>

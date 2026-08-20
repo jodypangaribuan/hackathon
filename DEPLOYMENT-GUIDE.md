@@ -137,7 +137,7 @@ Setelah proses deployment selesai, layanan dapat diakses melalui:
 ### Kasus B: Data Destinasi Belum Muncul di Web
 * Jalankan perintah database seeding secara manual:
   ```bash
-  docker compose -f sipature-app/docker-compose.yml exec -T web npm run db:seed
+  docker compose -f sipature-app/docker-compose.yml exec -T web node scripts/seed-db.mjs
   ```
 
 ### Kasus C: Memeriksa Log Kontainer

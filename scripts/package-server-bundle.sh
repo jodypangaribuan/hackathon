@@ -55,9 +55,10 @@ if [ ! -f "sipature-app/.env" ]; then
   cp sipature-app/.env.production sipature-app/.env
 fi
 
-# 4. Buat file tarball aset
+# 4. Buat file tarball aset (bersih dari metadata macOS ._* dan .DS_Store)
 echo "Mengompresi artefak model, data olahan, dan konfigurasi environment..."
-tar -czvf "${OUTPUT_FILE}" \
+export COPYFILE_DISABLE=1
+tar --exclude='.DS_Store' --exclude='._*' --exclude='__MACOSX' -czvf "${OUTPUT_FILE}" \
   ml/artifacts/models/tfidf-aspect-silver-v1 \
   sipature-app/src/data/generated \
   sipature-app/.env \

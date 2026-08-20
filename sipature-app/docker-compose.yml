@@ -15,7 +15,6 @@
 services:
   db:
     image: postgres:16-alpine
-    container_name: sipature-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -39,7 +38,6 @@ services:
       context: ..
       dockerfile: sipature-api/Dockerfile
     image: sipature-inference:demo
-    container_name: sipature-inference
     restart: unless-stopped
     ports:
       - "${INFERENCE_PORT}:8000"
@@ -55,7 +53,6 @@ services:
   web:
     build: .
     image: sipature-app:demo
-    container_name: martahuta-web
     restart: unless-stopped
     ports:
       - "${WEB_PORT}:3000"

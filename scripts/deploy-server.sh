@@ -106,7 +106,11 @@ if [ "$FREE_POSTGRES_PORT" != "$CURRENT_POSTGRES_PORT" ]; then
   sed -i "s/^POSTGRES_PORT=.*/POSTGRES_PORT=$FREE_POSTGRES_PORT/" sipature-app/.env 2>/dev/null || true
 fi
 
-# 6. Jalankan Docker Compose
+# 6. Bersihkan kontainer lama bila ada conflict lalu jalankan Docker Compose
+echo "INFO: Membersihkan kontainer lama bila ada..."
+docker rm -f martahuta-web sipature-inference sipature-db 2>/dev/null || true
+docker compose -f sipature-app/docker-compose.yml down --remove-orphans 2>/dev/null || true
+
 echo "INFO: Membangun image dan menjalankan layanan kontainer..."
 docker compose -f sipature-app/docker-compose.yml up -d --build
 

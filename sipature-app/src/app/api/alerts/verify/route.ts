@@ -44,10 +44,11 @@ export async function POST(req: Request) {
   if (
     status !== "confirmed" &&
     status !== "rejected" &&
-    status !== "uncertain"
+    status !== "uncertain" &&
+    status !== "pending"
   ) {
     return badRequest(
-      "Field `status` harus confirmed, rejected, atau uncertain.",
+      "Field `status` harus confirmed, rejected, uncertain, atau pending.",
       "INVALID_STATUS",
     );
   }

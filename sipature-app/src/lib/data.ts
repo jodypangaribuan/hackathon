@@ -84,8 +84,13 @@ const PRIORITY_RANK: Record<Priority, number> = {
 
 type DestRow = typeof schema.destinations.$inferSelect;
 type SignalRow = typeof schema.destinationSignals.$inferSelect;
+type AlertRow = typeof schema.alerts.$inferSelect;
 
-function toIssue(signal: SignalRow): Issue {
+function toIssue(
+  signal: SignalRow,
+  alert?: AlertRow,
+  rejectionReason?: string | null,
+): Issue {
   return {
     aspect: signal.aspect as AspectKey,
     mentionCount: signal.mentionCount,
@@ -104,6 +109,8 @@ function toIssue(signal: SignalRow): Issue {
     candidateIntervention: signal.candidateIntervention ?? "",
     severityStatus: signal.severityStatus,
     evidenceStatus: "withheld_pending_privacy_review",
+    verificationStatus: alert?.status ?? "pending",
+    rejectionReason: rejectionReason ?? null,
   };
 }
 
@@ -153,16 +160,32 @@ function toPlace(dest: DestRow, issues: Issue[]): Place {
 // Query DB (live)
 // ============================================================================
 async function loadAll() {
-  const [dests, signals, aspects] = await Promise.all([
+  const [dests, signals, aspects, alertsList, verificationsList] = await Promise.all([
     db.select().from(schema.destinations),
     db.select().from(schema.destinationSignals),
     db.select().from(schema.aspects),
+    db.select().from(schema.alerts),
+    db.select().from(schema.alertVerifications).orderBy(desc(schema.alertVerifications.id)),
   ]);
+
+  const alertMap = new Map<string, AlertRow>();
+  for (const alert of alertsList) {
+    alertMap.set(`${alert.destinationId}--${alert.aspect}`, alert);
+  }
+
+  const lastRejectionMap = new Map<string, string>();
+  for (const v of verificationsList) {
+    if (v.rejectionReason && !lastRejectionMap.has(v.alertId)) {
+      lastRejectionMap.set(v.alertId, v.rejectionReason);
+    }
+  }
 
   const byDest = new Map<string, Issue[]>();
   for (const signal of signals) {
     const list = byDest.get(signal.destinationId) ?? [];
-    list.push(toIssue(signal));
+    const alert = alertMap.get(`${signal.destinationId}--${signal.aspect}`);
+    const reason = alert ? lastRejectionMap.get(alert.id) : null;
+    list.push(toIssue(signal, alert, reason));
     byDest.set(signal.destinationId, list);
   }
 

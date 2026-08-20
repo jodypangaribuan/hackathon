@@ -41,6 +41,8 @@ import {
   score,
 } from "@/lib/format";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
   params: Promise<{ id: string }>;
 }
@@ -228,6 +230,8 @@ export default async function DestinationPage({ params }: Props) {
                     <AlertStatusControl
                       destinationId={place.id}
                       aspect={issue.aspect}
+                      initialStatus={issue.verificationStatus}
+                      initialReason={issue.rejectionReason}
                     />
                   </li>
                 ))}

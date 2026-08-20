@@ -42,6 +42,8 @@ export interface Issue {
   candidateIntervention: string;
   severityStatus: "unavailable_no_supported_model";
   evidenceStatus: "withheld_pending_privacy_review";
+  verificationStatus?: "pending" | "confirmed" | "rejected" | "uncertain";
+  rejectionReason?: string | null;
 }
 
 export interface Place {

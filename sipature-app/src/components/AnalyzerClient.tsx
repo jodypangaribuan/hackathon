@@ -19,9 +19,12 @@ import { AspectIcon } from "@/components/AppIcon";
 
 const MAX_CHARS = 5000;
 const SAMPLES = [
-  "Toiletnya kotor dan air sering mati, tetapi pemandangannya sangat indah.",
-  "Harga tiket tidak jelas dan petugas kurang ramah saat kami bertanya.",
-  "Akses jalannya rusak, parkir sempit, dan antreannya cukup panjang.",
+  "Toiletnya sangat kotor, pesing, dan air tidak mengalir di kamar mandi, padahal pemandangan danau toba sangat indah.",
+  "Harga tiket masuk dan tarif parkir liar tidak jelas, pelayanannya juga jutek saat kami bertanya arah ke dermaga.",
+  "Akses jalannya rusak parah, sempit dan curam saat menuju bukit, ditambah tempat sampah sangat minim di sekitar lokasi.",
+  "Tempat yang sangat asri, sejuk, tenang, dan staf resepsionis hotel sangat ramah melayani tamu keluarga.",
+  "Gazebo dan fasilitas umum banyak yang terbengkalai dan rusak, cat dinding mengelupas dan lampu jalan mati saat malam.",
+  "Warung makan dan kuliner di sekitar pantai sangat lezat harganya terjangkau, namun area parkirnya sangat padat dan antre.",
 ];
 const SENTIMENT_STYLE = {
   positif: { icon: CheckCircle2, color: "var(--status-good)" },

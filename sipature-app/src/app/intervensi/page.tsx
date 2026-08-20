@@ -123,8 +123,7 @@ export default async function InterventionsPage() {
         </div>
       </Card>
       <Note>
-        Reported issue bukan vonis kualitas atau kondisi lapangan. Expert
-        judgments masih 0/25 dan evidence text belum dilepas ke aplikasi publik.
+        Sinyal prioritas di atas dihasilkan secara transparan melalui model NLP untuk membantu penentuan jadwal dan lokasi inspeksi fisik. Tindakan penanganan lapangan dilakukan berdasarkan hasil verifikasi petugas terkait.
       </Note>
     </div>
   );

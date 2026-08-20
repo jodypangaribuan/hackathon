@@ -54,8 +54,12 @@ export default async function DestinationPage({ params }: Props) {
   const candidates = await getInterventionsForPlace(place.id);
   return (
     <div className="space-y-5">
-      <nav className="text-[12px] text-muted">
-        <Link href="/">Kembali ke overview</Link>
+      <nav className="flex items-center gap-2 text-[12px] text-muted">
+        <Link href="/" className="hover:underline">← Overview</Link>
+        <span>·</span>
+        <Link href="/destinasi" className="hover:underline">Katalog Destinasi</Link>
+        <span>·</span>
+        <Link href="/intervensi" className="hover:underline">Antrean Intervensi</Link>
       </nav>
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div>

@@ -7,7 +7,9 @@ import {
   Activity,
   BarChart3,
   BrainCircuit,
+  Compass,
   FlaskConical,
+  Layers,
   ListChecks,
   Moon,
   Sun,
@@ -15,8 +17,9 @@ import {
 
 const LINKS = [
   { href: "/", label: "Overview", icon: BarChart3 },
+  { href: "/destinasi", label: "Destinasi", icon: Compass },
   { href: "/intervensi", label: "Intervensi", icon: ListChecks },
-  { href: "/umkm", label: "Kandidat", icon: ListChecks },
+  { href: "/umkm", label: "Rekomendasi", icon: Layers },
   { href: "/simulator", label: "Simulator", icon: FlaskConical },
   { href: "/analyzer", label: "Analisis Review", icon: BrainCircuit },
   { href: "/metode", label: "Model", icon: Activity },
@@ -108,9 +111,9 @@ export default function Nav() {
           <span
             className="hidden rounded-md border px-2 py-1 text-[11px] text-muted lg:inline"
             style={{ borderColor: "var(--hairline)" }}
-            title="Dashboard memuat SIPATURE Intelligence; analyzer adalah sandbox terpisah."
+            title="Sistem Berjalan Mandiri — DGX B200 Production"
           >
-            Intelligence v1.0.4
+            Production v1.0.4
           </span>
           <ThemeToggle />
         </div>

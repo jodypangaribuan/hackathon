@@ -1,0 +1,72 @@
+- generic [active] [ref=f3e1]:
+  - banner [ref=f3e2]:
+    - generic [ref=f3e3]:
+      - link "SIPATURE Tourism Quality Intelligence" [ref=f3e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f3e5]: SIPATURE
+        - generic [ref=f3e6]: Tourism Quality Intelligence
+      - navigation [ref=f3e7]:
+        - link "Overview" [ref=f3e8] [cursor=pointer]:
+          - /url: /
+        - link "Destinasi" [ref=f3e12] [cursor=pointer]:
+          - /url: /destinasi
+        - link "Intervensi" [ref=f3e17] [cursor=pointer]:
+          - /url: /intervensi
+        - link "Rekomendasi" [ref=f3e22] [cursor=pointer]:
+          - /url: /umkm
+        - link "Simulator" [ref=f3e28] [cursor=pointer]:
+          - /url: /simulator
+        - link "Analisis Review" [ref=f3e32] [cursor=pointer]:
+          - /url: /analyzer
+        - link "Model" [ref=f3e46] [cursor=pointer]:
+          - /url: /metode
+      - generic [ref=f3e50]:
+        - generic "Sistem Berjalan Mandiri — DGX B200 Production" [ref=f3e51]: Production v1.0.4
+        - button "Ganti tema terang/gelap" [ref=f3e52] [cursor=pointer]
+  - main [ref=f3e55]:
+    - generic [ref=f3e56]:
+      - generic [ref=f3e57]:
+        - heading "Analisis Ulasan Real-Time" [level=1] [ref=f3e58]
+        - paragraph [ref=f3e59]: Uji teks ulasan wisatawan untuk mengekstraksi 14 aspek pariwisata dan arah sentimen secara instan menggunakan pipeline model inferensi produksi TF-IDF.
+      - generic [ref=f3e60]:
+        - generic [ref=f3e61]:
+          - generic [ref=f3e62]:
+            - generic [ref=f3e63]:
+              - generic [ref=f3e64]:
+                - heading "Masukkan review" [level=2] [ref=f3e65]
+                - paragraph [ref=f3e66]: Bahasa Indonesia · satu review per analisis
+              - generic [ref=f3e67]: Model TF-IDF (live)
+            - generic [ref=f3e70]:
+              - generic [ref=f3e71]: Teks review
+              - textbox "Teks review" [ref=f3e72]:
+                - /placeholder: "Contoh: Pemandangannya indah, tetapi toilet kotor dan harga parkir tidak jelas."
+              - generic [ref=f3e73]:
+                - generic [ref=f3e74]: Jangan masukkan nama, nomor telepon, atau data pribadi.
+                - generic [ref=f3e75]: 0/5.000
+              - button "Analisis review" [disabled] [ref=f3e77]
+          - generic [ref=f3e81]:
+            - generic [ref=f3e82]:
+              - heading "Coba Contoh" [level=2] [ref=f3e83]
+              - generic [ref=f3e84]: teks sintetis
+            - generic [ref=f3e85]:
+              - button "Toiletnya sangat kotor, pesing, dan air tidak mengalir di kamar mandi, padahal pemandangan danau toba sangat indah." [ref=f3e86] [cursor=pointer]
+              - button "Harga tiket masuk dan tarif parkir liar tidak jelas, pelayanannya juga jutek saat kami bertanya arah ke dermaga." [ref=f3e90] [cursor=pointer]
+              - button "Akses jalannya rusak parah, sempit dan curam saat menuju bukit, ditambah tempat sampah sangat minim di sekitar lokasi." [ref=f3e94] [cursor=pointer]
+              - button "Tempat yang sangat asri, sejuk, tenang, dan staf resepsionis hotel sangat ramah melayani tamu keluarga." [ref=f3e98] [cursor=pointer]
+              - button "Gazebo dan fasilitas umum banyak yang terbengkalai dan rusak, cat dinding mengelupas dan lampu jalan mati saat malam." [ref=f3e102] [cursor=pointer]
+              - button "Warung makan dan kuliner di sekitar pantai sangat lezat harganya terjangkau, namun area parkirnya sangat padat dan antre." [ref=f3e106] [cursor=pointer]
+          - paragraph [ref=f3e110]:
+            - generic [ref=f3e111]: Input tidak disimpan dan tidak mengubah skor, peringkat, atau data dashboard.
+        - generic [ref=f3e116]:
+          - generic [ref=f3e118]:
+            - heading "Hasil analisis" [level=2] [ref=f3e119]
+            - paragraph [ref=f3e120]: Aspek dan sentimen per review
+          - generic [ref=f3e122]:
+            - paragraph [ref=f3e127]: Belum ada hasil
+            - paragraph [ref=f3e128]: Masukkan satu review atau pilih contoh aman untuk memulai analisis.
+  - contentinfo [ref=f3e129]:
+    - paragraph [ref=f3e130]:
+      - strong [ref=f3e131]: SIPATURE
+      - text: — AI early-warning and intervention system for sustainable tourism quality. Prototipe Del AI Hackathon 2026.
+    - paragraph [ref=f3e132]: "Dashboard memakai SIPATURE Intelligence: TF-IDF aspect, lexical polarity fallback, Bayesian smoothing, dan missing-aware priority. Reported issue bukan vonis kondisi lapangan. Evidence text ditahan pending privacy review dan identitas reviewer tidak masuk bundle aplikasi."
+  - alert [ref=f3e133]

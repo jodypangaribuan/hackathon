@@ -1,0 +1,164 @@
+- generic [active] [ref=f4e1]:
+  - banner [ref=f4e2]:
+    - generic [ref=f4e3]:
+      - link "SIPATURE Tourism Quality Intelligence" [ref=f4e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f4e5]: SIPATURE
+        - generic [ref=f4e6]: Tourism Quality Intelligence
+      - navigation [ref=f4e7]:
+        - link "Overview" [ref=f4e8] [cursor=pointer]:
+          - /url: /
+        - link "Destinasi" [ref=f4e12] [cursor=pointer]:
+          - /url: /destinasi
+        - link "Intervensi" [ref=f4e17] [cursor=pointer]:
+          - /url: /intervensi
+        - link "Rekomendasi" [ref=f4e22] [cursor=pointer]:
+          - /url: /umkm
+        - link "Simulator" [ref=f4e28] [cursor=pointer]:
+          - /url: /simulator
+        - link "Analisis Review" [ref=f4e32] [cursor=pointer]:
+          - /url: /analyzer
+        - link "Model" [ref=f4e46] [cursor=pointer]:
+          - /url: /metode
+      - generic [ref=f4e50]:
+        - generic "Sistem Berjalan Mandiri — DGX B200 Production" [ref=f4e51]: Production v1.0.4
+        - button "Ganti tema terang/gelap" [ref=f4e52] [cursor=pointer]
+  - main [ref=f4e55]:
+    - generic [ref=f4e56]:
+      - generic [ref=f4e57]:
+        - heading "Model, Metodologi, & Keterbatasan" [level=1] [ref=f4e58]
+        - paragraph [ref=f4e59]:
+          - text: Dashboard memuat keluaran model produksi
+          - code [ref=f4e60]: SIPATURE Intelligence v1.0.4
+          - text: ", dihasilkan pada 14 Agu 2026, 00.24."
+      - generic [ref=f4e61]:
+        - generic [ref=f4e62]:
+          - heading "Perbandingan Benchmark Model (1.320 Ulasan)" [level=2] [ref=f4e63]
+          - generic [ref=f4e64]: Evaluasi Independen Human Gold-v1
+        - table [ref=f4e66]:
+          - rowgroup [ref=f4e67]:
+            - row [ref=f4e68]:
+              - columnheader "Model yang Diuji" [ref=f4e69]
+              - columnheader "Silver Test (Locked)" [ref=f4e70]
+              - columnheader "Gold-v1 (Human Test)" [ref=f4e71]
+              - columnheader "Status & Keputusan" [ref=f4e72]
+          - rowgroup [ref=f4e73]:
+            - row [ref=f4e74]:
+              - cell "Keyword (Lexicon Rule)" [ref=f4e75]
+              - cell "0,9768 (sirkular)" [ref=f4e76]
+              - cell "0,7056" [ref=f4e77]
+              - cell "Batas atas leksikal (bukan model ML)" [ref=f4e78]
+            - row [ref=f4e79]:
+              - cell "TF-IDF + Logistic Regression" [ref=f4e80]
+              - cell "0,7201" [ref=f4e81]
+              - cell "0,5777" [ref=f4e82]
+              - cell "★ Model Produksi Terpilih (Data-Driven, CPU-only)" [ref=f4e83]
+            - row [ref=f4e84]:
+              - cell "IndoBERT Base (Aspect)" [ref=f4e85]
+              - cell "0,5247" [ref=f4e86]
+              - cell "0,4254" [ref=f4e87]
+              - cell "Ditolak (underfit pada data kecil)" [ref=f4e88]
+            - row [ref=f4e89]:
+              - cell "IndoBERT Base (Polarity)" [ref=f4e90]
+              - cell "0,7459" [ref=f4e91]
+              - cell "0,5077" [ref=f4e92]
+              - cell "Ditolak (akurasi setara chance level)" [ref=f4e93]
+      - generic [ref=f4e94]:
+        - heading "Rantai Pemrosesan End-to-End" [level=2] [ref=f4e96]
+        - generic [ref=f4e97]: 12.234 ulasan berteks (NLP Corpus) → Ekstraksi 14 Aspek (tfidf-aspect-silver-v1) → Klasifikasi Polaritas Sentimen (lexical-polarity-v1) → Pembobotan Kebaruan & Deduplikasi Hash → Normalisasi Bayesian-smoothed Complaint Rate → Support Gate & Resolusi Entitas (388 Kanonikal) → Missing-Aware Priority Scoring → Human Field Verification (Confirmed / Rejected / Uncertain)
+      - generic [ref=f4e98]:
+        - heading "Formula Skor Prioritas (Missing-Aware)" [level=2] [ref=f4e100]
+        - generic [ref=f4e101]: priority = 0,3333 × complaint_frequency + 0,2500 × model_confidence + 0,2500 × persistence + 0,1667 × visitor_exposure severity, facility_gap, feasibility = unavailable (missing-aware)
+        - paragraph [ref=f4e102]: Bobot original komponen yang tersedia dinormalisasi menjadi 1,00. Komponen data yang belum tersedia tidak pernah diisi angka nol atau diasumsikan dalam kondisi baik.
+      - generic [ref=f4e103]:
+        - generic [ref=f4e104]:
+          - heading "Struktur Taksonomi Pariwisata Toba" [level=2] [ref=f4e105]
+          - generic [ref=f4e106]: 14 aspek dalam 4 pilar
+        - generic [ref=f4e107]:
+          - generic [ref=f4e108]:
+            - generic [ref=f4e112]: Kebersihan
+            - generic [ref=f4e113]: cleanliness
+          - generic [ref=f4e114]:
+            - generic [ref=f4e118]: Sampah & Limbah
+            - generic [ref=f4e119]: waste
+          - generic [ref=f4e120]:
+            - generic [ref=f4e127]: Toilet & Sanitasi
+            - generic [ref=f4e128]: sanitation
+          - generic [ref=f4e129]:
+            - generic [ref=f4e135]: Kepadatan & Antrean
+            - generic [ref=f4e136]: crowding
+          - generic [ref=f4e137]:
+            - generic [ref=f4e140]: Akses & Kondisi Rute
+            - generic [ref=f4e141]: access
+          - generic [ref=f4e142]:
+            - generic [ref=f4e146]: Parkir
+            - generic [ref=f4e147]: parking
+          - generic [ref=f4e148]:
+            - generic [ref=f4e153]: Fasilitas Publik & Aksesibilitas
+            - generic [ref=f4e154]: public_facilities
+          - generic [ref=f4e155]:
+            - generic [ref=f4e159]: Pemandangan
+            - generic [ref=f4e160]: scenery
+          - generic [ref=f4e161]:
+            - generic [ref=f4e165]: Kenyamanan
+            - generic [ref=f4e166]: comfort
+          - generic [ref=f4e167]:
+            - generic [ref=f4e171]: Keselamatan & Keamanan
+            - generic [ref=f4e172]: safety
+          - generic [ref=f4e173]:
+            - generic [ref=f4e179]: Harga & Transparansi Pungutan
+            - generic [ref=f4e180]: price_transparency
+          - generic [ref=f4e181]:
+            - generic [ref=f4e186]: Pelayanan Petugas
+            - generic [ref=f4e187]: staff_service
+          - generic [ref=f4e188]:
+            - generic [ref=f4e191]: Perawatan & Kerusakan
+            - generic [ref=f4e192]: maintenance
+          - generic [ref=f4e193]:
+            - generic [ref=f4e197]: Jam Operasional
+            - generic [ref=f4e198]: opening_hours
+      - generic [ref=f4e199]:
+        - heading "Keterlacakan Artefak (Traceability)" [level=2] [ref=f4e201]
+        - generic [ref=f4e202]:
+          - generic [ref=f4e203]:
+            - term [ref=f4e204]: Total Ulasan Bersih
+            - definition [ref=f4e205]: "22.169"
+          - generic [ref=f4e206]:
+            - term [ref=f4e207]: Prediksi Aspek Terdeteksi
+            - definition [ref=f4e208]: "9.785"
+          - generic [ref=f4e209]:
+            - term [ref=f4e210]: Destinasi Kanonikal
+            - definition [ref=f4e211]: "388"
+          - generic [ref=f4e212]:
+            - term [ref=f4e213]: Destinasi / Isu Actionable
+            - definition [ref=f4e214]: 103 destinasi / 210 isu
+          - generic [ref=f4e215]:
+            - term [ref=f4e216]: Export Hash SHA-256
+            - definition [ref=f4e217]: 8037d072adcd124d7aa74bd38af8a27623b255894675d0fe653f7ca6b758359f
+      - generic [ref=f4e218]:
+        - heading "Prinsip Responsible AI & Batas Kejujuran" [level=2] [ref=f4e220]
+        - list [ref=f4e221]:
+          - listitem [ref=f4e222]:
+            - strong [ref=f4e226]: "Privasi Reviewer:"
+            - text: Identitas personal, nama akun, ID reviewer, dan baris mentah tidak pernah masuk ke dalam bundle aplikasi publik.
+          - listitem [ref=f4e227]:
+            - strong [ref=f4e230]: "Sinyal Triase:"
+            - text: Skor prioritas adalah alat bantu penentuan titik inspeksi awal, bukan vonis mutlak bahwa suatu destinasi berbahaya atau tidak layak.
+          - listitem [ref=f4e231]:
+            - strong [ref=f4e234]: "Human-in-the-Loop:"
+            - text: Setiap rekomendasi operasional berstatus pending verifikasi lapangan dengan alur konfirmasi atau penolakan bersyarat.
+          - listitem [ref=f4e235]:
+            - strong [ref=f4e241]: "Perlindungan Bukti Verbatim:"
+            - text: Teks kutipan verbatim ulasan ditahan pada lingkungan audit internal berstatus
+            - emphasis [ref=f4e242]: restricted
+            - text: demi kepatuhan privasi.
+      - paragraph [ref=f4e243]:
+        - text: "Keluaran sistem diverifikasi otomatis dengan generator kriptografis:"
+        - code [ref=f4e244]: npm run data:generate
+        - text: untuk memastikan integritas hash, koordinat wilayah, dan penegakan aturan privasi.
+  - contentinfo [ref=f4e245]:
+    - paragraph [ref=f4e246]:
+      - strong [ref=f4e247]: SIPATURE
+      - text: — AI early-warning and intervention system for sustainable tourism quality. Prototipe Del AI Hackathon 2026.
+    - paragraph [ref=f4e248]: "Dashboard memakai SIPATURE Intelligence: TF-IDF aspect, lexical polarity fallback, Bayesian smoothing, dan missing-aware priority. Reported issue bukan vonis kondisi lapangan. Evidence text ditahan pending privacy review dan identitas reviewer tidak masuk bundle aplikasi."
+  - alert [ref=f4e249]

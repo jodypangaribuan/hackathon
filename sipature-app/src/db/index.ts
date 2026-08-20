@@ -9,7 +9,7 @@ import * as schema from "./schema";
  */
 const connectionString =
   process.env.DATABASE_URL ??
-  "postgresql://sipature:sipature@localhost:5432/sipature";
+  "postgresql://sipature:sipature_dev_password@localhost:5432/sipature";
 
 const globalForDb = globalThis as unknown as { sipaturePool?: Pool };
 

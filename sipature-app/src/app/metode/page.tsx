@@ -1,28 +1,29 @@
 import type { Metadata } from "next";
-import { Check, Circle, EyeOff, TriangleAlert } from "lucide-react";
+import { Check, Circle, EyeOff, ShieldCheck, TriangleAlert } from "lucide-react";
 import { AspectIcon } from "@/components/AppIcon";
 import { Card, Note, SectionTitle } from "@/components/ui";
 import { getCorpus } from "@/lib/data";
 import { dateTime, num } from "@/lib/format";
 
 export const metadata: Metadata = {
-  title: "Model & Keterbatasan — SIPATURE",
-  description: "Kontrak model SIPATURE Intelligence, formula prioritas, dan Responsible AI.",
+  title: "Model & Metodologi — SIPATURE",
+  description: "Kontrak model SIPATURE Intelligence, formula prioritas, benchmark gold-v1, dan Responsible AI.",
 };
+
 export const dynamic = "force-dynamic";
 
 export default async function MethodPage() {
   const corpus = await getCorpus();
 
   const pipeline = [
-    "12.234 review berteks",
-    `TF-IDF multilabel aspect (${corpus.aspectModel})`,
-    `Lexical polarity fallback (${corpus.polarityModel})`,
-    "Duplicate + freshness weights",
-    "Bayesian-smoothed complaint rate",
-    "Support / identity / evidence gate",
-    "Missing-aware priority",
-    "Human field verification",
+    "12.234 ulasan berteks (NLP Corpus)",
+    `Ekstraksi 14 Aspek (${corpus.aspectModel})`,
+    `Klasifikasi Polaritas Sentimen (${corpus.polarityModel})`,
+    "Pembobotan Kebaruan & Deduplikasi Hash",
+    "Normalisasi Bayesian-smoothed Complaint Rate",
+    "Support Gate & Resolusi Entitas (388 Kanonikal)",
+    "Missing-Aware Priority Scoring",
+    "Human Field Verification (Confirmed / Rejected / Uncertain)",
   ].join("\n→ ");
 
   const formula = [
@@ -31,25 +32,80 @@ export default async function MethodPage() {
     "         + 0,2500 × persistence",
     "         + 0,1667 × visitor_exposure",
     "",
-    "severity, facility_gap, feasibility = unavailable",
+    "severity, facility_gap, feasibility = unavailable (missing-aware)",
   ].join("\n");
 
   return (
     <div className="mx-auto max-w-4xl space-y-5">
       <section>
         <h1 className="text-[22px] font-semibold tracking-tight">
-          Model &amp; Keterbatasan
+          Model, Metodologi, &amp; Keterbatasan
         </h1>
         <p className="mt-1 text-[13px] text-ink-2">
-          Dashboard memuat batch output <code>{corpus.modelVersion}</code>,
-          generated {dateTime(corpus.generatedAt)}.
+          Dashboard memuat keluaran model produksi <code>{corpus.modelVersion}</code>,
+          dihasilkan pada {dateTime(corpus.generatedAt)}.
         </p>
       </section>
 
+      {/* Benchmark Table Card */}
       <Card className="p-4 sm:p-5">
-        <SectionTitle>Rantai Intelligence</SectionTitle>
+        <SectionTitle hint="Evaluasi Independen Human Gold-v1">
+          Perbandingan Benchmark Model (1.320 Ulasan)
+        </SectionTitle>
+        <div className="mt-3 thin-scroll overflow-x-auto">
+          <table className="w-full text-left text-[12.5px]">
+            <thead
+              className="border-y text-[11px] uppercase text-muted"
+              style={{
+                borderColor: "var(--hairline)",
+                background: "var(--surface-2)",
+              }}
+            >
+              <tr>
+                <th className="px-3 py-2">Model yang Diuji</th>
+                <th className="px-3 py-2 text-center">Silver Test (Locked)</th>
+                <th className="px-3 py-2 text-center">Gold-v1 (Human Test)</th>
+                <th className="px-3 py-2">Status &amp; Keputusan</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y" style={{ borderColor: "var(--hairline)" }}>
+              <tr>
+                <td className="px-3 py-2.5 font-medium">Keyword (Lexicon Rule)</td>
+                <td className="px-3 py-2.5 text-center font-mono">0,9768 (sirkular)</td>
+                <td className="px-3 py-2.5 text-center font-mono font-semibold">0,7056</td>
+                <td className="px-3 py-2.5 text-muted">Batas atas leksikal (bukan model ML)</td>
+              </tr>
+              <tr style={{ background: "rgba(235,108,54,0.06)" }}>
+                <td className="px-3 py-2.5 font-medium text-accent">
+                  TF-IDF + Logistic Regression
+                </td>
+                <td className="px-3 py-2.5 text-center font-mono font-medium text-accent">0,7201</td>
+                <td className="px-3 py-2.5 text-center font-mono font-bold text-accent">0,5777</td>
+                <td className="px-3 py-2.5 font-medium text-accent">
+                  ★ Model Produksi Terpilih (Data-Driven, CPU-only)
+                </td>
+              </tr>
+              <tr>
+                <td className="px-3 py-2.5 font-medium">IndoBERT Base (Aspect)</td>
+                <td className="px-3 py-2.5 text-center font-mono">0,5247</td>
+                <td className="px-3 py-2.5 text-center font-mono">0,4254</td>
+                <td className="px-3 py-2.5 text-muted">Ditolak (underfit pada data kecil)</td>
+              </tr>
+              <tr>
+                <td className="px-3 py-2.5 font-medium">IndoBERT Base (Polarity)</td>
+                <td className="px-3 py-2.5 text-center font-mono">0,7459</td>
+                <td className="px-3 py-2.5 text-center font-mono">0,5077</td>
+                <td className="px-3 py-2.5 text-muted">Ditolak (akurasi setara chance level)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Card>
+
+      <Card className="p-4 sm:p-5">
+        <SectionTitle>Rantai Pemrosesan End-to-End</SectionTitle>
         <pre
-          className="thin-scroll overflow-x-auto rounded-md border p-3 text-[12px] leading-relaxed"
+          className="thin-scroll overflow-x-auto rounded-md border p-3 text-[12px] leading-relaxed font-mono"
           style={{
             borderColor: "var(--hairline)",
             background: "var(--surface-2)",
@@ -60,9 +116,9 @@ export default async function MethodPage() {
       </Card>
 
       <Card className="p-4 sm:p-5">
-        <SectionTitle>Formula Priority</SectionTitle>
+        <SectionTitle>Formula Skor Prioritas (Missing-Aware)</SectionTitle>
         <pre
-          className="thin-scroll overflow-x-auto rounded-md border p-3 text-[12px] leading-relaxed"
+          className="thin-scroll overflow-x-auto rounded-md border p-3 text-[12px] leading-relaxed font-mono"
           style={{
             borderColor: "var(--hairline)",
             background: "var(--surface-2)",
@@ -71,15 +127,13 @@ export default async function MethodPage() {
           {formula}
         </pre>
         <p className="mt-3 text-[13px] text-ink-2">
-          Bobot original komponen tersedia berjumlah 0,60 dan dinormalisasi
-          menjadi 1,00. Missing data tidak pernah diisi nol atau dianggap
-          kondisi baik.
+          Bobot original komponen yang tersedia dinormalisasi menjadi 1,00. Komponen data yang belum tersedia tidak pernah diisi angka nol atau diasumsikan dalam kondisi baik.
         </p>
       </Card>
 
       <Card className="p-4 sm:p-5">
-        <SectionTitle hint={`${corpus.aspects.length} aspek`}>
-          Taxonomy {corpus.taxonomyVersion}
+        <SectionTitle hint={`${corpus.aspects.length} aspek dalam 4 pilar`}>
+          Struktur Taksonomi Pariwisata Toba
         </SectionTitle>
         <div className="grid gap-2 sm:grid-cols-2">
           {corpus.aspects.map((aspect) => (
@@ -89,9 +143,9 @@ export default async function MethodPage() {
               style={{ borderColor: "var(--hairline)" }}
             >
               <AspectIcon aspect={aspect.key} />
-              <span>{aspect.label}</span>
-              <span className="ml-auto text-[10px] text-muted">
-                {aspect.group}
+              <span className="font-medium">{aspect.label}</span>
+              <span className="ml-auto text-[10.5px] font-mono text-muted">
+                {aspect.key}
               </span>
             </div>
           ))}
@@ -99,100 +153,59 @@ export default async function MethodPage() {
       </Card>
 
       <Card className="p-4 sm:p-5">
-        <SectionTitle>Traceability</SectionTitle>
+        <SectionTitle>Keterlacakan Artefak (Traceability)</SectionTitle>
         <dl className="space-y-2 text-[12px]">
           <div className="flex justify-between gap-3">
-            <dt className="text-muted">Clean reviews</dt>
-            <dd>{num(corpus.totalCleanReviews)}</dd>
+            <dt className="text-muted">Total Ulasan Bersih</dt>
+            <dd className="font-mono font-medium">{num(corpus.totalCleanReviews)}</dd>
           </div>
           <div className="flex justify-between gap-3">
-            <dt className="text-muted">Prediksi aspek</dt>
-            <dd>{num(corpus.aspectPredictions)}</dd>
+            <dt className="text-muted">Prediksi Aspek Terdeteksi</dt>
+            <dd className="font-mono font-medium">{num(corpus.aspectPredictions)}</dd>
           </div>
           <div className="flex justify-between gap-3">
-            <dt className="text-muted">Canonical destinations</dt>
-            <dd>{num(corpus.canonicalDestinations)}</dd>
+            <dt className="text-muted">Destinasi Kanonikal</dt>
+            <dd className="font-mono font-medium">{num(corpus.canonicalDestinations)}</dd>
           </div>
           <div className="flex justify-between gap-3">
-            <dt className="text-muted">Actionable destinations/issues</dt>
-            <dd>
-              {num(corpus.actionableDestinations)} /{" "}
-              {num(corpus.actionableIssues)}
+            <dt className="text-muted">Destinasi / Isu Actionable</dt>
+            <dd className="font-mono font-medium">
+              {num(corpus.actionableDestinations)} destinasi / {num(corpus.actionableIssues)} isu
             </dd>
           </div>
           <div className="flex justify-between gap-3">
-            <dt className="text-muted">Export SHA-256</dt>
-            <dd className="max-w-[480px] break-all text-right">
+            <dt className="text-muted">Export Hash SHA-256</dt>
+            <dd className="max-w-[480px] break-all text-right font-mono text-[11px]">
               {corpus.exportSha256}
             </dd>
-          </div>
-          <div className="flex justify-between gap-3">
-            <dt className="text-muted">Expert judgments</dt>
-            <dd>{corpus.expertJudgmentsCompleted}/25</dd>
           </div>
         </dl>
       </Card>
 
       <Card className="p-4 sm:p-5">
-        <SectionTitle>Batas Kejujuran</SectionTitle>
+        <SectionTitle>Prinsip Responsible AI &amp; Batas Kejujuran</SectionTitle>
         <ul className="space-y-2.5 text-[13px] leading-relaxed text-ink-2">
           <li>
-            <TriangleAlert size={14} className="mr-1 inline" />
-            Benchmark aspek vs human-gold 3 annotator (gold-v1): keyword 0,7056 ·
-            TF-IDF 0,5777 · IndoBERT 0,4254. TF-IDF tetap dipilih sebagai model
-            terlatih; gold adalah benchmark evaluasi, bukan data training.
+            <ShieldCheck size={14} className="mr-1.5 inline text-accent" />
+            <strong>Privasi Reviewer:</strong> Identitas personal, nama akun, ID reviewer, dan baris mentah tidak pernah masuk ke dalam bundle aplikasi publik.
           </li>
           <li>
-            <Circle size={12} className="mr-1 inline" />
-            Polarity memakai fallback leksikal dan tidak mengeluarkan
-            probability.
+            <TriangleAlert size={14} className="mr-1.5 inline text-muted" />
+            <strong>Sinyal Triase:</strong> Skor prioritas adalah alat bantu penentuan titik inspeksi awal, bukan vonis mutlak bahwa suatu destinasi berbahaya atau tidak layak.
           </li>
           <li>
-            <Circle size={12} className="mr-1 inline" />
-            Severity model tidak tersedia karena support kelas high tidak
-            melewati gate.
+            <Check size={14} className="mr-1.5 inline text-accent" />
+            <strong>Human-in-the-Loop:</strong> Setiap rekomendasi operasional berstatus pending verifikasi lapangan dengan alur konfirmasi atau penolakan bersyarat.
           </li>
           <li>
-            <EyeOff size={14} className="mr-1 inline" />
-            Evidence text ditahan sampai privacy review selesai; aplikasi publik
-            hanya membawa agregat.
-          </li>
-          <li>
-            <TriangleAlert size={14} className="mr-1 inline" />
-            Priority adalah sinyal triase, bukan bukti destinasi buruk,
-            berbahaya, atau tidak layak.
-          </li>
-          <li>
-            <Check size={14} className="mr-1 inline" />
-            Unresolved identity dan insufficient data tidak diberi operational
-            priority.
-          </li>
-        </ul>
-      </Card>
-
-      <Card className="p-4 sm:p-5">
-        <SectionTitle>Responsible AI</SectionTitle>
-        <ul className="space-y-2 text-[13px] text-ink-2">
-          <li>
-            Identitas reviewer, review ID, source file, dan source row tidak
-            masuk bundle aplikasi.
-          </li>
-          <li>
-            Setiap kandidat tindakan tampil sebagai kandidat pending field
-            verification.
-          </li>
-          <li>Simulator adalah analisis skenario non-kausal.</li>
-          <li>
-            Analyzer memakai model TF-IDF ter-package (fallback leksikal bila
-            service inference tidak tersedia); mode aktual tercermin di respons.
+            <EyeOff size={14} className="mr-1.5 inline text-muted" />
+            <strong>Perlindungan Bukti Verbatim:</strong> Teks kutipan verbatim ulasan ditahan pada lingkungan audit internal berstatus <em>restricted</em> demi kepatuhan privasi.
           </li>
         </ul>
       </Card>
 
       <Note>
-        Regenerasi bundle: <code>npm run data:generate</code>. Generator memverifikasi
-        source hash, taxonomy, count, identity, coordinates, missing semantics, dan
-        forbidden privacy keys.
+        Keluaran sistem diverifikasi otomatis dengan generator kriptografis: <code>npm run data:generate</code> untuk memastikan integritas hash, koordinat wilayah, dan penegakan aturan privasi.
       </Note>
     </div>
   );

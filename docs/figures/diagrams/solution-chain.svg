@@ -1,91 +1,317 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 1216 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="solution-chain-title solution-chain-desc">
+<svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="solution-chain-title solution-chain-desc">
       <title id="solution-chain-title">Rantai solusi SIPATURE dari ulasan hingga tindak lanjut</title>
-      <desc id="solution-chain-desc">Tujuh tahap berurutan: ulasan mentah dibersihkan dan dihubungkan, diproses model, diagregasi menjadi sinyal dan bukti, diprioritaskan, diverifikasi manusia, lalu menjadi kandidat tindak lanjut.</desc>
-      <defs><style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');</style>
+      <desc id="solution-chain-desc">Tujuh tahap terstruktur dalam tiga fase: Ingesti data dan resolusi entitas, ekstraksi sinyal dengan model aspek TF-IDF, serta tata kelola keputusan missing-aware dan alur verifikasi manusia menuju intervensi operasional.</desc>
+      <defs>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --paper: #f5f5f5;
+      --paper-2: #ececec;
+      --ink: #2d3142;
+      --muted: #4f5d75;
+      --soft: #7a8399;
+      --rule: rgba(45,49,66,0.12);
+      --accent: #eb6c36;
+      --accent-tint: rgba(235,108,54,0.08);
+      --link: #2e5aa8;
+      --sans: 'Geist', system-ui, sans-serif;
+      --serif: 'Instrument Serif', serif;
+      --mono: 'Geist Mono', ui-monospace, monospace;
+    }
+    body {
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1.5rem;
+    }
+    .frame {
+      max-width: 1220px;
+      width: 100%;
+    }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2.1rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    svg {
+      width: 100%;
+      min-width: 960px;
+      display: block;
+    }
+    .card-title {
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 12.5px;
+      fill: var(--ink);
+      text-anchor: middle;
+    }
+    .card-sub {
+      font-family: var(--mono);
+      font-size: 8.5px;
+      fill: var(--muted);
+      text-anchor: middle;
+    }
+    .bullet-item {
+      font-family: var(--sans);
+      font-size: 8.5px;
+      fill: var(--ink);
+    }
+    .bullet-muted {
+      font-family: var(--sans);
+      font-size: 8.5px;
+      fill: var(--muted);
+    }
+    .tag-text {
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.08em;
+      text-anchor: middle;
+      text-transform: uppercase;
+    }
+    .chip-text {
+      font-family: var(--mono);
+      font-size: 6.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-anchor: middle;
+    }
+    .step-pill-text {
+      font-family: var(--mono);
+      font-size: 7.5px;
+      font-weight: 600;
+      text-anchor: middle;
+    }
+    .zone-title {
+      font-family: var(--mono);
+      font-size: 7.5px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+  
+</style>
+
         <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
         <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/></marker>
+        <marker id="arrow-sm" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#7a8399"/></marker>
       </defs>
 
       <rect width="100%" height="100%" fill="#f5f5f5"/>
 
-      <!-- Arrows first (behind boxes) -->
-      <line x1="168" y1="152" x2="200" y2="152" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
-      <line x1="336" y1="152" x2="368" y2="152" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
-      <line x1="504" y1="152" x2="536" y2="152" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
-      <line x1="672" y1="152" x2="704" y2="152" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
-      <line x1="840" y1="152" x2="872" y2="152" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
-      <line x1="1008" y1="152" x2="1040" y2="152" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- ================= PHASE ZONES ================= -->
+      <!-- Zone 1: Data & Entity Resolution -->
+      <rect x="24" y="56" width="344" height="268" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <rect x="36" y="62" width="224" height="14" rx="2" fill="#f5f5f5"/>
+      <text x="42" y="73" class="zone-title" fill="#4f5d75">FASE 1 · INGESTI &amp; INTEGRASI DATA</text>
 
-      <!-- Arrow labels -->
-      <rect x="172" y="132" width="24" height="12" rx="2" fill="#f5f5f5"/>
-      <text x="184" y="141" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">ER</text>
+      <!-- Zone 2: Signal Extraction & NLP -->
+      <rect x="384" y="56" width="344" height="268" rx="8" fill="rgba(235,108,54,0.02)" stroke="rgba(235,108,54,0.18)" stroke-width="0.8"/>
+      <rect x="396" y="62" width="224" height="14" rx="2" fill="#f5f5f5"/>
+      <text x="402" y="73" class="zone-title" fill="#eb6c36">FASE 2 · EKSTRAKSI SINYAL &amp; NLP</text>
 
-      <!-- Node 1: Raw review (input) -->
-      <rect x="40" y="120" width="128" height="64" rx="6" fill="#f5f5f5"/>
-      <rect x="40" y="120" width="128" height="64" rx="6" fill="rgba(79,93,117,0.10)" stroke="#7a8399" stroke-width="1"/>
-      <rect x="48" y="128" width="28" height="12" rx="2" fill="transparent" stroke="rgba(122,131,153,0.40)" stroke-width="0.8"/>
-      <text x="62" y="137" fill="#7a8399" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">RAW</text>
-      <text x="104" y="156" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Ulasan</text>
-      <text x="104" y="172" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">22.302 record</text>
+      <!-- Zone 3: Governance & Action -->
+      <rect x="744" y="56" width="432" height="268" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <rect x="756" y="62" width="272" height="14" rx="2" fill="#f5f5f5"/>
+      <text x="762" y="73" class="zone-title" fill="#4f5d75">FASE 3 · TATA KELOLA KEPUTUSAN &amp; INTERVENSI</text>
 
-      <!-- Node 2: Clean & link (backend) -->
-      <rect x="208" y="120" width="128" height="64" rx="6" fill="#f5f5f5"/>
-      <rect x="208" y="120" width="128" height="64" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
-      <rect x="216" y="128" width="32" height="12" rx="2" fill="transparent" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/>
-      <text x="232" y="137" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">LINK</text>
-      <text x="272" y="156" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Bersih + Hubung</text>
-      <text x="272" y="172" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">entity resolution</text>
+      <!-- ================= ARROWS & CONNECTORS (Z-ORDER: DRAWN FIRST) ================= -->
+      <!-- 1 -> 2 -->
+      <line x1="184" y1="196" x2="208" y2="196" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
 
-      <!-- Node 3: Model (focal) -->
-      <rect x="376" y="120" width="128" height="64" rx="6" fill="#f5f5f5"/>
-      <rect x="376" y="120" width="128" height="64" rx="6" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1.2"/>
-      <rect x="384" y="128" width="36" height="12" rx="2" fill="transparent" stroke="rgba(235,108,54,0.50)" stroke-width="0.8"/>
-      <text x="402" y="137" fill="#eb6c36" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">MODEL</text>
-      <text x="440" y="156" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Model Aspek</text>
-      <text x="440" y="172" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">TF-IDF + lexical</text>
+      <!-- 2 -> 3 (Cross-zone to Focal) -->
+      <line x1="352" y1="196" x2="400" y2="196" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+      <rect x="358" y="176" width="36" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="376" y="185" fill="#eb6c36" font-size="7.5" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">CLEAN</text>
 
-      <!-- Node 4: Signal (backend) -->
-      <rect x="544" y="120" width="128" height="64" rx="6" fill="#f5f5f5"/>
-      <rect x="544" y="120" width="128" height="64" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
-      <rect x="552" y="128" width="28" height="12" rx="2" fill="transparent" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/>
-      <text x="566" y="137" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SIG</text>
-      <text x="608" y="156" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Sinyal</text>
-      <text x="608" y="172" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">agregasi destinasi</text>
+      <!-- 3 -> 4 (Focal Out) -->
+      <line x1="544" y1="196" x2="568" y2="196" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
 
-      <!-- Node 5: Evidence + Priority (store) -->
-      <rect x="712" y="120" width="128" height="64" rx="6" fill="#f5f5f5"/>
-      <rect x="712" y="120" width="128" height="64" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
-      <rect x="720" y="128" width="32" height="12" rx="2" fill="transparent" stroke="rgba(79,93,117,0.50)" stroke-width="0.8"/>
-      <text x="736" y="137" fill="#4f5d75" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PRIO</text>
-      <text x="776" y="156" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Bukti + Prioritas</text>
-      <text x="776" y="172" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">missing-aware</text>
+      <!-- 4 -> 5 (Cross-zone to Governance) -->
+      <line x1="712" y1="196" x2="760" y2="196" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <rect x="716" y="176" width="40" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="736" y="185" fill="#4f5d75" font-size="7.5" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">SIGNALS</text>
 
-      <!-- Node 6: Verification (backend) -->
-      <rect x="880" y="120" width="128" height="64" rx="6" fill="#f5f5f5"/>
-      <rect x="880" y="120" width="128" height="64" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
-      <rect x="888" y="128" width="32" height="12" rx="2" fill="transparent" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/>
-      <text x="904" y="137" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">VERIF</text>
-      <text x="944" y="156" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Verifikasi</text>
-      <text x="944" y="172" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">manusia</text>
+      <!-- 5 -> 6 -->
+      <line x1="884" y1="196" x2="900" y2="196" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
 
-      <!-- Node 7: Intervention (store) -->
-      <rect x="1048" y="120" width="128" height="64" rx="6" fill="#f5f5f5"/>
-      <rect x="1048" y="120" width="128" height="64" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
-      <rect x="1056" y="128" width="28" height="12" rx="2" fill="transparent" stroke="rgba(79,93,117,0.50)" stroke-width="0.8"/>
-      <text x="1070" y="137" fill="#4f5d75" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">ACT</text>
-      <text x="1112" y="156" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Tindak Lanjut</text>
-      <text x="1112" y="172" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">kandidat intervensi</text>
+      <!-- 6 -> 7 -->
+      <line x1="1024" y1="196" x2="1040" y2="196" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
 
-      <!-- Legend strip -->
-      <line x1="40" y1="248" x2="1176" y2="248" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
-      <text x="40" y="268" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
-      <rect x="40" y="284" width="14" height="10" rx="2" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1"/>
-      <text x="60" y="293" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Model (focal)</text>
-      <rect x="172" y="284" width="14" height="10" rx="2" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
-      <text x="192" y="293" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Proses</text>
-      <rect x="272" y="284" width="14" height="10" rx="2" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
-      <text x="292" y="293" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Hasil / artefak</text>
-      <rect x="416" y="284" width="14" height="10" rx="2" fill="rgba(79,93,117,0.10)" stroke="#7a8399" stroke-width="1"/>
-      <text x="436" y="293" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Input data</text>
+      <!-- Feedback Loop Connector (Step 6 back to Step 3) -->
+      <path d="M 962,304 V 316 Q 962,324 954,324 H 480 Q 472,324 472,316 V 304" fill="none" stroke="#7a8399" stroke-width="1.0" stroke-dasharray="4,3" marker-end="url(#arrow-sm)"/>
+      <rect x="588" y="316" width="256" height="16" rx="2" fill="#f5f5f5"/>
+      <text x="716" y="328" fill="#4f5d75" font-size="7.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">FEEDBACK LOOP: KALIBRASI &amp; WORKFLOW PENOLAKAN</text>
+
+      <!-- ================= NODE CARDS ================= -->
+      <!-- CARD 1: Raw Reviews -->
+      <g id="node-raw">
+        <rect x="40" y="96" width="144" height="208" rx="6" fill="#f5f5f5"/>
+        <rect x="40" y="96" width="144" height="208" rx="6" fill="rgba(79,93,117,0.06)" stroke="#7a8399" stroke-width="1"/>
+        <rect x="48" y="104" width="56" height="16" rx="2" fill="transparent" stroke="rgba(122,131,153,0.40)" stroke-width="0.8"/>
+        <text x="76" y="116" class="tag-text" fill="#7a8399">RAW DATA</text>
+        <rect x="156" y="104" width="20" height="16" rx="8" fill="rgba(79,93,117,0.14)"/>
+        <text x="166" y="116" class="step-pill-text" fill="#4f5d75">01</text>
+        <text x="112" y="138" class="card-title">Ulasan Mentah</text>
+        <text x="112" y="152" class="card-sub">22.302 total record</text>
+        <line x1="48" y1="164" x2="176" y2="164" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+        <text x="48" y="182" class="bullet-item">• 12.691 review wisata</text>
+        <text x="48" y="198" class="bullet-item">• 9.611 resto &amp; hotel</text>
+        <text x="48" y="214" class="bullet-item">• 12.234 data berteks</text>
+        <text x="48" y="230" class="bullet-muted">• 9.935 rating-only</text>
+        <rect x="48" y="276" width="60" height="16" rx="2" fill="rgba(45,49,66,0.08)"/>
+        <text x="78" y="287" class="chip-text" fill="#4f5d75">IN: CSV</text>
+      </g>
+
+      <!-- CARD 2: Entity Resolution -->
+      <g id="node-er">
+        <rect x="208" y="96" width="144" height="208" rx="6" fill="#f5f5f5"/>
+        <rect x="208" y="96" width="144" height="208" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <rect x="216" y="104" width="68" height="16" rx="2" fill="transparent" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/>
+        <text x="250" y="116" class="tag-text" fill="#2d3142">CLEAN &amp; LINK</text>
+        <rect x="324" y="104" width="20" height="16" rx="8" fill="rgba(45,49,66,0.10)"/>
+        <text x="334" y="116" class="step-pill-text" fill="#2d3142">02</text>
+        <text x="280" y="138" class="card-title">Entity Resolution</text>
+        <text x="280" y="152" class="card-sub">22.169 bersih · 388 ID</text>
+        <line x1="216" y1="164" x2="344" y2="164" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+        <text x="216" y="182" class="bullet-item">• Text cleaning &amp; dedup</text>
+        <text x="216" y="198" class="bullet-item">• Conservative blocking</text>
+        <text x="216" y="214" class="bullet-item">• 322 destinasi anchor</text>
+        <text x="216" y="230" class="bullet-muted">• 66 unresolved entity</text>
+        <rect x="216" y="276" width="76" height="16" rx="2" fill="rgba(45,49,66,0.08)"/>
+        <text x="254" y="287" class="chip-text" fill="#2d3142">OUT: PARQUET</text>
+      </g>
+
+      <!-- CARD 3: Aspect Model (FOCAL) -->
+      <g id="node-model">
+        <rect x="400" y="96" width="144" height="208" rx="6" fill="#f5f5f5"/>
+        <rect x="400" y="96" width="144" height="208" rx="6" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1.4"/>
+        <rect x="408" y="104" width="84" height="16" rx="2" fill="rgba(235,108,54,0.14)" stroke="rgba(235,108,54,0.50)" stroke-width="0.8"/>
+        <text x="450" y="116" class="tag-text" fill="#eb6c36" font-weight="600">MODEL PRODUKSI</text>
+        <rect x="516" y="104" width="20" height="16" rx="8" fill="rgba(235,108,54,0.22)"/>
+        <text x="526" y="116" class="step-pill-text" fill="#eb6c36">03</text>
+        <text x="472" y="138" class="card-title">Deteksi Aspek</text>
+        <text x="472" y="152" class="card-sub" fill="#eb6c36" font-weight="500">TF-IDF + OVR Logistic</text>
+        <line x1="408" y1="164" x2="536" y2="164" stroke="rgba(235,108,54,0.30)" stroke-width="0.8"/>
+        <text x="408" y="182" class="bullet-item">• 14 aspek pariwisata</text>
+        <text x="408" y="198" class="bullet-item">• Lexical polarity (v1)</text>
+        <text x="408" y="214" class="bullet-item" font-weight="600">• Gold Macro F1: 0.5777</text>
+        <text x="408" y="230" class="bullet-item" fill="#eb6c36" font-weight="600">• Latency p50: 2,1 ms</text>
+        <rect x="408" y="276" width="80" height="16" rx="2" fill="rgba(235,108,54,0.15)"/>
+        <text x="448" y="287" class="chip-text" fill="#eb6c36">CPU INFERENCE</text>
+      </g>
+
+      <!-- CARD 4: Signal Aggregation -->
+      <g id="node-signal">
+        <rect x="568" y="96" width="144" height="208" rx="6" fill="#f5f5f5"/>
+        <rect x="568" y="96" width="144" height="208" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <rect x="576" y="104" width="64" height="16" rx="2" fill="transparent" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/>
+        <text x="608" y="116" class="tag-text" fill="#2d3142">AGGREGATE</text>
+        <rect x="684" y="104" width="20" height="16" rx="8" fill="rgba(45,49,66,0.10)"/>
+        <text x="694" y="116" class="step-pill-text" fill="#2d3142">04</text>
+        <text x="640" y="138" class="card-title">Sinyal Agregat</text>
+        <text x="640" y="152" class="card-sub">1.682 sinyal terdistribusi</text>
+        <line x1="576" y1="164" x2="704" y2="164" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+        <text x="576" y="182" class="bullet-item">• Agregasi per destinasi</text>
+        <text x="576" y="198" class="bullet-item">• Bayesian smoothing</text>
+        <text x="576" y="214" class="bullet-item">• Ekstraksi kutipan bukti</text>
+        <text x="576" y="230" class="bullet-muted">• Min. support filter (&ge;3)</text>
+        <rect x="576" y="276" width="72" height="16" rx="2" fill="rgba(45,49,66,0.08)"/>
+        <text x="612" y="287" class="chip-text" fill="#2d3142">OUT: SIGNALS</text>
+      </g>
+
+      <!-- CARD 5: Missing-Aware Priority -->
+      <g id="node-priority">
+        <rect x="760" y="96" width="124" height="208" rx="6" fill="#f5f5f5"/>
+        <rect x="760" y="96" width="124" height="208" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+        <rect x="768" y="104" width="52" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.50)" stroke-width="0.8"/>
+        <text x="794" y="116" class="tag-text" fill="#4f5d75">PRIORITY</text>
+        <rect x="856" y="104" width="20" height="16" rx="8" fill="rgba(79,93,117,0.14)"/>
+        <text x="866" y="116" class="step-pill-text" fill="#4f5d75">05</text>
+        <text x="822" y="138" class="card-title">Prioritisasi</text>
+        <text x="822" y="152" class="card-sub">Missing-aware rank</text>
+        <line x1="768" y1="164" x2="876" y2="164" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+        <text x="768" y="182" class="bullet-item">• 103 actionable dest</text>
+        <text x="768" y="198" class="bullet-item">• Bobot freshness data</text>
+        <text x="768" y="214" class="bullet-item">• Support gate check</text>
+        <text x="768" y="230" class="bullet-muted">• Insufficient flag</text>
+        <rect x="768" y="276" width="56" height="16" rx="2" fill="rgba(45,49,66,0.08)"/>
+        <text x="796" y="287" class="chip-text" fill="#4f5d75">QUEUE</text>
+      </g>
+
+      <!-- CARD 6: Human Verification -->
+      <g id="node-verify">
+        <rect x="900" y="96" width="124" height="208" rx="6" fill="#f5f5f5"/>
+        <rect x="900" y="96" width="124" height="208" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <rect x="908" y="104" width="64" height="16" rx="2" fill="transparent" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/>
+        <text x="940" y="116" class="tag-text" fill="#2d3142">VERIFIKASI</text>
+        <rect x="996" y="104" width="20" height="16" rx="8" fill="rgba(45,49,66,0.10)"/>
+        <text x="1006" y="116" class="step-pill-text" fill="#2d3142">06</text>
+        <text x="962" y="138" class="card-title">Validasi Manusia</text>
+        <text x="962" y="152" class="card-sub">Human-in-the-loop</text>
+        <line x1="908" y1="164" x2="1016" y2="164" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+        <text x="908" y="182" class="bullet-item">• Alert verification UI</text>
+        <text x="908" y="198" class="bullet-item">• Confirmed / Reject</text>
+        <text x="908" y="214" class="bullet-item">• Alasan penolakan</text>
+        <text x="908" y="230" class="bullet-muted">• Opaque operator ID</text>
+        <rect x="908" y="276" width="68" height="16" rx="2" fill="rgba(45,49,66,0.08)"/>
+        <text x="942" y="287" class="chip-text" fill="#2d3142">WORKFLOW</text>
+      </g>
+
+      <!-- CARD 7: Action Candidates -->
+      <g id="node-action">
+        <rect x="1040" y="96" width="124" height="208" rx="6" fill="#f5f5f5"/>
+        <rect x="1040" y="96" width="124" height="208" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+        <rect x="1048" y="104" width="64" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.50)" stroke-width="0.8"/>
+        <text x="1080" y="116" class="tag-text" fill="#4f5d75">TINDAK LANJUT</text>
+        <rect x="1136" y="104" width="20" height="16" rx="8" fill="rgba(79,93,117,0.14)"/>
+        <text x="1146" y="116" class="step-pill-text" fill="#4f5d75">07</text>
+        <text x="1102" y="138" class="card-title">Kandidat Aksi</text>
+        <text x="1102" y="152" class="card-sub">210 isu terpetakan</text>
+        <line x1="1048" y1="164" x2="1156" y2="164" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+        <text x="1048" y="182" class="bullet-item">• Alokasi perbaikan</text>
+        <text x="1048" y="198" class="bullet-item">• Rekomendasi dinas</text>
+        <text x="1048" y="214" class="bullet-item">• Sanitasi &amp; tarif</text>
+        <text x="1048" y="230" class="bullet-muted">• Safe bundle (no PII)</text>
+        <rect x="1048" y="276" width="60" height="16" rx="2" fill="rgba(45,49,66,0.08)"/>
+        <text x="1078" y="287" class="chip-text" fill="#4f5d75">ACTION</text>
+      </g>
+
+      <!-- ================= LEGEND STRIP ================= -->
+      <line x1="24" y1="360" x2="1176" y2="360" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <text x="24" y="385" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+
+      <rect x="96" y="376" width="16" height="12" rx="2" fill="rgba(235,108,54,0.12)" stroke="#eb6c36" stroke-width="1.2"/>
+      <text x="120" y="386" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Model NLP Produksi (Focal)</text>
+
+      <rect x="304" y="376" width="16" height="12" rx="2" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <text x="328" y="386" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Komponen Pemrosesan Data</text>
+
+      <rect x="516" y="376" width="16" height="12" rx="2" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+      <text x="540" y="386" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Decision Support &amp; Tata Kelola</text>
+
+      <line x1="744" y1="382" x2="772" y2="382" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <text x="780" y="386" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Alur Transformasi Data</text>
+
+      <line x1="936" y1="382" x2="964" y2="382" stroke="#7a8399" stroke-width="1.0" stroke-dasharray="4,3" marker-end="url(#arrow-sm)"/>
+      <text x="972" y="386" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Feedback Loop / Kalibrasi</text>
     </svg>

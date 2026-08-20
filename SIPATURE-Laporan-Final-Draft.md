@@ -24,6 +24,8 @@ SIPATURE adalah *dashboard* dan sistem pendukung keputusan yang mengubah ulasan 
 
 Produk final berjalan sebagai tiga layanan *Docker* (`web` + `inference` + `db`) yang di-deploy ke DGX B200 IT Del secara offline, dengan *latency* p50 2,1 ms per *review*, *alert verification workflow* (konfirmasi/tolak/tidak pasti + alasan), dan *fallback* peta SVG saat tanpa internet. Keluaran operasional mencakup 103 destinasi *actionable* dan 210 isu. Keterbatasan utama: model *severity* tidak tersedia (support kelas `high` < 20), dan *evidence* verbatim ditahan dari aplikasi publik sampai pemeriksaan privasi selesai.
 
+Tabel ringkasan berikut merangkum indikator utama implementasi dan hasil evaluasi SIPATURE:
+
 | Indikator Utama | Hasil Aktual | Keterangan |
 | --- | ---: | --- |
 | *Review* bersih | 22.169 | dari 22.302 *raw* |
@@ -55,9 +57,13 @@ Dataset panitia mencakup objek wisata, akomodasi, kuliner, transportasi, fasilit
 
 ## 1.4 Rumusan Masalah
 
+Berdasarkan kesenjangan antara ketersediaan data ulasan yang melimpah dan kebutuhan operasional pengelola di lapangan, perumusan masalah utama dalam pengembangan sistem ini diarahkan pada efektivitas ekstraksi sinyal dan prioritisasi tindak lanjut:
+
 > Bagaimana membantu pengelola mengubah ribuan ulasan tersebar menjadi daftar isu spesifik, didukung sinyal yang dapat ditelusuri, dan dapat diprioritaskan untuk verifikasi?
 
 ## 1.5 Relevansi dengan Challenge
+
+Pengembangan SIPATURE dirancang secara spesifik untuk menjawab tantangan tata kelola pariwisata berbasis kecerdasan buatan dengan mengedepankan empat pilar nilai utama: informatif, efisien, berkelanjutan, dan bernilai operasional. Matriks kontribusi sistem terhadap nilai-nilai tersebut dirinci pada tabel berikut:
 
 | Nilai | Kontribusi SIPATURE |
 | --- | --- |
@@ -72,6 +78,8 @@ Dataset panitia mencakup objek wisata, akomodasi, kuliner, transportasi, fasilit
 
 ## 2.1 Pemangku Kepentingan
 
+Keberhasilan intervensi pariwisata memerlukan pemahaman menyeluruh terhadap ekosistem pemangku kepentingan di Kawasan Danau Toba. Setiap pihak memiliki kebutuhan informasi yang berbeda serta menghadapi hambatan operasional tersendiri dalam memanfaatkan umpan balik wisatawan:
+
 | *Stakeholder* | Kebutuhan | Hambatan |
 | --- | --- | --- |
 | Pengelola destinasi | Menemukan isu berulang & menentukan pemeriksaan | Volume ulasan besar, tidak terstruktur |
@@ -85,12 +93,16 @@ Dua file *review* utama (`wisata-v2.csv` 12.691 + `resto-hotel-v2.csv` 9.611) ad
 
 ## 2.3 Temuan EDA
 
+Eksplorasi data awal (*Exploratory Data Analysis*) dilakukan untuk memahami karakteristik teks, pola distribusi rating, dan kelengkapan metadata sebelum perancangan model. Temuan-temuan kunci dari analisis ini meliputi:
+
 - **Skala:** 22.302 *raw* → 22.169 *clean* (12.234 textual, 9.935 rating-only).
 - **Rating imbalance:** 15.595 dari 22.243 *rating* integer adalah bintang lima; model mayoritas bisa terlihat baik tanpa menemukan keluhan.
 - **Volume vs complaint:** persentase tinggi pada sample kecil tidak stabil → *Bayesian smoothing* + *minimum support*.
 - **Metadata:** nama/alamat/koordinat hampir lengkap; fasilitas & jam operasional tidak merata — *field* kosong diperlakukan sebagai "data belum cukup", bukan "tidak ada fasilitas".
 
 ## 2.4 Risiko dan Mitigasi
+
+Penerapan kecerdasan buatan untuk mendukung keputusan publik membawa risiko bias algoritma, kesalahan penggabungan data, dan potensi dampak negatif terhadap reputasi destinasi. Oleh karena itu, SIPATURE menerapkan strategi mitigasi ketat di setiap lapisan proses:
 
 | Risiko | Mitigasi |
 | --- | --- |
@@ -106,7 +118,7 @@ Dua file *review* utama (`wisata-v2.csv` 12.691 + `resto-hotel-v2.csv` 9.611) ad
 
 ## 3.1 Rantai Solusi
 
-Rantai lengkap dari ulasan mentah hingga tindak lanjut terverifikasi:
+Arsitektur solusi SIPATURE dibangun sebagai rantai pemrosesan end-to-end yang mengubah ulasan mentah multi-sumber menjadi rekomendasi tindak lanjut yang dapat diverifikasi oleh pengelola:
 
 ![Rantai solusi SIPATURE](docs/figures/diagrams/solution-chain.png)
 
@@ -116,14 +128,22 @@ Rantai lengkap dari ulasan mentah hingga tindak lanjut terverifikasi:
 
 ## 3.2 Taxonomy
 
-14 aspek dalam empat kelompok: lingkungan (kebersihan, sampah, sanitasi, kepadatan), infrastruktur (akses, parkir, fasilitas publik), pengalaman (pemandangan, kenyamanan, keamanan, transparansi harga), dan operasional (pelayanan, perawatan, jam operasional).
+Taksonomi aspek dirancang untuk menangkap spektrum permasalahan pariwisata secara terstruktur. Sebanyak 14 aspek dikelompokkan ke dalam empat pilar operasional:
+1. **Lingkungan:** `cleanliness` (kebersihan umum), `trash` (pengelolaan sampah), `sanitation` (kondisi toilet/sanitasi), dan `crowd` (kepadatan pengunjung).
+2. **Infrastruktur:** `access` (akses jalan/kemudahan tempuh), `parking` (ketersediaan & tarif parkir), serta `public_facility` (sarana ibadah, gazebo, penerangan).
+3. **Pengalaman:** `scenery` (daya tarik alam/keindahan visual), `comfort` (kenyamanan beraktivitas), `safety` (keamanan lingkungan), dan `price_transparency` (kewajaran harga, tarif tidak resmi/pungli).
+4. **Operasional:** `service` (keramahan & sikap staf), `maintenance` (perawatan sarana), dan `opening_hours` (kesesuaian jam operasional).
 
 ## 3.3 Annotation
+
+Untuk melatih dan menguji model deteksi aspek secara andal, SIPATURE menerapkan strategi anotasi berjenjang yang memisahkan dataset pelatihan dari dataset tolok ukur evaluasi:
 
 - **Silver** (AI-assisted weak supervision, 3 *rule passes*) untuk *training* dan *benchmark* awal — *bukan* label manusia.
 - **Gold** (human, 3 anotator) untuk *benchmark evaluasi*: 1.320 *record*, *agreement* aspek *Jaccard* 0,9664, *polarity* 0,9804, *severity* κ 1,0; 117 *record* di-adjudikasi (97 *auto* + 20 *manual*).
 
 ## 3.4 Model yang Dibandingkan
+
+Eksperimen pemodelan mengevaluasi tiga pendekatan berbeda untuk menemukan keseimbangan optimal antara akurasi generalisasi, interpretabilitas, dan efisiensi komputasi:
 
 | Model | Metode | Peran |
 | --- | --- | --- |
@@ -137,6 +157,8 @@ Rantai lengkap dari ulasan mentah hingga tindak lanjut terverifikasi:
 
 ## 3.6 Polarity & Severity
 
+Penentuan arah sentimen (*polarity*) dan tingkat keparahan (*severity*) dirancang dengan prinsip kehati-hatian matematis untuk mencegah kesimpulan yang tidak didukung data:
+
 - **Polarity** produksi: `lexical-polarity-v1` (deterministik, tanpa probabilitas). Kandidat IndoBERT *polarity* ditolak (gold-v1 0,5077 ≈ *chance*).
 - **Severity:** `unavailable_no_supported_model` (support kelas `high` 19 < *gate* 20).
 
@@ -145,6 +167,8 @@ Rantai lengkap dari ulasan mentah hingga tindak lanjut terverifikasi:
 # 4. Proses Pengembangan Solusi
 
 ## 4.1 Tahapan
+
+Pengembangan solusi SIPATURE dilaksanakan secara sistematis melalui lima fase terukur, mulai dari pengolahan data mentah hingga penyediaan sistem terintegrasi:
 
 | Tahap | Output | Status |
 | --- | --- | --- |
@@ -160,6 +184,8 @@ Rantai lengkap dari ulasan mentah hingga tindak lanjut terverifikasi:
 
 ## 4.3 Teknologi
 
+Tumpukan teknologi (*tech stack*) dipilih untuk memastikan kinerja inferensi yang cepat, konsumsi memori rendah, dan kemampuan operasional luring (*offline*):
+
 | Layer | Teknologi |
 | --- | --- |
 | Data | Python, Pandas, Parquet |
@@ -174,6 +200,8 @@ Rantai lengkap dari ulasan mentah hingga tindak lanjut terverifikasi:
 
 ## 5.1 Arsitektur
 
+Sistem SIPATURE diimplementasikan dengan arsitektur multi-layanan mandiri (*self-contained*) yang siap dijalankan pada lingkungan komputasi terisolasi:
+
 ![Deployment tiga layanan di DGX B200](docs/figures/diagrams/deployment-dgx.png)
 
 **Gambar 2. Deployment tiga layanan di host DGX B200.**
@@ -182,19 +210,23 @@ Rantai lengkap dari ulasan mentah hingga tindak lanjut terverifikasi:
 
 ## 5.2 Fitur
 
-1. **Overview** — metrik, *coverage*, *issues*, prioritas.
-2. **Map** — filter kabupaten/kind/aspek/confidence, *fallback* SVG luring.
-3. **Detail** — *evidence*, *metadata*, *confidence*, *health*, komponen *missing*.
-4. **Queue** — *ranking*, *support*, rekomendasi verifikasi.
-5. **Simulator** — asumsi eksplisit + *non-causal warning* permanen.
-6. **Analyzer** — model TF-IDF live (mode tercermin di respons).
-7. **Verification workflow** — konfirmasi/tolak/tidak pasti + alasan penolakan.
+Aplikasi antarmuka SIPATURE menyediakan 7 modul fungsional utama yang saling terhubung untuk mendukung alur kerja pemantauan dan pengambilan keputusan:
+
+1. **Overview** — Ringkasan metrik kesehatan pariwisata, *coverage* data, rekapitulasi isu, dan daftar prioritas tertinggi.
+2. **Map** — Peta interaktif dengan filter kabupaten, kategori destinasi (*kind*), aspek permasalahan, dan tingkat *confidence*, dilengkapi *fallback* SVG luring.
+3. **Detail** — Pemeriksaan mendalam per destinasi mencakup *evidence* ulasan, *metadata*, skor *confidence*, indikator *health*, dan komponen data yang belum lengkap (*missing*).
+4. **Queue** — Antrean verifikasi operasional dengan *ranking* prioritas, tingkat dukungan bukti (*support*), dan rekomendasi tindakan.
+5. **Simulator** — Alat simulasi dampak intervensi berbasis asumsi eksplisit dengan peringatan permanen sifat non-kausal (*non-causal warning*).
+6. **Analyzer** — Pengujian teks ulasan interaktif secara *live* menggunakan model TF-IDF produksi.
+7. **Verification workflow** — Alur validasi sinyal lapangan bagi pengelola (opsi konfirmasi, tolak, atau tidak pasti beserta alasan penolakan).
 
 ## 5.3 Deployment DGX B200
 
 Docker Compose tiga layanan; model & data di-*bundle* ke image (tanpa *download* saat startup). Offline penuh: map tile eksternal turun ke SVG luring; analyzer turun ke *baseline* bila inference mati. *Health check*, *cold start*, dan *restart* terverifikasi.
 
 ## 5.4 Performa
+
+Pengujian performa menunjukkan bahwa sistem beroperasi dengan latensi sangat rendah dan efisiensi memori yang tinggi pada satu node DGX B200:
 
 | Metrik | Nilai |
 | --- | --- |
@@ -208,6 +240,8 @@ Docker Compose tiga layanan; model & data di-*bundle* ke image (tanpa *download*
 # 6. Evaluasi dan Hasil
 
 ## 6.1 Benchmark Gold-v1 (human)
+
+Evaluasi model dilakukan secara independen terhadap dataset uji terkunci *gold-v1* (1.320 ulasan beranotasi manusia) untuk mengukur performa nyata di luar data pelatihan:
 
 ![Benchmark deteksi aspek silver vs gold-v1](docs/figures/diagrams/benchmark-gold-v1.png)
 
@@ -238,9 +272,11 @@ Docker Compose tiga layanan; model & data di-*bundle* ke image (tanpa *download*
 
 ## 6.3 Entity Resolution
 
-*Reviewed-pair precision* 0,9714, *recall* 0,4304, *false-merge rate* 0,0286; *unresolved* tidak diberi prioritas operasional.
+Resolusi entitas diterapkan secara konservatif untuk menggabungkan variasi penamaan destinasi dari berbagai sumber data tanpa menimbulkan penggabungan keliru (*false merge*). Evaluasi pada pasangan entitas teranotasi menghasilkan *reviewed-pair precision* 0,9714, *recall* 0,4304, dan *false-merge rate* sangat rendah sebesar 0,0286. Entitas yang belum dapat diselesaikan (*unresolved*) tetap disimpan secara terpisah dan tidak dimasukkan ke dalam antrean prioritas operasional guna mencegah salah sasaran.
 
 ## 6.4 Error Analysis
+
+Analisis kualitatif terhadap kesalahan prediksi dilakukan untuk mengidentifikasi batasan linguistik model dan menyediakan konteks bagi alur verifikasi manusia:
 
 - **Negasi:** "pungli tidak ada" dapat ter-flag *negative* (limitation *lexical polarity*).
 - **Klausa kontras:** "tempat bagus, tapi jalan jelek" → akses kadang `neutral`.
@@ -252,6 +288,8 @@ Docker Compose tiga layanan; model & data di-*bundle* ke image (tanpa *download*
 # 7. Dampak dan Potensi Pengembangan
 
 ## 7.1 Manfaat per Stakeholder
+
+Implementasi SIPATURE mentransformasi tumpukan ulasan pasif menjadi alat pengambil keputusan yang terukur bagi seluruh pemangku kepentingan:
 
 | Pihak | Manfaat | Indikator |
 | --- | --- | --- |
@@ -275,6 +313,8 @@ Arsitektur *batch-first* + SQL; TF-IDF inferensi linear; *entity resolution* ber
 
 # 8. Responsible AI dan Etika
 
+Penerapan kecerdasan buatan pada domain pelayanan publik menuntut kepatuhan ketat terhadap prinsip transparansi, privasi individu, akuntabilitas, dan pengawasan manusia. SIPATURE memegang teguh komitmen etika berikut:
+
 - **Privasi:** identitas reviewer, review ID, source file/row tidak masuk bundle aplikasi; `verified_by` opaque.
 - **Evidence:** verbatim + provenance internal; teks ditahan dari aplikasi publik (`withheld_pending_privacy_review`).
 - **Bahasa:** reported issue / early-warning signal, bukan vonis "kotor/berbahaya/tidak layak".
@@ -283,6 +323,8 @@ Arsitektur *batch-first* + SQL; TF-IDF inferensi linear; *entity resolution* ber
 - **Simulator:** non-kausal, asumsi eksplisit.
 
 ## 8.1 Kebijakan Data Terbatas (Restricted Data Policy)
+
+Perlindungan privasi data diterapkan melalui pemisahan ketat antara lingkungan pengolahan data internal dan distribusi aplikasi publik:
 
 ![Lapisan data dan kebijakan akses](docs/figures/diagrams/data-pipeline-restricted.png)
 
@@ -306,6 +348,7 @@ Data SIPATURE dibagi lima lapisan dengan tingkat akses berbeda. Lapisan mentah h
 
 **Interpretasi Gambar 5.** Empat komponen terbatas (`raw`, `clean`, *annotation*, *evidence*) hanya `Admin` bagi tim ML — publik dan pengelola `None`. Hanya **safe aggregate** yang `Read` oleh publik (sel yang ditandai aksen = batas publikasi). Matriks ini membuktikan privasi-by-design: meskipun pipeline menyimpan data mentah untuk audit, aplikasi publik hanya pernah menerima agregat tanpa identitas reviewer.
 
+Matriks izin akses antar peran pengguna diatur dengan batasan yang tegas:
 - **Publik / juri** → hanya agregat aman (*read*).
 - **Pengelola destinasi** → agregat aman + workflow verifikasi.
 - **Tim Data/ML** → seluruh artefak (*admin*), termasuk raw/annotation/evidence untuk audit.
@@ -317,6 +360,8 @@ Prinsip inti: identitas reviewer, review ID, source file/row, teks *evidence*, d
 # 9. Deklarasi Penggunaan AI
 
 ## 9.1 AI dalam Solusi
+
+Penggunaan model AI di dalam arsitektur operasional SIPATURE dibatasi pada tugas ekstraksi sinyal berbasis bukti dan diklasifikasikan berdasarkan status kesiapan produksinya:
 
 | Komponen | Model/Metode | Status |
 | --- | --- | --- |
@@ -332,6 +377,8 @@ AI generatif digunakan untuk membantu perancangan solusi, pengembangan kode, *de
 
 ## 9.3 Batas Penggunaan AI
 
+Untuk menjaga keandalan dan etika sistem pendukung keputusan, kami menetapkan batas tegas yang tidak boleh dilanggar oleh komponen kecerdasan buatan:
+
 - AI tidak menjadi *ground truth* tanpa verifikasi manusia.
 - AI tidak membuat *evidence* baru (kutipan verbatim dari sumber).
 - AI tidak menentukan tindakan lapangan otomatis.
@@ -339,11 +386,15 @@ AI generatif digunakan untuk membantu perancangan solusi, pengembangan kode, *de
 
 ## 9.4 Deklarasi Kejujuran Hasil
 
+Komitmen terhadap integritas ilmiah dan keterbukaan hasil evaluasi dideklarasikan secara tertulis sebagai berikut:
+
 > Seluruh metrik berasal dari evaluasi aktual pada data dan protokol yang dijelaskan. Target, asumsi simulator, dan hasil aktual dibedakan secara eksplisit. Kutipan *evidence* berasal dari dataset dan tidak difabrikasi.
 
 ---
 
 ## Referensi dan Traceability
+
+Daftar dokumen rujukan dan panduan teknis yang menjadi acuan penyusunan solusi SIPATURE:
 
 1. Del AI Hackathon 2026, *Technical Meeting Final Round*, 19 Agustus 2026.
 2. *Scope lock* final: `docs/c1-final-scope-lock.md`.
@@ -355,6 +406,8 @@ AI generatif digunakan untuk membantu perancangan solusi, pengembangan kode, *de
 8. *Responsible AI*: `docs/responsible-ai.md`.
 9. *Restricted data policy*: `docs/restricted-data-policy.md`.
 10. *Reproducibility*: `docs/reproducibility-runbook.md`.
+
+Seluruh klaim kuantitatif dan kualitatif dalam laporan ini dapat ditelusuri ke artefak teknis dan repositori data yang bersangkutan melalui matriks keterlacakan berikut:
 
 **Tabel 20. Hubungan klaim dengan artifact teknis**
 
@@ -369,3 +422,4 @@ AI generatif digunakan untuk membantu perancangan solusi, pengembangan kode, *de
 | Latency/performa | `docs/c6-performance-reliability.md` |
 
 > *Raw data*, teks *evidence*, *review-level predictions*, *annotation*, *split records*, model *artifact*, dan *error cases* bersifat *restricted* dan tidak dipublikasikan tanpa pemeriksaan lisensi, privasi, dan hak akses.
+

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,26 +8,92 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --color-paper: #f5f5f5; --color-ink: #2d3142; --color-muted: #4f5d75;
-      --color-soft: #7a8399; --color-accent: #eb6c36;
-      --font-sans: 'Geist', system-ui, sans-serif; --font-serif: 'Instrument Serif', serif;
-      --font-mono: 'Geist Mono', ui-monospace, monospace;
+      --paper: #f5f5f5;
+      --paper-2: #ececec;
+      --ink: #2d3142;
+      --muted: #4f5d75;
+      --soft: #7a8399;
+      --rule: rgba(45,49,66,0.12);
+      --accent: #eb6c36;
+      --accent-tint: rgba(235,108,54,0.08);
+      --link: #2e5aa8;
+      --sans: 'Geist', system-ui, sans-serif;
+      --serif: 'Instrument Serif', serif;
+      --mono: 'Geist Mono', ui-monospace, monospace;
     }
-    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
-    .frame { max-width: 1220px; width: 100%; }
-    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
-    h1 { font-family: var(--font-serif); font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400; letter-spacing: -0.02em; line-height: 1.15; color: var(--color-ink); margin-bottom: 1.5rem; }
-    svg { width: 100%; min-width: 900px; display: block; }
+    body {
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+    }
+    .frame {
+      max-width: 1000px;
+      width: 100%;
+    }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 2vw + 0.75rem, 1.9rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 1.25rem;
+    }
+    svg {
+      width: 100%;
+      min-width: 820px;
+      display: block;
+    }
+    .card-title {
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 14px;
+      fill: var(--ink);
+    }
+    .card-sub {
+      font-family: var(--mono);
+      font-size: 9px;
+      fill: var(--muted);
+      text-anchor: middle;
+    }
+    .tag-text {
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.08em;
+      text-anchor: middle;
+      text-transform: uppercase;
+    }
+    .zone-title {
+      font-family: var(--mono);
+      font-size: 7.5px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
   </style>
 </head>
 <body>
   <div class="frame">
     <p class="eyebrow">Architecture · Diagram Design</p>
-    <h1>Deployment tiga layanan di DGX B200</h1>
+    <h1>Deployment tiga layanan di host DGX B200</h1>
 
-    <svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="deploy-title deploy-desc">
-      <title id="deploy-title">Deployment tiga layanan SIPATURE di DGX B200</title>
-      <desc id="deploy-desc">Browser pengguna memanggil layanan web Next.js, yang membaca data precomputed dari PostgreSQL dan memanggil layanan inference FastAPI untuk analisis review live; ketiganya berjalan dalam satu host DGX B200.</desc>
+    <svg viewBox="0 0 960 304" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="deploy-title deploy-desc">
+      <title id="deploy-title">Deployment tiga layanan SIPATURE di host DGX B200</title>
+      <desc id="deploy-desc">Browser pengguna memanggil layanan web Next.js melalui HTTPS, yang membaca data dari PostgreSQL dan memanggil layanan inference FastAPI untuk analisis ulasan live secara offline dalam host DGX B200.</desc>
       <defs>
         <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
         <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/></marker>
@@ -36,69 +102,125 @@
 
       <rect width="100%" height="100%" fill="#f5f5f5"/>
 
-      <!-- Zone: DGX B200 -->
-      <rect x="560" y="72" width="340" height="256" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
-      <rect x="672" y="76" width="72" height="12" rx="2" fill="#f5f5f5"/>
-      <text x="708" y="85" fill="rgba(45,49,66,0.40)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">DGX B200</text>
+      <!-- ================= ZONES ================= -->
+      <!-- Zone 1: Client Access -->
+      <rect x="24" y="40" width="184" height="196" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <rect x="36" y="46" width="104" height="14" rx="2" fill="#f5f5f5"/>
+      <text x="42" y="57" class="zone-title" fill="#4f5d75">CLIENT ACCESS</text>
 
-      <!-- Arrows first -->
-      <line x1="168" y1="224" x2="332" y2="224" stroke="#2e5aa8" stroke-width="1.2" marker-end="url(#arrow-link)"/>
-      <path d="M 412,192 V 136 Q 412,128 420,128 H 620" fill="none" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
-      <path d="M 412,256 V 280 Q 412,288 420,288 H 620" fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- Zone 2: DGX B200 Isolated Host -->
+      <rect x="232" y="40" width="704" height="196" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.16)" stroke-width="0.8"/>
+      <rect x="244" y="46" width="104" height="14" rx="2" fill="#f5f5f5"/>
+      <text x="250" y="57" class="zone-title" fill="#eb6c36">HOST DGX B200</text>
 
-      <!-- Arrow labels -->
-      <rect x="196" y="204" width="56" height="12" rx="2" fill="#f5f5f5"/>
-      <text x="224" y="213" fill="#2e5aa8" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">HTTPS</text>
-      <rect x="492" y="108" width="40" height="12" rx="2" fill="#f5f5f5"/>
-      <text x="512" y="117" fill="#eb6c36" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">LIVE</text>
-      <rect x="492" y="296" width="40" height="12" rx="2" fill="#f5f5f5"/>
-      <text x="512" y="305" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">READ</text>
+      <!-- ================= CONNECTORS (DRAWN FIRST) ================= -->
+      <!-- Client -> Web (HTTPS) -->
+      <line x1="200" y1="138" x2="248" y2="138" stroke="#2e5aa8" stroke-width="1.4" marker-end="url(#arrow-link)"/>
+      <rect x="206" y="118" width="36" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="224" y="127" fill="#2e5aa8" font-size="7.5" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">HTTPS</text>
 
-      <!-- Node: User -->
-      <rect x="40" y="192" width="128" height="64" rx="6" fill="#f5f5f5"/>
-      <rect x="40" y="192" width="128" height="64" rx="6" fill="rgba(79,93,117,0.10)" stroke="#7a8399" stroke-width="1"/>
-      <rect x="48" y="200" width="28" height="12" rx="2" fill="transparent" stroke="rgba(122,131,153,0.40)" stroke-width="0.8"/>
-      <text x="62" y="209" fill="#7a8399" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">EXT</text>
-      <text x="104" y="228" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Browser</text>
-      <text x="104" y="244" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">juri · demo</text>
+      <!-- Web -> Inference (Live API) -->
+      <line x1="456" y1="100" x2="504" y2="100" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+      <rect x="464" y="80" width="32" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="480" y="89" fill="#eb6c36" font-size="7.5" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">LIVE</text>
 
-      <!-- Node: web (focal) -->
-      <rect x="340" y="192" width="144" height="64" rx="6" fill="#f5f5f5"/>
-      <rect x="340" y="192" width="144" height="64" rx="6" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1.2"/>
-      <rect x="348" y="200" width="32" height="12" rx="2" fill="transparent" stroke="rgba(235,108,54,0.50)" stroke-width="0.8"/>
-      <text x="364" y="209" fill="#eb6c36" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">WEB</text>
-      <text x="412" y="228" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Next.js</text>
-      <text x="412" y="244" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">precomputed</text>
+      <!-- Web -> DB (SQL Read) -->
+      <line x1="456" y1="184" x2="504" y2="184" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <rect x="464" y="164" width="32" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="480" y="173" fill="#4f5d75" font-size="7.5" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">READ</text>
 
-      <!-- Node: inference -->
-      <rect x="620" y="96" width="144" height="64" rx="6" fill="#f5f5f5"/>
-      <rect x="620" y="96" width="144" height="64" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
-      <rect x="628" y="104" width="36" height="12" rx="2" fill="transparent" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/>
-      <text x="646" y="113" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">INFER</text>
-      <text x="692" y="132" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">FastAPI</text>
-      <text x="692" y="148" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">TF-IDF · live</text>
+      <!-- ================= NODE CARDS ================= -->
+      <!-- NODE 1: Browser Client -->
+      <g id="node-client">
+        <rect x="36" y="64" width="160" height="152" rx="6" fill="#f5f5f5"/>
+        <rect x="36" y="64" width="160" height="152" rx="6" fill="rgba(79,93,117,0.06)" stroke="#7a8399" stroke-width="1"/>
+        <rect x="88" y="78" width="56" height="16" rx="2" fill="transparent" stroke="rgba(122,131,153,0.40)" stroke-width="0.8"/>
+        <text x="116" y="90" class="tag-text" fill="#7a8399">CLIENT</text>
 
-      <!-- Node: db -->
-      <rect x="620" y="256" width="144" height="64" rx="6" fill="#f5f5f5"/>
-      <rect x="620" y="256" width="144" height="64" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
-      <rect x="628" y="264" width="24" height="12" rx="2" fill="transparent" stroke="rgba(79,93,117,0.50)" stroke-width="0.8"/>
-      <text x="640" y="273" fill="#4f5d75" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">DB</text>
-      <text x="692" y="292" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">PostgreSQL</text>
-      <text x="692" y="308" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">data bundle</text>
+        <!-- Inline Icon + Title -->
+        <g transform="translate(58, 116)" stroke="#4f5d75" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="0" y="0" width="18" height="14" rx="2"/>
+          <line x1="0" y1="4.5" x2="18" y2="4.5"/>
+          <circle cx="3" cy="2.2" r="0.6" fill="#4f5d75"/>
+          <circle cx="6" cy="2.2" r="0.6" fill="#4f5d75"/>
+          <circle cx="9" cy="2.2" r="0.6" fill="#4f5d75"/>
+        </g>
+        <text x="82" y="129" class="card-title" text-anchor="start">Browser Web</text>
+        <text x="116" y="152" class="card-sub">Dashboard Interaktif</text>
+      </g>
 
-      <!-- Legend strip -->
-      <line x1="40" y1="344" x2="960" y2="344" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
-      <text x="40" y="364" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
-      <rect x="40" y="380" width="14" height="10" rx="2" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1"/>
-      <text x="60" y="389" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Web (focal)</text>
-      <rect x="172" y="380" width="14" height="10" rx="2" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
-      <text x="192" y="389" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Service</text>
-      <rect x="272" y="380" width="14" height="10" rx="2" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
-      <text x="292" y="389" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Database</text>
-      <line x1="392" y1="386" x2="420" y2="386" stroke="#2e5aa8" stroke-width="1.2" marker-end="url(#arrow-link)"/>
-      <text x="428" y="389" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">HTTP</text>
-      <line x1="484" y1="386" x2="512" y2="386" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
-      <text x="520" y="389" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Live infer</text>
+      <!-- NODE 2: Web Service (Next.js - FOCAL) -->
+      <g id="node-web">
+        <rect x="248" y="64" width="208" height="152" rx="6" fill="#f5f5f5"/>
+        <rect x="248" y="64" width="208" height="152" rx="6" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1.4"/>
+        <rect x="314" y="78" width="76" height="16" rx="2" fill="rgba(235,108,54,0.16)" stroke="rgba(235,108,54,0.50)" stroke-width="0.8"/>
+        <text x="352" y="90" class="tag-text" fill="#eb6c36" font-weight="600">WEB APP</text>
+
+        <!-- Inline Icon + Title -->
+        <g transform="translate(310, 115)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="#eb6c36">
+            <path d="M18.665 21.978C16.666 23.27 14.28 24 11.724 24 5.249 24 0 18.751 0 12.276 0 5.801 5.249.552 11.724.552c6.475 0 11.724 5.249 11.724 11.724 0 2.766-.96 5.308-2.57 7.306l-9.155-12.01h-2.1v9.655h1.724v-7.17l8.283 10.921zM14.966 8.828h1.724v6.896h-1.724V8.828z"/>
+          </svg>
+        </g>
+        <text x="334" y="129" class="card-title" text-anchor="start">Next.js 15</text>
+        <text x="352" y="152" class="card-sub" fill="#eb6c36">Frontend &amp; Gateway</text>
+      </g>
+
+      <!-- NODE 3: Inference Service (FastAPI) -->
+      <g id="node-inference">
+        <rect x="504" y="64" width="416" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="504" y="64" width="416" height="72" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <rect x="664" y="74" width="96" height="16" rx="2" fill="transparent" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/>
+        <text x="712" y="86" class="tag-text" fill="#2d3142">INFERENCE API</text>
+
+        <!-- Inline Icon + Title -->
+        <g transform="translate(646, 98)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="#2d3142">
+            <path d="M12 0a12 12 0 1 0 12 12A12 12 0 0 0 12 0Zm-.28 3.55 5.56 7.23h-4.16l2.32 7.32-7.4-8.03h4.18Z"/>
+          </svg>
+        </g>
+        <text x="670" y="112" class="card-title" text-anchor="start">FastAPI Engine</text>
+        <text x="712" y="127" class="card-sub">Deteksi Aspek &amp; Polaritas</text>
+      </g>
+
+      <!-- NODE 4: Database Service (PostgreSQL) -->
+      <g id="node-db">
+        <rect x="504" y="148" width="416" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="504" y="148" width="416" height="72" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+        <rect x="668" y="158" width="88" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.50)" stroke-width="0.8"/>
+        <text x="712" y="170" class="tag-text" fill="#4f5d75">DATA STORE</text>
+
+        <!-- Inline Icon + Title -->
+        <g transform="translate(646, 182)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="#4f5d75">
+            <path d="M23.5594 14.7228a.5269.5269 0 0 0-.0563-.1191c-.139-.2632-.4768-.3418-1.0074-.2321-1.6533.3411-2.2935.1312-2.5256-.0191 1.342-2.0482 2.445-4.522 3.0411-6.8297.2714-1.0507.7982-3.5237.1222-4.7316a1.5641 1.5641 0 0 0-.1509-.235C21.6931.9086 19.8007.0248 17.5099.0005c-1.4947-.0158-2.7705.3461-3.1161.4794a9.449 9.449 0 0 0-.5159-.0816 8.044 8.044 0 0 0-1.3114-.1278c-1.1822-.0184-2.2038.2642-3.0498.8406-.8573-.3211-4.7888-1.645-7.2219.0788C.9359 2.1526.3086 3.8733.4302 6.3043c.0409.818.5069 3.334 1.2423 5.7436.4598 1.5065.9387 2.7019 1.4334 3.582.553.9942 1.1259 1.5933 1.7143 1.7895.4474.1491 1.1327.1441 1.8581-.7279.8012-.9635 1.5903-1.8258 1.9446-2.2069.4351.2355.9064.3625 1.39.3772a.0569.0569 0 0 0 .0004.0041 11.0312 11.0312 0 0 0-.2472.3054c-.3389.4302-.4094.5197-1.5002.7443-.3102.064-1.1344.2339-1.1464.8115-.0025.1224.0329.2309.0919.3268.2269.4231.9216.6097 1.015.6331 1.3345.3335 2.5044.092 3.3714-.6787-.017 2.231.0775 4.4174.3454 5.0874.2212.5529.7618 1.9045 2.4692 1.9043.2505 0 .5263-.0291.8296-.0941 1.7819-.3821 2.5557-1.1696 2.855-2.9059.1503-.8707.4016-2.8753.5388-4.1012.0169-.0703.0357-.1207.057-.1362.0007-.0005.0697-.0471.4272.0307a.3673.3673 0 0 0 .0443.0068l.2539.0223.0149.001c.8468.0384 1.9114-.1426 2.5312-.4308.6438-.2988 1.8057-1.0323 1.5951-1.6698zM2.371 11.8765c-.7435-2.4358-1.1779-4.8851-1.2123-5.5719-.1086-2.1714.4171-3.6829 1.5623-4.4927 1.8367-1.2986 4.8398-.5408 6.108-.13-.0032.0032-.0066.0061-.0098.0094-2.0238 2.044-1.9758 5.536-1.9708 5.7495-.0002.0823.0066.1989.0162.3593.0348.5873.0996 1.6804-.0735 2.9184-.1609 1.1504.1937 2.2764.9728 3.0892.0806.0841.1648.1631.2518.2374-.3468.3714-1.1004 1.1926-1.9025 2.1576-.5677.6825-.9597.5517-1.0886.5087-.3919-.1307-.813-.5871-1.2381-1.3223-.4796-.839-.9635-2.0317-1.4155-3.5126zm6.0072 5.0871c-.1711-.0428-.3271-.1132-.4322-.1772.0889-.0394.2374-.0902.4833-.1409 1.2833-.2641 1.4815-.4506 1.9143-1.0002.0992-.126.2116-.2687.3673-.4426a.3549.3549 0 0 0 .0737-.1298c.1708-.1513.2724-.1099.4369-.0417.156.0646.3078.26.3695.4752.0291.1016.0619.2945-.0452.4444-.9043 1.2658-2.2216 1.2494-3.1676 1.0128z"/>
+          </svg>
+        </g>
+        <text x="670" y="196" class="card-title" text-anchor="start">PostgreSQL 16</text>
+        <text x="712" y="211" class="card-sub">Penyimpanan Sinyal &amp; State</text>
+      </g>
+
+      <!-- ================= LEGEND STRIP ================= -->
+      <line x1="24" y1="256" x2="936" y2="256" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <text x="24" y="278" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+
+      <rect x="88" y="269" width="14" height="10" rx="2" fill="rgba(235,108,54,0.12)" stroke="#eb6c36" stroke-width="1.2"/>
+      <text x="108" y="278" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Web Gateway (Focal)</text>
+
+      <rect x="256" y="269" width="14" height="10" rx="2" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <text x="276" y="278" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Layanan Inferensi</text>
+
+      <rect x="412" y="269" width="14" height="10" rx="2" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+      <text x="432" y="278" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Basis Data</text>
+
+      <line x1="536" y1="274" x2="560" y2="274" stroke="#2e5aa8" stroke-width="1.4" marker-end="url(#arrow-link)"/>
+      <text x="568" y="278" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Akses Klien (HTTPS)</text>
+
+      <line x1="708" y1="274" x2="732" y2="274" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+      <text x="740" y="278" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Inferensi Live API</text>
+
+      <line x1="864" y1="274" x2="888" y2="274" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <text x="896" y="278" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Kueri Data (SQL)</text>
     </svg>
   </div>
 </body>

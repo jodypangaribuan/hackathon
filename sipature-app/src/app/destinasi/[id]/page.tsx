@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import InterventionSim from "@/components/InterventionSim";
 import AlertStatusControl from "@/components/AlertStatusControl";
+import EvidenceQuotesList from "@/components/EvidenceQuotesList";
 import { AspectIcon } from "@/components/AppIcon";
 import {
   Badge,
@@ -228,44 +229,11 @@ export default async function DestinationPage({ params }: Props) {
                     </div>
 
                     {/* Verbatim Evidence / Suara Ulasan Wisatawan */}
-                    {issue.evidenceSnippets && issue.evidenceSnippets.length > 0 ? (
-                      <div
-                        className="mt-3 rounded-md border p-3"
-                        style={{
-                          borderColor: "var(--hairline)",
-                          background: "var(--surface-2)",
-                        }}
-                      >
-                        <div className="mb-2 flex items-center justify-between">
-                          <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted">
-                            <MessageSquareQuote size={13} className="text-accent" />
-                            <span>Contoh Suara Ulasan Wisatawan ({issue.evidenceSnippets.length} kutipan)</span>
-                          </div>
-                          <span className="text-[11px] text-muted">
-                            {num(issue.negativeCount)} keluhan dari {num(issue.mentionCount)} sebutan
-                          </span>
-                        </div>
-                        <div className="space-y-2">
-                          {issue.evidenceSnippets.slice(0, 4).map((quote, idx) => (
-                            <div
-                              key={idx}
-                              className="rounded border p-2.5 text-[12px] leading-relaxed text-ink"
-                              style={{
-                                borderColor: "var(--hairline)",
-                                background: "var(--surface-1)",
-                              }}
-                            >
-                              <p className="italic text-ink-2">“{quote.text}”</p>
-                              {quote.date ? (
-                                <span className="mt-1 block text-[10.5px] not-italic text-muted">
-                                  Estimasi tanggal ulasan: {quote.date}
-                                </span>
-                              ) : null}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ) : null}
+                    <EvidenceQuotesList
+                      snippets={issue.evidenceSnippets ?? []}
+                      negativeCount={issue.negativeCount}
+                      mentionCount={issue.mentionCount}
+                    />
 
                     {/* Field Officer Verification Control */}
                     <AlertStatusControl

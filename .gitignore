@@ -97,10 +97,14 @@ ml/artifacts/a9/*
 Datasets/
 Datasets.zip
 
-# Annotator progress + completed gold JSONL (mengandung teks review, restricted)
+# Annotator & Adjudicator data / backups
 tools/annotator/data/
 tools/annotator/backups/
 tools/adjudicator/data/
+tools/adjudicator/backups/
+
+# Testing & MCP logs
+.playwright-mcp/
 
 # Next.js generated files
 sipature-app/.next/

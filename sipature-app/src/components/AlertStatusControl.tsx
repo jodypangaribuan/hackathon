@@ -105,28 +105,32 @@ export default function AlertStatusControl({
 
   return (
     <div
-      className="mt-3 rounded-lg border p-3.5 transition-all"
+      className="mt-3.5 rounded-lg border p-4 transition-all"
       style={{
         borderColor: isConfirmed
-          ? "rgba(34, 197, 94, 0.4)"
+          ? "rgba(16, 185, 129, 0.45)"
           : isRejected
-            ? "rgba(239, 68, 68, 0.4)"
+            ? "rgba(244, 63, 94, 0.45)"
             : isUncertain
-              ? "rgba(245, 158, 11, 0.4)"
+              ? "rgba(245, 158, 11, 0.45)"
               : "var(--hairline)",
         background: isConfirmed
-          ? "rgba(34, 197, 94, 0.03)"
+          ? "rgba(16, 185, 129, 0.04)"
           : isRejected
-            ? "rgba(239, 68, 68, 0.03)"
+            ? "rgba(244, 63, 94, 0.04)"
             : isUncertain
-              ? "rgba(245, 158, 11, 0.03)"
+              ? "rgba(245, 158, 11, 0.04)"
               : "var(--surface-1)",
       }}
     >
       <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-2.5" style={{ borderColor: "var(--hairline)" }}>
-        <div className="flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-wider text-muted">
-          <ClipboardCheck size={14} className="text-accent" />
-          <span>Status Verifikasi Lapangan</span>
+        <div className="flex items-center gap-2">
+          <div className="flex h-5 w-5 items-center justify-center rounded bg-accent/10 text-accent">
+            <ClipboardCheck size={13} />
+          </div>
+          <span className="text-[12px] font-semibold uppercase tracking-wider text-ink">
+            Status Verifikasi Lapangan
+          </span>
         </div>
 
         {verdict !== "pending" && (
@@ -143,9 +147,9 @@ export default function AlertStatusControl({
         )}
       </div>
 
-      {/* 3 Action Buttons */}
-      <div className="mt-3 flex flex-wrap items-center gap-2">
-        {/* 1. Konfirmasi */}
+      {/* 3 Distinct Bold Action Buttons */}
+      <div className="mt-3.5 flex flex-wrap items-center gap-2.5">
+        {/* 1. Konfirmasi (Emerald / Green) */}
         <button
           type="button"
           disabled={busy}
@@ -153,22 +157,21 @@ export default function AlertStatusControl({
             setRejecting(false);
             void submit("confirmed");
           }}
-          className={`inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12px] font-semibold transition-all active:scale-[0.98] disabled:opacity-50 ${
+          className={`inline-flex items-center gap-2 rounded-lg border px-3.5 py-2 text-[12.5px] font-semibold transition-all active:scale-[0.98] disabled:opacity-50 ${
             isConfirmed
-              ? "border-green-600 bg-green-500/15 text-green-700 dark:text-green-400 shadow-sm"
-              : "border-hairline bg-surface-2 text-ink hover:border-green-500/50 hover:bg-green-500/5"
+              ? "border-emerald-600 bg-emerald-600 text-white shadow-md ring-2 ring-emerald-500/30"
+              : "border-emerald-600/40 bg-emerald-500/10 text-emerald-800 hover:bg-emerald-500/20 hover:border-emerald-600/70 dark:text-emerald-300 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:hover:bg-emerald-500/20"
           }`}
-          style={{ borderColor: isConfirmed ? "rgba(34,197,94,0.6)" : undefined }}
         >
           {busy && isConfirmed ? (
-            <LoaderCircle className="animate-spin" size={13} />
+            <LoaderCircle className="animate-spin" size={14} />
           ) : (
-            <CheckCircle2 size={14} className={isConfirmed ? "text-green-600 dark:text-green-400" : "text-muted"} />
+            <CheckCircle2 size={15} className={isConfirmed ? "text-white" : "text-emerald-600 dark:text-emerald-400"} />
           )}
           <span>Konfirmasi (Valid)</span>
         </button>
 
-        {/* 2. Tidak Pasti */}
+        {/* 2. Tidak Pasti (Amber / Yellow) */}
         <button
           type="button"
           disabled={busy}
@@ -176,22 +179,21 @@ export default function AlertStatusControl({
             setRejecting(false);
             void submit("uncertain");
           }}
-          className={`inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12px] font-semibold transition-all active:scale-[0.98] disabled:opacity-50 ${
+          className={`inline-flex items-center gap-2 rounded-lg border px-3.5 py-2 text-[12.5px] font-semibold transition-all active:scale-[0.98] disabled:opacity-50 ${
             isUncertain
-              ? "border-amber-600 bg-amber-500/15 text-amber-700 dark:text-amber-400 shadow-sm"
-              : "border-hairline bg-surface-2 text-ink hover:border-amber-500/50 hover:bg-amber-500/5"
+              ? "border-amber-600 bg-amber-600 text-white shadow-md ring-2 ring-amber-500/30"
+              : "border-amber-600/40 bg-amber-500/10 text-amber-800 hover:bg-amber-500/20 hover:border-amber-600/70 dark:text-amber-300 dark:border-amber-500/30 dark:bg-amber-500/10 dark:hover:bg-amber-500/20"
           }`}
-          style={{ borderColor: isUncertain ? "rgba(245,158,11,0.6)" : undefined }}
         >
           {busy && isUncertain ? (
-            <LoaderCircle className="animate-spin" size={13} />
+            <LoaderCircle className="animate-spin" size={14} />
           ) : (
-            <HelpCircle size={14} className={isUncertain ? "text-amber-600 dark:text-amber-400" : "text-muted"} />
+            <HelpCircle size={15} className={isUncertain ? "text-white" : "text-amber-600 dark:text-amber-400"} />
           )}
           <span>Tidak Pasti</span>
         </button>
 
-        {/* 3. Tolak */}
+        {/* 3. Tolak (Rose / Crimson Red) */}
         <button
           type="button"
           disabled={busy}
@@ -202,31 +204,30 @@ export default function AlertStatusControl({
               setRejecting(true);
             }
           }}
-          className={`inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12px] font-semibold transition-all active:scale-[0.98] disabled:opacity-50 ${
+          className={`inline-flex items-center gap-2 rounded-lg border px-3.5 py-2 text-[12.5px] font-semibold transition-all active:scale-[0.98] disabled:opacity-50 ${
             isRejected
-              ? "border-red-600 bg-red-500/15 text-red-700 dark:text-red-400 shadow-sm"
-              : "border-hairline bg-surface-2 text-ink hover:border-red-500/50 hover:bg-red-500/5"
+              ? "border-rose-600 bg-rose-600 text-white shadow-md ring-2 ring-rose-500/30"
+              : "border-rose-600/40 bg-rose-500/10 text-rose-800 hover:bg-rose-500/20 hover:border-rose-600/70 dark:text-rose-300 dark:border-rose-500/30 dark:bg-rose-500/10 dark:hover:bg-rose-500/20"
           }`}
-          style={{ borderColor: isRejected ? "rgba(239,68,68,0.6)" : undefined }}
         >
-          <XCircle size={14} className={isRejected ? "text-red-600 dark:text-red-400" : "text-muted"} />
+          <XCircle size={15} className={isRejected ? "text-white" : "text-rose-600 dark:text-rose-400"} />
           <span>Tolak (False Positive)</span>
         </button>
       </div>
 
-      {/* Rejecting Form with Quick Preset Chips */}
+      {/* Rejection Form with Quick Preset Chips */}
       {rejecting && (
-        <div className="mt-3 rounded-lg border bg-surface-2 p-3 space-y-2.5" style={{ borderColor: "var(--hairline)" }}>
+        <div className="mt-3.5 rounded-lg border border-rose-500/30 bg-rose-500/[0.04] p-3.5 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[11.5px] font-medium text-ink">
-              Pilih atau tuliskan alasan penolakan keluhan:
+            <span className="text-[12px] font-semibold text-rose-700 dark:text-rose-300">
+              Pilih atau tuliskan alasan penolakan keluhan di lapangan:
             </span>
             <button
               type="button"
               onClick={() => setRejecting(false)}
               className="text-muted hover:text-ink"
             >
-              <X size={14} />
+              <X size={15} />
             </button>
           </div>
 
@@ -237,8 +238,7 @@ export default function AlertStatusControl({
                 key={preset}
                 type="button"
                 onClick={() => setRejectionInput(preset)}
-                className="rounded-full border bg-surface-1 px-2.5 py-1 text-[11px] text-ink-2 transition-colors hover:border-ink hover:text-ink"
-                style={{ borderColor: "var(--hairline)" }}
+                className="rounded-full border border-hairline bg-surface-1 px-3 py-1 text-[11.5px] text-ink transition-all hover:border-rose-500 hover:bg-rose-500/10"
               >
                 {preset}
               </button>
@@ -250,17 +250,17 @@ export default function AlertStatusControl({
               type="text"
               value={rejectionInput}
               onChange={(e) => setRejectionInput(e.target.value)}
-              placeholder="Tulis alasan spesifik di lapangan..."
-              className="flex-1 rounded-md border bg-surface-1 px-3 py-1.5 text-[12px] outline-none placeholder:text-muted focus:border-ink"
+              placeholder="Tuliskan catatan alasan penolakan spesifik..."
+              className="flex-1 rounded-md border bg-surface-1 px-3 py-2 text-[12.5px] outline-none placeholder:text-muted focus:border-rose-500"
               style={{ borderColor: "var(--hairline)" }}
             />
             <button
               type="button"
               disabled={busy || !rejectionInput.trim()}
               onClick={() => void submit("rejected", rejectionInput.trim())}
-              className="inline-flex items-center gap-1.5 rounded-md bg-red-600 px-3 py-1.5 text-[12px] font-semibold text-white transition-opacity hover:bg-red-700 disabled:opacity-40"
+              className="inline-flex items-center gap-1.5 rounded-md bg-rose-600 px-3.5 py-2 text-[12.5px] font-semibold text-white shadow-sm transition-all hover:bg-rose-700 disabled:opacity-40"
             >
-              {busy ? <LoaderCircle className="animate-spin" size={13} /> : <CheckCircle2 size={13} />}
+              {busy ? <LoaderCircle className="animate-spin" size={13} /> : <CheckCircle2 size={14} />}
               <span>Simpan Penolakan</span>
             </button>
           </div>
@@ -269,36 +269,58 @@ export default function AlertStatusControl({
 
       {/* Current Active Status Info / Feedback Banner */}
       {verdict !== "pending" && !rejecting && (
-        <div className="mt-2.5 flex items-center justify-between text-[11.5px]">
-          <div className="flex items-center gap-1.5">
+        <div className="mt-3 flex items-center justify-between rounded-md border px-3 py-2 text-[12px]"
+          style={{
+            borderColor: isConfirmed
+              ? "rgba(16, 185, 129, 0.4)"
+              : isRejected
+                ? "rgba(244, 63, 94, 0.4)"
+                : "rgba(245, 158, 11, 0.4)",
+            background: isConfirmed
+              ? "rgba(16, 185, 129, 0.08)"
+              : isRejected
+                ? "rgba(244, 63, 94, 0.08)"
+                : "rgba(245, 158, 11, 0.08)",
+          }}
+        >
+          <div className="flex items-center gap-2">
             {isConfirmed && (
-              <span className="font-semibold text-green-700 dark:text-green-400">
-                ✓ Terkonfirmasi oleh petugas lapangan
-              </span>
+              <>
+                <CheckCircle2 size={14} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <span className="font-semibold text-emerald-800 dark:text-emerald-300">
+                  Status: Terkonfirmasi oleh petugas lapangan (Isu Valid)
+                </span>
+              </>
             )}
             {isUncertain && (
-              <span className="font-semibold text-amber-700 dark:text-amber-400">
-                ? Ditandai tidak pasti — butuh inspeksi ulang
-              </span>
+              <>
+                <HelpCircle size={14} className="text-amber-600 dark:text-amber-400 shrink-0" />
+                <span className="font-semibold text-amber-800 dark:text-amber-300">
+                  Status: Ditandai Tidak Pasti — Memerlukan inspeksi fisik berkala
+                </span>
+              </>
             )}
             {isRejected && (
-              <span className="font-semibold text-red-700 dark:text-red-400">
-                ✕ Ditolak sebagai False Positive {savedReason ? `· "${savedReason}"` : ""}
-              </span>
+              <>
+                <XCircle size={14} className="text-rose-600 dark:text-rose-400 shrink-0" />
+                <span className="font-semibold text-rose-800 dark:text-rose-300">
+                  Status: Ditolak sebagai False Positive {savedReason ? `· "${savedReason}"` : ""}
+                </span>
+              </>
             )}
           </div>
         </div>
       )}
 
       {feedback && (
-        <p className="mt-2 text-[11.5px] text-accent animate-fade-in">
+        <p className="mt-2.5 text-[11.5px] text-accent animate-fade-in font-medium">
           {feedback}
         </p>
       )}
 
       {error && (
-        <p className="mt-2 text-[11.5px] text-red-600 dark:text-red-400 flex items-center gap-1">
-          <AlertCircle size={12} />
+        <p className="mt-2 text-[11.5px] text-rose-600 dark:text-rose-400 flex items-center gap-1">
+          <AlertCircle size={13} />
           {error}
         </p>
       )}

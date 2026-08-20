@@ -1,7 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ClipboardCheck, EyeOff, MapPin, ShieldAlert } from "lucide-react";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  ClipboardCheck,
+  Compass,
+  EyeOff,
+  HelpCircle,
+  Info,
+  MapPin,
+  ShieldAlert,
+  Sparkles,
+} from "lucide-react";
 import InterventionSim from "@/components/InterventionSim";
 import AlertStatusControl from "@/components/AlertStatusControl";
 import { AspectIcon } from "@/components/AppIcon";
@@ -22,15 +33,18 @@ import {
 } from "@/lib/data";
 import {
   ASPECT_LABEL,
+  CONFIDENCE_LABEL,
   dateTime,
   levelOfPlace,
   num,
   pct,
   score,
 } from "@/lib/format";
+
 interface Props {
   params: Promise<{ id: string }>;
 }
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const place = await getPlace(id);
@@ -40,10 +54,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : "Tempat tidak ditemukan — SIPATURE",
   };
 }
+
 export default async function DestinationPage({ params }: Props) {
   const { id } = await params;
   const [place, corpus] = await Promise.all([getPlace(id), getCorpus()]);
   if (!place) notFound();
+
   const actionable = place.issues.filter(
     (issue) => issue.priority !== "Insufficient Data",
   );
@@ -51,80 +67,100 @@ export default async function DestinationPage({ params }: Props) {
     ...actionable.map((issue) => issue.priorityScore ?? 0),
     0.01,
   );
-  const candidates = await getInterventionsForPlace(place.id);
+
   return (
-    <div className="space-y-5">
-      <nav className="flex items-center gap-2 text-[12px] text-muted">
-        <Link href="/" className="hover:underline">← Overview</Link>
-        <span>·</span>
-        <Link href="/destinasi" className="hover:underline">Katalog Destinasi</Link>
-        <span>·</span>
-        <Link href="/intervensi" className="hover:underline">Antrean Intervensi</Link>
+    <div className="space-y-6">
+      {/* Breadcrumbs */}
+      <nav className="flex items-center gap-2 text-[12.5px] text-muted">
+        <Link href="/" className="hover:text-ink hover:underline">← Overview</Link>
+        <span>/</span>
+        <Link href="/destinasi" className="hover:text-ink hover:underline">Katalog Destinasi</Link>
+        <span>/</span>
+        <span className="truncate font-medium text-ink">{place.name}</span>
       </nav>
-      <header className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-[22px] font-semibold tracking-tight">
-              {place.name}
-            </h1>
-            <LevelBadge level={levelOfPlace(place)} />
-            <ConfidenceBadge confidence={place.dataConfidence} />
+
+      {/* Destination Header Card */}
+      <Card className="p-5 sm:p-6">
+        <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
+          <div>
+            <div className="flex flex-wrap items-center gap-2.5">
+              <h1 className="text-[24px] font-semibold tracking-tight sm:text-[28px]">
+                {place.name}
+              </h1>
+              <LevelBadge level={levelOfPlace(place)} />
+              <ConfidenceBadge confidence={place.dataConfidence} />
+            </div>
+
+            <p className="mt-1.5 flex items-center gap-1.5 text-[13px] text-ink-2">
+              <MapPin size={13} className="text-muted" />
+              <span>{KIND_LABEL[place.kind]}</span>
+              <span>·</span>
+              <strong className="text-ink">{place.kabupaten}</strong>
+              {place.kecamatan ? <span>(Kec. {place.kecamatan})</span> : null}
+            </p>
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Badge>{num(place.textReviewCount)} ulasan berteks dianalisis</Badge>
+              <Badge>{num(place.allReviewCount)} total ulasan wisatawan</Badge>
+              {place.entryFee ? <Badge>Tiket: {place.entryFee}</Badge> : null}
+              {place.hours ? <Badge>Jam Operasional: {place.hours}</Badge> : null}
+            </div>
           </div>
-          <p className="mt-1.5 text-[13px] text-ink-2">
-            {KIND_LABEL[place.kind]} · {place.kabupaten}
-            {place.kecamatan ? ` · Kec. ${place.kecamatan}` : ""}
-          </p>
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            <Badge>{num(place.textReviewCount)} review berteks</Badge>
-            <Badge>{num(place.allReviewCount)} seluruh review</Badge>
-            {place.entryFee ? <Badge>Tiket: {place.entryFee}</Badge> : null}
-            {place.hours ? <Badge>Jam: {place.hours}</Badge> : null}
+
+          <div className="flex shrink-0 items-center gap-4 rounded-xl border bg-surface-2 p-4 lg:text-right" style={{ borderColor: "var(--hairline)" }}>
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+                Skor Urgensi Perbaikan
+              </div>
+              <div className="mt-0.5 tabular text-[36px] font-bold leading-none text-accent">
+                {score(place.priorityScore)}
+              </div>
+              <div className="mt-1 text-[11.5px] text-ink-2">
+                {place.rank
+                  ? `Peringkat #${place.rank} dari ${corpus.actionableDestinations} lokasi`
+                  : "Kondisi stabil / Tidak mendesak"}
+              </div>
+            </div>
           </div>
         </div>
-        <div className="text-right">
-          <div className="tabular text-[40px] font-semibold leading-none">
-            {score(place.priorityScore)}
-          </div>
-          <div className="mt-1 text-[11px] text-muted">
-            priority score (0–100)
-          </div>
-          <div className="mt-1 text-[12px] text-ink-2">
-            {place.rank
-              ? `Prioritas #${place.rank} dari ${corpus.actionableDestinations}`
-              : "Tidak masuk antrean actionable"}
-          </div>
-        </div>
-      </header>
+      </Card>
+
       {place.canonicalStatus === "unresolved_placeholder" ? (
         <Note>
-          <MapPin size={13} className="mr-1 inline" />
-          Identitas atau koordinat destinasi belum terselesaikan. Record
-          dipertahankan untuk audit tetapi tidak diberi prioritas operasional.
+          <MapPin size={13} className="mr-1 inline text-accent" />
+          <strong>Catatan Lokasi:</strong> Koordinat spesifik destinasi ini masih dalam proses sinkronisasi lapangan. Data ulasan tetap tercatat untuk kebutuhan evaluasi.
         </Note>
       ) : null}
-      <div className="grid gap-4 lg:grid-cols-[1fr_400px]">
-        <div className="space-y-4">
+
+      {/* Main Grid: Left Issues & Action, Right Scenario Simulator */}
+      <div className="grid gap-5 lg:grid-cols-[1fr_400px]">
+        {/* Left Column: Issues & Work Orders */}
+        <div className="space-y-5">
           <Card className="p-4 sm:p-5">
             <SectionTitle
               hint={
                 actionable.length
-                  ? `${actionable.length} isu actionable`
-                  : undefined
+                  ? `${actionable.length} masalah teridentifikasi`
+                  : "Tidak ada keluhan kritis"
               }
             >
-              Reported Issues
+              Daftar Masalah &amp; Rekomendasi Tindak Lanjut
             </SectionTitle>
+
             {actionable.length ? (
               <ol className="space-y-4">
                 {actionable.map((issue) => (
                   <li
                     key={issue.aspect}
-                    className="rounded-card border p-3.5"
+                    className="rounded-card border p-4 transition-all"
                     style={{ borderColor: "var(--hairline)" }}
                   >
-                    <div className="flex flex-wrap items-center gap-2">
-                      <AspectIcon aspect={issue.aspect} />
-                      <span className="text-[14px] font-semibold">
+                    {/* Aspect Title & Status */}
+                    <div className="flex flex-wrap items-center gap-2 border-b pb-3" style={{ borderColor: "var(--hairline)" }}>
+                      <span className="rounded-md bg-surface-2 p-1.5">
+                        <AspectIcon aspect={issue.aspect} size={16} />
+                      </span>
+                      <span className="text-[15px] font-semibold">
                         {ASPECT_LABEL[issue.aspect]}
                       </span>
                       <LevelBadge
@@ -135,54 +171,60 @@ export default async function DestinationPage({ params }: Props) {
                         size="sm"
                       />
                       <span className="ml-auto text-[11px] text-muted">
-                        confidence {pct(issue.meanConfidence, 1)}
+                        Keyakinan AI: {pct(issue.meanConfidence, 1)}
                       </span>
                     </div>
-                    <div className="mt-2.5">
+
+                    {/* Complaint Summary */}
+                    <div className="mt-3">
                       <Meter
                         value={issue.priorityScore ?? 0}
                         max={maxScore}
-                        label={`${num(issue.mentionCount)} sebutan · ${num(issue.negativeCount)} negatif · sinyal keluhan smoothed ${pct(issue.smoothedComplaintRate, 1)}`}
-                        valueLabel={score(issue.priorityScore)}
+                        label={`${num(issue.negativeCount)} keluhan dari ${num(issue.mentionCount)} sebutan wisatawan`}
+                        valueLabel={`Urgensi ${score(issue.priorityScore)}`}
                       />
                     </div>
-                    <p className="mt-3 text-[12px] leading-relaxed text-ink-2">
+
+                    <p className="mt-2.5 text-[12.5px] leading-relaxed text-ink-2">
                       {issue.explanation}
                     </p>
-                    <div className="mt-3 grid gap-2 sm:grid-cols-2">
+
+                    {/* Action Cards: Inspection & Solution */}
+                    <div className="mt-3.5 grid gap-2.5 sm:grid-cols-2">
                       <div
-                        className="rounded-md border p-2.5"
-                        style={{ borderColor: "var(--hairline)" }}
+                        className="rounded-md border p-3"
+                        style={{
+                          borderColor: "var(--hairline)",
+                          background: "var(--surface-2)",
+                        }}
                       >
-                        <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase text-muted">
-                          <ClipboardCheck size={13} />
-                          Verifikasi berikutnya
+                        <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted">
+                          <ClipboardCheck size={13} className="text-accent" />
+                          Panduan Cek Fisik Lapangan
                         </div>
-                        <p className="text-[12px] text-ink-2">
+                        <p className="text-[12px] leading-relaxed text-ink">
                           {issue.recommendedVerification}
                         </p>
                       </div>
+
                       <div
-                        className="rounded-md border p-2.5"
-                        style={{ borderColor: "var(--hairline)" }}
+                        className="rounded-md border p-3"
+                        style={{
+                          borderColor: "var(--hairline)",
+                          background: "var(--surface-2)",
+                        }}
                       >
-                        <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase text-muted">
-                          <ShieldAlert size={13} />
-                          Kandidat intervensi
+                        <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted">
+                          <ShieldAlert size={13} className="text-accent" />
+                          Rekomendasi Tindakan Perbaikan
                         </div>
-                        <p className="text-[12px] text-ink-2">
+                        <p className="text-[12px] leading-relaxed text-ink">
                           {issue.candidateIntervention}
                         </p>
                       </div>
                     </div>
-                    <div className="mt-3">
-                      <Note>
-                        <EyeOff size={13} className="mr-1 inline" />
-                        Kutipan evidence ditahan dari aplikasi publik sampai
-                        privacy review selesai. Evidence gate sudah diverifikasi
-                        secara restricted.
-                      </Note>
-                    </div>
+
+                    {/* Field Officer Verification Control */}
                     <AlertStatusControl
                       destinationId={place.id}
                       aspect={issue.aspect}
@@ -191,91 +233,40 @@ export default async function DestinationPage({ params }: Props) {
                 ))}
               </ol>
             ) : (
-              <p className="py-6 text-center text-[13px] text-muted">
-                Belum ada isu yang memenuhi support, identity, dan evidence gate
-                untuk prioritas operasional.
-              </p>
+              <div className="py-8 text-center">
+                <CheckCircle2 size={32} className="mx-auto text-muted opacity-60" />
+                <p className="mt-2 text-[13.5px] font-medium text-ink">
+                  Kondisi Destinasi Terpantau Baik
+                </p>
+                <p className="mt-1 text-[12px] text-muted">
+                  Tidak ditemukan pola keluhan berulang yang membutuhkan penanganan darurat.
+                </p>
+              </div>
             )}
           </Card>
-          <Card className="p-4 sm:p-5">
-            <SectionTitle>Explainability & Missing Data</SectionTitle>
-            <p className="text-[13px] leading-relaxed text-ink-2">
-              Priority score memakai complaint frequency, model confidence,
-              persistence, dan visitor exposure. Severity, facility gap, dan
-              feasibility tidak tersedia sehingga bobotnya dikeluarkan dan bobot
-              tersedia dinormalisasi ulang.
-            </p>
-            <p className="mt-2 text-[12px] text-muted">
-              Health{" "}
-              {place.healthScore === null
-                ? "tidak tersedia"
-                : place.healthScore.toFixed(1).replace(".", ",")}{" "}
-              adalah kebalikan rata-rata complaint signal yang sudah di-smooth,
-              bukan penilaian kualitas total destinasi.
-            </p>
-          </Card>
         </div>
-        <div className="space-y-4">
+
+        {/* Right Column: Interactive Impact Simulator */}
+        <div className="space-y-5">
           <InterventionSim place={place} />
+
           <Card className="p-4 sm:p-5">
-            <SectionTitle>Metadata & Provenance</SectionTitle>
-            <dl className="space-y-2 text-[12px]">
-              <div className="flex justify-between gap-3">
-                <dt className="text-muted">Canonical ID</dt>
-                <dd className="break-all text-right">{place.id}</dd>
-              </div>
-              <div className="flex justify-between gap-3">
-                <dt className="text-muted">Status identitas</dt>
-                <dd>{place.canonicalStatus}</dd>
-              </div>
-              <div className="flex justify-between gap-3">
-                <dt className="text-muted">Alamat</dt>
-                <dd className="max-w-[240px] text-right">
-                  {place.address ?? "tidak terdata"}
-                </dd>
-              </div>
-              <div className="flex justify-between gap-3">
-                <dt className="text-muted">Model</dt>
-                <dd>{corpus.modelVersion}</dd>
-              </div>
-              <div className="flex justify-between gap-3">
-                <dt className="text-muted">Generated</dt>
-                <dd>{dateTime(corpus.generatedAt)}</dd>
-              </div>
-              <div className="flex justify-between gap-3">
-                <dt className="text-muted">Severity</dt>
-                <dd>unavailable</dd>
-              </div>
-            </dl>
+            <SectionTitle>Petunjuk Verifikator Lapangan</SectionTitle>
+            <ol className="space-y-2 text-[12px] leading-relaxed text-ink-2">
+              <li className="flex gap-2">
+                <strong className="text-ink">1.</strong>
+                <span>Kunjungi lokasi dan periksa fisik fasilitas sesuai panduan.</span>
+              </li>
+              <li className="flex gap-2">
+                <strong className="text-ink">2.</strong>
+                <span>Tekan tombol <strong>Konfirmasi</strong> jika masalah memang benar terjadi di lapangan.</span>
+              </li>
+              <li className="flex gap-2">
+                <strong className="text-ink">3.</strong>
+                <span>Gunakan hasil verifikasi untuk mengalokasikan anggaran perbaikan.</span>
+              </li>
+            </ol>
           </Card>
-          {candidates.length ? (
-            <Card className="p-4 sm:p-5">
-              <SectionTitle hint={`${candidates.length} kandidat`}>
-                Kandidat Tindakan
-              </SectionTitle>
-              <ul className="space-y-2">
-                {candidates.map((item) => (
-                  <li key={item.id}>
-                    <Link
-                      href="/umkm"
-                      className="flex items-start gap-2 rounded-md border px-3 py-2"
-                      style={{ borderColor: "var(--hairline)" }}
-                    >
-                      <AspectIcon aspect={item.aspect} />
-                      <span>
-                        <span className="block text-[13px] font-medium">
-                          {item.title}
-                        </span>
-                        <span className="text-[11px] text-muted">
-                          pending verifikasi lapangan
-                        </span>
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          ) : null}
         </div>
       </div>
     </div>

@@ -1,0 +1,1814 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "SIPATURE Tourism Quality Intelligence" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: SIPATURE
+        - generic [ref=e6]: Tourism Quality Intelligence
+      - navigation [ref=e7]:
+        - link "Overview" [ref=e8] [cursor=pointer]:
+          - /url: /
+        - link "Destinasi" [ref=e12] [cursor=pointer]:
+          - /url: /destinasi
+        - link "Intervensi" [ref=e17] [cursor=pointer]:
+          - /url: /intervensi
+        - link "Analisis Review" [ref=e22] [cursor=pointer]:
+          - /url: /analyzer
+        - link "Model" [ref=e36] [cursor=pointer]:
+          - /url: /metode
+      - generic [ref=e40]:
+        - generic "Sistem Berjalan Mandiri — DGX B200 Production" [ref=e41]: Production v1.0.4
+        - button "Ganti tema terang/gelap" [ref=e42] [cursor=pointer]
+  - main [ref=e45]:
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - generic [ref=e49]: Pusat Kendali Mutu Pariwisata Danau Toba
+          - heading "Masalah destinasi mana yang harus diperbaiki lebih dulu?" [level=1] [ref=e54]
+          - paragraph [ref=e55]: Membantu pengelola wisata, POKDARWIS, dan dinas pariwisata menyaring ribuan suara wisatawan menjadi daftar prioritas perbaikan nyata yang terukur di 14 aspek fasilitas.
+        - generic [ref=e56]:
+          - link "Cari Destinasi (388)" [ref=e57] [cursor=pointer]:
+            - /url: /destinasi
+          - link "Antrean Tindak Lanjut" [ref=e62] [cursor=pointer]:
+            - /url: /intervensi
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - generic [ref=e73]: "1"
+            - heading "Pantau Sebaran Masalah" [level=3] [ref=e74]
+          - paragraph [ref=e75]: Gunakan peta wilayah di bawah untuk memantau titik-titik keluhan wisatawan di 8 kabupaten Danau Toba.
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - generic [ref=e78]: "2"
+            - heading "Tinjau Rekomendasi Aksi" [level=3] [ref=e79]
+          - paragraph [ref=e80]: Lihat rincian masalah per lokasi (sanitasi, jalan, tiket, staf) beserta langkah perbaikan yang disarankan.
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - generic [ref=e83]: "3"
+            - heading "Verifikasi Lapangan" [level=3] [ref=e84]
+          - paragraph [ref=e85]: Petugas melakukan pengecekan fisik di lokasi dan menandai status penanganan secara bertanggung jawab.
+      - generic [ref=e86]:
+        - generic [ref=e87]:
+          - generic [ref=e88]: "12.234"
+          - generic [ref=e89]: Ulasan Wisatawan Dianalisis
+          - generic [ref=e90]: Ulasan nyata wisatawan Danau Toba
+        - generic [ref=e91]:
+          - generic [ref=e92]: "9.785"
+          - generic [ref=e93]: Masalah/Topik Terpetakan
+          - generic [ref=e94]: 280 lokasi memiliki sinyal aktif
+        - generic [ref=e95]:
+          - generic [ref=e96]: "103"
+          - generic [ref=e97]: Destinasi Perlu Perhatian
+          - generic [ref=e98]: 210 keluhan berulang siap ditindaklanjuti
+        - generic [ref=e99]:
+          - generic [ref=e100]: "322"
+          - generic [ref=e101]: Lokasi Wisata Terdata
+          - generic [ref=e102]: Tersebar di 8 kabupaten lingkar Toba
+      - generic [ref=e103]:
+        - generic [ref=e104]:
+          - generic [ref=e105]:
+            - heading "Destinasi Membutuhkan Penanganan Segera" [level=2] [ref=e106]
+            - paragraph [ref=e107]: Berdasarkan frekuensi keluhan berulang wisatawan terbaru
+          - link "Lihat semua 103 antrean →" [ref=e108] [cursor=pointer]:
+            - /url: /intervensi
+        - generic [ref=e109]:
+          - generic [ref=e110]:
+            - generic [ref=e111]:
+              - generic [ref=e112]:
+                - generic [ref=e113]: "#1"
+                - generic [ref=e114]:
+                  - generic [ref=e115]: ◆
+                  - text: Perlu Tindakan
+              - heading [level=3] [ref=e116]:
+                - link "Elios - Rumah Makan Khas Batak" [ref=e117] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_e5c1241a2468f4
+              - paragraph [ref=e118]: Samosir
+              - generic [ref=e119]:
+                - generic [ref=e125]: Harga & Transparansi Pungutan
+                - generic [ref=e126]: 72,8
+            - link "Buka Lembar Aksi" [ref=e127] [cursor=pointer]:
+              - /url: /destinasi/dest_resto_e5c1241a2468f4
+          - generic [ref=e131]:
+            - generic [ref=e132]:
+              - generic [ref=e133]:
+                - generic [ref=e134]: "#2"
+                - generic [ref=e135]:
+                  - generic [ref=e136]: ◆
+                  - text: Perlu Tindakan
+              - heading [level=3] [ref=e137]:
+                - link "Aek Rangat Pangururan" [ref=e138] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_3f03d84417d6cc
+              - paragraph [ref=e139]: Samosir
+              - generic [ref=e140]:
+                - generic [ref=e146]: Harga & Transparansi Pungutan
+                - generic [ref=e147]: 72,5
+            - link "Buka Lembar Aksi" [ref=e148] [cursor=pointer]:
+              - /url: /destinasi/dest_wisata_3f03d84417d6cc
+          - generic [ref=e152]:
+            - generic [ref=e153]:
+              - generic [ref=e154]:
+                - generic [ref=e155]: "#3"
+                - generic [ref=e156]:
+                  - generic [ref=e157]: ◆
+                  - text: Perlu Tindakan
+              - heading [level=3] [ref=e158]:
+                - link "Damasus Nataboan Resto" [ref=e159] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_ea9403d98a6efe
+              - paragraph [ref=e160]: Simalungun
+              - generic [ref=e161]:
+                - generic [ref=e166]: Pelayanan Petugas
+                - generic [ref=e167]: 72,3
+            - link "Buka Lembar Aksi" [ref=e168] [cursor=pointer]:
+              - /url: /destinasi/dest_resto_ea9403d98a6efe
+          - generic [ref=e172]:
+            - generic [ref=e173]:
+              - generic [ref=e174]:
+                - generic [ref=e175]: "#4"
+                - generic [ref=e176]:
+                  - generic [ref=e177]: ◆
+                  - text: Perlu Tindakan
+              - heading [level=3] [ref=e178]:
+                - link "Kawah Putih Dolok Tinggi Raja" [ref=e179] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_2bd1bff4744c6a
+              - paragraph [ref=e180]: Simalungun
+              - generic [ref=e181]:
+                - generic [ref=e187]: Harga & Transparansi Pungutan
+                - generic [ref=e188]: 72,1
+            - link "Buka Lembar Aksi" [ref=e189] [cursor=pointer]:
+              - /url: /destinasi/dest_wisata_2bd1bff4744c6a
+      - generic [ref=e193]:
+        - generic [ref=e194]:
+          - generic [ref=e196]:
+            - searchbox "Cari nama tempat…" [ref=e197]
+            - combobox [ref=e199]:
+              - option "Semua kabupaten" [selected]
+              - option "Dairi"
+              - option "Humbang Hasundutan"
+              - option "Samosir"
+              - option "Simalungun"
+              - option "Tapanuli Utara"
+              - option "Toba"
+            - combobox [ref=e201]:
+              - option "Semua jenis" [selected]
+              - option "Wisata"
+              - option "Kuliner"
+              - option "Akomodasi"
+              - option "Layanan"
+            - combobox [ref=e203]:
+              - option "Semua aspek" [selected]
+              - option "Kebersihan"
+              - option "Sampah & Limbah"
+              - option "Toilet & Sanitasi"
+              - option "Kepadatan & Antrean"
+              - option "Akses & Kondisi Rute"
+              - option "Parkir"
+              - option "Fasilitas Publik & Aksesibilitas"
+              - option "Pemandangan"
+              - option "Kenyamanan"
+              - option "Keselamatan & Keamanan"
+              - option "Harga & Transparansi Pungutan"
+              - option "Pelayanan Petugas"
+              - option "Perawatan & Kerusakan"
+              - option "Jam Operasional"
+            - generic [ref=e204]:
+              - checkbox "Data tidak cukup" [checked] [ref=e205]
+              - text: Data tidak cukup
+            - generic [ref=e206]: 322 dari 322
+          - generic [ref=e208]:
+            - generic [ref=e209]:
+              - generic [ref=e210]:
+                - button "Peta" [ref=e211] [cursor=pointer]
+                - button "Satelit" [ref=e212] [cursor=pointer]
+              - group "Filter tingkat friksi" [ref=e214]:
+                - button "Data Belum Cukup" [pressed] [ref=e215] [cursor=pointer]:
+                  - generic [ref=e216]: ○
+                - button "Kondisi Terjaga" [pressed] [ref=e218] [cursor=pointer]:
+                  - generic [ref=e219]: ●
+                - button "Perlu Perhatian" [pressed] [ref=e221] [cursor=pointer]:
+                  - generic [ref=e222]: ▲
+                - button "Perlu Tindakan" [pressed] [ref=e224] [cursor=pointer]:
+                  - generic [ref=e225]: ◆
+                - button "Mendesak (Kritis)" [pressed] [ref=e227] [cursor=pointer]:
+                  - generic [ref=e228]: ■
+              - button "Uji mode luring" [ref=e230] [cursor=pointer]
+            - application "Peta interaktif sinyal prioritas destinasi kawasan Danau Toba" [ref=e232]:
+              - generic:
+                - generic:
+                  - button [ref=e234] [cursor=pointer]:
+                    - generic [ref=e235]: ○
+                  - button [ref=e236] [cursor=pointer]:
+                    - generic [ref=e237]: ○
+                  - button [ref=e238] [cursor=pointer]:
+                    - generic [ref=e239]: ○
+                  - button [ref=e240] [cursor=pointer]:
+                    - generic [ref=e241]: ○
+                  - button [ref=e242] [cursor=pointer]:
+                    - generic [ref=e243]: ○
+                  - button [ref=e244] [cursor=pointer]:
+                    - generic [ref=e245]: ○
+                  - button [ref=e246] [cursor=pointer]:
+                    - generic [ref=e247]: ○
+                  - button [ref=e248] [cursor=pointer]:
+                    - generic [ref=e249]: ○
+                  - button [ref=e250] [cursor=pointer]:
+                    - generic [ref=e251]: ○
+                  - button [ref=e252] [cursor=pointer]:
+                    - generic [ref=e253]: ○
+                  - button [ref=e254] [cursor=pointer]:
+                    - generic [ref=e255]: ○
+                  - button [ref=e256] [cursor=pointer]:
+                    - generic [ref=e257]: ○
+                  - button [ref=e258] [cursor=pointer]:
+                    - generic [ref=e259]: ○
+                  - button [ref=e260] [cursor=pointer]:
+                    - generic [ref=e261]: ○
+                  - button [ref=e262] [cursor=pointer]:
+                    - generic [ref=e263]: ○
+                  - button [ref=e264] [cursor=pointer]:
+                    - generic [ref=e265]: ○
+                  - button [ref=e266] [cursor=pointer]:
+                    - generic [ref=e267]: ○
+                  - button [ref=e268] [cursor=pointer]:
+                    - generic [ref=e269]: ○
+                  - button [ref=e270] [cursor=pointer]:
+                    - generic [ref=e271]: ○
+                  - button [ref=e272] [cursor=pointer]:
+                    - generic [ref=e273]: ○
+                  - button [ref=e274] [cursor=pointer]:
+                    - generic [ref=e275]: ○
+                  - button [ref=e276] [cursor=pointer]:
+                    - generic [ref=e277]: ○
+                  - button [ref=e278] [cursor=pointer]:
+                    - generic [ref=e279]: ○
+                  - button [ref=e280] [cursor=pointer]:
+                    - generic [ref=e281]: ○
+                  - button [ref=e282] [cursor=pointer]:
+                    - generic [ref=e283]: ○
+                  - button [ref=e284] [cursor=pointer]:
+                    - generic [ref=e285]: ○
+                  - button [ref=e286] [cursor=pointer]:
+                    - generic [ref=e287]: ○
+                  - button [ref=e288] [cursor=pointer]:
+                    - generic [ref=e289]: ○
+                  - button [ref=e290] [cursor=pointer]:
+                    - generic [ref=e291]: ○
+                  - button [ref=e292] [cursor=pointer]:
+                    - generic [ref=e293]: ○
+                  - button [ref=e294] [cursor=pointer]:
+                    - generic [ref=e295]: ○
+                  - button [ref=e296] [cursor=pointer]:
+                    - generic [ref=e297]: ○
+                  - button [ref=e298] [cursor=pointer]:
+                    - generic [ref=e299]: ○
+                  - button [ref=e300] [cursor=pointer]:
+                    - generic [ref=e301]: ○
+                  - button [ref=e302] [cursor=pointer]:
+                    - generic [ref=e303]: ○
+                  - button [ref=e304] [cursor=pointer]:
+                    - generic [ref=e305]: ○
+                  - button [ref=e306] [cursor=pointer]:
+                    - generic [ref=e307]: ○
+                  - button [ref=e308] [cursor=pointer]:
+                    - generic [ref=e309]: ○
+                  - button [ref=e310] [cursor=pointer]:
+                    - generic [ref=e311]: ○
+                  - button [ref=e312] [cursor=pointer]:
+                    - generic [ref=e313]: ○
+                  - button [ref=e314] [cursor=pointer]:
+                    - generic [ref=e315]: ○
+                  - button [ref=e316] [cursor=pointer]:
+                    - generic [ref=e317]: ○
+                  - button [ref=e318] [cursor=pointer]:
+                    - generic [ref=e319]: ○
+                  - button [ref=e320] [cursor=pointer]:
+                    - generic [ref=e321]: ○
+                  - button [ref=e322] [cursor=pointer]:
+                    - generic [ref=e323]: ○
+                  - button [ref=e324] [cursor=pointer]:
+                    - generic [ref=e325]: ○
+                  - button [ref=e326] [cursor=pointer]:
+                    - generic [ref=e327]: ○
+                  - button [ref=e328] [cursor=pointer]:
+                    - generic [ref=e329]: ○
+                  - button [ref=e330] [cursor=pointer]:
+                    - generic [ref=e331]: ○
+                  - button [ref=e332] [cursor=pointer]:
+                    - generic [ref=e333]: ○
+                  - button [ref=e334] [cursor=pointer]:
+                    - generic [ref=e335]: ○
+                  - button [ref=e336] [cursor=pointer]:
+                    - generic [ref=e337]: ○
+                  - button [ref=e338] [cursor=pointer]:
+                    - generic [ref=e339]: ○
+                  - button [ref=e340] [cursor=pointer]:
+                    - generic [ref=e341]: ○
+                  - button [ref=e342] [cursor=pointer]:
+                    - generic [ref=e343]: ○
+                  - button [ref=e344] [cursor=pointer]:
+                    - generic [ref=e345]: ○
+                  - button [ref=e346] [cursor=pointer]:
+                    - generic [ref=e347]: ○
+                  - button [ref=e348] [cursor=pointer]:
+                    - generic [ref=e349]: ○
+                  - button [ref=e350] [cursor=pointer]:
+                    - generic [ref=e351]: ○
+                  - button [ref=e352] [cursor=pointer]:
+                    - generic [ref=e353]: ○
+                  - button [ref=e354] [cursor=pointer]:
+                    - generic [ref=e355]: ○
+                  - button [ref=e356] [cursor=pointer]:
+                    - generic [ref=e357]: ○
+                  - button [ref=e358] [cursor=pointer]:
+                    - generic [ref=e359]: ○
+                  - button [ref=e360] [cursor=pointer]:
+                    - generic [ref=e361]: ○
+                  - button [ref=e362] [cursor=pointer]:
+                    - generic [ref=e363]: ○
+                  - button [ref=e364] [cursor=pointer]:
+                    - generic [ref=e365]: ○
+                  - button [ref=e366] [cursor=pointer]:
+                    - generic [ref=e367]: ○
+                  - button [ref=e368] [cursor=pointer]:
+                    - generic [ref=e369]: ○
+                  - button [ref=e370] [cursor=pointer]:
+                    - generic [ref=e371]: ○
+                  - button [ref=e372] [cursor=pointer]:
+                    - generic [ref=e373]: ○
+                  - button [ref=e374] [cursor=pointer]:
+                    - generic [ref=e375]: ○
+                  - button [ref=e376] [cursor=pointer]:
+                    - generic [ref=e377]: ○
+                  - button [ref=e378] [cursor=pointer]:
+                    - generic [ref=e379]: ○
+                  - button [ref=e380] [cursor=pointer]:
+                    - generic [ref=e381]: ○
+                  - button [ref=e382] [cursor=pointer]:
+                    - generic [ref=e383]: ○
+                  - button [ref=e384] [cursor=pointer]:
+                    - generic [ref=e385]: ○
+                  - button [ref=e386] [cursor=pointer]:
+                    - generic [ref=e387]: ○
+                  - button [ref=e388] [cursor=pointer]:
+                    - generic [ref=e389]: ○
+                  - button [ref=e390] [cursor=pointer]:
+                    - generic [ref=e391]: ○
+                  - button [ref=e392] [cursor=pointer]:
+                    - generic [ref=e393]: ○
+                  - button [ref=e394] [cursor=pointer]:
+                    - generic [ref=e395]: ○
+                  - button [ref=e396] [cursor=pointer]:
+                    - generic [ref=e397]: ○
+                  - button [ref=e398] [cursor=pointer]:
+                    - generic [ref=e399]: ○
+                  - button [ref=e400] [cursor=pointer]:
+                    - generic [ref=e401]: ○
+                  - button [ref=e402] [cursor=pointer]:
+                    - generic [ref=e403]: ○
+                  - button [ref=e404] [cursor=pointer]:
+                    - generic [ref=e405]: ○
+                  - button [ref=e406] [cursor=pointer]:
+                    - generic [ref=e407]: ○
+                  - button [ref=e408] [cursor=pointer]:
+                    - generic [ref=e409]: ○
+                  - button [ref=e410] [cursor=pointer]:
+                    - generic [ref=e411]: ○
+                  - button [ref=e412] [cursor=pointer]:
+                    - generic [ref=e413]: ○
+                  - button [ref=e414] [cursor=pointer]:
+                    - generic [ref=e415]: ○
+                  - button [ref=e416] [cursor=pointer]:
+                    - generic [ref=e417]: ○
+                  - button [ref=e418] [cursor=pointer]:
+                    - generic [ref=e419]: ○
+                  - button [ref=e420] [cursor=pointer]:
+                    - generic [ref=e421]: ○
+                  - button [ref=e422] [cursor=pointer]:
+                    - generic [ref=e423]: ○
+                  - button [ref=e424] [cursor=pointer]:
+                    - generic [ref=e425]: ○
+                  - button [ref=e426] [cursor=pointer]:
+                    - generic [ref=e427]: ○
+                  - button [ref=e428] [cursor=pointer]:
+                    - generic [ref=e429]: ○
+                  - button [ref=e430] [cursor=pointer]:
+                    - generic [ref=e431]: ○
+                  - button [ref=e432] [cursor=pointer]:
+                    - generic [ref=e433]: ○
+                  - button [ref=e434] [cursor=pointer]:
+                    - generic [ref=e435]: ○
+                  - button [ref=e436] [cursor=pointer]:
+                    - generic [ref=e437]: ○
+                  - button [ref=e438] [cursor=pointer]:
+                    - generic [ref=e439]: ○
+                  - button [ref=e440] [cursor=pointer]:
+                    - generic [ref=e441]: ○
+                  - button [ref=e442] [cursor=pointer]:
+                    - generic [ref=e443]: ○
+                  - button [ref=e444] [cursor=pointer]:
+                    - generic [ref=e445]: ○
+                  - button [ref=e446] [cursor=pointer]:
+                    - generic [ref=e447]: ○
+                  - button [ref=e448] [cursor=pointer]:
+                    - generic [ref=e449]: ○
+                  - button [ref=e450] [cursor=pointer]:
+                    - generic [ref=e451]: ○
+                  - button [ref=e452] [cursor=pointer]:
+                    - generic [ref=e453]: ○
+                  - button [ref=e454] [cursor=pointer]:
+                    - generic [ref=e455]: ○
+                  - button [ref=e456] [cursor=pointer]:
+                    - generic [ref=e457]: ○
+                  - button [ref=e458] [cursor=pointer]:
+                    - generic [ref=e459]: ○
+                  - button [ref=e460] [cursor=pointer]:
+                    - generic [ref=e461]: ○
+                  - button [ref=e462] [cursor=pointer]:
+                    - generic [ref=e463]: ○
+                  - button [ref=e464] [cursor=pointer]:
+                    - generic [ref=e465]: ○
+                  - button [ref=e466] [cursor=pointer]:
+                    - generic [ref=e467]: ○
+                  - button [ref=e468] [cursor=pointer]:
+                    - generic [ref=e469]: ○
+                  - button [ref=e470] [cursor=pointer]:
+                    - generic [ref=e471]: ○
+                  - button [ref=e472] [cursor=pointer]:
+                    - generic [ref=e473]: ○
+                  - button [ref=e474] [cursor=pointer]:
+                    - generic [ref=e475]: ○
+                  - button [ref=e476] [cursor=pointer]:
+                    - generic [ref=e477]: ○
+                  - button [ref=e478] [cursor=pointer]:
+                    - generic [ref=e479]: ○
+                  - button [ref=e480] [cursor=pointer]:
+                    - generic [ref=e481]: ○
+                  - button [ref=e482] [cursor=pointer]:
+                    - generic [ref=e483]: ○
+                  - button [ref=e484] [cursor=pointer]:
+                    - generic [ref=e485]: ○
+                  - button [ref=e486] [cursor=pointer]:
+                    - generic [ref=e487]: ○
+                  - button [ref=e488] [cursor=pointer]:
+                    - generic [ref=e489]: ○
+                  - button [ref=e490] [cursor=pointer]:
+                    - generic [ref=e491]: ○
+                  - button [ref=e492] [cursor=pointer]:
+                    - generic [ref=e493]: ○
+                  - button [ref=e494] [cursor=pointer]:
+                    - generic [ref=e495]: ○
+                  - button [ref=e496] [cursor=pointer]:
+                    - generic [ref=e497]: ○
+                  - button [ref=e498] [cursor=pointer]:
+                    - generic [ref=e499]: ○
+                  - button [ref=e500] [cursor=pointer]:
+                    - generic [ref=e501]: ○
+                  - button [ref=e502] [cursor=pointer]:
+                    - generic [ref=e503]: ○
+                  - button [ref=e504] [cursor=pointer]:
+                    - generic [ref=e505]: ○
+                  - button [ref=e506] [cursor=pointer]:
+                    - generic [ref=e507]: ○
+                  - button [ref=e508] [cursor=pointer]:
+                    - generic [ref=e509]: ○
+                  - button [ref=e510] [cursor=pointer]:
+                    - generic [ref=e511]: ○
+                  - button [ref=e512] [cursor=pointer]:
+                    - generic [ref=e513]: ○
+                  - button [ref=e514] [cursor=pointer]:
+                    - generic [ref=e515]: ○
+                  - button [ref=e516] [cursor=pointer]:
+                    - generic [ref=e517]: ○
+                  - button [ref=e518] [cursor=pointer]:
+                    - generic [ref=e519]: ○
+                  - button [ref=e520] [cursor=pointer]:
+                    - generic [ref=e521]: ○
+                  - button [ref=e522] [cursor=pointer]:
+                    - generic [ref=e523]: ○
+                  - button [ref=e524] [cursor=pointer]:
+                    - generic [ref=e525]: ○
+                  - button [ref=e526] [cursor=pointer]:
+                    - generic [ref=e527]: ○
+                  - button [ref=e528] [cursor=pointer]:
+                    - generic [ref=e529]: ○
+                  - button [ref=e530] [cursor=pointer]:
+                    - generic [ref=e531]: ○
+                  - button [ref=e532] [cursor=pointer]:
+                    - generic [ref=e533]: ○
+                  - button [ref=e534] [cursor=pointer]:
+                    - generic [ref=e535]: ○
+                  - button [ref=e536] [cursor=pointer]:
+                    - generic [ref=e537]: ○
+                  - button [ref=e538] [cursor=pointer]:
+                    - generic [ref=e539]: ○
+                  - button [ref=e540] [cursor=pointer]:
+                    - generic [ref=e541]: ○
+                  - button [ref=e542] [cursor=pointer]:
+                    - generic [ref=e543]: ○
+                  - button [ref=e544] [cursor=pointer]:
+                    - generic [ref=e545]: ○
+                  - button [ref=e546] [cursor=pointer]:
+                    - generic [ref=e547]: ○
+                  - button [ref=e548] [cursor=pointer]:
+                    - generic [ref=e549]: ○
+                  - button [ref=e550] [cursor=pointer]:
+                    - generic [ref=e551]: ○
+                  - button [ref=e552] [cursor=pointer]:
+                    - generic [ref=e553]: ○
+                  - button [ref=e554] [cursor=pointer]:
+                    - generic [ref=e555]: ○
+                  - button [ref=e556] [cursor=pointer]:
+                    - generic [ref=e557]: ○
+                  - button [ref=e558] [cursor=pointer]:
+                    - generic [ref=e559]: ○
+                  - button [ref=e560] [cursor=pointer]:
+                    - generic [ref=e561]: ○
+                  - button [ref=e562] [cursor=pointer]:
+                    - generic [ref=e563]: ○
+                  - button [ref=e564] [cursor=pointer]:
+                    - generic [ref=e565]: ○
+                  - button [ref=e566] [cursor=pointer]:
+                    - generic [ref=e567]: ○
+                  - button [ref=e568] [cursor=pointer]:
+                    - generic [ref=e569]: ○
+                  - button [ref=e570] [cursor=pointer]:
+                    - generic [ref=e571]: ○
+                  - button [ref=e572] [cursor=pointer]:
+                    - generic [ref=e573]: ○
+                  - button [ref=e574] [cursor=pointer]:
+                    - generic [ref=e575]: ○
+                  - button [ref=e576] [cursor=pointer]:
+                    - generic [ref=e577]: ○
+                  - button [ref=e578] [cursor=pointer]:
+                    - generic [ref=e579]: ○
+                  - button [ref=e580] [cursor=pointer]:
+                    - generic [ref=e581]: ○
+                  - button [ref=e582] [cursor=pointer]:
+                    - generic [ref=e583]: ○
+                  - button [ref=e584] [cursor=pointer]:
+                    - generic [ref=e585]: ○
+                  - button [ref=e586] [cursor=pointer]:
+                    - generic [ref=e587]: ○
+                  - button [ref=e588] [cursor=pointer]:
+                    - generic [ref=e589]: ○
+                  - button [ref=e590] [cursor=pointer]:
+                    - generic [ref=e591]: ○
+                  - button [ref=e592] [cursor=pointer]:
+                    - generic [ref=e593]: ○
+                  - button [ref=e594] [cursor=pointer]:
+                    - generic [ref=e595]: ○
+                  - button [ref=e596] [cursor=pointer]:
+                    - generic [ref=e597]: ○
+                  - button [ref=e598] [cursor=pointer]:
+                    - generic [ref=e599]: ○
+                  - button [ref=e600] [cursor=pointer]:
+                    - generic [ref=e601]: ○
+                  - button [ref=e602] [cursor=pointer]:
+                    - generic [ref=e603]: ○
+                  - button [ref=e604] [cursor=pointer]:
+                    - generic [ref=e605]: ○
+                  - button [ref=e606] [cursor=pointer]:
+                    - generic [ref=e607]: ○
+                  - button [ref=e608] [cursor=pointer]:
+                    - generic [ref=e609]: ○
+                  - button [ref=e610] [cursor=pointer]:
+                    - generic [ref=e611]: ○
+                  - button [ref=e612] [cursor=pointer]:
+                    - generic [ref=e613]: ○
+                  - button [ref=e614] [cursor=pointer]:
+                    - generic [ref=e615]: ○
+                  - button [ref=e616] [cursor=pointer]:
+                    - generic [ref=e617]: ○
+                  - button [ref=e618] [cursor=pointer]:
+                    - generic [ref=e619]: ○
+                  - button [ref=e620] [cursor=pointer]:
+                    - generic [ref=e621]: ○
+                  - button [ref=e622] [cursor=pointer]:
+                    - generic [ref=e623]: ○
+                  - button [ref=e624] [cursor=pointer]:
+                    - generic [ref=e625]: ○
+                  - button [ref=e626] [cursor=pointer]:
+                    - generic [ref=e627]: ○
+                  - button [ref=e628] [cursor=pointer]:
+                    - generic [ref=e629]: ○
+                  - button [ref=e630] [cursor=pointer]:
+                    - generic [ref=e631]: ○
+                  - button [ref=e632] [cursor=pointer]:
+                    - generic [ref=e633]: ○
+                  - button [ref=e634] [cursor=pointer]:
+                    - generic [ref=e635]: ○
+                  - button [ref=e636] [cursor=pointer]:
+                    - generic [ref=e637]: ○
+                  - button [ref=e638] [cursor=pointer]:
+                    - generic [ref=e639]: ○
+                  - button [ref=e640] [cursor=pointer]:
+                    - generic [ref=e641]: ○
+                  - button [ref=e642] [cursor=pointer]:
+                    - generic [ref=e643]: ○
+                  - button [ref=e644] [cursor=pointer]:
+                    - generic [ref=e645]: ○
+                  - button [ref=e646] [cursor=pointer]:
+                    - generic [ref=e647]: ○
+                  - button [ref=e648] [cursor=pointer]:
+                    - generic [ref=e649]: ○
+                  - button [ref=e650] [cursor=pointer]:
+                    - generic [ref=e651]: ○
+                  - button [ref=e652] [cursor=pointer]:
+                    - generic [ref=e653]: ○
+                  - button [ref=e654] [cursor=pointer]:
+                    - generic [ref=e655]: ○
+                  - button [ref=e656] [cursor=pointer]:
+                    - generic [ref=e657]: ○
+                  - button [ref=e658] [cursor=pointer]:
+                    - generic [ref=e659]: ○
+                  - button [ref=e660] [cursor=pointer]:
+                    - generic [ref=e661]: ○
+                  - button [ref=e662] [cursor=pointer]:
+                    - generic [ref=e663]: ○
+                  - button [ref=e664] [cursor=pointer]:
+                    - generic [ref=e665]: ○
+                  - button [ref=e666] [cursor=pointer]:
+                    - generic [ref=e667]: ○
+                  - button [ref=e668] [cursor=pointer]:
+                    - generic [ref=e669]: ○
+                  - button [ref=e670] [cursor=pointer]:
+                    - generic [ref=e671]: ○
+                  - button [ref=e672] [cursor=pointer]:
+                    - generic [ref=e673]: ●
+                  - button [ref=e674] [cursor=pointer]:
+                    - generic [ref=e675]: ●
+                  - button [ref=e676] [cursor=pointer]:
+                    - generic [ref=e677]: ●
+                  - button [ref=e678] [cursor=pointer]:
+                    - generic [ref=e679]: ●
+                  - button [ref=e680] [cursor=pointer]:
+                    - generic [ref=e681]: ●
+                  - button [ref=e682] [cursor=pointer]:
+                    - generic [ref=e683]: ●
+                  - button [ref=e684] [cursor=pointer]:
+                    - generic [ref=e685]: ▲
+                  - button [ref=e686] [cursor=pointer]:
+                    - generic [ref=e687]: ▲
+                  - button [ref=e688] [cursor=pointer]:
+                    - generic [ref=e689]: ▲
+                  - button [ref=e690] [cursor=pointer]:
+                    - generic [ref=e691]: ▲
+                  - button [ref=e692] [cursor=pointer]:
+                    - generic [ref=e693]: ▲
+                  - button [ref=e694] [cursor=pointer]:
+                    - generic [ref=e695]: ▲
+                  - button [ref=e696] [cursor=pointer]:
+                    - generic [ref=e697]: ▲
+                  - button [ref=e698] [cursor=pointer]:
+                    - generic [ref=e699]: ▲
+                  - button [ref=e700] [cursor=pointer]:
+                    - generic [ref=e701]: ▲
+                  - button [ref=e702] [cursor=pointer]:
+                    - generic [ref=e703]: ▲
+                  - button [ref=e704] [cursor=pointer]:
+                    - generic [ref=e705]: ▲
+                  - button [ref=e706] [cursor=pointer]:
+                    - generic [ref=e707]: ▲
+                  - button [ref=e708] [cursor=pointer]:
+                    - generic [ref=e709]: ▲
+                  - button [ref=e710] [cursor=pointer]:
+                    - generic [ref=e711]: ▲
+                  - button [ref=e712] [cursor=pointer]:
+                    - generic [ref=e713]: ▲
+                  - button [ref=e714] [cursor=pointer]:
+                    - generic [ref=e715]: ▲
+                  - button [ref=e716] [cursor=pointer]:
+                    - generic [ref=e717]: ▲
+                  - button [ref=e718] [cursor=pointer]:
+                    - generic [ref=e719]: ▲
+                  - button [ref=e720] [cursor=pointer]:
+                    - generic [ref=e721]: ▲
+                  - button [ref=e722] [cursor=pointer]:
+                    - generic [ref=e723]: ▲
+                  - button [ref=e724] [cursor=pointer]:
+                    - generic [ref=e725]: ▲
+                  - button [ref=e726] [cursor=pointer]:
+                    - generic [ref=e727]: ▲
+                  - button [ref=e728] [cursor=pointer]:
+                    - generic [ref=e729]: ▲
+                  - button [ref=e730] [cursor=pointer]:
+                    - generic [ref=e731]: ▲
+                  - button [ref=e732] [cursor=pointer]:
+                    - generic [ref=e733]: ▲
+                  - button [ref=e734] [cursor=pointer]:
+                    - generic [ref=e735]: ▲
+                  - button [ref=e736] [cursor=pointer]:
+                    - generic [ref=e737]: ▲
+                  - button [ref=e738] [cursor=pointer]:
+                    - generic [ref=e739]: ▲
+                  - button [ref=e740] [cursor=pointer]:
+                    - generic [ref=e741]: ▲
+                  - button [ref=e742] [cursor=pointer]:
+                    - generic [ref=e743]: ▲
+                  - button [ref=e744] [cursor=pointer]:
+                    - generic [ref=e745]: ▲
+                  - button [ref=e746] [cursor=pointer]:
+                    - generic [ref=e747]: ▲
+                  - button [ref=e748] [cursor=pointer]:
+                    - generic [ref=e749]: ▲
+                  - button [ref=e750] [cursor=pointer]:
+                    - generic [ref=e751]: ▲
+                  - button [ref=e752] [cursor=pointer]:
+                    - generic [ref=e753]: ▲
+                  - button [ref=e754] [cursor=pointer]:
+                    - generic [ref=e755]: ▲
+                  - button [ref=e756] [cursor=pointer]:
+                    - generic [ref=e757]: ▲
+                  - button [ref=e758] [cursor=pointer]:
+                    - generic [ref=e759]: ▲
+                  - button [ref=e760] [cursor=pointer]:
+                    - generic [ref=e761]: ▲
+                  - button [ref=e762] [cursor=pointer]:
+                    - generic [ref=e763]: ▲
+                  - button [ref=e764] [cursor=pointer]:
+                    - generic [ref=e765]: ▲
+                  - button [ref=e766] [cursor=pointer]:
+                    - generic [ref=e767]: ▲
+                  - button [ref=e768] [cursor=pointer]:
+                    - generic [ref=e769]: ▲
+                  - button [ref=e770] [cursor=pointer]:
+                    - generic [ref=e771]: ▲
+                  - button [ref=e772] [cursor=pointer]:
+                    - generic [ref=e773]: ▲
+                  - button [ref=e774] [cursor=pointer]:
+                    - generic [ref=e775]: ▲
+                  - button [ref=e776] [cursor=pointer]:
+                    - generic [ref=e777]: ▲
+                  - button [ref=e778] [cursor=pointer]:
+                    - generic [ref=e779]: ▲
+                  - button [ref=e780] [cursor=pointer]:
+                    - generic [ref=e781]: ▲
+                  - button [ref=e782] [cursor=pointer]:
+                    - generic [ref=e783]: ▲
+                  - button [ref=e784] [cursor=pointer]:
+                    - generic [ref=e785]: ▲
+                  - button [ref=e786] [cursor=pointer]:
+                    - generic [ref=e787]: ▲
+                  - button [ref=e788] [cursor=pointer]:
+                    - generic [ref=e789]: ▲
+                  - button [ref=e790] [cursor=pointer]:
+                    - generic [ref=e791]: ▲
+                  - button [ref=e792] [cursor=pointer]:
+                    - generic [ref=e793]: ▲
+                  - button [ref=e794] [cursor=pointer]:
+                    - generic [ref=e795]: ▲
+                  - button [ref=e796] [cursor=pointer]:
+                    - generic [ref=e797]: ▲
+                  - button [ref=e798] [cursor=pointer]:
+                    - generic [ref=e799]: ◆
+                  - button [ref=e800] [cursor=pointer]:
+                    - generic [ref=e801]: ◆
+                  - button [ref=e802] [cursor=pointer]:
+                    - generic [ref=e803]: ◆
+                  - button [ref=e804] [cursor=pointer]:
+                    - generic [ref=e805]: ◆
+                  - button [ref=e806] [cursor=pointer]:
+                    - generic [ref=e807]: ◆
+                  - button [ref=e808] [cursor=pointer]:
+                    - generic [ref=e809]: ◆
+                  - button [ref=e810] [cursor=pointer]:
+                    - generic [ref=e811]: ◆
+                  - button [ref=e812] [cursor=pointer]:
+                    - generic [ref=e813]: ◆
+                  - button [ref=e814] [cursor=pointer]:
+                    - generic [ref=e815]: ◆
+                  - button [ref=e816] [cursor=pointer]:
+                    - generic [ref=e817]: ◆
+                  - button [ref=e818] [cursor=pointer]:
+                    - generic [ref=e819]: ◆
+                  - button [ref=e820] [cursor=pointer]:
+                    - generic [ref=e821]: ◆
+                  - button [ref=e822] [cursor=pointer]:
+                    - generic [ref=e823]: ◆
+                  - button [ref=e824] [cursor=pointer]:
+                    - generic [ref=e825]: ◆
+                  - button [ref=e826] [cursor=pointer]:
+                    - generic [ref=e827]: ◆
+                  - button [ref=e828] [cursor=pointer]:
+                    - generic [ref=e829]: ◆
+                  - button [ref=e830] [cursor=pointer]:
+                    - generic [ref=e831]: ◆
+                  - button [ref=e832] [cursor=pointer]:
+                    - generic [ref=e833]: ◆
+                  - button [ref=e834] [cursor=pointer]:
+                    - generic [ref=e835]: ◆
+                  - button [ref=e836] [cursor=pointer]:
+                    - generic [ref=e837]: ◆
+                  - button [ref=e838] [cursor=pointer]:
+                    - generic [ref=e839]: ◆
+                  - button [ref=e840] [cursor=pointer]:
+                    - generic [ref=e841]: ◆
+                  - button [ref=e842] [cursor=pointer]:
+                    - generic [ref=e843]: ◆
+                  - button [ref=e844] [cursor=pointer]:
+                    - generic [ref=e845]: ◆
+                  - button [ref=e846] [cursor=pointer]:
+                    - generic [ref=e847]: ◆
+                  - button [ref=e848] [cursor=pointer]:
+                    - generic [ref=e849]: ◆
+                  - button [ref=e850] [cursor=pointer]:
+                    - generic [ref=e851]: ◆
+                  - button [ref=e852] [cursor=pointer]:
+                    - generic [ref=e853]: ◆
+                  - button [ref=e854] [cursor=pointer]:
+                    - generic [ref=e855]: ◆
+                  - button [ref=e856] [cursor=pointer]:
+                    - generic [ref=e857]: ◆
+                  - button [ref=e858] [cursor=pointer]:
+                    - generic [ref=e859]: ◆
+                  - button [ref=e860] [cursor=pointer]:
+                    - generic [ref=e861]: ◆
+                  - button [ref=e862] [cursor=pointer]:
+                    - generic [ref=e863]: ◆
+                  - button [ref=e864] [cursor=pointer]:
+                    - generic [ref=e865]: ◆
+                  - button [ref=e866] [cursor=pointer]:
+                    - generic [ref=e867]: ◆
+                  - button [ref=e868] [cursor=pointer]:
+                    - generic [ref=e869]: ◆
+                  - button [ref=e870] [cursor=pointer]:
+                    - generic [ref=e871]: ◆
+                  - button [ref=e872] [cursor=pointer]:
+                    - generic [ref=e873]: ◆
+                  - button [ref=e874] [cursor=pointer]:
+                    - generic [ref=e875]: ◆
+                  - button [ref=e876] [cursor=pointer]:
+                    - generic [ref=e877]: ◆
+              - generic:
+                - generic [ref=e878]:
+                  - button "Zoom in" [ref=e879] [cursor=pointer]: +
+                  - button "Zoom out" [ref=e880] [cursor=pointer]: −
+                - generic:
+                  - button "Kembali ke tampilan Danau Toba" [ref=e882] [cursor=pointer]
+                  - generic [ref=e887]:
+                    - link "Leaflet" [ref=e888] [cursor=pointer]:
+                      - /url: https://leafletjs.com
+                    - text: "| ©"
+                    - link "OpenStreetMap" [ref=e889] [cursor=pointer]:
+                      - /url: https://www.openstreetmap.org/copyright
+                    - text: ©
+                    - link "CARTO" [ref=e890] [cursor=pointer]:
+                      - /url: https://carto.com/attributions
+            - generic [ref=e891]:
+              - generic [ref=e892]:
+                - generic [ref=e893]: ○
+                - text: Data Belum Cukup
+              - generic [ref=e894]:
+                - generic [ref=e895]: ●
+                - text: Kondisi Terjaga
+              - generic [ref=e896]:
+                - generic [ref=e897]: ▲
+                - text: Perlu Perhatian
+              - generic [ref=e898]:
+                - generic [ref=e899]: ◆
+                - text: Perlu Tindakan
+              - generic [ref=e900]:
+                - generic [ref=e901]: ■
+                - text: Mendesak (Kritis)
+              - generic [ref=e902]: Ukuran titik = jumlah review bersih · 322 dari 322 tempat berkoordinat
+          - paragraph [ref=e903]: Klik titik untuk melihat ringkasan.
+        - generic [ref=e904]:
+          - generic [ref=e905]:
+            - generic [ref=e906]:
+              - heading "Prioritas Verifikasi" [level=2] [ref=e907]
+              - generic [ref=e908]: 103 tempat
+            - paragraph [ref=e909]: Urut menurut priority score SIPATURE Intelligence. Peringkat adalah sinyal triase, bukan bukti kondisi lapangan.
+            - list [ref=e910]:
+              - listitem [ref=e911]:
+                - link "#1 ◆ Elios - Rumah Makan Khas Batak Samosir · Harga & Transparansi Pungutan 72,8" [ref=e912] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_e5c1241a2468f4
+                  - generic [ref=e913]: "#1"
+                  - generic [ref=e914]: ◆
+                  - generic [ref=e915]:
+                    - generic [ref=e916]: Elios - Rumah Makan Khas Batak
+                    - generic [ref=e917]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e918]: 72,8
+              - listitem [ref=e919]:
+                - link "#2 ◆ Aek Rangat Pangururan Samosir · Harga & Transparansi Pungutan 72,5" [ref=e920] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_3f03d84417d6cc
+                  - generic [ref=e921]: "#2"
+                  - generic [ref=e922]: ◆
+                  - generic [ref=e923]:
+                    - generic [ref=e924]: Aek Rangat Pangururan
+                    - generic [ref=e925]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e926]: 72,5
+              - listitem [ref=e927]:
+                - link "#3 ◆ Damasus Nataboan Resto Simalungun · Pelayanan Petugas 72,3" [ref=e928] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_ea9403d98a6efe
+                  - generic [ref=e929]: "#3"
+                  - generic [ref=e930]: ◆
+                  - generic [ref=e931]:
+                    - generic [ref=e932]: Damasus Nataboan Resto
+                    - generic [ref=e933]: Simalungun · Pelayanan Petugas
+                  - generic [ref=e934]: 72,3
+              - listitem [ref=e935]:
+                - link "#4 ◆ Kawah Putih Dolok Tinggi Raja Simalungun · Harga & Transparansi Pungutan 72,1" [ref=e936] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_2bd1bff4744c6a
+                  - generic [ref=e937]: "#4"
+                  - generic [ref=e938]: ◆
+                  - generic [ref=e939]:
+                    - generic [ref=e940]: Kawah Putih Dolok Tinggi Raja
+                    - generic [ref=e941]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=e942]: 72,1
+              - listitem [ref=e943]:
+                - link "#5 ◆ Sinar Minang Restaurant & Convention Hall Toba · Harga & Transparansi Pungutan 70,4" [ref=e944] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_35d629f02e2131
+                  - generic [ref=e945]: "#5"
+                  - generic [ref=e946]: ◆
+                  - generic [ref=e947]:
+                    - generic [ref=e948]: Sinar Minang Restaurant & Convention Hall
+                    - generic [ref=e949]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e950]: 70,4
+              - listitem [ref=e951]:
+                - link "#6 ◆ Tuan Nagani Paradise Humbang Hasundutan · Harga & Transparansi Pungutan 70,2" [ref=e952] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_64bbb40d85bdb3
+                  - generic [ref=e953]: "#6"
+                  - generic [ref=e954]: ◆
+                  - generic [ref=e955]:
+                    - generic [ref=e956]: Tuan Nagani Paradise
+                    - generic [ref=e957]: Humbang Hasundutan · Harga & Transparansi Pungutan
+                  - generic [ref=e958]: 70,2
+              - listitem [ref=e959]:
+                - link "#7 ◆ Rumah Makan Lomak Samosir · Harga & Transparansi Pungutan 70,1" [ref=e960] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_a1afe60e1666a9
+                  - generic [ref=e961]: "#7"
+                  - generic [ref=e962]: ◆
+                  - generic [ref=e963]:
+                    - generic [ref=e964]: Rumah Makan Lomak
+                    - generic [ref=e965]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e966]: 70,1
+              - listitem [ref=e967]:
+                - link "#8 ◆ Rumah Makan Muslim Penginapan Samosir · Harga & Transparansi Pungutan 69,9" [ref=e968] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_b2adc4606cb860
+                  - generic [ref=e969]: "#8"
+                  - generic [ref=e970]: ◆
+                  - generic [ref=e971]:
+                    - generic [ref=e972]: Rumah Makan Muslim Penginapan
+                    - generic [ref=e973]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e974]: 69,9
+              - listitem [ref=e975]:
+                - link "#9 ◆ LA PINUS DAMASUS BISTRO & RESTO Simalungun · Pelayanan Petugas 69,5" [ref=e976] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_2aef2b55aa363a
+                  - generic [ref=e977]: "#9"
+                  - generic [ref=e978]: ◆
+                  - generic [ref=e979]:
+                    - generic [ref=e980]: LA PINUS DAMASUS BISTRO & RESTO
+                    - generic [ref=e981]: Simalungun · Pelayanan Petugas
+                  - generic [ref=e982]: 69,5
+              - listitem [ref=e983]:
+                - link "#10 ◆ Pantai Pakkodian Tampahan Toba · Harga & Transparansi Pungutan 68,7" [ref=e984] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_0205ce1676c3c2
+                  - generic [ref=e985]: "#10"
+                  - generic [ref=e986]: ◆
+                  - generic [ref=e987]:
+                    - generic [ref=e988]: Pantai Pakkodian Tampahan
+                    - generic [ref=e989]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e990]: 68,7
+              - listitem [ref=e991]:
+                - link "#11 ◆ Labersa Toba Fantasi Waterpark Toba · Harga & Transparansi Pungutan 68,5" [ref=e992] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_432e4d3466bb28
+                  - generic [ref=e993]: "#11"
+                  - generic [ref=e994]: ◆
+                  - generic [ref=e995]:
+                    - generic [ref=e996]: Labersa Toba Fantasi Waterpark
+                    - generic [ref=e997]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e998]: 68,5
+              - listitem [ref=e999]:
+                - link "#12 ◆ Rumah Makan Islam Mami Tempo Samosir · Harga & Transparansi Pungutan 68,0" [ref=e1000] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_c26a150adecb2d
+                  - generic [ref=e1001]: "#12"
+                  - generic [ref=e1002]: ◆
+                  - generic [ref=e1003]:
+                    - generic [ref=e1004]: Rumah Makan Islam Mami Tempo
+                    - generic [ref=e1005]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1006]: 68,0
+              - listitem [ref=e1007]:
+                - link "#13 ◆ Jenny's Restaurant Samosir · Harga & Transparansi Pungutan 67,8" [ref=e1008] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_abdda76cd3e9ed
+                  - generic [ref=e1009]: "#13"
+                  - generic [ref=e1010]: ◆
+                  - generic [ref=e1011]:
+                    - generic [ref=e1012]: Jenny's Restaurant
+                    - generic [ref=e1013]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1014]: 67,8
+              - listitem [ref=e1015]:
+                - link "#14 ◆ Objek Wisata Pantai Paris Simalungun · Harga & Transparansi Pungutan 67,5" [ref=e1016] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_2131662e721617
+                  - generic [ref=e1017]: "#14"
+                  - generic [ref=e1018]: ◆
+                  - generic [ref=e1019]:
+                    - generic [ref=e1020]: Objek Wisata Pantai Paris
+                    - generic [ref=e1021]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=e1022]: 67,5
+              - listitem [ref=e1023]:
+                - link "#15 ◆ Pasir Putih Parbaba Toba · Harga & Transparansi Pungutan 67,4" [ref=e1024] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_3b50f4868614ad
+                  - generic [ref=e1025]: "#15"
+                  - generic [ref=e1026]: ◆
+                  - generic [ref=e1027]:
+                    - generic [ref=e1028]: Pasir Putih Parbaba
+                    - generic [ref=e1029]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1030]: 67,4
+              - listitem [ref=e1031]:
+                - link "#16 ◆ Geosite Sipinsur Humbang Hasundutan · Toilet & Sanitasi 67,3" [ref=e1032] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_1ad63181807602
+                  - generic [ref=e1033]: "#16"
+                  - generic [ref=e1034]: ◆
+                  - generic [ref=e1035]:
+                    - generic [ref=e1036]: Geosite Sipinsur
+                    - generic [ref=e1037]: Humbang Hasundutan · Toilet & Sanitasi
+                  - generic [ref=e1038]: 67,3
+              - listitem [ref=e1039]:
+                - link "#17 ◆ Pantai Pasir Putih Lumban Bul-bul Balige Toba · Harga & Transparansi Pungutan 67,2" [ref=e1040] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_675974ac1b278e
+                  - generic [ref=e1041]: "#17"
+                  - generic [ref=e1042]: ◆
+                  - generic [ref=e1043]:
+                    - generic [ref=e1044]: Pantai Pasir Putih Lumban Bul-bul Balige
+                    - generic [ref=e1045]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1046]: 67,2
+              - listitem [ref=e1047]:
+                - link "#18 ◆ Rumah Makan Marina Simalungun · Harga & Transparansi Pungutan 67,1" [ref=e1048] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_6cec311baf964c
+                  - generic [ref=e1049]: "#18"
+                  - generic [ref=e1050]: ◆
+                  - generic [ref=e1051]:
+                    - generic [ref=e1052]: Rumah Makan Marina
+                    - generic [ref=e1053]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=e1054]: 67,1
+              - listitem [ref=e1055]:
+                - link "#19 ◆ Bukit Holbung Samosir · Harga & Transparansi Pungutan 67,1" [ref=e1056] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_607dd915de0dc4
+                  - generic [ref=e1057]: "#19"
+                  - generic [ref=e1058]: ◆
+                  - generic [ref=e1059]:
+                    - generic [ref=e1060]: Bukit Holbung
+                    - generic [ref=e1061]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1062]: 67,1
+              - listitem [ref=e1063]:
+                - link "#20 ◆ Tiara Bunga Hotel Toba · Harga & Transparansi Pungutan 67,0" [ref=e1064] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_c5418e0f9ef701
+                  - generic [ref=e1065]: "#20"
+                  - generic [ref=e1066]: ◆
+                  - generic [ref=e1067]:
+                    - generic [ref=e1068]: Tiara Bunga Hotel
+                    - generic [ref=e1069]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1070]: 67,0
+              - listitem [ref=e1071]:
+                - link "#21 ◆ Pemandian Air Soda Parbubu Tapanuli Utara · Sampah & Limbah 66,9" [ref=e1072] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_134b2e8d20ff62
+                  - generic [ref=e1073]: "#21"
+                  - generic [ref=e1074]: ◆
+                  - generic [ref=e1075]:
+                    - generic [ref=e1076]: Pemandian Air Soda Parbubu
+                    - generic [ref=e1077]: Tapanuli Utara · Sampah & Limbah
+                  - generic [ref=e1078]: 66,9
+              - listitem [ref=e1079]:
+                - link "#22 ◆ Restaurant Asia Simalungun · Harga & Transparansi Pungutan 66,8" [ref=e1080] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_38563d4903d42b
+                  - generic [ref=e1081]: "#22"
+                  - generic [ref=e1082]: ◆
+                  - generic [ref=e1083]:
+                    - generic [ref=e1084]: Restaurant Asia
+                    - generic [ref=e1085]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=e1086]: 66,8
+              - listitem [ref=e1087]:
+                - link "#23 ◆ Putra Kembar Coffee Shop & Resto Tapanuli Utara · Pelayanan Petugas 66,2" [ref=e1088] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_67f14825cea10e
+                  - generic [ref=e1089]: "#23"
+                  - generic [ref=e1090]: ◆
+                  - generic [ref=e1091]:
+                    - generic [ref=e1092]: Putra Kembar Coffee Shop & Resto
+                    - generic [ref=e1093]: Tapanuli Utara · Pelayanan Petugas
+                  - generic [ref=e1094]: 66,2
+              - listitem [ref=e1095]:
+                - link "#24 ◆ Caldera toba nomadic escape (glamour camping) Toba · Harga & Transparansi Pungutan 66,1" [ref=e1096] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_7ef9ae290a4e45
+                  - generic [ref=e1097]: "#24"
+                  - generic [ref=e1098]: ◆
+                  - generic [ref=e1099]:
+                    - generic [ref=e1100]: Caldera toba nomadic escape (glamour camping)
+                    - generic [ref=e1101]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1102]: 66,1
+              - listitem [ref=e1103]:
+                - link "#25 ◆ Patung Sigalegale Samosir · Harga & Transparansi Pungutan 65,7" [ref=e1104] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_e9b52952e1eda0
+                  - generic [ref=e1105]: "#25"
+                  - generic [ref=e1106]: ◆
+                  - generic [ref=e1107]:
+                    - generic [ref=e1108]: Patung Sigalegale
+                    - generic [ref=e1109]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1110]: 65,7
+              - listitem [ref=e1111]:
+                - link "#26 ◆ Widya Restaurant Samosir · Harga & Transparansi Pungutan 65,6" [ref=e1112] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_d555410d83b2b5
+                  - generic [ref=e1113]: "#26"
+                  - generic [ref=e1114]: ◆
+                  - generic [ref=e1115]:
+                    - generic [ref=e1116]: Widya Restaurant
+                    - generic [ref=e1117]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1118]: 65,6
+              - listitem [ref=e1119]:
+                - link "#27 ◆ Air Terjun Janji Humbang Hasundutan · Harga & Transparansi Pungutan 65,6" [ref=e1120] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_10d46662b0deae
+                  - generic [ref=e1121]: "#27"
+                  - generic [ref=e1122]: ◆
+                  - generic [ref=e1123]:
+                    - generic [ref=e1124]: Air Terjun Janji
+                    - generic [ref=e1125]: Humbang Hasundutan · Harga & Transparansi Pungutan
+                  - generic [ref=e1126]: 65,6
+              - listitem [ref=e1127]:
+                - link "#28 ◆ TaTaring Coffee & Resto Samosir · Harga & Transparansi Pungutan 64,7" [ref=e1128] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_a2e8fba01b56bb
+                  - generic [ref=e1129]: "#28"
+                  - generic [ref=e1130]: ◆
+                  - generic [ref=e1131]:
+                    - generic [ref=e1132]: TaTaring Coffee & Resto
+                    - generic [ref=e1133]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1134]: 64,7
+              - listitem [ref=e1135]:
+                - link "#29 ◆ RM muslim MENARA Simalungun · Harga & Transparansi Pungutan 64,0" [ref=e1136] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_0ca193175127f3
+                  - generic [ref=e1137]: "#29"
+                  - generic [ref=e1138]: ◆
+                  - generic [ref=e1139]:
+                    - generic [ref=e1140]: RM muslim MENARA
+                    - generic [ref=e1141]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=e1142]: 64,0
+              - listitem [ref=e1143]:
+                - link "#30 ◆ Bukit Sipolha Simalungun · Akses & Kondisi Rute 63,9" [ref=e1144] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_64e3c01f76c673
+                  - generic [ref=e1145]: "#30"
+                  - generic [ref=e1146]: ◆
+                  - generic [ref=e1147]:
+                    - generic [ref=e1148]: Bukit Sipolha
+                    - generic [ref=e1149]: Simalungun · Akses & Kondisi Rute
+                  - generic [ref=e1150]: 63,9
+              - listitem [ref=e1151]:
+                - link "#31 ◆ Boli Boli Hot Spring Tapanuli Utara · Toilet & Sanitasi 63,7" [ref=e1152] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_5b219da56b61e7
+                  - generic [ref=e1153]: "#31"
+                  - generic [ref=e1154]: ◆
+                  - generic [ref=e1155]:
+                    - generic [ref=e1156]: Boli Boli Hot Spring
+                    - generic [ref=e1157]: Tapanuli Utara · Toilet & Sanitasi
+                  - generic [ref=e1158]: 63,7
+              - listitem [ref=e1159]:
+                - link "#32 ◆ Sekapur Sirih Samosir · Harga & Transparansi Pungutan 63,6" [ref=e1160] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_cd326cea9831f7
+                  - generic [ref=e1161]: "#32"
+                  - generic [ref=e1162]: ◆
+                  - generic [ref=e1163]:
+                    - generic [ref=e1164]: Sekapur Sirih
+                    - generic [ref=e1165]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1166]: 63,6
+              - listitem [ref=e1167]:
+                - link "#33 ◆ Batu Kursi Raja Siallagan ( Stone Chair of King Siallagan ) Samosir · Harga & Transparansi Pungutan 63,5" [ref=e1168] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_0359008fd7a54c
+                  - generic [ref=e1169]: "#33"
+                  - generic [ref=e1170]: ◆
+                  - generic [ref=e1171]:
+                    - generic [ref=e1172]: Batu Kursi Raja Siallagan ( Stone Chair of King Siallagan )
+                    - generic [ref=e1173]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1174]: 63,5
+              - listitem [ref=e1175]:
+                - link "#34 ◆ Togaraja Samosir · Akses & Kondisi Rute 63,4" [ref=e1176] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_cab8446352625f
+                  - generic [ref=e1177]: "#34"
+                  - generic [ref=e1178]: ◆
+                  - generic [ref=e1179]:
+                    - generic [ref=e1180]: Togaraja
+                    - generic [ref=e1181]: Samosir · Akses & Kondisi Rute
+                  - generic [ref=e1182]: 63,4
+              - listitem [ref=e1183]:
+                - link "#35 ◆ Pondok Makan & Home Stay H. Karsim Simalungun · Harga & Transparansi Pungutan 63,4" [ref=e1184] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_77bd8730cb8da5
+                  - generic [ref=e1185]: "#35"
+                  - generic [ref=e1186]: ◆
+                  - generic [ref=e1187]:
+                    - generic [ref=e1188]: Pondok Makan & Home Stay H. Karsim
+                    - generic [ref=e1189]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=e1190]: 63,4
+              - listitem [ref=e1191]:
+                - link "#36 ◆ Batak Museum Samosir · Akses & Kondisi Rute 62,7" [ref=e1192] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_3fbef1f3a97d22
+                  - generic [ref=e1193]: "#36"
+                  - generic [ref=e1194]: ◆
+                  - generic [ref=e1195]:
+                    - generic [ref=e1196]: Batak Museum
+                    - generic [ref=e1197]: Samosir · Akses & Kondisi Rute
+                  - generic [ref=e1198]: 62,7
+              - listitem [ref=e1199]:
+                - link "#37 ◆ Kafe Pak Pos Simalungun · Pelayanan Petugas 61,7" [ref=e1200] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_3bd2460fa3493b
+                  - generic [ref=e1201]: "#37"
+                  - generic [ref=e1202]: ◆
+                  - generic [ref=e1203]:
+                    - generic [ref=e1204]: Kafe Pak Pos
+                    - generic [ref=e1205]: Simalungun · Pelayanan Petugas
+                  - generic [ref=e1206]: 61,7
+              - listitem [ref=e1207]:
+                - link "#38 ◆ Pemandian Alam Sejuk Toba · Sampah & Limbah 59,3" [ref=e1208] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_21daf65d749d58
+                  - generic [ref=e1209]: "#38"
+                  - generic [ref=e1210]: ◆
+                  - generic [ref=e1211]:
+                    - generic [ref=e1212]: Pemandian Alam Sejuk
+                    - generic [ref=e1213]: Toba · Sampah & Limbah
+                  - generic [ref=e1214]: 59,3
+              - listitem [ref=e1215]:
+                - link "#39 ◆ Panorama Adian Nalambok Toba · Kebersihan 59,1" [ref=e1216] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_9a3a62751f6644
+                  - generic [ref=e1217]: "#39"
+                  - generic [ref=e1218]: ◆
+                  - generic [ref=e1219]:
+                    - generic [ref=e1220]: Panorama Adian Nalambok
+                    - generic [ref=e1221]: Toba · Kebersihan
+                  - generic [ref=e1222]: 59,1
+              - listitem [ref=e1223]:
+                - link "#40 ◆ Danau Sidihoni Samosir · Pemandangan 55,4" [ref=e1224] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_f8f17eef2365eb
+                  - generic [ref=e1225]: "#40"
+                  - generic [ref=e1226]: ◆
+                  - generic [ref=e1227]:
+                    - generic [ref=e1228]: Danau Sidihoni
+                    - generic [ref=e1229]: Samosir · Pemandangan
+                  - generic [ref=e1230]: 55,4
+              - listitem [ref=e1231]:
+                - link "#41 ▲ Air Terjun Efrata Samosir · Akses & Kondisi Rute 47,4" [ref=e1232] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_ea54e29ac54678
+                  - generic [ref=e1233]: "#41"
+                  - generic [ref=e1234]: ▲
+                  - generic [ref=e1235]:
+                    - generic [ref=e1236]: Air Terjun Efrata
+                    - generic [ref=e1237]: Samosir · Akses & Kondisi Rute
+                  - generic [ref=e1238]: 47,4
+              - listitem [ref=e1239]:
+                - link "#42 ▲ Bukit Indah Simarjarunjung Toba · Harga & Transparansi Pungutan 47,0" [ref=e1240] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_6557faf9ef0611
+                  - generic [ref=e1241]: "#42"
+                  - generic [ref=e1242]: ▲
+                  - generic [ref=e1243]:
+                    - generic [ref=e1244]: Bukit Indah Simarjarunjung
+                    - generic [ref=e1245]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1246]: 47,0
+              - listitem [ref=e1247]:
+                - link "#43 ▲ Pasar Tomok Samosir · Harga & Transparansi Pungutan 45,9" [ref=e1248] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_c848feb84ded83
+                  - generic [ref=e1249]: "#43"
+                  - generic [ref=e1250]: ▲
+                  - generic [ref=e1251]:
+                    - generic [ref=e1252]: Pasar Tomok
+                    - generic [ref=e1253]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1254]: 45,9
+              - listitem [ref=e1255]:
+                - link "#44 ▲ Air Terjun Sipisopiso Toba · Harga & Transparansi Pungutan 45,4" [ref=e1256] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_45b093ca0ac157
+                  - generic [ref=e1257]: "#44"
+                  - generic [ref=e1258]: ▲
+                  - generic [ref=e1259]:
+                    - generic [ref=e1260]: Air Terjun Sipisopiso
+                    - generic [ref=e1261]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1262]: 45,4
+              - listitem [ref=e1263]:
+                - link "#45 ▲ Rumba Restaurant Samosir · Harga & Transparansi Pungutan 43,9" [ref=e1264] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_658c01a26143e1
+                  - generic [ref=e1265]: "#45"
+                  - generic [ref=e1266]: ▲
+                  - generic [ref=e1267]:
+                    - generic [ref=e1268]: Rumba Restaurant
+                    - generic [ref=e1269]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1270]: 43,9
+              - listitem [ref=e1271]:
+                - link "#46 ▲ Patung Yesus, Bukit Sibeabea Samosir · Harga & Transparansi Pungutan 43,7" [ref=e1272] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_538e4f85ec5f0b
+                  - generic [ref=e1273]: "#46"
+                  - generic [ref=e1274]: ▲
+                  - generic [ref=e1275]:
+                    - generic [ref=e1276]: Patung Yesus, Bukit Sibeabea
+                    - generic [ref=e1277]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1278]: 43,7
+              - listitem [ref=e1279]:
+                - link "#47 ▲ Biwa Cafe & Resto Simalungun · Harga & Transparansi Pungutan 43,7" [ref=e1280] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_546e13630055ec
+                  - generic [ref=e1281]: "#47"
+                  - generic [ref=e1282]: ▲
+                  - generic [ref=e1283]:
+                    - generic [ref=e1284]: Biwa Cafe & Resto
+                    - generic [ref=e1285]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=e1286]: 43,7
+              - listitem [ref=e1287]:
+                - link "#48 ▲ Chinese Food Gemar Toba · Harga & Transparansi Pungutan 43,5" [ref=e1288] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_2f8c09f7c56476
+                  - generic [ref=e1289]: "#48"
+                  - generic [ref=e1290]: ▲
+                  - generic [ref=e1291]:
+                    - generic [ref=e1292]: Chinese Food Gemar
+                    - generic [ref=e1293]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1294]: 43,5
+              - listitem [ref=e1295]:
+                - link "#49 ▲ Labersa Hotel and Convention Center Toba, Balige Toba · Harga & Transparansi Pungutan 43,4" [ref=e1296] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_2f0d161a283264
+                  - generic [ref=e1297]: "#49"
+                  - generic [ref=e1298]: ▲
+                  - generic [ref=e1299]:
+                    - generic [ref=e1300]: Labersa Hotel and Convention Center Toba, Balige
+                    - generic [ref=e1301]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1302]: 43,4
+              - listitem [ref=e1303]:
+                - link "#50 ▲ Hotel Sere Nauli Toba · Harga & Transparansi Pungutan 43,1" [ref=e1304] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_576283cb4c7732
+                  - generic [ref=e1305]: "#50"
+                  - generic [ref=e1306]: ▲
+                  - generic [ref=e1307]:
+                    - generic [ref=e1308]: Hotel Sere Nauli
+                    - generic [ref=e1309]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1310]: 43,1
+              - listitem [ref=e1311]:
+                - link "#51 ▲ Purnama Balige Hotel Toba · Harga & Transparansi Pungutan 42,9" [ref=e1312] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_5c32af0fd7183e
+                  - generic [ref=e1313]: "#51"
+                  - generic [ref=e1314]: ▲
+                  - generic [ref=e1315]:
+                    - generic [ref=e1316]: Purnama Balige Hotel
+                    - generic [ref=e1317]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1318]: 42,9
+              - listitem [ref=e1319]:
+                - link "#52 ▲ Wisata Anugerah Indah Sippan Simalungun · Harga & Transparansi Pungutan 42,5" [ref=e1320] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_06b1b8161e14d0
+                  - generic [ref=e1321]: "#52"
+                  - generic [ref=e1322]: ▲
+                  - generic [ref=e1323]:
+                    - generic [ref=e1324]: Wisata Anugerah Indah Sippan
+                    - generic [ref=e1325]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=e1326]: 42,5
+              - listitem [ref=e1327]:
+                - link "#53 ▲ Bukit Senyum Toba · Jam Operasional 42,5" [ref=e1328] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_b27c0aa044d362
+                  - generic [ref=e1329]: "#53"
+                  - generic [ref=e1330]: ▲
+                  - generic [ref=e1331]:
+                    - generic [ref=e1332]: Bukit Senyum
+                    - generic [ref=e1333]: Toba · Jam Operasional
+                  - generic [ref=e1334]: 42,5
+              - listitem [ref=e1335]:
+                - link "#54 ▲ Museum Huta Bolon Simanindo Samosir · Harga & Transparansi Pungutan 42,0" [ref=e1336] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_284c89fcd42dda
+                  - generic [ref=e1337]: "#54"
+                  - generic [ref=e1338]: ▲
+                  - generic [ref=e1339]:
+                    - generic [ref=e1340]: Museum Huta Bolon Simanindo
+                    - generic [ref=e1341]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1342]: 42,0
+              - listitem [ref=e1343]:
+                - link "#55 ▲ Bukit Sidihoni Samosir · Harga & Transparansi Pungutan 41,1" [ref=e1344] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_a828dbe1b2d7d7
+                  - generic [ref=e1345]: "#55"
+                  - generic [ref=e1346]: ▲
+                  - generic [ref=e1347]:
+                    - generic [ref=e1348]: Bukit Sidihoni
+                    - generic [ref=e1349]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1350]: 41,1
+              - listitem [ref=e1351]:
+                - link "#56 ▲ Kebun Teh Sidamanik Toba · Harga & Transparansi Pungutan 41,1" [ref=e1352] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_3ab9f1738b81bf
+                  - generic [ref=e1353]: "#56"
+                  - generic [ref=e1354]: ▲
+                  - generic [ref=e1355]:
+                    - generic [ref=e1356]: Kebun Teh Sidamanik
+                    - generic [ref=e1357]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1358]: 41,1
+              - listitem [ref=e1359]:
+                - link "#57 ▲ Toba Village inn Samosir · Harga & Transparansi Pungutan 41,0" [ref=e1360] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_ab5530a15efa4f
+                  - generic [ref=e1361]: "#57"
+                  - generic [ref=e1362]: ▲
+                  - generic [ref=e1363]:
+                    - generic [ref=e1364]: Toba Village inn
+                    - generic [ref=e1365]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1366]: 41,0
+              - listitem [ref=e1367]:
+                - link "#58 ▲ Pemandian alam Bah Damanik Simalungun · Harga & Transparansi Pungutan 40,8" [ref=e1368] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_0935baa9bee95a
+                  - generic [ref=e1369]: "#58"
+                  - generic [ref=e1370]: ▲
+                  - generic [ref=e1371]:
+                    - generic [ref=e1372]: Pemandian alam Bah Damanik
+                    - generic [ref=e1373]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=e1374]: 40,8
+              - listitem [ref=e1375]:
+                - link "#59 ▲ Lago Hotel & Resto Toba · Harga & Transparansi Pungutan 40,8" [ref=e1376] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_7a4339b1f2cb21
+                  - generic [ref=e1377]: "#59"
+                  - generic [ref=e1378]: ▲
+                  - generic [ref=e1379]:
+                    - generic [ref=e1380]: Lago Hotel & Resto
+                    - generic [ref=e1381]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1382]: 40,8
+              - listitem [ref=e1383]:
+                - link "#60 ▲ OYO 90645 Karisma Residence Toba · Harga & Transparansi Pungutan 40,6" [ref=e1384] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_de867f8c23f291
+                  - generic [ref=e1385]: "#60"
+                  - generic [ref=e1386]: ▲
+                  - generic [ref=e1387]:
+                    - generic [ref=e1388]: OYO 90645 Karisma Residence
+                    - generic [ref=e1389]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1390]: 40,6
+              - listitem [ref=e1391]:
+                - link "#61 ▲ Hotel and Restaurant Singgalang Simalungun · Harga & Transparansi Pungutan 40,4" [ref=e1392] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_593242382d0e0e
+                  - generic [ref=e1393]: "#61"
+                  - generic [ref=e1394]: ▲
+                  - generic [ref=e1395]:
+                    - generic [ref=e1396]: Hotel and Restaurant Singgalang
+                    - generic [ref=e1397]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=e1398]: 40,4
+              - listitem [ref=e1399]:
+                - link "#62 ▲ Damar Toba ~ Lakeside Eatery & Stay Toba · Harga & Transparansi Pungutan 40,2" [ref=e1400] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_6573b1b10e2adf
+                  - generic [ref=e1401]: "#62"
+                  - generic [ref=e1402]: ▲
+                  - generic [ref=e1403]:
+                    - generic [ref=e1404]: Damar Toba ~ Lakeside Eatery & Stay
+                    - generic [ref=e1405]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1406]: 40,2
+              - listitem [ref=e1407]:
+                - link "#63 ▲ Pantai Batuhoda Samosir · Harga & Transparansi Pungutan 40,2" [ref=e1408] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_a6ea9b9ff638cb
+                  - generic [ref=e1409]: "#63"
+                  - generic [ref=e1410]: ▲
+                  - generic [ref=e1411]:
+                    - generic [ref=e1412]: Pantai Batuhoda
+                    - generic [ref=e1413]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1414]: 40,2
+              - listitem [ref=e1415]:
+                - link "#64 ▲ Rumah Makan \"PONDOK KAREN\" Simalungun · Harga & Transparansi Pungutan 40,2" [ref=e1416] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_a1b2f8c9199b48
+                  - generic [ref=e1417]: "#64"
+                  - generic [ref=e1418]: ▲
+                  - generic [ref=e1419]:
+                    - generic [ref=e1420]: Rumah Makan "PONDOK KAREN"
+                    - generic [ref=e1421]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=e1422]: 40,2
+              - listitem [ref=e1423]:
+                - link "#65 ▲ Museum Batak T.B. Silalahi Center Toba · Harga & Transparansi Pungutan 40,1" [ref=e1424] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_23d4e69eacd91a
+                  - generic [ref=e1425]: "#65"
+                  - generic [ref=e1426]: ▲
+                  - generic [ref=e1427]:
+                    - generic [ref=e1428]: Museum Batak T.B. Silalahi Center
+                    - generic [ref=e1429]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1430]: 40,1
+              - listitem [ref=e1431]:
+                - link "#66 ▲ Pantai Parparean 2 Toba · Harga & Transparansi Pungutan 39,8" [ref=e1432] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_f11b581e065b18
+                  - generic [ref=e1433]: "#66"
+                  - generic [ref=e1434]: ▲
+                  - generic [ref=e1435]:
+                    - generic [ref=e1436]: Pantai Parparean 2
+                    - generic [ref=e1437]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1438]: 39,8
+              - listitem [ref=e1439]:
+                - link "#67 ▲ Thyesza Hotel Resort Samosir · Harga & Transparansi Pungutan 39,8" [ref=e1440] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_90ab019ff85f54
+                  - generic [ref=e1441]: "#67"
+                  - generic [ref=e1442]: ▲
+                  - generic [ref=e1443]:
+                    - generic [ref=e1444]: Thyesza Hotel Resort
+                    - generic [ref=e1445]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1446]: 39,8
+              - listitem [ref=e1447]:
+                - link "#68 ▲ Alyssa Restaurant Pizza Samosir · Harga & Transparansi Pungutan 39,8" [ref=e1448] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_b19437f41d7a0c
+                  - generic [ref=e1449]: "#68"
+                  - generic [ref=e1450]: ▲
+                  - generic [ref=e1451]:
+                    - generic [ref=e1452]: Alyssa Restaurant Pizza
+                    - generic [ref=e1453]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1454]: 39,8
+              - listitem [ref=e1455]:
+                - link "#69 ▲ SIPPIN Toba · Pelayanan Petugas 39,7" [ref=e1456] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_106fe6c6f8369a
+                  - generic [ref=e1457]: "#69"
+                  - generic [ref=e1458]: ▲
+                  - generic [ref=e1459]:
+                    - generic [ref=e1460]: SIPPIN
+                    - generic [ref=e1461]: Toba · Pelayanan Petugas
+                  - generic [ref=e1462]: 39,7
+              - listitem [ref=e1463]:
+                - link "#70 ▲ Warung Bikers Parapat Simalungun · Harga & Transparansi Pungutan 39,6" [ref=e1464] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_4aa2b42204126f
+                  - generic [ref=e1465]: "#70"
+                  - generic [ref=e1466]: ▲
+                  - generic [ref=e1467]:
+                    - generic [ref=e1468]: Warung Bikers Parapat
+                    - generic [ref=e1469]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=e1470]: 39,6
+              - listitem [ref=e1471]:
+                - link "#71 ▲ Hotel Nabasa Toba · Harga & Transparansi Pungutan 39,1" [ref=e1472] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_684d6c2c3c5fb3
+                  - generic [ref=e1473]: "#71"
+                  - generic [ref=e1474]: ▲
+                  - generic [ref=e1475]:
+                    - generic [ref=e1476]: Hotel Nabasa
+                    - generic [ref=e1477]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1478]: 39,1
+              - listitem [ref=e1479]:
+                - link "#72 ▲ Tepi Danau Bistro Toba · Pelayanan Petugas 38,9" [ref=e1480] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_b48d3b4051ee69
+                  - generic [ref=e1481]: "#72"
+                  - generic [ref=e1482]: ▲
+                  - generic [ref=e1483]:
+                    - generic [ref=e1484]: Tepi Danau Bistro
+                    - generic [ref=e1485]: Toba · Pelayanan Petugas
+                  - generic [ref=e1486]: 38,9
+              - listitem [ref=e1487]:
+                - link "#73 ▲ Batu lihi star Simalungun · Harga & Transparansi Pungutan 38,9" [ref=e1488] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_71e9bc3befc50d
+                  - generic [ref=e1489]: "#73"
+                  - generic [ref=e1490]: ▲
+                  - generic [ref=e1491]:
+                    - generic [ref=e1492]: Batu lihi star
+                    - generic [ref=e1493]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=e1494]: 38,9
+              - listitem [ref=e1495]:
+                - link "#74 ▲ Manigom Nauli Simalungun · Akses & Kondisi Rute 38,8" [ref=e1496] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_fd9dc77aa05930
+                  - generic [ref=e1497]: "#74"
+                  - generic [ref=e1498]: ▲
+                  - generic [ref=e1499]:
+                    - generic [ref=e1500]: Manigom Nauli
+                    - generic [ref=e1501]: Simalungun · Akses & Kondisi Rute
+                  - generic [ref=e1502]: 38,8
+              - listitem [ref=e1503]:
+                - link "#75 ▲ Carolina Hotel Samosir · Toilet & Sanitasi 38,5" [ref=e1504] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_a43c24fa16f5a7
+                  - generic [ref=e1505]: "#75"
+                  - generic [ref=e1506]: ▲
+                  - generic [ref=e1507]:
+                    - generic [ref=e1508]: Carolina Hotel
+                    - generic [ref=e1509]: Samosir · Toilet & Sanitasi
+                  - generic [ref=e1510]: 38,5
+              - listitem [ref=e1511]:
+                - link "#76 ▲ Bagus Bay Guest House Samosir · Perawatan & Kerusakan 38,2" [ref=e1512] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_07475b028ff995
+                  - generic [ref=e1513]: "#76"
+                  - generic [ref=e1514]: ▲
+                  - generic [ref=e1515]:
+                    - generic [ref=e1516]: Bagus Bay Guest House
+                    - generic [ref=e1517]: Samosir · Perawatan & Kerusakan
+                  - generic [ref=e1518]: 38,2
+              - listitem [ref=e1519]:
+                - link "#77 ▲ Bukit Sipatungan Samosir · Akses & Kondisi Rute 38,1" [ref=e1520] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_5ed1c50f346ad1
+                  - generic [ref=e1521]: "#77"
+                  - generic [ref=e1522]: ▲
+                  - generic [ref=e1523]:
+                    - generic [ref=e1524]: Bukit Sipatungan
+                    - generic [ref=e1525]: Samosir · Akses & Kondisi Rute
+                  - generic [ref=e1526]: 38,1
+              - listitem [ref=e1527]:
+                - link "#78 ▲ Pusat Informasi Toba Caldera UNESCO Global Geopark Samosir · Perawatan & Kerusakan 37,9" [ref=e1528] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_0ff99a3eeafd42
+                  - generic [ref=e1529]: "#78"
+                  - generic [ref=e1530]: ▲
+                  - generic [ref=e1531]:
+                    - generic [ref=e1532]: Pusat Informasi Toba Caldera UNESCO Global Geopark
+                    - generic [ref=e1533]: Samosir · Perawatan & Kerusakan
+                  - generic [ref=e1534]: 37,9
+              - listitem [ref=e1535]:
+                - link "#79 ▲ Mutiara Balige Hotel Toba · Akses & Kondisi Rute 37,7" [ref=e1536] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_b6c6c549da0c3c
+                  - generic [ref=e1537]: "#79"
+                  - generic [ref=e1538]: ▲
+                  - generic [ref=e1539]:
+                    - generic [ref=e1540]: Mutiara Balige Hotel
+                    - generic [ref=e1541]: Toba · Akses & Kondisi Rute
+                  - generic [ref=e1542]: 37,7
+              - listitem [ref=e1543]:
+                - link "#80 ▲ Rumah makan safitri Toba · Pelayanan Petugas 37,7" [ref=e1544] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_19b6b457708d3b
+                  - generic [ref=e1545]: "#80"
+                  - generic [ref=e1546]: ▲
+                  - generic [ref=e1547]:
+                    - generic [ref=e1548]: Rumah makan safitri
+                    - generic [ref=e1549]: Toba · Pelayanan Petugas
+                  - generic [ref=e1550]: 37,7
+              - listitem [ref=e1551]:
+                - link "#81 ▲ Tabo Cottages Samosir · Toilet & Sanitasi 37,6" [ref=e1552] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_72e1f867da00e7
+                  - generic [ref=e1553]: "#81"
+                  - generic [ref=e1554]: ▲
+                  - generic [ref=e1555]:
+                    - generic [ref=e1556]: Tabo Cottages
+                    - generic [ref=e1557]: Samosir · Toilet & Sanitasi
+                  - generic [ref=e1558]: 37,6
+              - listitem [ref=e1559]:
+                - link "#82 ▲ RAP Hotel Balige Toba · Toilet & Sanitasi 37,5" [ref=e1560] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_fa8455811b5878
+                  - generic [ref=e1561]: "#82"
+                  - generic [ref=e1562]: ▲
+                  - generic [ref=e1563]:
+                    - generic [ref=e1564]: RAP Hotel Balige
+                    - generic [ref=e1565]: Toba · Toilet & Sanitasi
+                  - generic [ref=e1566]: 37,5
+              - listitem [ref=e1567]:
+                - link "#83 ▲ Grand Mareda Hotel Toba · Harga & Transparansi Pungutan 37,4" [ref=e1568] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_d484e96b47a427
+                  - generic [ref=e1569]: "#83"
+                  - generic [ref=e1570]: ▲
+                  - generic [ref=e1571]:
+                    - generic [ref=e1572]: Grand Mareda Hotel
+                    - generic [ref=e1573]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1574]: 37,4
+              - listitem [ref=e1575]:
+                - link "#84 ▲ Vany Villa Balige Toba · Harga & Transparansi Pungutan 37,1" [ref=e1576] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_c6e0c4e24360cc
+                  - generic [ref=e1577]: "#84"
+                  - generic [ref=e1578]: ▲
+                  - generic [ref=e1579]:
+                    - generic [ref=e1580]: Vany Villa Balige
+                    - generic [ref=e1581]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1582]: 37,1
+              - listitem [ref=e1583]:
+                - link "#85 ▲ PALITO COFFEE AND RESTO Samosir · Pelayanan Petugas 36,8" [ref=e1584] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_7bede610e94fc0
+                  - generic [ref=e1585]: "#85"
+                  - generic [ref=e1586]: ▲
+                  - generic [ref=e1587]:
+                    - generic [ref=e1588]: PALITO COFFEE AND RESTO
+                    - generic [ref=e1589]: Samosir · Pelayanan Petugas
+                  - generic [ref=e1590]: 36,8
+              - listitem [ref=e1591]:
+                - link "#86 ▲ RM BPK MAN KENA (bang gurning) Samosir · Pelayanan Petugas 36,5" [ref=e1592] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_0de40a97fc9b0c
+                  - generic [ref=e1593]: "#86"
+                  - generic [ref=e1594]: ▲
+                  - generic [ref=e1595]:
+                    - generic [ref=e1596]: RM BPK MAN KENA (bang gurning)
+                    - generic [ref=e1597]: Samosir · Pelayanan Petugas
+                  - generic [ref=e1598]: 36,5
+              - listitem [ref=e1599]:
+                - link "#87 ▲ Orari Restaurant Samosir · Harga & Transparansi Pungutan 36,2" [ref=e1600] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_16ba8b495a6757
+                  - generic [ref=e1601]: "#87"
+                  - generic [ref=e1602]: ▲
+                  - generic [ref=e1603]:
+                    - generic [ref=e1604]: Orari Restaurant
+                    - generic [ref=e1605]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1606]: 36,2
+              - listitem [ref=e1607]:
+                - link "#88 ▲ Warung Kopi Synergy,Samosir Samosir · Pelayanan Petugas 36,2" [ref=e1608] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_acaf0a7187772f
+                  - generic [ref=e1609]: "#88"
+                  - generic [ref=e1610]: ▲
+                  - generic [ref=e1611]:
+                    - generic [ref=e1612]: Warung Kopi Synergy,Samosir
+                    - generic [ref=e1613]: Samosir · Pelayanan Petugas
+                  - generic [ref=e1614]: 36,2
+              - listitem [ref=e1615]:
+                - link "#89 ▲ Pudan Residence Toba · Harga & Transparansi Pungutan 36,1" [ref=e1616] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_629cdfd992fdbc
+                  - generic [ref=e1617]: "#89"
+                  - generic [ref=e1618]: ▲
+                  - generic [ref=e1619]:
+                    - generic [ref=e1620]: Pudan Residence
+                    - generic [ref=e1621]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=e1622]: 36,1
+              - listitem [ref=e1623]:
+                - link "#90 ▲ Sopo Guru Tatea Bulan | ᯘᯬᯇᯬ ᯎᯮᯒᯮ ᯖᯖᯩᯀ ᯅᯮᯞᯉ᯲ Samosir · Parkir 36,0" [ref=e1624] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_03ea8a4bf1095a
+                  - generic [ref=e1625]: "#90"
+                  - generic [ref=e1626]: ▲
+                  - generic [ref=e1627]:
+                    - generic [ref=e1628]: Sopo Guru Tatea Bulan | ᯘᯬᯇᯬ ᯎᯮᯒᯮ ᯖᯖᯩᯀ ᯅᯮᯞᯉ᯲
+                    - generic [ref=e1629]: Samosir · Parkir
+                  - generic [ref=e1630]: 36,0
+              - listitem [ref=e1631]:
+                - link "#91 ▲ Solu Bolon Cafe and Resto Samosir · Pelayanan Petugas 35,9" [ref=e1632] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_79e3bfc718b478
+                  - generic [ref=e1633]: "#91"
+                  - generic [ref=e1634]: ▲
+                  - generic [ref=e1635]:
+                    - generic [ref=e1636]: Solu Bolon Cafe and Resto
+                    - generic [ref=e1637]: Samosir · Pelayanan Petugas
+                  - generic [ref=e1638]: 35,9
+              - listitem [ref=e1639]:
+                - link "#92 ▲ Menara Pandang Simanindo Samosir · Akses & Kondisi Rute 35,9" [ref=e1640] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_1bc9e3c06a3fcf
+                  - generic [ref=e1641]: "#92"
+                  - generic [ref=e1642]: ▲
+                  - generic [ref=e1643]:
+                    - generic [ref=e1644]: Menara Pandang Simanindo
+                    - generic [ref=e1645]: Samosir · Akses & Kondisi Rute
+                  - generic [ref=e1646]: 35,9
+              - listitem [ref=e1647]:
+                - link "#93 ▲ Romlan Guesthouse Samosir · Harga & Transparansi Pungutan 35,7" [ref=e1648] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_9aa75d0124fc9d
+                  - generic [ref=e1649]: "#93"
+                  - generic [ref=e1650]: ▲
+                  - generic [ref=e1651]:
+                    - generic [ref=e1652]: Romlan Guesthouse
+                    - generic [ref=e1653]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=e1654]: 35,7
+              - listitem [ref=e1655]:
+                - link "#94 ▲ Tugu Toga Aritonang Tapanuli Utara · Akses & Kondisi Rute 35,6" [ref=e1656] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_5b726d1fc5fc30
+                  - generic [ref=e1657]: "#94"
+                  - generic [ref=e1658]: ▲
+                  - generic [ref=e1659]:
+                    - generic [ref=e1660]: Tugu Toga Aritonang
+                    - generic [ref=e1661]: Tapanuli Utara · Akses & Kondisi Rute
+                  - generic [ref=e1662]: 35,6
+              - listitem [ref=e1663]:
+                - link "#95 ▲ The Deck Balige Restaurant & Lounge Toba · Pelayanan Petugas 35,6" [ref=e1664] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_742cca180db8de
+                  - generic [ref=e1665]: "#95"
+                  - generic [ref=e1666]: ▲
+                  - generic [ref=e1667]:
+                    - generic [ref=e1668]: The Deck Balige Restaurant & Lounge
+                    - generic [ref=e1669]: Toba · Pelayanan Petugas
+                  - generic [ref=e1670]: 35,6
+              - listitem [ref=e1671]:
+                - link "#96 ▲ PENATAPAN PARHALLOW SIGARANTUNG Samosir · Kenyamanan 35,3" [ref=e1672] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_23a01de231f2a8
+                  - generic [ref=e1673]: "#96"
+                  - generic [ref=e1674]: ▲
+                  - generic [ref=e1675]:
+                    - generic [ref=e1676]: PENATAPAN PARHALLOW SIGARANTUNG
+                    - generic [ref=e1677]: Samosir · Kenyamanan
+                  - generic [ref=e1678]: 35,3
+              - listitem [ref=e1679]:
+                - link "#97 ▲ Air Terjun Situmurun Toba · Akses & Kondisi Rute 35,1" [ref=e1680] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_691b8124b29cf9
+                  - generic [ref=e1681]: "#97"
+                  - generic [ref=e1682]: ▲
+                  - generic [ref=e1683]:
+                    - generic [ref=e1684]: Air Terjun Situmurun
+                    - generic [ref=e1685]: Toba · Akses & Kondisi Rute
+                  - generic [ref=e1686]: 35,1
+              - listitem [ref=e1687]:
+                - link "#98 ● Horas Vegetarian Restaurant Samosir · Pelayanan Petugas 34,8" [ref=e1688] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_e24117add6db38
+                  - generic [ref=e1689]: "#98"
+                  - generic [ref=e1690]: ●
+                  - generic [ref=e1691]:
+                    - generic [ref=e1692]: Horas Vegetarian Restaurant
+                    - generic [ref=e1693]: Samosir · Pelayanan Petugas
+                  - generic [ref=e1694]: 34,8
+              - listitem [ref=e1695]:
+                - link "#99 ● Pemandian Air Panas Rianiate Dairi · Kenyamanan 31,8" [ref=e1696] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_5e7d23b00bfec8
+                  - generic [ref=e1697]: "#99"
+                  - generic [ref=e1698]: ●
+                  - generic [ref=e1699]:
+                    - generic [ref=e1700]: Pemandian Air Panas Rianiate
+                    - generic [ref=e1701]: Dairi · Kenyamanan
+                  - generic [ref=e1702]: 31,8
+              - listitem [ref=e1703]:
+                - link "#100 ● Pagar Batu Resto & PENGINAPAN Samosir · Pelayanan Petugas 31,8" [ref=e1704] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_734410e2e13ceb
+                  - generic [ref=e1705]: "#100"
+                  - generic [ref=e1706]: ●
+                  - generic [ref=e1707]:
+                    - generic [ref=e1708]: Pagar Batu Resto & PENGINAPAN
+                    - generic [ref=e1709]: Samosir · Pelayanan Petugas
+                  - generic [ref=e1710]: 31,8
+              - listitem [ref=e1711]:
+                - link "#101 ● Hotel Santo Djaya Samosir · Kebersihan 31,3" [ref=e1712] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_9f521fd4adea29
+                  - generic [ref=e1713]: "#101"
+                  - generic [ref=e1714]: ●
+                  - generic [ref=e1715]:
+                    - generic [ref=e1716]: Hotel Santo Djaya
+                    - generic [ref=e1717]: Samosir · Kebersihan
+                  - generic [ref=e1718]: 31,3
+              - listitem [ref=e1719]:
+                - link "#102 ● TOPI TAO HOMESTAY PANGURURAN (KAWASAN WATERFRONT CITY) Samosir · Pemandangan 31,2" [ref=e1720] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_61f0b71788612a
+                  - generic [ref=e1721]: "#102"
+                  - generic [ref=e1722]: ●
+                  - generic [ref=e1723]:
+                    - generic [ref=e1724]: TOPI TAO HOMESTAY PANGURURAN (KAWASAN WATERFRONT CITY)
+                    - generic [ref=e1725]: Samosir · Pemandangan
+                  - generic [ref=e1726]: 31,2
+              - listitem [ref=e1727]:
+                - link "#103 ● Bukit Tara Bunga Toba · Pemandangan 30,9" [ref=e1728] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_7ca308c22b423e
+                  - generic [ref=e1729]: "#103"
+                  - generic [ref=e1730]: ●
+                  - generic [ref=e1731]:
+                    - generic [ref=e1732]: Bukit Tara Bunga
+                    - generic [ref=e1733]: Toba · Pemandangan
+                  - generic [ref=e1734]: 30,9
+          - paragraph [ref=e1736]: Priority memakai complaint frequency, confidence, persistence, dan exposure. Severity, facility gap, serta feasibility unavailable dan dinormalisasi keluar.
+  - contentinfo [ref=e1737]:
+    - paragraph [ref=e1738]:
+      - strong [ref=e1739]: SIPATURE
+      - text: — AI early-warning and intervention system for sustainable tourism quality. Prototipe Del AI Hackathon 2026.
+    - paragraph [ref=e1740]: "Dashboard memakai SIPATURE Intelligence: TF-IDF aspect, lexical polarity fallback, Bayesian smoothing, dan missing-aware priority. Reported issue bukan vonis kondisi lapangan. Evidence text ditahan pending privacy review dan identitas reviewer tidak masuk bundle aplikasi."
+  - alert [ref=e1741]

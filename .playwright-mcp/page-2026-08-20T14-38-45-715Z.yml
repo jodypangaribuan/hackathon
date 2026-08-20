@@ -1,0 +1,111 @@
+- generic [active] [ref=f4e1]:
+  - banner [ref=f4e2]:
+    - generic [ref=f4e3]:
+      - link "SIPATURE Tourism Quality Intelligence" [ref=f4e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f4e5]: SIPATURE
+        - generic [ref=f4e6]: Tourism Quality Intelligence
+      - navigation [ref=f4e7]:
+        - link "Overview" [ref=f4e8] [cursor=pointer]:
+          - /url: /
+        - link "Destinasi" [ref=f4e12] [cursor=pointer]:
+          - /url: /destinasi
+        - link "Intervensi" [ref=f4e17] [cursor=pointer]:
+          - /url: /intervensi
+        - link "Analisis Review" [ref=f4e22] [cursor=pointer]:
+          - /url: /analyzer
+        - link "Model" [ref=f4e36] [cursor=pointer]:
+          - /url: /metode
+      - generic [ref=f4e40]:
+        - generic "Sistem Berjalan Mandiri — DGX B200 Production" [ref=f4e41]: Production v1.0.4
+        - button "Ganti tema terang/gelap" [ref=f4e42] [cursor=pointer]
+  - main [ref=f4e45]:
+    - generic [ref=f4e46]:
+      - generic [ref=f4e47]:
+        - heading "Analisis Ulasan Real-Time" [level=1] [ref=f4e48]
+        - paragraph [ref=f4e49]: Uji teks ulasan wisatawan untuk mengekstraksi 14 aspek pariwisata dan arah sentimen secara instan menggunakan pipeline model inferensi produksi TF-IDF.
+      - generic [ref=f4e50]:
+        - generic [ref=f4e51]:
+          - generic [ref=f4e52]:
+            - generic [ref=f4e53]:
+              - generic [ref=f4e54]:
+                - heading "Masukkan review" [level=2] [ref=f4e55]
+                - paragraph [ref=f4e56]: Bahasa Indonesia · satu review per analisis
+              - generic [ref=f4e57]: Model TF-IDF (live)
+            - generic [ref=f4e60]:
+              - generic [ref=f4e61]: Teks review
+              - textbox "Teks review" [ref=f4e62]:
+                - /placeholder: "Contoh: Pemandangannya indah, tetapi toilet kotor dan harga parkir tidak jelas."
+                - text: Toiletnya sangat kotor, pesing, dan air tidak mengalir di kamar mandi, padahal pemandangan danau toba sangat indah.
+              - generic [ref=f4e63]:
+                - generic [ref=f4e64]: Jangan masukkan nama, nomor telepon, atau data pribadi.
+                - generic [ref=f4e65]: 115/5.000
+              - generic [ref=f4e66]:
+                - button "Analisis review" [ref=f4e67] [cursor=pointer]
+                - button "Bersihkan" [ref=f4e127] [cursor=pointer]
+          - generic [ref=f4e71]:
+            - generic [ref=f4e72]:
+              - heading "Coba Contoh" [level=2] [ref=f4e73]
+              - generic [ref=f4e74]: teks sintetis
+            - generic [ref=f4e75]:
+              - button "Toiletnya sangat kotor, pesing, dan air tidak mengalir di kamar mandi, padahal pemandangan danau toba sangat indah." [ref=f4e76] [cursor=pointer]
+              - button "Harga tiket masuk dan tarif parkir liar tidak jelas, pelayanannya juga jutek saat kami bertanya arah ke dermaga." [ref=f4e80] [cursor=pointer]
+              - button "Akses jalannya rusak parah, sempit dan curam saat menuju bukit, ditambah tempat sampah sangat minim di sekitar lokasi." [ref=f4e84] [cursor=pointer]
+              - button "Tempat yang sangat asri, sejuk, tenang, dan staf resepsionis hotel sangat ramah melayani tamu keluarga." [ref=f4e88] [cursor=pointer]
+              - button "Gazebo dan fasilitas umum banyak yang terbengkalai dan rusak, cat dinding mengelupas dan lampu jalan mati saat malam." [ref=f4e92] [cursor=pointer]
+              - button "Warung makan dan kuliner di sekitar pantai sangat lezat harganya terjangkau, namun area parkirnya sangat padat dan antre." [ref=f4e96] [cursor=pointer]
+          - paragraph [ref=f4e100]:
+            - generic [ref=f4e101]: Input tidak disimpan dan tidak mengubah skor, peringkat, atau data dashboard.
+        - generic [ref=f4e106]:
+          - generic [ref=f4e107]:
+            - generic [ref=f4e108]:
+              - heading "Hasil analisis" [level=2] [ref=f4e109]
+              - paragraph [ref=f4e110]: Aspek dan sentimen per review
+            - generic [ref=f4e131]: 90 ms
+          - generic [ref=f4e112]:
+            - generic [ref=f4e135]:
+              - generic [ref=f4e136]:
+                - strong [ref=f4e137]: "3"
+                - text: aspek terdeteksi
+              - generic [ref=f4e138]: tfidf-aspect-silver-v1
+            - list [ref=f4e139]:
+              - listitem [ref=f4e140]:
+                - generic [ref=f4e146]:
+                  - generic [ref=f4e147]:
+                    - generic [ref=f4e148]: Pemandangan
+                    - generic [ref=f4e149]: negatif
+                  - generic [ref=f4e153]:
+                    - generic [ref=f4e154]:
+                      - generic [ref=f4e155]: Confidence model
+                      - generic [ref=f4e156]: 88%
+                    - 'img "Confidence model: 88%" [ref=f4e157]'
+                - generic [ref=f4e159]: "💡 Saran Tindakan Pengelola: Tinjau kondisi fasilitas ini untuk memastikan kenyamanan pengunjung."
+              - listitem [ref=f4e160]:
+                - generic [ref=f4e169]:
+                  - generic [ref=f4e170]:
+                    - generic [ref=f4e171]: Toilet & Sanitasi
+                    - generic [ref=f4e172]: negatif
+                  - generic [ref=f4e176]:
+                    - generic [ref=f4e177]:
+                      - generic [ref=f4e178]: Confidence model
+                      - generic [ref=f4e179]: 84%
+                    - 'img "Confidence model: 84%" [ref=f4e180]'
+                - generic [ref=f4e182]: "💡 Saran Tindakan Pengelola: Periksa kebersihan toilet, sediakan sabun/air bersih, dan jadwalkan kontrol berkala."
+              - listitem [ref=f4e183]:
+                - generic [ref=f4e189]:
+                  - generic [ref=f4e190]:
+                    - generic [ref=f4e191]: Kebersihan
+                    - generic [ref=f4e192]: negatif
+                  - generic [ref=f4e196]:
+                    - generic [ref=f4e197]:
+                      - generic [ref=f4e198]: Confidence model
+                      - generic [ref=f4e199]: 56%
+                    - 'img "Confidence model: 56%" [ref=f4e200]'
+                - generic [ref=f4e202]: "💡 Saran Tindakan Pengelola: Perbanyak tong sampah tertutup di sepanjang jalur wisata dan bersihkan sampah berserakan."
+            - paragraph [ref=f4e118]: "Model produksi: deteksi aspek TF-IDF + polarity leksikal. Severity tidak tersedia. Input tidak disimpan dan tidak mengubah prioritas destinasi."
+  - contentinfo [ref=f4e119]:
+    - paragraph [ref=f4e120]:
+      - strong [ref=f4e121]: SIPATURE
+      - text: — AI early-warning and intervention system for sustainable tourism quality. Prototipe Del AI Hackathon 2026.
+    - paragraph [ref=f4e122]: "Dashboard memakai SIPATURE Intelligence: TF-IDF aspect, lexical polarity fallback, Bayesian smoothing, dan missing-aware priority. Reported issue bukan vonis kondisi lapangan. Evidence text ditahan pending privacy review dan identitas reviewer tidak masuk bundle aplikasi."
+  - alert [ref=f4e123]

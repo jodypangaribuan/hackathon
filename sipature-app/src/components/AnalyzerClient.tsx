@@ -335,24 +335,35 @@ export default function AnalyzerClient() {
                           </div>
                         </div>
                       </div>
-                      {hit.snippets.length ? (
-                        <div
-                          className="mt-3 border-t pt-2.5"
-                          style={{ borderColor: "var(--hairline)" }}
-                        >
-                          <p className="mb-1 text-[10px] uppercase tracking-wide text-muted">
-                            Potongan pendukung
-                          </p>
-                          {hit.snippets.slice(0, 2).map((snippet, index) => (
-                            <p
-                              key={index}
-                              className="text-[11px] leading-relaxed text-ink-2"
-                            >
-                              “{snippet}”
-                            </p>
-                          ))}
-                        </div>
-                      ) : null}
+                      {/* Practical Advice for Tourism Managers */}
+                      <div
+                        className="mt-3 rounded-md border p-2.5 text-[11.5px] leading-relaxed"
+                        style={{
+                          borderColor: "var(--hairline)",
+                          background: hit.sentiment === "negatif" ? "rgba(220,38,38,0.04)" : "var(--surface-2)",
+                        }}
+                      >
+                        <span className="font-semibold text-ink">
+                          {hit.sentiment === "negatif" ? "💡 Saran Tindakan Pengelola: " : "✨ Catatan Apresiasi: "}
+                        </span>
+                        <span className="text-ink-2">
+                          {hit.sentiment === "negatif"
+                            ? (hit.aspect === "sanitation"
+                                ? "Periksa kebersihan toilet, sediakan sabun/air bersih, dan jadwalkan kontrol berkala."
+                                : hit.aspect === "price_transparency"
+                                  ? "Publikasikan tarif tiket dan retribusi resmi di papan loket untuk mencegah kesan pungli."
+                                  : hit.aspect === "access"
+                                    ? "Pasang rambu petunjuk jalan yang jelas dan koordinasikan perbaikan rute terjal."
+                                    : hit.aspect === "cleanliness"
+                                      ? "Perbanyak tong sampah tertutup di sepanjang jalur wisata dan bersihkan sampah berserakan."
+                                      : hit.aspect === "staff_service"
+                                        ? "Berikan pengarahan pelayanan ramah kepada staf tiket dan pemandu lokal."
+                                        : hit.aspect === "parking"
+                                          ? "Rapikan kantong parkir, tentukan tarif resmi, dan tempatkan petugas pengatur kendaraan."
+                                          : "Tinjau kondisi fasilitas ini untuk memastikan kenyamanan pengunjung.")
+                            : "Pertahankan kualitas layanan dan kebersihan pada aspek ini."}
+                        </span>
+                      </div>
                     </li>
                   );
                 })}

@@ -1,0 +1,205 @@
+- generic [active] [ref=f3e1]:
+  - banner [ref=f3e2]:
+    - generic [ref=f3e3]:
+      - link "SIPATURE Tourism Quality Intelligence" [ref=f3e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f3e5]: SIPATURE
+        - generic [ref=f3e6]: Tourism Quality Intelligence
+      - navigation [ref=f3e7]:
+        - link "Overview" [ref=f3e8] [cursor=pointer]:
+          - /url: /
+        - link "Destinasi" [ref=f3e12] [cursor=pointer]:
+          - /url: /destinasi
+        - link "Intervensi" [ref=f3e17] [cursor=pointer]:
+          - /url: /intervensi
+        - link "Analisis Review" [ref=f3e22] [cursor=pointer]:
+          - /url: /analyzer
+        - link "Model" [ref=f3e36] [cursor=pointer]:
+          - /url: /metode
+      - generic [ref=f3e40]:
+        - generic "Sistem Berjalan Mandiri — DGX B200 Production" [ref=f3e41]: Production v1.0.4
+        - button "Ganti tema terang/gelap" [ref=f3e42] [cursor=pointer]
+  - main [ref=f3e45]:
+    - generic [ref=f3e46]:
+      - navigation [ref=f3e47]:
+        - link "← Overview" [ref=f3e48] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f3e49]: /
+        - link "Katalog Destinasi" [ref=f3e50] [cursor=pointer]:
+          - /url: /destinasi
+        - generic [ref=f3e51]: /
+        - generic [ref=f3e52]: Kawah Putih Dolok Tinggi Raja
+      - generic [ref=f3e54]:
+        - generic [ref=f3e55]:
+          - generic [ref=f3e56]:
+            - heading "Kawah Putih Dolok Tinggi Raja" [level=1] [ref=f3e57]
+            - generic [ref=f3e58]:
+              - generic [ref=f3e59]: ◆
+              - text: Perlu Tindakan
+            - generic "Support atau komponen data belum cukup untuk prioritas operasional." [ref=f3e60]: Bukti Ulasan Terbatas
+          - paragraph [ref=f3e63]:
+            - generic [ref=f3e67]: Destinasi Wisata
+            - generic [ref=f3e68]: ·
+            - strong [ref=f3e69]: Simalungun
+          - generic [ref=f3e70]:
+            - generic [ref=f3e71]: 47 ulasan berteks dianalisis
+            - generic [ref=f3e72]: 72 total ulasan wisatawan
+            - generic [ref=f3e73]: "Tiket: Gratis"
+            - generic [ref=f3e74]: "Jam Operasional: 09:00 - 17:00"
+        - generic [ref=f3e76]:
+          - generic [ref=f3e77]: Skor Urgensi Perbaikan
+          - generic [ref=f3e78]: 72,1
+          - generic [ref=f3e79]: "Peringkat #4 dari 103 lokasi"
+      - generic [ref=f3e80]:
+        - generic [ref=f3e82]:
+          - generic [ref=f3e83]:
+            - heading "Daftar Masalah & Rekomendasi Tindak Lanjut" [level=2] [ref=f3e84]
+            - generic [ref=f3e85]: 3 masalah teridentifikasi
+          - list [ref=f3e86]:
+            - listitem [ref=f3e87]:
+              - generic [ref=f3e88]:
+                - generic [ref=f3e95]: Harga & Transparansi Pungutan
+                - generic [ref=f3e96]:
+                  - generic [ref=f3e97]: ◆
+                  - text: Perlu Tindakan
+                - generic [ref=f3e98]: "Keyakinan AI: 73,0%"
+              - generic [ref=f3e100]:
+                - generic [ref=f3e101]:
+                  - generic [ref=f3e102]: 14 keluhan dari 17 sebutan wisatawan
+                  - generic [ref=f3e103]: Urgensi 72,1
+                - 'img "14 keluhan dari 17 sebutan wisatawan: Urgensi 72,1" [ref=f3e104]'
+              - paragraph [ref=f3e106]: Priority uses available components only; severity, facility gap, and feasibility are unavailable.
+              - generic [ref=f3e107]:
+                - generic [ref=f3e108]:
+                  - generic [ref=f3e109]: Panduan Cek Fisik Lapangan
+                  - paragraph [ref=f3e114]: Periksa daftar harga, tiket, dan pungutan aktual.
+                - generic [ref=f3e115]:
+                  - generic [ref=f3e116]: Rekomendasi Tindakan Perbaikan
+                  - paragraph [ref=f3e119]: Publikasikan tarif resmi dan kanal pengaduan.
+              - generic [ref=f3e120]:
+                - generic [ref=f3e121]: Verifikasi lapangan
+                - generic [ref=f3e126]:
+                  - button "Konfirmasi" [ref=f3e127] [cursor=pointer]
+                  - button "Tidak pasti" [ref=f3e131] [cursor=pointer]
+                  - button "Tolak (false positive)" [ref=f3e135] [cursor=pointer]
+            - listitem [ref=f3e140]:
+              - generic [ref=f3e141]:
+                - generic [ref=f3e145]: Akses & Kondisi Rute
+                - generic [ref=f3e146]:
+                  - generic [ref=f3e147]: ◆
+                  - text: Perlu Tindakan
+                - generic [ref=f3e148]: "Keyakinan AI: 76,4%"
+              - generic [ref=f3e150]:
+                - generic [ref=f3e151]:
+                  - generic [ref=f3e152]: 6 keluhan dari 11 sebutan wisatawan
+                  - generic [ref=f3e153]: Urgensi 65,1
+                - 'img "6 keluhan dari 11 sebutan wisatawan: Urgensi 65,1" [ref=f3e154]'
+              - paragraph [ref=f3e156]: Priority uses available components only; severity, facility gap, and feasibility are unavailable.
+              - generic [ref=f3e157]:
+                - generic [ref=f3e158]:
+                  - generic [ref=f3e159]: Panduan Cek Fisik Lapangan
+                  - paragraph [ref=f3e164]: Periksa kondisi rute, medan, dan penunjuk arah.
+                - generic [ref=f3e165]:
+                  - generic [ref=f3e166]: Rekomendasi Tindakan Perbaikan
+                  - paragraph [ref=f3e169]: Koordinasikan perbaikan akses dan informasi rute.
+              - generic [ref=f3e170]:
+                - generic [ref=f3e171]: Verifikasi lapangan
+                - generic [ref=f3e176]:
+                  - button "Konfirmasi" [ref=f3e177] [cursor=pointer]
+                  - button "Tidak pasti" [ref=f3e181] [cursor=pointer]
+                  - button "Tolak (false positive)" [ref=f3e185] [cursor=pointer]
+            - listitem [ref=f3e190]:
+              - generic [ref=f3e191]:
+                - generic [ref=f3e196]: Keselamatan & Keamanan
+                - generic [ref=f3e197]:
+                  - generic [ref=f3e198]: ◆
+                  - text: Perlu Tindakan
+                - generic [ref=f3e199]: "Keyakinan AI: 79,7%"
+              - generic [ref=f3e201]:
+                - generic [ref=f3e202]:
+                  - generic [ref=f3e203]: 2 keluhan dari 3 sebutan wisatawan
+                  - generic [ref=f3e204]: Urgensi 64,1
+                - 'img "2 keluhan dari 3 sebutan wisatawan: Urgensi 64,1" [ref=f3e205]'
+              - paragraph [ref=f3e207]: Priority uses available components only; severity, facility gap, and feasibility are unavailable.
+              - generic [ref=f3e208]:
+                - generic [ref=f3e209]:
+                  - generic [ref=f3e210]: Panduan Cek Fisik Lapangan
+                  - paragraph [ref=f3e215]: Periksa risiko cedera, kriminalitas, dan titik berbahaya.
+                - generic [ref=f3e216]:
+                  - generic [ref=f3e217]: Rekomendasi Tindakan Perbaikan
+                  - paragraph [ref=f3e220]: Terapkan mitigasi keselamatan setelah verifikasi lapangan.
+              - generic [ref=f3e221]:
+                - generic [ref=f3e222]: Verifikasi lapangan
+                - generic [ref=f3e227]:
+                  - button "Konfirmasi" [ref=f3e228] [cursor=pointer]
+                  - button "Tidak pasti" [ref=f3e232] [cursor=pointer]
+                  - button "Tolak (false positive)" [ref=f3e236] [cursor=pointer]
+        - generic [ref=f3e241]:
+          - generic [ref=f3e242]:
+            - generic [ref=f3e243]:
+              - heading "Simulasi Dampak Perbaikan" [level=2] [ref=f3e244]
+              - generic [ref=f3e245]: 3 isu dapat diperbaiki
+            - paragraph [ref=f3e246]: Centang masalah yang akan ditangani untuk melihat estimasi penurunan tingkat urgensi dan peningkatan kenyamanan wisatawan.
+            - group "Masalah yang diasumsikan selesai" [ref=f3e247]:
+              - generic [ref=f3e249] [cursor=pointer]:
+                - checkbox "Harga & Transparansi Pungutan 14 keluhan" [ref=f3e250]
+                - generic [ref=f3e256]: Harga & Transparansi Pungutan
+                - generic [ref=f3e257]: 14 keluhan
+              - generic [ref=f3e258] [cursor=pointer]:
+                - checkbox "Akses & Kondisi Rute 6 keluhan" [ref=f3e259]
+                - generic [ref=f3e262]: Akses & Kondisi Rute
+                - generic [ref=f3e263]: 6 keluhan
+              - generic [ref=f3e264] [cursor=pointer]:
+                - checkbox "Keselamatan & Keamanan 2 keluhan" [ref=f3e265]
+                - generic [ref=f3e269]: Keselamatan & Keamanan
+                - generic [ref=f3e270]: 2 keluhan
+            - generic [ref=f3e271]:
+              - generic [ref=f3e272]:
+                - generic [ref=f3e273]:
+                  - generic [ref=f3e274]: Skor Urgensi
+                  - generic [ref=f3e275]:
+                    - generic [ref=f3e276]: 72,1
+                    - generic [ref=f3e277]: →
+                    - generic [ref=f3e278]: 72,1
+                  - generic [ref=f3e279]:
+                    - generic [ref=f3e280]:
+                      - generic [ref=f3e281]: ◆
+                      - text: Perlu Tindakan
+                    - generic [ref=f3e282]: →
+                    - generic [ref=f3e283]:
+                      - generic [ref=f3e284]: ◆
+                      - text: Perlu Tindakan
+                - generic [ref=f3e285]:
+                  - generic [ref=f3e286]: Kenyamanan Wisatawan
+                  - generic [ref=f3e287]:
+                    - generic [ref=f3e288]: 68%
+                    - generic [ref=f3e289]: →
+                    - generic [ref=f3e290]: 61%
+                  - paragraph [ref=f3e291]: Estimasi indeks kepuasan
+              - generic [ref=f3e293]:
+                - generic [ref=f3e294]:
+                  - generic [ref=f3e295]: Proyeksi Kepuasan Pasca Perbaikan
+                  - generic [ref=f3e296]: 61%
+                - 'img "Proyeksi Kepuasan Pasca Perbaikan: 61%" [ref=f3e297]'
+            - paragraph [ref=f3e300]: Simulasi ini adalah estimasi matematis untuk membantu perencanaan anggaran dan bukan jaminan mutlak kepuasan wisatawan.
+          - generic [ref=f3e301]:
+            - heading "Petunjuk Verifikator Lapangan" [level=2] [ref=f3e303]
+            - list [ref=f3e304]:
+              - listitem [ref=f3e305]:
+                - strong [ref=f3e306]: "1."
+                - generic [ref=f3e307]: Kunjungi lokasi dan periksa fisik fasilitas sesuai panduan.
+              - listitem [ref=f3e308]:
+                - strong [ref=f3e309]: "2."
+                - generic [ref=f3e310]:
+                  - text: Tekan tombol
+                  - strong [ref=f3e311]: Konfirmasi
+                  - text: jika masalah memang benar terjadi di lapangan.
+              - listitem [ref=f3e312]:
+                - strong [ref=f3e313]: "3."
+                - generic [ref=f3e314]: Gunakan hasil verifikasi untuk mengalokasikan anggaran perbaikan.
+  - contentinfo [ref=f3e315]:
+    - paragraph [ref=f3e316]:
+      - strong [ref=f3e317]: SIPATURE
+      - text: — AI early-warning and intervention system for sustainable tourism quality. Prototipe Del AI Hackathon 2026.
+    - paragraph [ref=f3e318]: "Dashboard memakai SIPATURE Intelligence: TF-IDF aspect, lexical polarity fallback, Bayesian smoothing, dan missing-aware priority. Reported issue bukan vonis kondisi lapangan. Evidence text ditahan pending privacy review dan identitas reviewer tidak masuk bundle aplikasi."
+  - alert [ref=f3e319]

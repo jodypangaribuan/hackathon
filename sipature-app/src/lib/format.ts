@@ -9,26 +9,31 @@ import type {
 export const LEVELS: LevelSpec[] = [
   {
     key: "none",
-    label: "Data tidak cukup",
+    label: "Data Belum Cukup",
     icon: "○",
     colorVar: "var(--text-muted)",
   },
   {
     key: "monitor",
-    label: "Monitor",
+    label: "Kondisi Terjaga",
     icon: "●",
     colorVar: "var(--status-good)",
   },
   {
     key: "medium",
-    label: "Medium",
+    label: "Perlu Perhatian",
     icon: "▲",
     colorVar: "var(--status-warning)",
   },
-  { key: "high", label: "High", icon: "◆", colorVar: "var(--status-serious)" },
+  {
+    key: "high",
+    label: "Perlu Tindakan",
+    icon: "◆",
+    colorVar: "var(--status-serious)",
+  },
   {
     key: "critical",
-    label: "Critical",
+    label: "Mendesak (Kritis)",
     icon: "■",
     colorVar: "var(--status-critical)",
   },
@@ -48,10 +53,10 @@ export function levelOfPlace(place: Place) {
 }
 
 export const CONFIDENCE_LABEL: Record<Confidence, string> = {
-  high: "Kepercayaan tinggi",
-  medium: "Kepercayaan sedang",
-  low: "Kepercayaan rendah",
-  insufficient: "Data tidak cukup",
+  high: "Bukti Ulasan Kuat",
+  medium: "Bukti Ulasan Cukup",
+  low: "Bukti Ulasan Terbatas",
+  insufficient: "Ulasan Belum Cukup",
 };
 export const ASPECT_LABEL: Record<AspectKey, string> = {
   cleanliness: "Kebersihan",

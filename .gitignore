@@ -112,3 +112,7 @@ sipature-app/node_modules/
 sipature-app/tsconfig.tsbuildinfo
 sipature-app/src/data/generated/*
 !sipature-app/src/data/generated/README.md
+
+# Server release bundles
+*.tar.gz
+sipature-server-bundle.tar.gz

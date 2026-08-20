@@ -2,7 +2,7 @@
 
 ## Sistem Pemantauan Ulasan dan Prioritas Tindak Lanjut Pariwisata Toba
 
-**Laporan Final Round — Del AI Hackathon 2026**
+**Laporan Final Round: Del AI Hackathon 2026**
 
 **Nama tim:** `[NAMA TIM]`
 
@@ -20,7 +20,7 @@ Ulasan wisata menyimpan informasi yang lebih rinci daripada *rating* rata-rata. 
 
 SIPATURE adalah *dashboard* dan sistem pendukung keputusan yang mengubah ulasan menjadi **sinyal operasional per destinasi**. Sistem membaca ulasan, memilah isu ke 14 aspek, menentukan arah penilaian, mempertahankan kutipan bukti, dan menyusun prioritas verifikasi. SIPATURE tidak menyatakan bahwa keluhan pasti benar dan tidak menggantikan inspeksi lapangan.
 
-*Pipeline* mengolah 22.302 *record* mentah menjadi 22.169 *record* bersih; 12.234 di antaranya berteks. Benchmark final memakai **human-gold** 1.320 *review* dari tiga anotator (agreement *Jaccard* aspek 0,9664). Terhadap *gold-v1*, deteksi aspek TF-IDF memperoleh *Macro F1* 0,5777 — di bawah *Keyword* (0,7056) tetapi di atas IndoBERT (0,4254). TF-IDF tetap dipilih sebagai model produksi karena merupakan model yang belajar dari data, interpretable, dan CPU-only; *gold* adalah *benchmark evaluasi*, bukan data *training*.
+*Pipeline* mengolah 22.302 *record* mentah menjadi 22.169 *record* bersih; 12.234 di antaranya berteks. Benchmark final memakai **human-gold** 1.320 *review* dari tiga anotator (agreement *Jaccard* aspek 0,9664). Terhadap *gold-v1*, deteksi aspek TF-IDF memperoleh *Macro F1* 0,5777 (di bawah *Keyword* 0,7056, namun di atas IndoBERT 0,4254). TF-IDF tetap dipilih sebagai model produksi karena merupakan model yang belajar dari data, interpretable, dan CPU-only; *gold* adalah *benchmark evaluasi*, bukan data *training*.
 
 Produk final berjalan sebagai tiga layanan *Docker* (`web` + `inference` + `db`) yang di-deploy ke DGX B200 IT Del secara offline, dengan *latency* p50 2,1 ms per *review*, *alert verification workflow* (konfirmasi/tolak/tidak pasti + alasan), dan *fallback* peta SVG saat tanpa internet. Keluaran operasional mencakup 103 destinasi *actionable* dan 210 isu. Keterbatasan utama: model *severity* tidak tersedia (support kelas `high` < 20), dan *evidence* verbatim ditahan dari aplikasi publik sampai pemeriksaan privasi selesai.
 
@@ -49,7 +49,7 @@ Tabel ringkasan berikut merangkum indikator utama implementasi dan hasil evaluas
 
 Kawasan Danau Toba memiliki ekosistem pariwisata yang saling bergantung. Pengalaman wisatawan ditentukan bukan hanya oleh daya tarik destinasi, tetapi juga oleh kebersihan, akses jalan, parkir, toilet, keamanan, harga, pelayanan, akomodasi, kuliner, dan transportasi. Masalah pada satu unsur dapat memengaruhi kenyamanan dan citra kawasan secara keseluruhan.
 
-Peningkatan kualitas membutuhkan informasi yang dapat ditindaklanjuti: bukan hanya tempat mana yang populer, tetapi masalah apa yang berulang, berapa banyak bukti yang tersedia, dan apa yang perlu diperiksa lebih dahulu — agar sumber daya terbatas diarahkan pada kebutuhan paling relevan.
+Peningkatan kualitas membutuhkan informasi yang dapat ditindaklanjuti: bukan hanya tempat mana yang populer, tetapi masalah apa yang berulang, berapa banyak bukti yang tersedia, dan apa yang perlu diperiksa lebih dahulu, sehingga sumber daya terbatas dapat diarahkan pada kebutuhan paling relevan.
 
 ## 1.2 Kondisi Data
 
@@ -57,7 +57,7 @@ Dataset panitia mencakup objek wisata, akomodasi, kuliner, transportasi, fasilit
 
 ## 1.3 Kesenjangan Keputusan (Decision Gap)
 
-*Rating* rata-rata tidak menjelaskan penyebab pengalaman. Dua destinasi dengan *rating* sama dapat menghadapi masalah berbeda. Membaca ulasan satu per satu juga tidak efisien ketika jumlahnya ribuan; keluhan penting dapat tertutup oleh *review* positif atau tempat bervolume besar. Kebutuhan utamanya bukan sentimen umum, melainkan **aspek yang dibicarakan**, **potongan bukti**, **jumlah dan kecukupan data**, dan **prioritas verifikasi** — tanpa menyatakan keluhan sebagai fakta lapangan.
+*Rating* rata-rata tidak menjelaskan penyebab pengalaman. Dua destinasi dengan *rating* sama dapat menghadapi masalah berbeda. Membaca ulasan satu per satu juga tidak efisien ketika jumlahnya ribuan; keluhan penting dapat tertutup oleh *review* positif atau tempat bervolume besar. Kebutuhan utamanya bukan sentimen umum, melainkan **aspek yang dibicarakan**, **potongan bukti**, **jumlah dan kecukupan data**, serta **prioritas verifikasi**, dengan tetap memperlakukan keluhan sebagai sinyal yang perlu divalidasi, bukan fakta mutlak lapangan.
 
 ## 1.4 Rumusan Masalah
 
@@ -145,7 +145,7 @@ Arsitektur solusi SIPATURE dibangun sebagai rantai pemrosesan end-to-end yang me
 
 ![Rantai solusi SIPATURE](docs/figures/diagrams/solution-chain.png)
 
-**Gambar 2. Rantai solusi SIPATURE — dari ulasan menjadi tindak lanjut terverifikasi.**
+**Gambar 2. Rantai solusi SIPATURE: dari ulasan menjadi tindak lanjut terverifikasi.**
 
 **Interpretasi Gambar 2.** Tujuh tahap pemrosesan: ulasan mentah dibersihkan dan dihubungkan ke destinasi (*entity resolution*), diproses model deteksi aspek (TF-IDF + polaritas leksikal, ditandai *focal*), diagregasikan menjadi sinyal dan bukti verbatim per destinasi, diprioritaskan secara *missing-aware*, diverifikasi manusia (`confirmed`/`rejected`/`uncertain`), lalu menjadi rekomendasi tindak lanjut. Model *severity* tidak diimputasi spekulatif karena dukungan data kelas `high` < 20.
 
@@ -168,7 +168,7 @@ Sistem menerapkan klasifikasi *multi-label* di mana satu teks ulasan dapat memic
 ## 3.3 Annotation dan Kesepakatan Anotator (Inter-Annotator Agreement)
 
 Untuk melatih dan menguji model deteksi aspek secara andal, SIPATURE menerapkan strategi anotasi berjenjang:
-- **Silver labels** (AI-assisted weak supervision, 3 *rule passes*) digunakan untuk melatih model pada skala besar — *bukan* sebagai tolok ukur kebenaran manusia.
+- **Silver labels** (AI-assisted weak supervision, 3 *rule passes*) digunakan untuk melatih model pada skala besar dan *bukan* sebagai tolok ukur kebenaran manusia.
 - **Gold-v1 benchmark** (anotasi independen oleh 3 manusia pada 1.320 ulasan) khusus digunakan sebagai tolok ukur evaluasi akhir.
 
 Kualitas dan konsistensi pelabelan pada dataset *gold-v1* diuji secara kuantitatif melalui metrik kesepakatan antar-anotator (*inter-annotator agreement*) sebelum proses pembekuan data:
@@ -268,13 +268,13 @@ Sistem SIPATURE diimplementasikan dengan arsitektur multi-layanan mandiri (*self
 
 Aplikasi antarmuka SIPATURE menyediakan 7 modul fungsional utama yang saling terhubung untuk mendukung alur kerja pemantauan dan pengambilan keputusan:
 
-1. **Overview** — Ringkasan metrik kesehatan pariwisata, *coverage* data, rekapitulasi isu, dan daftar prioritas tertinggi.
-2. **Map** — Peta interaktif dengan filter kabupaten, kategori destinasi (*kind*), aspek permasalahan, dan tingkat *confidence*, dilengkapi *fallback* SVG luring.
-3. **Detail** — Pemeriksaan mendalam per destinasi mencakup *evidence* ulasan, *metadata*, skor *confidence*, indikator *health*, dan komponen data yang belum lengkap (*missing*).
-4. **Queue** — Antrean verifikasi operasional dengan *ranking* prioritas, tingkat dukungan bukti (*support*), dan rekomendasi tindakan.
-5. **Simulator** — Alat simulasi dampak intervensi berbasis asumsi eksplisit dengan peringatan permanen sifat non-kausal (*non-causal warning*).
-6. **Analyzer** — Pengujian teks ulasan interaktif secara *live* menggunakan model TF-IDF produksi.
-7. **Verification workflow** — Alur validasi sinyal lapangan bagi pengelola (opsi konfirmasi, tolak, atau tidak pasti beserta alasan penolakan).
+1. **Overview**: Ringkasan metrik kesehatan pariwisata, *coverage* data, rekapitulasi isu, dan daftar prioritas tertinggi.
+2. **Map**: Peta interaktif dengan filter kabupaten, kategori destinasi (*kind*), aspek permasalahan, dan tingkat *confidence*, dilengkapi *fallback* SVG luring.
+3. **Detail**: Pemeriksaan mendalam per destinasi mencakup *evidence* ulasan, *metadata*, skor *confidence*, indikator *health*, dan komponen data yang belum lengkap (*missing*).
+4. **Queue**: Antrean verifikasi operasional dengan *ranking* prioritas, tingkat dukungan bukti (*support*), dan rekomendasi tindakan.
+5. **Simulator**: Alat simulasi dampak intervensi berbasis asumsi eksplisit dengan peringatan permanen sifat non-kausal (*non-causal warning*).
+6. **Analyzer**: Pengujian teks ulasan interaktif secara *live* menggunakan model TF-IDF produksi.
+7. **Verification workflow**: Alur validasi sinyal lapangan bagi pengelola (opsi konfirmasi, tolak, atau tidak pasti beserta alasan penolakan).
 
 Proses verifikasi manusia dan siklus perbaikan model dirancang melalui alur terstruktur berikut:
 
@@ -329,19 +329,19 @@ Evaluasi model dilakukan secara independen terhadap dataset uji terkunci *gold-v
 
 **Interpretasi Tabel 10 & Gambar 6.** Skor *Keyword* pada silver (0,9768) terbukti bersifat sirkular karena aturan pembentukan silver identik dengan leksikon model; skornya turun drastis ke 0,7056 pada evaluasi manusia. TF-IDF mengalami penurunan wajar dari 0,7201 ke 0,5777 yang mencerminkan generalisasi jujur terhadap penilaian manusia. IndoBERT memperoleh skor terendah (0,4254 untuk aspek dan 0,5077 untuk polaritas) akibat keterbatasan ukuran data pelatihan.
 
-## 6.2 Keputusan Model — mengapa TF-IDF (dilatih silver) dipilih
+## 6.2 Keputusan Model: Mengapa TF-IDF (Dilatih Silver) Dipilih
 
 **Mengapa model produksi dilatih pada *silver labels*, bukan *gold*?** Karena *gold* adalah *benchmark evaluasi*, bukan data *training*. Ketiga alasan berikut menjawab pertanyaan juri yang paling sering muncul:
 
-1. **Circularity / leakage.** 1.320 *review* *gold* adalah persis *split* yang dipakai evaluasi. Melatih di *gold* lalu menguji di *gold* berarti model menghafal jawaban — persis seperti *Keyword* 0,9768 di *silver* yang kami ungkap sebagai *ceiling*, bukan prestasi. Nilai F1 yang dihasilkan tidak akan bermakna.
+1. **Circularity / leakage.** 1.320 *review* *gold* adalah persis *split* yang dipakai evaluasi. Melatih di *gold* lalu menguji di *gold* berarti model menghafal jawaban, persis seperti *Keyword* 0,9768 di *silver* yang kami ungkap sebagai *ceiling*, bukan prestasi. Nilai F1 yang dihasilkan tidak akan bermakna.
 2. **Generalisasi.** *Gold* hanya 1.320 *review*, sedangkan produksi harus memprediksi 12.234 *review* berteks. *Silver* menyediakan data *training* yang sama besarnya dan sudah dipakai sejak awal untuk melatih.
 3. **Independensi *benchmark*.** *Gold* dibuat justru agar independen dari model; memakainya untuk melatih akan menghancurkan fungsinya sebagai pengukur yang jujur.
 
-**Lalu mengapa bukan *Keyword* (0,7056 > TF-IDF 0,5777 di gold)?** *Keyword* adalah *rule engine* leksikal yang *sama* dengan pembuat *silver labels* — bukan model yang belajar dari data. Ia tinggi di *silver* (0,9768) justru karena sirkular, dan tetap tinggi di *gold* karena lexikon *taxonomy*-nya kebetulan cocok dengan penilaian manusia. Memilih *Keyword* berarti memilih *rules* yang sudah kami tulis sendiri, bukan model yang menggeneralisasi. Kami melaporkan keduanya secara terpisah dan tidak menyembunyikan gap ini.
+**Lalu mengapa bukan *Keyword* (0,7056 > TF-IDF 0,5777 di gold)?** *Keyword* adalah *rule engine* leksikal yang *sama* dengan pembuat *silver labels*, bukan model yang belajar dari data. Ia tinggi di *silver* (0,9768) justru karena sirkular, dan tetap tinggi di *gold* karena lexikon *taxonomy*-nya kebetulan cocok dengan penilaian manusia. Memilih *Keyword* berarti memilih *rules* yang sudah kami tulis sendiri, bukan model yang menggeneralisasi. Kami melaporkan keduanya secara terpisah dan tidak menyembunyikan gap ini.
 
-**Dan mengapa bukan IndoBERT?** IndoBERT (124,5M param, fine-tune 4 *epoch*) memperoleh aspek 0,4254 dan *polarity* 0,5077 (≈ *chance*) di *gold-v1* — keduanya di bawah TF-IDF. Pada data kecil (922 *train*) dengan label lemah dan distribusi aspek timpang, kompleksitas tidak otomatis memberi hasil lebih baik; IndoBERT juga lebih mahal (GPU) dan kurang interpretable.
+**Dan mengapa bukan IndoBERT?** IndoBERT (124,5M param, fine-tune 4 *epoch*) memperoleh aspek 0,4254 dan *polarity* 0,5077 (≈ *chance*) di *gold-v1*, keduanya di bawah performa TF-IDF. Pada data kecil (922 *train*) dengan label lemah dan distribusi aspek timpang, kompleksitas tidak otomatis memberi hasil lebih baik; IndoBERT juga lebih mahal (GPU) dan kurang interpretable.
 
-**Kesimpulan:** TF-IDF + *One-vs-Rest Logistic Regression* dipilih sebagai detektor aspek karena (a) model yang benar-benar belajar dari data, (b) *interpretable* dan deterministik, (c) CPU-only dengan *latency* p50 2,1 ms, (d) dapat dimuat ulang secara offline, dan (e) hasil *gold-v1*-nya (0,5777) adalah angka jujur terhadap penilaian manusia. *Upgrade* yang benar di masa depan adalah menambah anotasi manusia (held-out set baru) lalu melatih ulang — bukan memakai *gold* yang sama sebagai *training*.
+**Kesimpulan:** TF-IDF + *One-vs-Rest Logistic Regression* dipilih sebagai detektor aspek karena (a) model yang benar-benar belajar dari data, (b) *interpretable* dan deterministik, (c) CPU-only dengan *latency* p50 2,1 ms, (d) dapat dimuat ulang secara offline, dan (e) hasil *gold-v1*-nya (0,5777) adalah angka jujur terhadap penilaian manusia. *Upgrade* yang benar di masa depan adalah menambah anotasi manusia (held-out set baru) lalu melatih ulang, bukan memakai *gold* yang sama sebagai *training*.
 
 ## 6.3 Evaluasi Resolusi Entitas (Entity Resolution)
 
@@ -420,9 +420,9 @@ Perlindungan privasi data diterapkan melalui pemisahan ketat antara lingkungan p
 
 ![Lapisan data dan kebijakan akses](docs/figures/diagrams/data-pipeline-restricted.png)
 
-**Gambar 8. Lima lapisan data — dari mentah (restricted) ke agregat aman (published).**
+**Gambar 8. Lima lapisan data: dari mentah (restricted) ke agregat aman (published).**
 
-**Interpretasi Gambar 8.** Data mengalir dari kiri ke kanan melalui empat transformasi, dengan **PRIVACY GATE** (ditandai aksen) sebagai batas kritis: hanya agregat aman yang menyeberang ke sisi publik. Identitas reviewer berangsur hilang — dari `reviewer-id`/`name` di lapisan *raw*, menjadi `review_id` hash, teks *review*, *evidence* verbatim, hingga **tidak ada sama sekali** di *bundle* produk. Dua jalur konsumsi (*batch* dan *live*) memakai data yang sama secara deterministik dan hash-verified.
+**Interpretasi Gambar 8.** Data mengalir dari kiri ke kanan melalui empat transformasi, dengan **PRIVACY GATE** (ditandai aksen) sebagai batas kritis: hanya agregat aman yang menyeberang ke sisi publik. Identitas reviewer berangsur hilang, mulai dari `reviewer-id`/`name` di lapisan *raw*, menjadi `review_id` hash, teks *review*, *evidence* verbatim, hingga **tidak ada sama sekali** di *bundle* produk. Dua jalur konsumsi (*batch* dan *live*) memakai data yang sama secara deterministik dan hash-verified.
 
 Data SIPATURE dibagi lima lapisan dengan tingkat akses berbeda. Lapisan mentah hingga *evidence* hanya dapat diakses tim ML (`restricted`); hanya **agregat aman** yang dipublikasikan ke aplikasi tanpa identitas reviewer:
 
@@ -442,7 +442,7 @@ Data SIPATURE dibagi lima lapisan dengan tingkat akses berbeda. Lapisan mentah h
 
 **Gambar 9. Matriks akses tiga peran × lima komponen data.**
 
-**Interpretasi Gambar 9.** Empat komponen terbatas (`raw`, `clean`, *annotation*, *evidence*) hanya memiliki hak akses `Admin` bagi tim ML — publik dan pengelola berstatus `None`. Hanya **safe aggregate** yang dapat dibaca (`Read`) oleh publik (sel yang ditandai aksen = batas publikasi). Matriks ini membuktikan bahwa aplikasi publik tidak pernah menerima data identitas reviewer.
+**Interpretasi Gambar 9.** Empat komponen terbatas (`raw`, `clean`, *annotation*, *evidence*) hanya memiliki hak akses `Admin` bagi tim ML, sedangkan publik dan pengelola berstatus `None`. Hanya **safe aggregate** yang dapat dibaca (`Read`) oleh publik (sel yang ditandai aksen = batas publikasi). Matriks ini membuktikan bahwa aplikasi publik tidak pernah menerima data identitas reviewer.
 
 Matriks izin akses antar peran pengguna diatur dengan batasan yang tegas:
 - **Publik / juri** → hanya agregat aman (*read*).

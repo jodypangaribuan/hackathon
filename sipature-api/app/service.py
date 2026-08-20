@@ -1,4 +1,4 @@
-"""Model loading and review prediction, reusing the frozen SIPATURE A9 logic."""
+"""Model loading and review prediction using the frozen SIPATURE production pipeline."""
 
 from __future__ import annotations
 

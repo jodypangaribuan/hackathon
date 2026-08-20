@@ -8,8 +8,6 @@ import {
   BarChart3,
   BrainCircuit,
   Compass,
-  FlaskConical,
-  Layers,
   ListChecks,
   Moon,
   Sun,
@@ -19,8 +17,6 @@ const LINKS = [
   { href: "/", label: "Overview", icon: BarChart3 },
   { href: "/destinasi", label: "Destinasi", icon: Compass },
   { href: "/intervensi", label: "Intervensi", icon: ListChecks },
-  { href: "/umkm", label: "Rekomendasi", icon: Layers },
-  { href: "/simulator", label: "Simulator", icon: FlaskConical },
   { href: "/analyzer", label: "Analisis Review", icon: BrainCircuit },
   { href: "/metode", label: "Model", icon: Activity },
 ];

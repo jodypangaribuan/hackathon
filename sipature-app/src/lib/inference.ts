@@ -70,6 +70,6 @@ export async function analyzeWithModel(
     text: payload.text,
     hits,
     latencyMs,
-    note: "Model produksi: deteksi aspek TF-IDF + polarity leksikal (A9). Severity tidak tersedia. Input tidak disimpan dan tidak mengubah prioritas destinasi.",
+    note: "Model produksi: deteksi aspek TF-IDF + polarity leksikal. Severity tidak tersedia. Input tidak disimpan dan tidak mengubah prioritas destinasi.",
   };
 }

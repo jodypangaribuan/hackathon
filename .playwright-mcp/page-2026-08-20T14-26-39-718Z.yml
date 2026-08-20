@@ -1,0 +1,1126 @@
+- generic [active] [ref=f7e1]:
+  - banner [ref=f7e2]:
+    - generic [ref=f7e3]:
+      - link "SIPATURE Tourism Quality Intelligence" [ref=f7e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f7e5]: SIPATURE
+        - generic [ref=f7e6]: Tourism Quality Intelligence
+      - navigation [ref=f7e7]:
+        - link "Overview" [ref=f7e8] [cursor=pointer]:
+          - /url: /
+        - link "Destinasi" [ref=f7e12] [cursor=pointer]:
+          - /url: /destinasi
+        - link "Intervensi" [ref=f7e17] [cursor=pointer]:
+          - /url: /intervensi
+        - link "Analisis Review" [ref=f7e22] [cursor=pointer]:
+          - /url: /analyzer
+        - link "Model" [ref=f7e36] [cursor=pointer]:
+          - /url: /metode
+      - generic [ref=f7e40]:
+        - generic "Sistem Berjalan Mandiri — DGX B200 Production" [ref=f7e41]: Production v1.0.4
+        - button "Ganti tema terang/gelap" [ref=f7e42] [cursor=pointer]
+  - main [ref=f7e45]:
+    - generic [ref=f7e46]:
+      - generic [ref=f7e47]:
+        - generic [ref=f7e48]:
+          - generic [ref=f7e49]: SIPATURE Intelligence Engine
+          - heading "Masalah destinasi mana yang harus diverifikasi lebih dulu?" [level=1] [ref=f7e54]
+          - paragraph [ref=f7e55]:
+            - text: Mengubah
+            - strong [ref=f7e56]: "22.169"
+            - text: ulasan mentah menjadi sinyal operasional terstruktur pada 14 aspek pariwisata Danau Toba untuk mendukung keputusan dan inspeksi lapangan.
+        - generic [ref=f7e57]:
+          - link "Katalog Destinasi (388)" [ref=f7e58] [cursor=pointer]:
+            - /url: /destinasi
+          - link "Antrean Tindak Lanjut" [ref=f7e60] [cursor=pointer]:
+            - /url: /intervensi
+      - generic [ref=f7e64]:
+        - generic [ref=f7e65]:
+          - generic [ref=f7e66]: "12.234"
+          - generic [ref=f7e67]: Ulasan Berteks Dianalisis
+          - generic [ref=f7e68]: 5.942 ulasan memiliki prediksi aspek.
+        - generic [ref=f7e69]:
+          - generic [ref=f7e70]: "9.785"
+          - generic [ref=f7e71]: Prediksi Aspek Terdeteksi
+          - generic [ref=f7e72]: 280 destinasi memiliki sinyal aktif.
+        - generic [ref=f7e73]:
+          - generic [ref=f7e74]: "103"
+          - generic [ref=f7e75]: Destinasi Actionable
+          - generic [ref=f7e76]: 210 isu terverifikasi bukti ulasan.
+        - generic [ref=f7e77]:
+          - generic [ref=f7e78]: "322"
+          - generic [ref=f7e79]: Destinasi Berkoordinat
+          - generic [ref=f7e80]: 388 kanonikal · 66 placeholder.
+      - generic [ref=f7e81]:
+        - generic [ref=f7e82]:
+          - heading "Prioritas Verifikasi Teratas (Top Urgent)" [level=2] [ref=f7e83]
+          - link "Lihat semua 103 antrean →" [ref=f7e84] [cursor=pointer]:
+            - /url: /intervensi
+        - generic [ref=f7e85]:
+          - generic [ref=f7e86]:
+            - generic [ref=f7e87]:
+              - generic [ref=f7e88]: "#1"
+              - generic [ref=f7e89]:
+                - generic [ref=f7e90]: ◆
+                - text: High
+            - heading [level=3] [ref=f7e91]:
+              - link "Elios - Rumah Makan Khas Batak" [ref=f7e92] [cursor=pointer]:
+                - /url: /destinasi/dest_resto_e5c1241a2468f4
+            - paragraph [ref=f7e93]: Samosir
+            - generic [ref=f7e94]:
+              - generic [ref=f7e100]: Harga & Transparansi Pungutan
+              - generic [ref=f7e101]: 72,8
+          - generic [ref=f7e102]:
+            - generic [ref=f7e103]:
+              - generic [ref=f7e104]: "#2"
+              - generic [ref=f7e105]:
+                - generic [ref=f7e106]: ◆
+                - text: High
+            - heading [level=3] [ref=f7e107]:
+              - link "Aek Rangat Pangururan" [ref=f7e108] [cursor=pointer]:
+                - /url: /destinasi/dest_wisata_3f03d84417d6cc
+            - paragraph [ref=f7e109]: Samosir
+            - generic [ref=f7e110]:
+              - generic [ref=f7e116]: Harga & Transparansi Pungutan
+              - generic [ref=f7e117]: 72,5
+          - generic [ref=f7e118]:
+            - generic [ref=f7e119]:
+              - generic [ref=f7e120]: "#3"
+              - generic [ref=f7e121]:
+                - generic [ref=f7e122]: ◆
+                - text: High
+            - heading [level=3] [ref=f7e123]:
+              - link "Damasus Nataboan Resto" [ref=f7e124] [cursor=pointer]:
+                - /url: /destinasi/dest_resto_ea9403d98a6efe
+            - paragraph [ref=f7e125]: Simalungun
+            - generic [ref=f7e126]:
+              - generic [ref=f7e131]: Pelayanan Petugas
+              - generic [ref=f7e132]: 72,3
+          - generic [ref=f7e133]:
+            - generic [ref=f7e134]:
+              - generic [ref=f7e135]: "#4"
+              - generic [ref=f7e136]:
+                - generic [ref=f7e137]: ◆
+                - text: High
+            - heading [level=3] [ref=f7e138]:
+              - link "Kawah Putih Dolok Tinggi Raja" [ref=f7e139] [cursor=pointer]:
+                - /url: /destinasi/dest_wisata_2bd1bff4744c6a
+            - paragraph [ref=f7e140]: Simalungun
+            - generic [ref=f7e141]:
+              - generic [ref=f7e147]: Harga & Transparansi Pungutan
+              - generic [ref=f7e148]: 72,1
+      - generic [ref=f7e149]:
+        - generic [ref=f7e150]:
+          - generic [ref=f7e152]:
+            - searchbox "Cari nama tempat…" [ref=f7e153]
+            - combobox [ref=f7e155]:
+              - option "Semua kabupaten" [selected]
+              - option "Dairi"
+              - option "Humbang Hasundutan"
+              - option "Samosir"
+              - option "Simalungun"
+              - option "Tapanuli Utara"
+              - option "Toba"
+            - combobox [ref=f7e157]:
+              - option "Semua jenis" [selected]
+              - option "Wisata"
+              - option "Kuliner"
+              - option "Akomodasi"
+              - option "Layanan"
+            - combobox [ref=f7e159]:
+              - option "Semua aspek" [selected]
+              - option "Kebersihan"
+              - option "Sampah & Limbah"
+              - option "Toilet & Sanitasi"
+              - option "Kepadatan & Antrean"
+              - option "Akses & Kondisi Rute"
+              - option "Parkir"
+              - option "Fasilitas Publik & Aksesibilitas"
+              - option "Pemandangan"
+              - option "Kenyamanan"
+              - option "Keselamatan & Keamanan"
+              - option "Harga & Transparansi Pungutan"
+              - option "Pelayanan Petugas"
+              - option "Perawatan & Kerusakan"
+              - option "Jam Operasional"
+            - generic [ref=f7e160]:
+              - checkbox "Data tidak cukup" [checked] [ref=f7e161]
+              - text: Data tidak cukup
+            - generic [ref=f7e162]: 322 dari 322
+          - generic [ref=f7e164]:
+            - generic [ref=f7e165]:
+              - generic [ref=f7e166]:
+                - button "Peta" [ref=f7e167] [cursor=pointer]
+                - button "Satelit" [ref=f7e168] [cursor=pointer]
+              - group "Filter tingkat friksi" [ref=f7e170]:
+                - button "Data tidak cukup" [pressed] [ref=f7e171] [cursor=pointer]:
+                  - generic [ref=f7e172]: ○
+                - button "Monitor" [pressed] [ref=f7e174] [cursor=pointer]:
+                  - generic [ref=f7e175]: ●
+                - button "Medium" [pressed] [ref=f7e177] [cursor=pointer]:
+                  - generic [ref=f7e178]: ▲
+                - button "High" [pressed] [ref=f7e180] [cursor=pointer]:
+                  - generic [ref=f7e181]: ◆
+                - button "Critical" [pressed] [ref=f7e183] [cursor=pointer]:
+                  - generic [ref=f7e184]: ■
+              - button "Uji mode luring" [ref=f7e186] [cursor=pointer]
+            - generic [ref=f7e187]: Memuat peta…
+            - generic [ref=f7e189]:
+              - generic [ref=f7e190]:
+                - generic [ref=f7e191]: ○
+                - text: Data tidak cukup
+              - generic [ref=f7e192]:
+                - generic [ref=f7e193]: ●
+                - text: Monitor
+              - generic [ref=f7e194]:
+                - generic [ref=f7e195]: ▲
+                - text: Medium
+              - generic [ref=f7e196]:
+                - generic [ref=f7e197]: ◆
+                - text: High
+              - generic [ref=f7e198]:
+                - generic [ref=f7e199]: ■
+                - text: Critical
+              - generic [ref=f7e200]: Ukuran titik = jumlah review bersih · 322 dari 322 tempat berkoordinat
+          - paragraph [ref=f7e201]: Klik titik untuk melihat ringkasan.
+        - generic [ref=f7e202]:
+          - generic [ref=f7e203]:
+            - generic [ref=f7e204]:
+              - heading "Prioritas Verifikasi" [level=2] [ref=f7e205]
+              - generic [ref=f7e206]: 103 tempat
+            - paragraph [ref=f7e207]: Urut menurut priority score SIPATURE Intelligence. Peringkat adalah sinyal triase, bukan bukti kondisi lapangan.
+            - list [ref=f7e208]:
+              - listitem [ref=f7e209]:
+                - link "#1 ◆ Elios - Rumah Makan Khas Batak Samosir · Harga & Transparansi Pungutan 72,8" [ref=f7e210] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_e5c1241a2468f4
+                  - generic [ref=f7e211]: "#1"
+                  - generic [ref=f7e212]: ◆
+                  - generic [ref=f7e213]:
+                    - generic [ref=f7e214]: Elios - Rumah Makan Khas Batak
+                    - generic [ref=f7e215]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e216]: 72,8
+              - listitem [ref=f7e217]:
+                - link "#2 ◆ Aek Rangat Pangururan Samosir · Harga & Transparansi Pungutan 72,5" [ref=f7e218] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_3f03d84417d6cc
+                  - generic [ref=f7e219]: "#2"
+                  - generic [ref=f7e220]: ◆
+                  - generic [ref=f7e221]:
+                    - generic [ref=f7e222]: Aek Rangat Pangururan
+                    - generic [ref=f7e223]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e224]: 72,5
+              - listitem [ref=f7e225]:
+                - link "#3 ◆ Damasus Nataboan Resto Simalungun · Pelayanan Petugas 72,3" [ref=f7e226] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_ea9403d98a6efe
+                  - generic [ref=f7e227]: "#3"
+                  - generic [ref=f7e228]: ◆
+                  - generic [ref=f7e229]:
+                    - generic [ref=f7e230]: Damasus Nataboan Resto
+                    - generic [ref=f7e231]: Simalungun · Pelayanan Petugas
+                  - generic [ref=f7e232]: 72,3
+              - listitem [ref=f7e233]:
+                - link "#4 ◆ Kawah Putih Dolok Tinggi Raja Simalungun · Harga & Transparansi Pungutan 72,1" [ref=f7e234] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_2bd1bff4744c6a
+                  - generic [ref=f7e235]: "#4"
+                  - generic [ref=f7e236]: ◆
+                  - generic [ref=f7e237]:
+                    - generic [ref=f7e238]: Kawah Putih Dolok Tinggi Raja
+                    - generic [ref=f7e239]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=f7e240]: 72,1
+              - listitem [ref=f7e241]:
+                - link "#5 ◆ Sinar Minang Restaurant & Convention Hall Toba · Harga & Transparansi Pungutan 70,4" [ref=f7e242] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_35d629f02e2131
+                  - generic [ref=f7e243]: "#5"
+                  - generic [ref=f7e244]: ◆
+                  - generic [ref=f7e245]:
+                    - generic [ref=f7e246]: Sinar Minang Restaurant & Convention Hall
+                    - generic [ref=f7e247]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e248]: 70,4
+              - listitem [ref=f7e249]:
+                - link "#6 ◆ Tuan Nagani Paradise Humbang Hasundutan · Harga & Transparansi Pungutan 70,2" [ref=f7e250] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_64bbb40d85bdb3
+                  - generic [ref=f7e251]: "#6"
+                  - generic [ref=f7e252]: ◆
+                  - generic [ref=f7e253]:
+                    - generic [ref=f7e254]: Tuan Nagani Paradise
+                    - generic [ref=f7e255]: Humbang Hasundutan · Harga & Transparansi Pungutan
+                  - generic [ref=f7e256]: 70,2
+              - listitem [ref=f7e257]:
+                - link "#7 ◆ Rumah Makan Lomak Samosir · Harga & Transparansi Pungutan 70,1" [ref=f7e258] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_a1afe60e1666a9
+                  - generic [ref=f7e259]: "#7"
+                  - generic [ref=f7e260]: ◆
+                  - generic [ref=f7e261]:
+                    - generic [ref=f7e262]: Rumah Makan Lomak
+                    - generic [ref=f7e263]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e264]: 70,1
+              - listitem [ref=f7e265]:
+                - link "#8 ◆ Rumah Makan Muslim Penginapan Samosir · Harga & Transparansi Pungutan 69,9" [ref=f7e266] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_b2adc4606cb860
+                  - generic [ref=f7e267]: "#8"
+                  - generic [ref=f7e268]: ◆
+                  - generic [ref=f7e269]:
+                    - generic [ref=f7e270]: Rumah Makan Muslim Penginapan
+                    - generic [ref=f7e271]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e272]: 69,9
+              - listitem [ref=f7e273]:
+                - link "#9 ◆ LA PINUS DAMASUS BISTRO & RESTO Simalungun · Pelayanan Petugas 69,5" [ref=f7e274] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_2aef2b55aa363a
+                  - generic [ref=f7e275]: "#9"
+                  - generic [ref=f7e276]: ◆
+                  - generic [ref=f7e277]:
+                    - generic [ref=f7e278]: LA PINUS DAMASUS BISTRO & RESTO
+                    - generic [ref=f7e279]: Simalungun · Pelayanan Petugas
+                  - generic [ref=f7e280]: 69,5
+              - listitem [ref=f7e281]:
+                - link "#10 ◆ Pantai Pakkodian Tampahan Toba · Harga & Transparansi Pungutan 68,7" [ref=f7e282] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_0205ce1676c3c2
+                  - generic [ref=f7e283]: "#10"
+                  - generic [ref=f7e284]: ◆
+                  - generic [ref=f7e285]:
+                    - generic [ref=f7e286]: Pantai Pakkodian Tampahan
+                    - generic [ref=f7e287]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e288]: 68,7
+              - listitem [ref=f7e289]:
+                - link "#11 ◆ Labersa Toba Fantasi Waterpark Toba · Harga & Transparansi Pungutan 68,5" [ref=f7e290] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_432e4d3466bb28
+                  - generic [ref=f7e291]: "#11"
+                  - generic [ref=f7e292]: ◆
+                  - generic [ref=f7e293]:
+                    - generic [ref=f7e294]: Labersa Toba Fantasi Waterpark
+                    - generic [ref=f7e295]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e296]: 68,5
+              - listitem [ref=f7e297]:
+                - link "#12 ◆ Rumah Makan Islam Mami Tempo Samosir · Harga & Transparansi Pungutan 68,0" [ref=f7e298] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_c26a150adecb2d
+                  - generic [ref=f7e299]: "#12"
+                  - generic [ref=f7e300]: ◆
+                  - generic [ref=f7e301]:
+                    - generic [ref=f7e302]: Rumah Makan Islam Mami Tempo
+                    - generic [ref=f7e303]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e304]: 68,0
+              - listitem [ref=f7e305]:
+                - link "#13 ◆ Jenny's Restaurant Samosir · Harga & Transparansi Pungutan 67,8" [ref=f7e306] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_abdda76cd3e9ed
+                  - generic [ref=f7e307]: "#13"
+                  - generic [ref=f7e308]: ◆
+                  - generic [ref=f7e309]:
+                    - generic [ref=f7e310]: Jenny's Restaurant
+                    - generic [ref=f7e311]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e312]: 67,8
+              - listitem [ref=f7e313]:
+                - link "#14 ◆ Objek Wisata Pantai Paris Simalungun · Harga & Transparansi Pungutan 67,5" [ref=f7e314] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_2131662e721617
+                  - generic [ref=f7e315]: "#14"
+                  - generic [ref=f7e316]: ◆
+                  - generic [ref=f7e317]:
+                    - generic [ref=f7e318]: Objek Wisata Pantai Paris
+                    - generic [ref=f7e319]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=f7e320]: 67,5
+              - listitem [ref=f7e321]:
+                - link "#15 ◆ Pasir Putih Parbaba Toba · Harga & Transparansi Pungutan 67,4" [ref=f7e322] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_3b50f4868614ad
+                  - generic [ref=f7e323]: "#15"
+                  - generic [ref=f7e324]: ◆
+                  - generic [ref=f7e325]:
+                    - generic [ref=f7e326]: Pasir Putih Parbaba
+                    - generic [ref=f7e327]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e328]: 67,4
+              - listitem [ref=f7e329]:
+                - link "#16 ◆ Geosite Sipinsur Humbang Hasundutan · Toilet & Sanitasi 67,3" [ref=f7e330] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_1ad63181807602
+                  - generic [ref=f7e331]: "#16"
+                  - generic [ref=f7e332]: ◆
+                  - generic [ref=f7e333]:
+                    - generic [ref=f7e334]: Geosite Sipinsur
+                    - generic [ref=f7e335]: Humbang Hasundutan · Toilet & Sanitasi
+                  - generic [ref=f7e336]: 67,3
+              - listitem [ref=f7e337]:
+                - link "#17 ◆ Pantai Pasir Putih Lumban Bul-bul Balige Toba · Harga & Transparansi Pungutan 67,2" [ref=f7e338] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_675974ac1b278e
+                  - generic [ref=f7e339]: "#17"
+                  - generic [ref=f7e340]: ◆
+                  - generic [ref=f7e341]:
+                    - generic [ref=f7e342]: Pantai Pasir Putih Lumban Bul-bul Balige
+                    - generic [ref=f7e343]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e344]: 67,2
+              - listitem [ref=f7e345]:
+                - link "#18 ◆ Rumah Makan Marina Simalungun · Harga & Transparansi Pungutan 67,1" [ref=f7e346] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_6cec311baf964c
+                  - generic [ref=f7e347]: "#18"
+                  - generic [ref=f7e348]: ◆
+                  - generic [ref=f7e349]:
+                    - generic [ref=f7e350]: Rumah Makan Marina
+                    - generic [ref=f7e351]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=f7e352]: 67,1
+              - listitem [ref=f7e353]:
+                - link "#19 ◆ Bukit Holbung Samosir · Harga & Transparansi Pungutan 67,1" [ref=f7e354] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_607dd915de0dc4
+                  - generic [ref=f7e355]: "#19"
+                  - generic [ref=f7e356]: ◆
+                  - generic [ref=f7e357]:
+                    - generic [ref=f7e358]: Bukit Holbung
+                    - generic [ref=f7e359]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e360]: 67,1
+              - listitem [ref=f7e361]:
+                - link "#20 ◆ Tiara Bunga Hotel Toba · Harga & Transparansi Pungutan 67,0" [ref=f7e362] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_c5418e0f9ef701
+                  - generic [ref=f7e363]: "#20"
+                  - generic [ref=f7e364]: ◆
+                  - generic [ref=f7e365]:
+                    - generic [ref=f7e366]: Tiara Bunga Hotel
+                    - generic [ref=f7e367]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e368]: 67,0
+              - listitem [ref=f7e369]:
+                - link "#21 ◆ Pemandian Air Soda Parbubu Tapanuli Utara · Sampah & Limbah 66,9" [ref=f7e370] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_134b2e8d20ff62
+                  - generic [ref=f7e371]: "#21"
+                  - generic [ref=f7e372]: ◆
+                  - generic [ref=f7e373]:
+                    - generic [ref=f7e374]: Pemandian Air Soda Parbubu
+                    - generic [ref=f7e375]: Tapanuli Utara · Sampah & Limbah
+                  - generic [ref=f7e376]: 66,9
+              - listitem [ref=f7e377]:
+                - link "#22 ◆ Restaurant Asia Simalungun · Harga & Transparansi Pungutan 66,8" [ref=f7e378] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_38563d4903d42b
+                  - generic [ref=f7e379]: "#22"
+                  - generic [ref=f7e380]: ◆
+                  - generic [ref=f7e381]:
+                    - generic [ref=f7e382]: Restaurant Asia
+                    - generic [ref=f7e383]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=f7e384]: 66,8
+              - listitem [ref=f7e385]:
+                - link "#23 ◆ Putra Kembar Coffee Shop & Resto Tapanuli Utara · Pelayanan Petugas 66,2" [ref=f7e386] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_67f14825cea10e
+                  - generic [ref=f7e387]: "#23"
+                  - generic [ref=f7e388]: ◆
+                  - generic [ref=f7e389]:
+                    - generic [ref=f7e390]: Putra Kembar Coffee Shop & Resto
+                    - generic [ref=f7e391]: Tapanuli Utara · Pelayanan Petugas
+                  - generic [ref=f7e392]: 66,2
+              - listitem [ref=f7e393]:
+                - link "#24 ◆ Caldera toba nomadic escape (glamour camping) Toba · Harga & Transparansi Pungutan 66,1" [ref=f7e394] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_7ef9ae290a4e45
+                  - generic [ref=f7e395]: "#24"
+                  - generic [ref=f7e396]: ◆
+                  - generic [ref=f7e397]:
+                    - generic [ref=f7e398]: Caldera toba nomadic escape (glamour camping)
+                    - generic [ref=f7e399]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e400]: 66,1
+              - listitem [ref=f7e401]:
+                - link "#25 ◆ Patung Sigalegale Samosir · Harga & Transparansi Pungutan 65,7" [ref=f7e402] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_e9b52952e1eda0
+                  - generic [ref=f7e403]: "#25"
+                  - generic [ref=f7e404]: ◆
+                  - generic [ref=f7e405]:
+                    - generic [ref=f7e406]: Patung Sigalegale
+                    - generic [ref=f7e407]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e408]: 65,7
+              - listitem [ref=f7e409]:
+                - link "#26 ◆ Widya Restaurant Samosir · Harga & Transparansi Pungutan 65,6" [ref=f7e410] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_d555410d83b2b5
+                  - generic [ref=f7e411]: "#26"
+                  - generic [ref=f7e412]: ◆
+                  - generic [ref=f7e413]:
+                    - generic [ref=f7e414]: Widya Restaurant
+                    - generic [ref=f7e415]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e416]: 65,6
+              - listitem [ref=f7e417]:
+                - link "#27 ◆ Air Terjun Janji Humbang Hasundutan · Harga & Transparansi Pungutan 65,6" [ref=f7e418] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_10d46662b0deae
+                  - generic [ref=f7e419]: "#27"
+                  - generic [ref=f7e420]: ◆
+                  - generic [ref=f7e421]:
+                    - generic [ref=f7e422]: Air Terjun Janji
+                    - generic [ref=f7e423]: Humbang Hasundutan · Harga & Transparansi Pungutan
+                  - generic [ref=f7e424]: 65,6
+              - listitem [ref=f7e425]:
+                - link "#28 ◆ TaTaring Coffee & Resto Samosir · Harga & Transparansi Pungutan 64,7" [ref=f7e426] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_a2e8fba01b56bb
+                  - generic [ref=f7e427]: "#28"
+                  - generic [ref=f7e428]: ◆
+                  - generic [ref=f7e429]:
+                    - generic [ref=f7e430]: TaTaring Coffee & Resto
+                    - generic [ref=f7e431]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e432]: 64,7
+              - listitem [ref=f7e433]:
+                - link "#29 ◆ RM muslim MENARA Simalungun · Harga & Transparansi Pungutan 64,0" [ref=f7e434] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_0ca193175127f3
+                  - generic [ref=f7e435]: "#29"
+                  - generic [ref=f7e436]: ◆
+                  - generic [ref=f7e437]:
+                    - generic [ref=f7e438]: RM muslim MENARA
+                    - generic [ref=f7e439]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=f7e440]: 64,0
+              - listitem [ref=f7e441]:
+                - link "#30 ◆ Bukit Sipolha Simalungun · Akses & Kondisi Rute 63,9" [ref=f7e442] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_64e3c01f76c673
+                  - generic [ref=f7e443]: "#30"
+                  - generic [ref=f7e444]: ◆
+                  - generic [ref=f7e445]:
+                    - generic [ref=f7e446]: Bukit Sipolha
+                    - generic [ref=f7e447]: Simalungun · Akses & Kondisi Rute
+                  - generic [ref=f7e448]: 63,9
+              - listitem [ref=f7e449]:
+                - link "#31 ◆ Boli Boli Hot Spring Tapanuli Utara · Toilet & Sanitasi 63,7" [ref=f7e450] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_5b219da56b61e7
+                  - generic [ref=f7e451]: "#31"
+                  - generic [ref=f7e452]: ◆
+                  - generic [ref=f7e453]:
+                    - generic [ref=f7e454]: Boli Boli Hot Spring
+                    - generic [ref=f7e455]: Tapanuli Utara · Toilet & Sanitasi
+                  - generic [ref=f7e456]: 63,7
+              - listitem [ref=f7e457]:
+                - link "#32 ◆ Sekapur Sirih Samosir · Harga & Transparansi Pungutan 63,6" [ref=f7e458] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_cd326cea9831f7
+                  - generic [ref=f7e459]: "#32"
+                  - generic [ref=f7e460]: ◆
+                  - generic [ref=f7e461]:
+                    - generic [ref=f7e462]: Sekapur Sirih
+                    - generic [ref=f7e463]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e464]: 63,6
+              - listitem [ref=f7e465]:
+                - link "#33 ◆ Batu Kursi Raja Siallagan ( Stone Chair of King Siallagan ) Samosir · Harga & Transparansi Pungutan 63,5" [ref=f7e466] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_0359008fd7a54c
+                  - generic [ref=f7e467]: "#33"
+                  - generic [ref=f7e468]: ◆
+                  - generic [ref=f7e469]:
+                    - generic [ref=f7e470]: Batu Kursi Raja Siallagan ( Stone Chair of King Siallagan )
+                    - generic [ref=f7e471]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e472]: 63,5
+              - listitem [ref=f7e473]:
+                - link "#34 ◆ Togaraja Samosir · Akses & Kondisi Rute 63,4" [ref=f7e474] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_cab8446352625f
+                  - generic [ref=f7e475]: "#34"
+                  - generic [ref=f7e476]: ◆
+                  - generic [ref=f7e477]:
+                    - generic [ref=f7e478]: Togaraja
+                    - generic [ref=f7e479]: Samosir · Akses & Kondisi Rute
+                  - generic [ref=f7e480]: 63,4
+              - listitem [ref=f7e481]:
+                - link "#35 ◆ Pondok Makan & Home Stay H. Karsim Simalungun · Harga & Transparansi Pungutan 63,4" [ref=f7e482] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_77bd8730cb8da5
+                  - generic [ref=f7e483]: "#35"
+                  - generic [ref=f7e484]: ◆
+                  - generic [ref=f7e485]:
+                    - generic [ref=f7e486]: Pondok Makan & Home Stay H. Karsim
+                    - generic [ref=f7e487]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=f7e488]: 63,4
+              - listitem [ref=f7e489]:
+                - link "#36 ◆ Batak Museum Samosir · Akses & Kondisi Rute 62,7" [ref=f7e490] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_3fbef1f3a97d22
+                  - generic [ref=f7e491]: "#36"
+                  - generic [ref=f7e492]: ◆
+                  - generic [ref=f7e493]:
+                    - generic [ref=f7e494]: Batak Museum
+                    - generic [ref=f7e495]: Samosir · Akses & Kondisi Rute
+                  - generic [ref=f7e496]: 62,7
+              - listitem [ref=f7e497]:
+                - link "#37 ◆ Kafe Pak Pos Simalungun · Pelayanan Petugas 61,7" [ref=f7e498] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_3bd2460fa3493b
+                  - generic [ref=f7e499]: "#37"
+                  - generic [ref=f7e500]: ◆
+                  - generic [ref=f7e501]:
+                    - generic [ref=f7e502]: Kafe Pak Pos
+                    - generic [ref=f7e503]: Simalungun · Pelayanan Petugas
+                  - generic [ref=f7e504]: 61,7
+              - listitem [ref=f7e505]:
+                - link "#38 ◆ Pemandian Alam Sejuk Toba · Sampah & Limbah 59,3" [ref=f7e506] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_21daf65d749d58
+                  - generic [ref=f7e507]: "#38"
+                  - generic [ref=f7e508]: ◆
+                  - generic [ref=f7e509]:
+                    - generic [ref=f7e510]: Pemandian Alam Sejuk
+                    - generic [ref=f7e511]: Toba · Sampah & Limbah
+                  - generic [ref=f7e512]: 59,3
+              - listitem [ref=f7e513]:
+                - link "#39 ◆ Panorama Adian Nalambok Toba · Kebersihan 59,1" [ref=f7e514] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_9a3a62751f6644
+                  - generic [ref=f7e515]: "#39"
+                  - generic [ref=f7e516]: ◆
+                  - generic [ref=f7e517]:
+                    - generic [ref=f7e518]: Panorama Adian Nalambok
+                    - generic [ref=f7e519]: Toba · Kebersihan
+                  - generic [ref=f7e520]: 59,1
+              - listitem [ref=f7e521]:
+                - link "#40 ◆ Danau Sidihoni Samosir · Pemandangan 55,4" [ref=f7e522] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_f8f17eef2365eb
+                  - generic [ref=f7e523]: "#40"
+                  - generic [ref=f7e524]: ◆
+                  - generic [ref=f7e525]:
+                    - generic [ref=f7e526]: Danau Sidihoni
+                    - generic [ref=f7e527]: Samosir · Pemandangan
+                  - generic [ref=f7e528]: 55,4
+              - listitem [ref=f7e529]:
+                - link "#41 ▲ Air Terjun Efrata Samosir · Akses & Kondisi Rute 47,4" [ref=f7e530] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_ea54e29ac54678
+                  - generic [ref=f7e531]: "#41"
+                  - generic [ref=f7e532]: ▲
+                  - generic [ref=f7e533]:
+                    - generic [ref=f7e534]: Air Terjun Efrata
+                    - generic [ref=f7e535]: Samosir · Akses & Kondisi Rute
+                  - generic [ref=f7e536]: 47,4
+              - listitem [ref=f7e537]:
+                - link "#42 ▲ Bukit Indah Simarjarunjung Toba · Harga & Transparansi Pungutan 47,0" [ref=f7e538] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_6557faf9ef0611
+                  - generic [ref=f7e539]: "#42"
+                  - generic [ref=f7e540]: ▲
+                  - generic [ref=f7e541]:
+                    - generic [ref=f7e542]: Bukit Indah Simarjarunjung
+                    - generic [ref=f7e543]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e544]: 47,0
+              - listitem [ref=f7e545]:
+                - link "#43 ▲ Pasar Tomok Samosir · Harga & Transparansi Pungutan 45,9" [ref=f7e546] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_c848feb84ded83
+                  - generic [ref=f7e547]: "#43"
+                  - generic [ref=f7e548]: ▲
+                  - generic [ref=f7e549]:
+                    - generic [ref=f7e550]: Pasar Tomok
+                    - generic [ref=f7e551]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e552]: 45,9
+              - listitem [ref=f7e553]:
+                - link "#44 ▲ Air Terjun Sipisopiso Toba · Harga & Transparansi Pungutan 45,4" [ref=f7e554] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_45b093ca0ac157
+                  - generic [ref=f7e555]: "#44"
+                  - generic [ref=f7e556]: ▲
+                  - generic [ref=f7e557]:
+                    - generic [ref=f7e558]: Air Terjun Sipisopiso
+                    - generic [ref=f7e559]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e560]: 45,4
+              - listitem [ref=f7e561]:
+                - link "#45 ▲ Rumba Restaurant Samosir · Harga & Transparansi Pungutan 43,9" [ref=f7e562] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_658c01a26143e1
+                  - generic [ref=f7e563]: "#45"
+                  - generic [ref=f7e564]: ▲
+                  - generic [ref=f7e565]:
+                    - generic [ref=f7e566]: Rumba Restaurant
+                    - generic [ref=f7e567]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e568]: 43,9
+              - listitem [ref=f7e569]:
+                - link "#46 ▲ Patung Yesus, Bukit Sibeabea Samosir · Harga & Transparansi Pungutan 43,7" [ref=f7e570] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_538e4f85ec5f0b
+                  - generic [ref=f7e571]: "#46"
+                  - generic [ref=f7e572]: ▲
+                  - generic [ref=f7e573]:
+                    - generic [ref=f7e574]: Patung Yesus, Bukit Sibeabea
+                    - generic [ref=f7e575]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e576]: 43,7
+              - listitem [ref=f7e577]:
+                - link "#47 ▲ Biwa Cafe & Resto Simalungun · Harga & Transparansi Pungutan 43,7" [ref=f7e578] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_546e13630055ec
+                  - generic [ref=f7e579]: "#47"
+                  - generic [ref=f7e580]: ▲
+                  - generic [ref=f7e581]:
+                    - generic [ref=f7e582]: Biwa Cafe & Resto
+                    - generic [ref=f7e583]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=f7e584]: 43,7
+              - listitem [ref=f7e585]:
+                - link "#48 ▲ Chinese Food Gemar Toba · Harga & Transparansi Pungutan 43,5" [ref=f7e586] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_2f8c09f7c56476
+                  - generic [ref=f7e587]: "#48"
+                  - generic [ref=f7e588]: ▲
+                  - generic [ref=f7e589]:
+                    - generic [ref=f7e590]: Chinese Food Gemar
+                    - generic [ref=f7e591]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e592]: 43,5
+              - listitem [ref=f7e593]:
+                - link "#49 ▲ Labersa Hotel and Convention Center Toba, Balige Toba · Harga & Transparansi Pungutan 43,4" [ref=f7e594] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_2f0d161a283264
+                  - generic [ref=f7e595]: "#49"
+                  - generic [ref=f7e596]: ▲
+                  - generic [ref=f7e597]:
+                    - generic [ref=f7e598]: Labersa Hotel and Convention Center Toba, Balige
+                    - generic [ref=f7e599]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e600]: 43,4
+              - listitem [ref=f7e601]:
+                - link "#50 ▲ Hotel Sere Nauli Toba · Harga & Transparansi Pungutan 43,1" [ref=f7e602] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_576283cb4c7732
+                  - generic [ref=f7e603]: "#50"
+                  - generic [ref=f7e604]: ▲
+                  - generic [ref=f7e605]:
+                    - generic [ref=f7e606]: Hotel Sere Nauli
+                    - generic [ref=f7e607]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e608]: 43,1
+              - listitem [ref=f7e609]:
+                - link "#51 ▲ Purnama Balige Hotel Toba · Harga & Transparansi Pungutan 42,9" [ref=f7e610] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_5c32af0fd7183e
+                  - generic [ref=f7e611]: "#51"
+                  - generic [ref=f7e612]: ▲
+                  - generic [ref=f7e613]:
+                    - generic [ref=f7e614]: Purnama Balige Hotel
+                    - generic [ref=f7e615]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e616]: 42,9
+              - listitem [ref=f7e617]:
+                - link "#52 ▲ Wisata Anugerah Indah Sippan Simalungun · Harga & Transparansi Pungutan 42,5" [ref=f7e618] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_06b1b8161e14d0
+                  - generic [ref=f7e619]: "#52"
+                  - generic [ref=f7e620]: ▲
+                  - generic [ref=f7e621]:
+                    - generic [ref=f7e622]: Wisata Anugerah Indah Sippan
+                    - generic [ref=f7e623]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=f7e624]: 42,5
+              - listitem [ref=f7e625]:
+                - link "#53 ▲ Bukit Senyum Toba · Jam Operasional 42,5" [ref=f7e626] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_b27c0aa044d362
+                  - generic [ref=f7e627]: "#53"
+                  - generic [ref=f7e628]: ▲
+                  - generic [ref=f7e629]:
+                    - generic [ref=f7e630]: Bukit Senyum
+                    - generic [ref=f7e631]: Toba · Jam Operasional
+                  - generic [ref=f7e632]: 42,5
+              - listitem [ref=f7e633]:
+                - link "#54 ▲ Museum Huta Bolon Simanindo Samosir · Harga & Transparansi Pungutan 42,0" [ref=f7e634] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_284c89fcd42dda
+                  - generic [ref=f7e635]: "#54"
+                  - generic [ref=f7e636]: ▲
+                  - generic [ref=f7e637]:
+                    - generic [ref=f7e638]: Museum Huta Bolon Simanindo
+                    - generic [ref=f7e639]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e640]: 42,0
+              - listitem [ref=f7e641]:
+                - link "#55 ▲ Bukit Sidihoni Samosir · Harga & Transparansi Pungutan 41,1" [ref=f7e642] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_a828dbe1b2d7d7
+                  - generic [ref=f7e643]: "#55"
+                  - generic [ref=f7e644]: ▲
+                  - generic [ref=f7e645]:
+                    - generic [ref=f7e646]: Bukit Sidihoni
+                    - generic [ref=f7e647]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e648]: 41,1
+              - listitem [ref=f7e649]:
+                - link "#56 ▲ Kebun Teh Sidamanik Toba · Harga & Transparansi Pungutan 41,1" [ref=f7e650] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_3ab9f1738b81bf
+                  - generic [ref=f7e651]: "#56"
+                  - generic [ref=f7e652]: ▲
+                  - generic [ref=f7e653]:
+                    - generic [ref=f7e654]: Kebun Teh Sidamanik
+                    - generic [ref=f7e655]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e656]: 41,1
+              - listitem [ref=f7e657]:
+                - link "#57 ▲ Toba Village inn Samosir · Harga & Transparansi Pungutan 41,0" [ref=f7e658] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_ab5530a15efa4f
+                  - generic [ref=f7e659]: "#57"
+                  - generic [ref=f7e660]: ▲
+                  - generic [ref=f7e661]:
+                    - generic [ref=f7e662]: Toba Village inn
+                    - generic [ref=f7e663]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e664]: 41,0
+              - listitem [ref=f7e665]:
+                - link "#58 ▲ Pemandian alam Bah Damanik Simalungun · Harga & Transparansi Pungutan 40,8" [ref=f7e666] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_0935baa9bee95a
+                  - generic [ref=f7e667]: "#58"
+                  - generic [ref=f7e668]: ▲
+                  - generic [ref=f7e669]:
+                    - generic [ref=f7e670]: Pemandian alam Bah Damanik
+                    - generic [ref=f7e671]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=f7e672]: 40,8
+              - listitem [ref=f7e673]:
+                - link "#59 ▲ Lago Hotel & Resto Toba · Harga & Transparansi Pungutan 40,8" [ref=f7e674] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_7a4339b1f2cb21
+                  - generic [ref=f7e675]: "#59"
+                  - generic [ref=f7e676]: ▲
+                  - generic [ref=f7e677]:
+                    - generic [ref=f7e678]: Lago Hotel & Resto
+                    - generic [ref=f7e679]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e680]: 40,8
+              - listitem [ref=f7e681]:
+                - link "#60 ▲ OYO 90645 Karisma Residence Toba · Harga & Transparansi Pungutan 40,6" [ref=f7e682] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_de867f8c23f291
+                  - generic [ref=f7e683]: "#60"
+                  - generic [ref=f7e684]: ▲
+                  - generic [ref=f7e685]:
+                    - generic [ref=f7e686]: OYO 90645 Karisma Residence
+                    - generic [ref=f7e687]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e688]: 40,6
+              - listitem [ref=f7e689]:
+                - link "#61 ▲ Hotel and Restaurant Singgalang Simalungun · Harga & Transparansi Pungutan 40,4" [ref=f7e690] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_593242382d0e0e
+                  - generic [ref=f7e691]: "#61"
+                  - generic [ref=f7e692]: ▲
+                  - generic [ref=f7e693]:
+                    - generic [ref=f7e694]: Hotel and Restaurant Singgalang
+                    - generic [ref=f7e695]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=f7e696]: 40,4
+              - listitem [ref=f7e697]:
+                - link "#62 ▲ Damar Toba ~ Lakeside Eatery & Stay Toba · Harga & Transparansi Pungutan 40,2" [ref=f7e698] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_6573b1b10e2adf
+                  - generic [ref=f7e699]: "#62"
+                  - generic [ref=f7e700]: ▲
+                  - generic [ref=f7e701]:
+                    - generic [ref=f7e702]: Damar Toba ~ Lakeside Eatery & Stay
+                    - generic [ref=f7e703]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e704]: 40,2
+              - listitem [ref=f7e705]:
+                - link "#63 ▲ Pantai Batuhoda Samosir · Harga & Transparansi Pungutan 40,2" [ref=f7e706] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_a6ea9b9ff638cb
+                  - generic [ref=f7e707]: "#63"
+                  - generic [ref=f7e708]: ▲
+                  - generic [ref=f7e709]:
+                    - generic [ref=f7e710]: Pantai Batuhoda
+                    - generic [ref=f7e711]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e712]: 40,2
+              - listitem [ref=f7e713]:
+                - link "#64 ▲ Rumah Makan \"PONDOK KAREN\" Simalungun · Harga & Transparansi Pungutan 40,2" [ref=f7e714] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_a1b2f8c9199b48
+                  - generic [ref=f7e715]: "#64"
+                  - generic [ref=f7e716]: ▲
+                  - generic [ref=f7e717]:
+                    - generic [ref=f7e718]: Rumah Makan "PONDOK KAREN"
+                    - generic [ref=f7e719]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=f7e720]: 40,2
+              - listitem [ref=f7e721]:
+                - link "#65 ▲ Museum Batak T.B. Silalahi Center Toba · Harga & Transparansi Pungutan 40,1" [ref=f7e722] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_23d4e69eacd91a
+                  - generic [ref=f7e723]: "#65"
+                  - generic [ref=f7e724]: ▲
+                  - generic [ref=f7e725]:
+                    - generic [ref=f7e726]: Museum Batak T.B. Silalahi Center
+                    - generic [ref=f7e727]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e728]: 40,1
+              - listitem [ref=f7e729]:
+                - link "#66 ▲ Pantai Parparean 2 Toba · Harga & Transparansi Pungutan 39,8" [ref=f7e730] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_f11b581e065b18
+                  - generic [ref=f7e731]: "#66"
+                  - generic [ref=f7e732]: ▲
+                  - generic [ref=f7e733]:
+                    - generic [ref=f7e734]: Pantai Parparean 2
+                    - generic [ref=f7e735]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e736]: 39,8
+              - listitem [ref=f7e737]:
+                - link "#67 ▲ Thyesza Hotel Resort Samosir · Harga & Transparansi Pungutan 39,8" [ref=f7e738] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_90ab019ff85f54
+                  - generic [ref=f7e739]: "#67"
+                  - generic [ref=f7e740]: ▲
+                  - generic [ref=f7e741]:
+                    - generic [ref=f7e742]: Thyesza Hotel Resort
+                    - generic [ref=f7e743]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e744]: 39,8
+              - listitem [ref=f7e745]:
+                - link "#68 ▲ Alyssa Restaurant Pizza Samosir · Harga & Transparansi Pungutan 39,8" [ref=f7e746] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_b19437f41d7a0c
+                  - generic [ref=f7e747]: "#68"
+                  - generic [ref=f7e748]: ▲
+                  - generic [ref=f7e749]:
+                    - generic [ref=f7e750]: Alyssa Restaurant Pizza
+                    - generic [ref=f7e751]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e752]: 39,8
+              - listitem [ref=f7e753]:
+                - link "#69 ▲ SIPPIN Toba · Pelayanan Petugas 39,7" [ref=f7e754] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_106fe6c6f8369a
+                  - generic [ref=f7e755]: "#69"
+                  - generic [ref=f7e756]: ▲
+                  - generic [ref=f7e757]:
+                    - generic [ref=f7e758]: SIPPIN
+                    - generic [ref=f7e759]: Toba · Pelayanan Petugas
+                  - generic [ref=f7e760]: 39,7
+              - listitem [ref=f7e761]:
+                - link "#70 ▲ Warung Bikers Parapat Simalungun · Harga & Transparansi Pungutan 39,6" [ref=f7e762] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_4aa2b42204126f
+                  - generic [ref=f7e763]: "#70"
+                  - generic [ref=f7e764]: ▲
+                  - generic [ref=f7e765]:
+                    - generic [ref=f7e766]: Warung Bikers Parapat
+                    - generic [ref=f7e767]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=f7e768]: 39,6
+              - listitem [ref=f7e769]:
+                - link "#71 ▲ Hotel Nabasa Toba · Harga & Transparansi Pungutan 39,1" [ref=f7e770] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_684d6c2c3c5fb3
+                  - generic [ref=f7e771]: "#71"
+                  - generic [ref=f7e772]: ▲
+                  - generic [ref=f7e773]:
+                    - generic [ref=f7e774]: Hotel Nabasa
+                    - generic [ref=f7e775]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e776]: 39,1
+              - listitem [ref=f7e777]:
+                - link "#72 ▲ Tepi Danau Bistro Toba · Pelayanan Petugas 38,9" [ref=f7e778] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_b48d3b4051ee69
+                  - generic [ref=f7e779]: "#72"
+                  - generic [ref=f7e780]: ▲
+                  - generic [ref=f7e781]:
+                    - generic [ref=f7e782]: Tepi Danau Bistro
+                    - generic [ref=f7e783]: Toba · Pelayanan Petugas
+                  - generic [ref=f7e784]: 38,9
+              - listitem [ref=f7e785]:
+                - link "#73 ▲ Batu lihi star Simalungun · Harga & Transparansi Pungutan 38,9" [ref=f7e786] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_71e9bc3befc50d
+                  - generic [ref=f7e787]: "#73"
+                  - generic [ref=f7e788]: ▲
+                  - generic [ref=f7e789]:
+                    - generic [ref=f7e790]: Batu lihi star
+                    - generic [ref=f7e791]: Simalungun · Harga & Transparansi Pungutan
+                  - generic [ref=f7e792]: 38,9
+              - listitem [ref=f7e793]:
+                - link "#74 ▲ Manigom Nauli Simalungun · Akses & Kondisi Rute 38,8" [ref=f7e794] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_fd9dc77aa05930
+                  - generic [ref=f7e795]: "#74"
+                  - generic [ref=f7e796]: ▲
+                  - generic [ref=f7e797]:
+                    - generic [ref=f7e798]: Manigom Nauli
+                    - generic [ref=f7e799]: Simalungun · Akses & Kondisi Rute
+                  - generic [ref=f7e800]: 38,8
+              - listitem [ref=f7e801]:
+                - link "#75 ▲ Carolina Hotel Samosir · Toilet & Sanitasi 38,5" [ref=f7e802] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_a43c24fa16f5a7
+                  - generic [ref=f7e803]: "#75"
+                  - generic [ref=f7e804]: ▲
+                  - generic [ref=f7e805]:
+                    - generic [ref=f7e806]: Carolina Hotel
+                    - generic [ref=f7e807]: Samosir · Toilet & Sanitasi
+                  - generic [ref=f7e808]: 38,5
+              - listitem [ref=f7e809]:
+                - link "#76 ▲ Bagus Bay Guest House Samosir · Perawatan & Kerusakan 38,2" [ref=f7e810] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_07475b028ff995
+                  - generic [ref=f7e811]: "#76"
+                  - generic [ref=f7e812]: ▲
+                  - generic [ref=f7e813]:
+                    - generic [ref=f7e814]: Bagus Bay Guest House
+                    - generic [ref=f7e815]: Samosir · Perawatan & Kerusakan
+                  - generic [ref=f7e816]: 38,2
+              - listitem [ref=f7e817]:
+                - link "#77 ▲ Bukit Sipatungan Samosir · Akses & Kondisi Rute 38,1" [ref=f7e818] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_5ed1c50f346ad1
+                  - generic [ref=f7e819]: "#77"
+                  - generic [ref=f7e820]: ▲
+                  - generic [ref=f7e821]:
+                    - generic [ref=f7e822]: Bukit Sipatungan
+                    - generic [ref=f7e823]: Samosir · Akses & Kondisi Rute
+                  - generic [ref=f7e824]: 38,1
+              - listitem [ref=f7e825]:
+                - link "#78 ▲ Pusat Informasi Toba Caldera UNESCO Global Geopark Samosir · Perawatan & Kerusakan 37,9" [ref=f7e826] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_0ff99a3eeafd42
+                  - generic [ref=f7e827]: "#78"
+                  - generic [ref=f7e828]: ▲
+                  - generic [ref=f7e829]:
+                    - generic [ref=f7e830]: Pusat Informasi Toba Caldera UNESCO Global Geopark
+                    - generic [ref=f7e831]: Samosir · Perawatan & Kerusakan
+                  - generic [ref=f7e832]: 37,9
+              - listitem [ref=f7e833]:
+                - link "#79 ▲ Mutiara Balige Hotel Toba · Akses & Kondisi Rute 37,7" [ref=f7e834] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_b6c6c549da0c3c
+                  - generic [ref=f7e835]: "#79"
+                  - generic [ref=f7e836]: ▲
+                  - generic [ref=f7e837]:
+                    - generic [ref=f7e838]: Mutiara Balige Hotel
+                    - generic [ref=f7e839]: Toba · Akses & Kondisi Rute
+                  - generic [ref=f7e840]: 37,7
+              - listitem [ref=f7e841]:
+                - link "#80 ▲ Rumah makan safitri Toba · Pelayanan Petugas 37,7" [ref=f7e842] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_19b6b457708d3b
+                  - generic [ref=f7e843]: "#80"
+                  - generic [ref=f7e844]: ▲
+                  - generic [ref=f7e845]:
+                    - generic [ref=f7e846]: Rumah makan safitri
+                    - generic [ref=f7e847]: Toba · Pelayanan Petugas
+                  - generic [ref=f7e848]: 37,7
+              - listitem [ref=f7e849]:
+                - link "#81 ▲ Tabo Cottages Samosir · Toilet & Sanitasi 37,6" [ref=f7e850] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_72e1f867da00e7
+                  - generic [ref=f7e851]: "#81"
+                  - generic [ref=f7e852]: ▲
+                  - generic [ref=f7e853]:
+                    - generic [ref=f7e854]: Tabo Cottages
+                    - generic [ref=f7e855]: Samosir · Toilet & Sanitasi
+                  - generic [ref=f7e856]: 37,6
+              - listitem [ref=f7e857]:
+                - link "#82 ▲ RAP Hotel Balige Toba · Toilet & Sanitasi 37,5" [ref=f7e858] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_fa8455811b5878
+                  - generic [ref=f7e859]: "#82"
+                  - generic [ref=f7e860]: ▲
+                  - generic [ref=f7e861]:
+                    - generic [ref=f7e862]: RAP Hotel Balige
+                    - generic [ref=f7e863]: Toba · Toilet & Sanitasi
+                  - generic [ref=f7e864]: 37,5
+              - listitem [ref=f7e865]:
+                - link "#83 ▲ Grand Mareda Hotel Toba · Harga & Transparansi Pungutan 37,4" [ref=f7e866] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_d484e96b47a427
+                  - generic [ref=f7e867]: "#83"
+                  - generic [ref=f7e868]: ▲
+                  - generic [ref=f7e869]:
+                    - generic [ref=f7e870]: Grand Mareda Hotel
+                    - generic [ref=f7e871]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e872]: 37,4
+              - listitem [ref=f7e873]:
+                - link "#84 ▲ Vany Villa Balige Toba · Harga & Transparansi Pungutan 37,1" [ref=f7e874] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_c6e0c4e24360cc
+                  - generic [ref=f7e875]: "#84"
+                  - generic [ref=f7e876]: ▲
+                  - generic [ref=f7e877]:
+                    - generic [ref=f7e878]: Vany Villa Balige
+                    - generic [ref=f7e879]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e880]: 37,1
+              - listitem [ref=f7e881]:
+                - link "#85 ▲ PALITO COFFEE AND RESTO Samosir · Pelayanan Petugas 36,8" [ref=f7e882] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_7bede610e94fc0
+                  - generic [ref=f7e883]: "#85"
+                  - generic [ref=f7e884]: ▲
+                  - generic [ref=f7e885]:
+                    - generic [ref=f7e886]: PALITO COFFEE AND RESTO
+                    - generic [ref=f7e887]: Samosir · Pelayanan Petugas
+                  - generic [ref=f7e888]: 36,8
+              - listitem [ref=f7e889]:
+                - link "#86 ▲ RM BPK MAN KENA (bang gurning) Samosir · Pelayanan Petugas 36,5" [ref=f7e890] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_0de40a97fc9b0c
+                  - generic [ref=f7e891]: "#86"
+                  - generic [ref=f7e892]: ▲
+                  - generic [ref=f7e893]:
+                    - generic [ref=f7e894]: RM BPK MAN KENA (bang gurning)
+                    - generic [ref=f7e895]: Samosir · Pelayanan Petugas
+                  - generic [ref=f7e896]: 36,5
+              - listitem [ref=f7e897]:
+                - link "#87 ▲ Orari Restaurant Samosir · Harga & Transparansi Pungutan 36,2" [ref=f7e898] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_16ba8b495a6757
+                  - generic [ref=f7e899]: "#87"
+                  - generic [ref=f7e900]: ▲
+                  - generic [ref=f7e901]:
+                    - generic [ref=f7e902]: Orari Restaurant
+                    - generic [ref=f7e903]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e904]: 36,2
+              - listitem [ref=f7e905]:
+                - link "#88 ▲ Warung Kopi Synergy,Samosir Samosir · Pelayanan Petugas 36,2" [ref=f7e906] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_acaf0a7187772f
+                  - generic [ref=f7e907]: "#88"
+                  - generic [ref=f7e908]: ▲
+                  - generic [ref=f7e909]:
+                    - generic [ref=f7e910]: Warung Kopi Synergy,Samosir
+                    - generic [ref=f7e911]: Samosir · Pelayanan Petugas
+                  - generic [ref=f7e912]: 36,2
+              - listitem [ref=f7e913]:
+                - link "#89 ▲ Pudan Residence Toba · Harga & Transparansi Pungutan 36,1" [ref=f7e914] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_629cdfd992fdbc
+                  - generic [ref=f7e915]: "#89"
+                  - generic [ref=f7e916]: ▲
+                  - generic [ref=f7e917]:
+                    - generic [ref=f7e918]: Pudan Residence
+                    - generic [ref=f7e919]: Toba · Harga & Transparansi Pungutan
+                  - generic [ref=f7e920]: 36,1
+              - listitem [ref=f7e921]:
+                - link "#90 ▲ Sopo Guru Tatea Bulan | ᯘᯬᯇᯬ ᯎᯮᯒᯮ ᯖᯖᯩᯀ ᯅᯮᯞᯉ᯲ Samosir · Parkir 36,0" [ref=f7e922] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_03ea8a4bf1095a
+                  - generic [ref=f7e923]: "#90"
+                  - generic [ref=f7e924]: ▲
+                  - generic [ref=f7e925]:
+                    - generic [ref=f7e926]: Sopo Guru Tatea Bulan | ᯘᯬᯇᯬ ᯎᯮᯒᯮ ᯖᯖᯩᯀ ᯅᯮᯞᯉ᯲
+                    - generic [ref=f7e927]: Samosir · Parkir
+                  - generic [ref=f7e928]: 36,0
+              - listitem [ref=f7e929]:
+                - link "#91 ▲ Solu Bolon Cafe and Resto Samosir · Pelayanan Petugas 35,9" [ref=f7e930] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_79e3bfc718b478
+                  - generic [ref=f7e931]: "#91"
+                  - generic [ref=f7e932]: ▲
+                  - generic [ref=f7e933]:
+                    - generic [ref=f7e934]: Solu Bolon Cafe and Resto
+                    - generic [ref=f7e935]: Samosir · Pelayanan Petugas
+                  - generic [ref=f7e936]: 35,9
+              - listitem [ref=f7e937]:
+                - link "#92 ▲ Menara Pandang Simanindo Samosir · Akses & Kondisi Rute 35,9" [ref=f7e938] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_1bc9e3c06a3fcf
+                  - generic [ref=f7e939]: "#92"
+                  - generic [ref=f7e940]: ▲
+                  - generic [ref=f7e941]:
+                    - generic [ref=f7e942]: Menara Pandang Simanindo
+                    - generic [ref=f7e943]: Samosir · Akses & Kondisi Rute
+                  - generic [ref=f7e944]: 35,9
+              - listitem [ref=f7e945]:
+                - link "#93 ▲ Romlan Guesthouse Samosir · Harga & Transparansi Pungutan 35,7" [ref=f7e946] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_9aa75d0124fc9d
+                  - generic [ref=f7e947]: "#93"
+                  - generic [ref=f7e948]: ▲
+                  - generic [ref=f7e949]:
+                    - generic [ref=f7e950]: Romlan Guesthouse
+                    - generic [ref=f7e951]: Samosir · Harga & Transparansi Pungutan
+                  - generic [ref=f7e952]: 35,7
+              - listitem [ref=f7e953]:
+                - link "#94 ▲ Tugu Toga Aritonang Tapanuli Utara · Akses & Kondisi Rute 35,6" [ref=f7e954] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_5b726d1fc5fc30
+                  - generic [ref=f7e955]: "#94"
+                  - generic [ref=f7e956]: ▲
+                  - generic [ref=f7e957]:
+                    - generic [ref=f7e958]: Tugu Toga Aritonang
+                    - generic [ref=f7e959]: Tapanuli Utara · Akses & Kondisi Rute
+                  - generic [ref=f7e960]: 35,6
+              - listitem [ref=f7e961]:
+                - link "#95 ▲ The Deck Balige Restaurant & Lounge Toba · Pelayanan Petugas 35,6" [ref=f7e962] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_742cca180db8de
+                  - generic [ref=f7e963]: "#95"
+                  - generic [ref=f7e964]: ▲
+                  - generic [ref=f7e965]:
+                    - generic [ref=f7e966]: The Deck Balige Restaurant & Lounge
+                    - generic [ref=f7e967]: Toba · Pelayanan Petugas
+                  - generic [ref=f7e968]: 35,6
+              - listitem [ref=f7e969]:
+                - link "#96 ▲ PENATAPAN PARHALLOW SIGARANTUNG Samosir · Kenyamanan 35,3" [ref=f7e970] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_23a01de231f2a8
+                  - generic [ref=f7e971]: "#96"
+                  - generic [ref=f7e972]: ▲
+                  - generic [ref=f7e973]:
+                    - generic [ref=f7e974]: PENATAPAN PARHALLOW SIGARANTUNG
+                    - generic [ref=f7e975]: Samosir · Kenyamanan
+                  - generic [ref=f7e976]: 35,3
+              - listitem [ref=f7e977]:
+                - link "#97 ▲ Air Terjun Situmurun Toba · Akses & Kondisi Rute 35,1" [ref=f7e978] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_691b8124b29cf9
+                  - generic [ref=f7e979]: "#97"
+                  - generic [ref=f7e980]: ▲
+                  - generic [ref=f7e981]:
+                    - generic [ref=f7e982]: Air Terjun Situmurun
+                    - generic [ref=f7e983]: Toba · Akses & Kondisi Rute
+                  - generic [ref=f7e984]: 35,1
+              - listitem [ref=f7e985]:
+                - link "#98 ● Horas Vegetarian Restaurant Samosir · Pelayanan Petugas 34,8" [ref=f7e986] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_e24117add6db38
+                  - generic [ref=f7e987]: "#98"
+                  - generic [ref=f7e988]: ●
+                  - generic [ref=f7e989]:
+                    - generic [ref=f7e990]: Horas Vegetarian Restaurant
+                    - generic [ref=f7e991]: Samosir · Pelayanan Petugas
+                  - generic [ref=f7e992]: 34,8
+              - listitem [ref=f7e993]:
+                - link "#99 ● Pemandian Air Panas Rianiate Dairi · Kenyamanan 31,8" [ref=f7e994] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_5e7d23b00bfec8
+                  - generic [ref=f7e995]: "#99"
+                  - generic [ref=f7e996]: ●
+                  - generic [ref=f7e997]:
+                    - generic [ref=f7e998]: Pemandian Air Panas Rianiate
+                    - generic [ref=f7e999]: Dairi · Kenyamanan
+                  - generic [ref=f7e1000]: 31,8
+              - listitem [ref=f7e1001]:
+                - link "#100 ● Pagar Batu Resto & PENGINAPAN Samosir · Pelayanan Petugas 31,8" [ref=f7e1002] [cursor=pointer]:
+                  - /url: /destinasi/dest_resto_734410e2e13ceb
+                  - generic [ref=f7e1003]: "#100"
+                  - generic [ref=f7e1004]: ●
+                  - generic [ref=f7e1005]:
+                    - generic [ref=f7e1006]: Pagar Batu Resto & PENGINAPAN
+                    - generic [ref=f7e1007]: Samosir · Pelayanan Petugas
+                  - generic [ref=f7e1008]: 31,8
+              - listitem [ref=f7e1009]:
+                - link "#101 ● Hotel Santo Djaya Samosir · Kebersihan 31,3" [ref=f7e1010] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_9f521fd4adea29
+                  - generic [ref=f7e1011]: "#101"
+                  - generic [ref=f7e1012]: ●
+                  - generic [ref=f7e1013]:
+                    - generic [ref=f7e1014]: Hotel Santo Djaya
+                    - generic [ref=f7e1015]: Samosir · Kebersihan
+                  - generic [ref=f7e1016]: 31,3
+              - listitem [ref=f7e1017]:
+                - link "#102 ● TOPI TAO HOMESTAY PANGURURAN (KAWASAN WATERFRONT CITY) Samosir · Pemandangan 31,2" [ref=f7e1018] [cursor=pointer]:
+                  - /url: /destinasi/dest_hotel_61f0b71788612a
+                  - generic [ref=f7e1019]: "#102"
+                  - generic [ref=f7e1020]: ●
+                  - generic [ref=f7e1021]:
+                    - generic [ref=f7e1022]: TOPI TAO HOMESTAY PANGURURAN (KAWASAN WATERFRONT CITY)
+                    - generic [ref=f7e1023]: Samosir · Pemandangan
+                  - generic [ref=f7e1024]: 31,2
+              - listitem [ref=f7e1025]:
+                - link "#103 ● Bukit Tara Bunga Toba · Pemandangan 30,9" [ref=f7e1026] [cursor=pointer]:
+                  - /url: /destinasi/dest_wisata_7ca308c22b423e
+                  - generic [ref=f7e1027]: "#103"
+                  - generic [ref=f7e1028]: ●
+                  - generic [ref=f7e1029]:
+                    - generic [ref=f7e1030]: Bukit Tara Bunga
+                    - generic [ref=f7e1031]: Toba · Pemandangan
+                  - generic [ref=f7e1032]: 30,9
+          - paragraph [ref=f7e1034]: Priority memakai complaint frequency, confidence, persistence, dan exposure. Severity, facility gap, serta feasibility unavailable dan dinormalisasi keluar.
+  - contentinfo [ref=f7e1035]:
+    - paragraph [ref=f7e1036]:
+      - strong [ref=f7e1037]: SIPATURE
+      - text: — AI early-warning and intervention system for sustainable tourism quality. Prototipe Del AI Hackathon 2026.
+    - paragraph [ref=f7e1038]: "Dashboard memakai SIPATURE Intelligence: TF-IDF aspect, lexical polarity fallback, Bayesian smoothing, dan missing-aware priority. Reported issue bukan vonis kondisi lapangan. Evidence text ditahan pending privacy review dan identitas reviewer tidak masuk bundle aplikasi."
+  - alert [ref=f7e1039]

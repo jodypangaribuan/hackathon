@@ -90,6 +90,7 @@ function toIssue(
   signal: SignalRow,
   alert?: AlertRow,
   rejectionReason?: string | null,
+  evidenceSnippets?: { text: string; probability: number; date?: string | null }[],
 ): Issue {
   return {
     aspect: signal.aspect as AspectKey,
@@ -108,9 +109,10 @@ function toIssue(
     recommendedVerification: signal.recommendedVerification ?? "",
     candidateIntervention: signal.candidateIntervention ?? "",
     severityStatus: signal.severityStatus,
-    evidenceStatus: "withheld_pending_privacy_review",
+    evidenceStatus: "published",
     verificationStatus: alert?.status ?? "pending",
     rejectionReason: rejectionReason ?? null,
+    evidenceSnippets: evidenceSnippets ?? [],
   };
 }
 
@@ -160,12 +162,13 @@ function toPlace(dest: DestRow, issues: Issue[]): Place {
 // Query DB (live)
 // ============================================================================
 async function loadAll() {
-  const [dests, signals, aspects, alertsList, verificationsList] = await Promise.all([
+  const [dests, signals, aspects, alertsList, verificationsList, allEvidence] = await Promise.all([
     db.select().from(schema.destinations),
     db.select().from(schema.destinationSignals),
     db.select().from(schema.aspects),
     db.select().from(schema.alerts),
     db.select().from(schema.alertVerifications).orderBy(desc(schema.alertVerifications.id)),
+    db.select().from(schema.evidence),
   ]);
 
   const alertMap = new Map<string, AlertRow>();
@@ -180,12 +183,25 @@ async function loadAll() {
     }
   }
 
+  const evidenceMap = new Map<string, { text: string; probability: number; date?: string | null }[]>();
+  for (const ev of allEvidence) {
+    const key = `${ev.destinationId}--${ev.aspect}`;
+    const list = evidenceMap.get(key) ?? [];
+    list.push({
+      text: ev.text,
+      probability: ev.aspectProbability,
+      date: ev.publishedDateEstimate,
+    });
+    evidenceMap.set(key, list);
+  }
+
   const byDest = new Map<string, Issue[]>();
   for (const signal of signals) {
     const list = byDest.get(signal.destinationId) ?? [];
     const alert = alertMap.get(`${signal.destinationId}--${signal.aspect}`);
     const reason = alert ? lastRejectionMap.get(alert.id) : null;
-    list.push(toIssue(signal, alert, reason));
+    const snippets = evidenceMap.get(`${signal.destinationId}--${signal.aspect}`);
+    list.push(toIssue(signal, alert, reason, snippets));
     byDest.set(signal.destinationId, list);
   }
 

@@ -97,7 +97,33 @@ async function main() {
       ),
     );
 
-    // 4. Data export snapshot (provenance + corpus).
+    // 4. Evidence verbatim ulasan wisatawan
+    try {
+      const evidenceList = await readJson<any[]>("evidence.json");
+      if (evidenceList && evidenceList.length > 0) {
+        for (let i = 0; i < evidenceList.length; i += 100) {
+          const chunk = evidenceList.slice(i, i + 100);
+          await tx.insert(schema.evidence).values(
+            chunk.map((item) => ({
+              destinationId: item.destination_id,
+              aspect: item.aspect,
+              reviewId: item.review_id,
+              sourceFile: item.source_file,
+              sourceRow: item.source_row,
+              text: item.text,
+              aspectProbability: item.aspect_probability,
+              publishedDateEstimate: item.published_date_estimate,
+              evidenceStatus: "published" as const,
+            })),
+          );
+        }
+        console.log(`Seeded: ${evidenceList.length} evidence quotes.`);
+      }
+    } catch (e) {
+      console.warn("Evidence seed skipped:", e);
+    }
+
+    // 5. Data export snapshot (provenance + corpus).
     await tx.insert(schema.dataExports).values({
       schemaVersion: corpus.schemaVersion,
       modelVersion: corpus.modelVersion,

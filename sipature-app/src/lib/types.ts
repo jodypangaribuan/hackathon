@@ -25,6 +25,13 @@ export interface PriorityComponent {
   contribution: number;
 }
 
+export interface EvidenceSnippet {
+  id?: number;
+  text: string;
+  probability: number;
+  date?: string | null;
+}
+
 export interface Issue {
   aspect: AspectKey;
   mentionCount: number;
@@ -41,9 +48,10 @@ export interface Issue {
   recommendedVerification: string;
   candidateIntervention: string;
   severityStatus: "unavailable_no_supported_model";
-  evidenceStatus: "withheld_pending_privacy_review";
+  evidenceStatus: "withheld_pending_privacy_review" | "published";
   verificationStatus?: "pending" | "confirmed" | "rejected" | "uncertain";
   rejectionReason?: string | null;
+  evidenceSnippets?: EvidenceSnippet[];
 }
 
 export interface Place {

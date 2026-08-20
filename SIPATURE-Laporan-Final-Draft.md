@@ -438,18 +438,12 @@ Data SIPATURE dibagi lima lapisan dengan tingkat akses berbeda. Lapisan mentah h
 
 **Interpretasi Tabel 13.** Klasifikasi ini membuktikan kepatuhan *privacy-by-design*: data mentah yang memuat identitas personal disimpan terisolasi di sisi server/audit, sementara data yang disajikan ke publik telah disanitasi penuh sehingga tidak ada kebocoran data pribadi.
 
-![Matriks akses data terbatas](docs/figures/diagrams/restricted-data-policy.png)
-
-**Gambar 9. Matriks akses tiga peran × lima komponen data.**
-
-**Interpretasi Gambar 9.** Empat komponen terbatas (`raw`, `clean`, *annotation*, *evidence*) hanya memiliki hak akses `Admin` bagi tim ML, sedangkan publik dan pengelola berstatus `None`. Hanya **safe aggregate** yang dapat dibaca (`Read`) oleh publik (sel yang ditandai aksen = batas publikasi). Matriks ini membuktikan bahwa aplikasi publik tidak pernah menerima data identitas reviewer.
-
 Matriks izin akses antar peran pengguna diatur dengan batasan yang tegas:
-- **Publik / juri** → hanya agregat aman (*read*).
-- **Pengelola destinasi** → agregat aman + workflow verifikasi.
-- **Tim Data/ML** → seluruh artefak (*admin*), termasuk raw/annotation/evidence untuk audit.
+- **Publik / juri** → agregat analitik dan bukti ulasan aman (*read*).
+- **Pengelola destinasi** → agregat analitik, bukti ulasan, dan alur kerja verifikasi lapangan (*verify & action*).
+- **Tim Data/ML** → seluruh artefak (*admin*), termasuk raw data, anotasi, dan pipeline model untuk audit.
 
-Prinsip inti: identitas reviewer, review ID, source file/row, teks *evidence*, dan prediksi tingkat *review* **tidak pernah** masuk *bundle* aplikasi publik. *Evidence* ditahan sampai pemeriksaan privasi dan hak akses selesai; generator ekspor memverifikasi *forbidden privacy keys* sebelum publikasi (lihat `docs/restricted-data-policy.md`).
+Prinsip inti: identitas personal reviewer (seperti profil pengguna atau email) tidak pernah dipublikasikan secara terbuka untuk menjaga privasi wisatawan, sementara konten kutipan ulasan dapat ditinjau oleh pengelola untuk memverifikasi keabsahan keluhan fasilitas fisik di lapangan.
 
 ---
 

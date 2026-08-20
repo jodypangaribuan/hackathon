@@ -130,11 +130,10 @@ done
 
 # 7. Eksekusi Database Seeding
 echo "INFO: Menjalankan database seeding (destinasi, sinyal, dan ulasan)..."
-docker compose -f sipature-app/docker-compose.yml exec -T web npm run db:seed 2>/dev/null || \
-docker compose -f sipature-app/docker-compose.yml exec -T martahuta-web npm run db:seed 2>/dev/null || {
-  echo "WARNING: Percobaan seeding pertama belum selesai, mencoba ulang dalam 3 detik..."
+docker compose -f sipature-app/docker-compose.yml exec -T web node scripts/seed-db.mjs || {
+  echo "WARNING: Percobaan pertama belum berhasil, mencoba ulang..."
   sleep 3
-  docker compose -f sipature-app/docker-compose.yml exec -T web npm run db:seed || true
+  docker compose -f sipature-app/docker-compose.yml exec -T web node scripts/seed-db.mjs || true
 }
 
 # 8. Verifikasi Endpoint Layanan

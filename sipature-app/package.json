@@ -10,7 +10,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "data:generate": "node scripts/generate-product-data.mjs",
-    "db:seed": "tsx scripts/seed-db.ts",
+    "db:seed": "node scripts/seed-db.mjs",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:pull": "drizzle-kit pull",

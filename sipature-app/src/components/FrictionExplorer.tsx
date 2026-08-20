@@ -1,6 +1,9 @@
 "use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { ChevronDown, MapPin } from "lucide-react";
 import type { AspectKey, PlaceKind } from "@/lib/types";
 import {
   ASPECT_LABEL,
@@ -12,8 +15,9 @@ import {
 import { Card, Empty, LevelBadge, Note, SectionTitle } from "@/components/ui";
 import TobaMap, { type MapPoint } from "@/components/TobaMap";
 import { AspectIcon } from "@/components/AppIcon";
-import { ChevronDown } from "lucide-react";
+
 export type MapPlace = MapPoint;
+
 const KIND: Record<PlaceKind, string> = {
   wisata: "Wisata",
   kuliner: "Kuliner",
@@ -28,12 +32,13 @@ export default function FrictionExplorer({
   places: MapPlace[];
   kabupatenList: string[];
 }) {
+  const router = useRouter();
   const [kabupaten, setKabupaten] = useState("");
   const [kind, setKind] = useState<PlaceKind | "">("");
   const [aspect, setAspect] = useState<AspectKey | "">("");
   const [query, setQuery] = useState("");
   const [showInsufficient, setShowInsufficient] = useState(true);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+
   const filtered = useMemo(
     () =>
       places.filter((place) => {
@@ -48,6 +53,7 @@ export default function FrictionExplorer({
       }),
     [places, kabupaten, kind, aspect, query, showInsufficient],
   );
+
   const ranked = useMemo(
     () =>
       filtered
@@ -55,7 +61,11 @@ export default function FrictionExplorer({
         .sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0)),
     [filtered],
   );
-  const selected = places.find((place) => place.id === selectedId) ?? null;
+
+  const handleSelect = (id: string) => {
+    router.push(`/destinasi/${id}`);
+  };
+
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_360px]">
       <div className="min-w-0">
@@ -66,14 +76,14 @@ export default function FrictionExplorer({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Cari nama tempat…"
-              className="min-w-[160px] flex-1 rounded-md border bg-transparent px-2.5 py-1.5 text-[13px]"
+              className="min-w-[160px] flex-1 rounded-md border bg-transparent px-2.5 py-1.5 text-[13px] outline-none placeholder:text-muted focus:border-ink"
               style={{ borderColor: "var(--hairline)" }}
             />
             <div className="relative">
               <select
                 value={kabupaten}
                 onChange={(e) => setKabupaten(e.target.value)}
-                className="appearance-none rounded-md border bg-surface py-1.5 pl-2 pr-8 text-[13px]"
+                className="appearance-none rounded-md border bg-surface py-1.5 pl-2 pr-8 text-[13px] outline-none"
                 style={{ borderColor: "var(--hairline)" }}
               >
                 <option value="">Semua kabupaten</option>
@@ -92,7 +102,7 @@ export default function FrictionExplorer({
               <select
                 value={kind}
                 onChange={(e) => setKind(e.target.value as PlaceKind | "")}
-                className="appearance-none rounded-md border bg-surface py-1.5 pl-2 pr-8 text-[13px]"
+                className="appearance-none rounded-md border bg-surface py-1.5 pl-2 pr-8 text-[13px] outline-none"
                 style={{ borderColor: "var(--hairline)" }}
               >
                 <option value="">Semua jenis</option>
@@ -113,7 +123,7 @@ export default function FrictionExplorer({
               <select
                 value={aspect}
                 onChange={(e) => setAspect(e.target.value as AspectKey | "")}
-                className="appearance-none rounded-md border bg-surface py-1.5 pl-2 pr-8 text-[13px]"
+                className="appearance-none rounded-md border bg-surface py-1.5 pl-2 pr-8 text-[13px] outline-none"
                 style={{ borderColor: "var(--hairline)" }}
               >
                 <option value="">Semua aspek</option>
@@ -130,85 +140,39 @@ export default function FrictionExplorer({
                 strokeWidth={1.8}
               />
             </div>
-            <label className="flex items-center gap-1.5 text-[12px] text-ink-2">
+            <label className="flex items-center gap-1.5 text-[12px] text-ink-2 cursor-pointer">
               <input
                 type="checkbox"
                 checked={showInsufficient}
                 onChange={(e) => setShowInsufficient(e.target.checked)}
+                className="rounded"
               />
-              Data tidak cukup
+              Data belum cukup
             </label>
             <span className="ml-auto text-[12px] text-muted">
               {num(filtered.length)} dari {num(places.length)}
             </span>
           </div>
         </Card>
+
+        {/* Interactive Map */}
         <Card className="overflow-hidden">
           <TobaMap
             points={filtered}
-            selectedId={selectedId}
-            onSelect={(id) =>
-              setSelectedId((current) => (current === id ? null : id))
-            }
-            heightClass="h-[420px] sm:h-[520px]"
+            onSelect={handleSelect}
+            heightClass="h-[460px] sm:h-[560px]"
           />
         </Card>
-        {selected ? (
-          <Card className="mt-3 p-4">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="text-[15px] font-semibold">{selected.name}</h3>
-                  <LevelBadge level={levelOf(selected.priority)} size="sm" />
-                </div>
-                <p className="mt-1 text-[12px] text-muted">
-                  {KIND[selected.kind]} · {selected.kabupaten} ·{" "}
-                  {num(selected.allReviewCount)} review bersih
-                  {selected.rank ? ` · prioritas #${selected.rank}` : ""}
-                </p>
-                <p className="mt-2 text-[12px] text-ink-2">
-                  {selected.topAspects.map((item) => (
-                    <span
-                      key={item}
-                      className="mr-3 inline-flex items-center gap-1"
-                    >
-                      <AspectIcon aspect={item} />
-                      {ASPECT_LABEL[item]}
-                    </span>
-                  ))}
-                </p>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="text-right">
-                  <div className="tabular text-[24px] font-semibold">
-                    {score(selected.priorityScore)}
-                  </div>
-                  <div className="text-[11px] text-muted">priority score</div>
-                </div>
-                <Link
-                  href={`/destinasi/${selected.id}`}
-                  className="rounded-md border px-3 py-1.5 text-[13px]"
-                  style={{ borderColor: "var(--hairline)" }}
-                >
-                  Buka rapor →
-                </Link>
-              </div>
-            </div>
-          </Card>
-        ) : (
-          <p className="mt-3 text-center text-[12px] text-muted">
-            Klik titik untuk melihat ringkasan.
-          </p>
-        )}
       </div>
+
+      {/* Sidebar Priority List */}
       <div>
         <Card className="p-4">
           <SectionTitle hint={`${num(ranked.length)} tempat`}>
             Prioritas Verifikasi
           </SectionTitle>
           <p className="mb-3 text-[12px] text-muted">
-            Urut menurut priority score SIPATURE Intelligence. Peringkat adalah
-            sinyal triase, bukan bukti kondisi lapangan.
+            Urut menurut priority score SIPATURE. Klik nama tempat untuk membuka lembar aksi.
           </p>
           {ranked.length ? (
             <ol className="thin-scroll max-h-[560px] space-y-1 overflow-y-auto">
@@ -216,17 +180,17 @@ export default function FrictionExplorer({
                 <li key={place.id}>
                   <Link
                     href={`/destinasi/${place.id}`}
-                    className="flex items-center gap-3 rounded-md border px-2.5 py-2"
+                    className="flex items-center gap-3 rounded-md border px-2.5 py-2 transition-colors hover:bg-surface-2 hover:border-ink/40"
                     style={{ borderColor: "var(--hairline)" }}
                   >
-                    <span className="w-8 text-right text-[12px] text-muted">
+                    <span className="w-8 text-right text-[12px] text-muted font-mono">
                       #{place.rank}
                     </span>
                     <span style={{ color: levelOf(place.priority).colorVar }}>
                       {levelOf(place.priority).icon}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-[13px] font-medium">
+                      <span className="block truncate text-[13px] font-medium text-ink">
                         {place.name}
                       </span>
                       <span className="block truncate text-[11px] text-muted">
@@ -236,7 +200,7 @@ export default function FrictionExplorer({
                           : ""}
                       </span>
                     </span>
-                    <span className="tabular text-[13px] font-semibold">
+                    <span className="tabular text-[13px] font-bold text-accent">
                       {score(place.priorityScore)}
                     </span>
                   </Link>
@@ -249,9 +213,7 @@ export default function FrictionExplorer({
         </Card>
         <div className="mt-3">
           <Note>
-            Priority memakai complaint frequency, confidence, persistence, dan
-            exposure. Severity, facility gap, serta feasibility unavailable dan
-            dinormalisasi keluar.
+            Sinyal prioritas dihitung dari frekuensi keluhan, tingkat keyakinan model, dan volume eksposur ulasan wisatawan.
           </Note>
         </div>
       </div>

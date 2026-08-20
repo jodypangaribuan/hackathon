@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIPATURE · Performa Deteksi per Aspek</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --paper: #f5f5f5;
+      --ink: #2d3142;
+      --muted: #4f5d75;
+      --soft: #7a8399;
+      --rule: rgba(45,49,66,0.12);
+      --accent: #eb6c36;
+      --accent-tint: rgba(235,108,54,0.08);
+      --sans: 'Geist', system-ui, sans-serif;
+      --serif: 'Instrument Serif', serif;
+      --mono: 'Geist Mono', ui-monospace, monospace;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1.5rem;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+    }
+    .frame {
+      width: 100%;
+      max-width: 1040px;
+    }
+    .eyebrow {
+      margin-bottom: 0.5rem;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 2vw + 0.75rem, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+    svg {
+      display: block;
+      width: 100%;
+      min-width: 920px;
+    }
+    .axis-text {
+      font-family: var(--mono);
+      font-size: 8.5px;
+      fill: var(--muted);
+    }
+    .label-title {
+      font-family: var(--sans);
+      font-size: 10.5px;
+      font-weight: 600;
+      fill: var(--ink);
+    }
+    .label-slug {
+      font-family: var(--mono);
+      font-size: 8px;
+      fill: var(--muted);
+    }
+    .score-text {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      font-weight: 600;
+      fill: var(--ink);
+    }
+    .support-text {
+      font-family: var(--mono);
+      font-size: 8px;
+      fill: var(--muted);
+    }
+    .macro-label {
+      font-family: var(--mono);
+      font-size: 8.5px;
+      font-weight: 600;
+      fill: var(--accent);
+    }
+    .footer-text {
+      font-family: var(--mono);
+      font-size: 8.5px;
+      fill: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main class="frame">
+    <p class="eyebrow">Horizontal Bar Breakdown · Diagram Design</p>
+    <h1>Sebaran performa F1 per 14 aspek pada benchmark evaluasi gold-v1</h1>
+
+    <svg viewBox="0 0 980 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="f1-title f1-desc">
+      <title id="f1-title">Performa Deteksi Macro F1 per Aspek SIPATURE</title>
+      <desc id="f1-desc">Grafik batang horizontal perbandingan skor F1 dan jumlah sampel pendukung (support) untuk seluruh 14 aspek deteksi ulasan wisata pada dataset gold-v1.</desc>
+      
+      <defs>
+        <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="0.8" fill="rgba(45,49,66,0.10)"/>
+        </pattern>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#f5f5f5"/>
+      <rect width="100%" height="100%" fill="url(#dots)" opacity="0.45"/>
+
+      <!-- ================= GRID & AXES (Origin x=230, max_x=830, w=600 for 1.0) ================= -->
+      <!-- Vertical Grid Lines: 0.0, 0.2, 0.4, 0.6, 0.8, 1.0 -->
+      <line x1="230" y1="36" x2="230" y2="470" stroke="rgba(45,49,66,0.20)" stroke-width="1"/>
+      <text x="230" y="26" class="axis-text" text-anchor="middle">0,0</text>
+
+      <line x1="350" y1="36" x2="350" y2="470" stroke="rgba(45,49,66,0.08)" stroke-width="0.8" stroke-dasharray="2 3"/>
+      <text x="350" y="26" class="axis-text" text-anchor="middle">0,2</text>
+
+      <line x1="470" y1="36" x2="470" y2="470" stroke="rgba(45,49,66,0.08)" stroke-width="0.8" stroke-dasharray="2 3"/>
+      <text x="470" y="26" class="axis-text" text-anchor="middle">0,4</text>
+
+      <line x1="590" y1="36" x2="590" y2="470" stroke="rgba(45,49,66,0.08)" stroke-width="0.8" stroke-dasharray="2 3"/>
+      <text x="590" y="26" class="axis-text" text-anchor="middle">0,6</text>
+
+      <line x1="710" y1="36" x2="710" y2="470" stroke="rgba(45,49,66,0.08)" stroke-width="0.8" stroke-dasharray="2 3"/>
+      <text x="710" y="26" class="axis-text" text-anchor="middle">0,8</text>
+
+      <line x1="830" y1="36" x2="830" y2="470" stroke="rgba(45,49,66,0.20)" stroke-width="1"/>
+      <text x="830" y="26" class="axis-text" text-anchor="middle">1,0</text>
+
+      <!-- Macro F1 Line: 0.5777 -> x = 230 + 0.5777 * 600 = 576.6 -->
+      <line x1="576.6" y1="36" x2="576.6" y2="470" stroke="#eb6c36" stroke-width="1.6" stroke-dasharray="4 3"/>
+      <rect x="536" y="8" width="81" height="20" rx="3" fill="#fff" stroke="#eb6c36" stroke-width="0.8"/>
+      <text x="576.6" y="22" class="macro-label" text-anchor="middle">Macro F1: 0,5777</text>
+
+      <!-- ================= 14 HORIZONTAL BARS ================= -->
+      <!-- 1. scenery (F1=0.8105, w=486.3, support=71) -->
+      <text x="218" y="58" class="label-title" text-anchor="end">Pemandangan Alam <tspan class="label-slug">(scenery)</tspan></text>
+      <rect x="230" y="44" width="486.3" height="18" rx="3" fill="#2d3142"/>
+      <text x="724.3" y="57" class="score-text">0,8105</text>
+      <text x="780" y="57" class="support-text">n=71</text>
+
+      <!-- 2. parking (F1=0.8000, w=480, support=16) -->
+      <text x="218" y="88" class="label-title" text-anchor="end">Lahan Parkir <tspan class="label-slug">(parking)</tspan></text>
+      <rect x="230" y="74" width="480" height="18" rx="3" fill="#2d3142"/>
+      <text x="718" y="87" class="score-text">0,8000</text>
+      <text x="774" y="87" class="support-text">n=16</text>
+
+      <!-- 3. cleanliness (F1=0.7333, w=440, support=27) -->
+      <text x="218" y="118" class="label-title" text-anchor="end">Kebersihan Umum <tspan class="label-slug">(cleanliness)</tspan></text>
+      <rect x="230" y="104" width="440" height="18" rx="3" fill="#2d3142"/>
+      <text x="678" y="117" class="score-text">0,7333</text>
+      <text x="734" y="117" class="support-text">n=27</text>
+
+      <!-- 4. sanitation (F1=0.7317, w=439, support=17) -->
+      <text x="218" y="148" class="label-title" text-anchor="end">Toilet &amp; Sanitasi <tspan class="label-slug">(sanitation)</tspan></text>
+      <rect x="230" y="134" width="439" height="18" rx="3" fill="#2d3142"/>
+      <text x="677" y="147" class="score-text">0,7317</text>
+      <text x="733" y="147" class="support-text">n=17</text>
+
+      <!-- 5. comfort (F1=0.6935, w=416.1, support=95) -->
+      <text x="218" y="178" class="label-title" text-anchor="end">Kenyamanan Suasana <tspan class="label-slug">(comfort)</tspan></text>
+      <rect x="230" y="164" width="416.1" height="18" rx="3" fill="#4f5d75"/>
+      <text x="654.1" y="177" class="score-text">0,6935</text>
+      <text x="710" y="177" class="support-text">n=95</text>
+
+      <!-- 6. maintenance (F1=0.6923, w=415.4, support=11) -->
+      <text x="218" y="208" class="label-title" text-anchor="end">Perawatan Fasilitas <tspan class="label-slug">(maintenance)</tspan></text>
+      <rect x="230" y="194" width="415.4" height="18" rx="3" fill="#4f5d75"/>
+      <text x="653.4" y="207" class="score-text">0,6923</text>
+      <text x="710" y="207" class="support-text">n=11</text>
+
+      <!-- 7. waste (F1=0.6667, w=400, support=7) -->
+      <text x="218" y="238" class="label-title" text-anchor="end">Pengelolaan Sampah <tspan class="label-slug">(waste)</tspan></text>
+      <rect x="230" y="224" width="400" height="18" rx="3" fill="#4f5d75"/>
+      <text x="638" y="237" class="score-text">0,6667</text>
+      <text x="694" y="237" class="support-text">n=7</text>
+
+      <!-- 8. price_transparency (F1=0.6415, w=384.9, support=27) -->
+      <text x="218" y="268" class="label-title" text-anchor="end">Transparansi Harga <tspan class="label-slug">(price_transparency)</tspan></text>
+      <rect x="230" y="254" width="384.9" height="18" rx="3" fill="#4f5d75"/>
+      <text x="622.9" y="267" class="score-text">0,6415</text>
+      <text x="678" y="267" class="support-text">n=27</text>
+
+      <!-- 9. crowding (F1=0.5333, w=320, support=8) -->
+      <text x="218" y="298" class="label-title" text-anchor="end">Kepadatan Tempat <tspan class="label-slug">(crowding)</tspan></text>
+      <rect x="230" y="284" width="320" height="18" rx="3" fill="#4f5d75"/>
+      <text x="558" y="297" class="score-text">0,5333</text>
+      <text x="614" y="297" class="support-text">n=8</text>
+
+      <!-- 10. public_facilities (F1=0.5333, w=320, support=13) -->
+      <text x="218" y="328" class="label-title" text-anchor="end">Fasilitas Umum <tspan class="label-slug">(public_facilities)</tspan></text>
+      <rect x="230" y="314" width="320" height="18" rx="3" fill="#4f5d75"/>
+      <text x="558" y="327" class="score-text">0,5333</text>
+      <text x="614" y="327" class="support-text">n=13</text>
+
+      <!-- 11. safety (F1=0.5000, w=300, support=9) -->
+      <text x="218" y="358" class="label-title" text-anchor="end">Keamanan Lingkungan <tspan class="label-slug">(safety)</tspan></text>
+      <rect x="230" y="344" width="300" height="18" rx="3" fill="#4f5d75"/>
+      <text x="538" y="357" class="score-text">0,5000</text>
+      <text x="594" y="357" class="support-text">n=9</text>
+
+      <!-- 12. staff_service (F1=0.4848, w=290.9, support=21) -->
+      <text x="218" y="388" class="label-title" text-anchor="end">Pelayanan Staf <tspan class="label-slug">(staff_service)</tspan></text>
+      <rect x="230" y="374" width="290.9" height="18" rx="3" fill="rgba(79,93,117,0.5)"/>
+      <text x="528.9" y="387" class="score-text">0,4848</text>
+      <text x="584" y="387" class="support-text">n=21</text>
+
+      <!-- 13. access (F1=0.2667, w=160, support=11) -->
+      <text x="218" y="418" class="label-title" text-anchor="end">Akses &amp; Jalan <tspan class="label-slug">(access)</tspan></text>
+      <rect x="230" y="404" width="160" height="18" rx="3" fill="rgba(79,93,117,0.5)"/>
+      <text x="398" y="417" class="score-text">0,2667</text>
+      <text x="454" y="417" class="support-text">n=11</text>
+
+      <!-- 14. opening_hours (F1=0.0000, w=4, support=1 - Rare Aspect) -->
+      <text x="218" y="448" class="label-title" text-anchor="end">Jam Buka/Tutup <tspan class="label-slug">(opening_hours)</tspan></text>
+      <rect x="230" y="434" width="4" height="18" rx="2" fill="#ef4444"/>
+      <text x="242" y="447" class="score-text" fill="#ef4444">0,0000</text>
+      <text x="298" y="447" class="support-text" fill="#ef4444">n=1 (aspek langka)</text>
+
+
+      <!-- ================= BOTTOM FOOTER BAR ================= -->
+      <line x1="24" y1="486" x2="940" y2="486" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <text x="24" y="508" class="footer-text" font-weight="600">DISTRIBUSI SAMPEL &amp; SIFAT MODEL:</text>
+      <text x="24" y="522" class="footer-text">Aspek dengan volume ulasan tinggi (pemandangan, kenyamanan, toilet) mencapai F1 &gt; 0,73. Aspek langka (opening_hours n=1) dilaporkan jujur apa adanya.</text>
+    </svg>
+  </main>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIPATURE · Alur Kerja Verifikasi Sinyal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --paper: #f5f5f5;
+      --ink: #2d3142;
+      --muted: #4f5d75;
+      --soft: #7a8399;
+      --rule: rgba(45,49,66,0.12);
+      --accent: #eb6c36;
+      --accent-tint: rgba(235,108,54,0.08);
+      --sans: 'Geist', system-ui, sans-serif;
+      --serif: 'Instrument Serif', serif;
+      --mono: 'Geist Mono', ui-monospace, monospace;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1.5rem;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+    }
+    .frame {
+      width: 100%;
+      max-width: 1100px;
+    }
+    .eyebrow {
+      margin-bottom: 0.5rem;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 2vw + 0.75rem, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+    svg {
+      display: block;
+      width: 100%;
+      min-width: 980px;
+    }
+    .step-num {
+      font-family: var(--mono);
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+    }
+    .step-title {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      fill: var(--ink);
+    }
+    .step-desc {
+      font-family: var(--mono);
+      font-size: 8.5px;
+      fill: var(--muted);
+    }
+    .decision-title {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .decision-desc {
+      font-family: var(--mono);
+      font-size: 8px;
+    }
+    .loop-text {
+      font-family: var(--mono);
+      font-size: 8.5px;
+      font-weight: 500;
+      fill: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <main class="frame">
+    <p class="eyebrow">Interactive Process · Diagram Design</p>
+    <h1>Alur kerja verifikasi sinyal &amp; siklus umpan balik (human-in-the-loop)</h1>
+
+    <svg viewBox="0 0 1040 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="wf-title wf-desc">
+      <title id="wf-title">Alur Kerja Verifikasi Sinyal SIPATURE</title>
+      <desc id="wf-desc">Diagram alur kerja manusia dalam loop (human-in-the-loop) dari sinyal awal, audit bukti ulasan, keputusan tiga cabang pengelola, hingga rekomendasi tindakan dan pembelajaran model.</desc>
+      
+      <defs>
+        <marker id="arrow-ink" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 8 5 L 0 9 z" fill="#2d3142"/>
+        </marker>
+        <marker id="arrow-accent" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 8 5 L 0 9 z" fill="#eb6c36"/>
+        </marker>
+        <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="0.8" fill="rgba(45,49,66,0.10)"/>
+        </pattern>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#f5f5f5"/>
+      <rect width="100%" height="100%" fill="url(#dots)" opacity="0.45"/>
+
+      <!-- ================= STEP 1: Sinyal Terdeteksi (x=24, w=200) ================= -->
+      <rect x="24" y="60" width="200" height="220" rx="8" fill="#fff" stroke="rgba(45,49,66,0.15)" stroke-width="1"/>
+      <rect x="24" y="60" width="200" height="36" rx="8" fill="rgba(79,93,117,0.08)"/>
+      <rect x="24" y="88" width="200" height="8" fill="#fff"/>
+      <text x="36" y="82" class="step-num" fill="#4f5d75">TAHAP 01 · SISTEM</text>
+      <text x="36" y="118" class="step-title">Sinyal Isu Terdeteksi</text>
+      <line x1="36" y1="128" x2="212" y2="128" stroke="rgba(45,49,66,0.08)" stroke-width="0.8"/>
+      <text x="36" y="146" class="step-desc">• Model ekstrak 14 aspek</text>
+      <text x="36" y="164" class="step-desc">• Polaritas sentimen leksikal</text>
+      <text x="36" y="182" class="step-desc">• Bayesian smoothing support</text>
+      <text x="36" y="200" class="step-desc">• Status: UNVERIFIED ALERT</text>
+      <rect x="36" y="222" width="176" height="38" rx="4" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="44" y="238" class="step-desc" font-weight="600" fill="#2d3142">Output: 1.682 Sinyal</text>
+      <text x="44" y="250" class="step-desc">Masuk antrean prioritas (Queue)</text>
+
+      <!-- Arrow Step 1 -> Step 2 -->
+      <line x1="224" y1="170" x2="264" y2="170" stroke="#2d3142" stroke-width="1.4" marker-end="url(#arrow-ink)"/>
+
+
+      <!-- ================= STEP 2: Audit Bukti (x=272, w=200) ================= -->
+      <rect x="272" y="60" width="200" height="220" rx="8" fill="#fff" stroke="rgba(45,49,66,0.15)" stroke-width="1"/>
+      <rect x="272" y="60" width="200" height="36" rx="8" fill="rgba(79,93,117,0.08)"/>
+      <rect x="272" y="88" width="200" height="8" fill="#fff"/>
+      <text x="284" y="82" class="step-num" fill="#4f5d75">TAHAP 02 · OPERATOR</text>
+      <text x="284" y="118" class="step-title">Pemeriksaan Bukti</text>
+      <line x1="284" y1="128" x2="460" y2="128" stroke="rgba(45,49,66,0.08)" stroke-width="0.8"/>
+      <text x="284" y="146" class="step-desc">• Baca kutipan teks ulasan</text>
+      <text x="284" y="164" class="step-desc">• Evaluasi konsistensi bukti</text>
+      <text x="284" y="182" class="step-desc">• Periksa tanggal &amp; konteks</text>
+      <text x="284" y="200" class="step-desc">• Inspeksi lokasi fisik</text>
+      <rect x="284" y="222" width="176" height="38" rx="4" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="292" y="238" class="step-desc" font-weight="600" fill="#2d3142">Human Oversight Gate</text>
+      <text x="292" y="250" class="step-desc">Mencegah keputusan sepihak AI</text>
+
+      <!-- Arrow Step 2 -> Step 3 Branches -->
+      <line x1="472" y1="170" x2="512" y2="170" stroke="#2d3142" stroke-width="1.4"/>
+      <line x1="512" y1="100" x2="512" y2="240" stroke="#2d3142" stroke-width="1.4"/>
+      <line x1="512" y1="100" x2="536" y2="100" stroke="#2d3142" stroke-width="1.4" marker-end="url(#arrow-ink)"/>
+      <line x1="512" y1="170" x2="536" y2="170" stroke="#2d3142" stroke-width="1.4" marker-end="url(#arrow-ink)"/>
+      <line x1="512" y1="240" x2="536" y2="240" stroke="#2d3142" stroke-width="1.4" marker-end="url(#arrow-ink)"/>
+
+
+      <!-- ================= STEP 3: Tiga Keputusan Operator (x=544, w=220) ================= -->
+      <!-- Branch A: CONFIRMED (Focal) -->
+      <rect x="544" y="60" width="220" height="66" rx="6" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1.2"/>
+      <text x="556" y="80" class="decision-title" fill="#eb6c36">✓ CONFIRMED (Terkonfirmasi)</text>
+      <text x="556" y="96" class="decision-desc" fill="#eb6c36">Masalah nyata terbukti di lapangan</text>
+      <text x="556" y="110" class="decision-desc" fill="#eb6c36">Dialirkan ke rencana intervensi fisik</text>
+
+      <!-- Branch B: REJECTED -->
+      <rect x="544" y="138" width="220" height="66" rx="6" fill="#fff" stroke="rgba(45,49,66,0.15)" stroke-width="1"/>
+      <text x="556" y="158" class="decision-title" fill="#2d3142">✕ REJECTED (Alarm Palsu)</text>
+      <text x="556" y="174" class="decision-desc" fill="#4f5d75">False positive / sarkasme ulasan</text>
+      <text x="556" y="188" class="decision-desc" fill="#7a8399">Wajib isi alasan penolakan audit</text>
+
+      <!-- Branch C: UNCERTAIN -->
+      <rect x="544" y="216" width="220" height="66" rx="6" fill="#fff" stroke="rgba(45,49,66,0.15)" stroke-width="1"/>
+      <text x="556" y="236" class="decision-title" fill="#2d3142">? UNCERTAIN (Belum Pasti)</text>
+      <text x="556" y="252" class="decision-desc" fill="#4f5d75">Data ulasan belum cukup jelas</text>
+      <text x="556" y="266" class="decision-desc" fill="#7a8399">Masuk daftar pantau (Watch List)</text>
+
+      <!-- Arrow Step 3A -> Step 4 Actionable -->
+      <line x1="764" y1="93" x2="804" y2="93" stroke="#eb6c36" stroke-width="1.6" marker-end="url(#arrow-accent)"/>
+
+
+      <!-- ================= STEP 4: Tindak Lanjut Nyata (x=812, w=204) ================= -->
+      <rect x="812" y="60" width="204" height="220" rx="8" fill="#fff" stroke="#eb6c36" stroke-width="1.4"/>
+      <rect x="812" y="60" width="204" height="36" rx="8" fill="rgba(235,108,54,0.12)"/>
+      <rect x="812" y="88" width="204" height="8" fill="#fff"/>
+      <text x="824" y="82" class="step-num" fill="#eb6c36">TAHAP 04 · OPERASIONAL</text>
+      <text x="824" y="118" class="step-title" fill="#eb6c36">Rekomendasi Tindakan</text>
+      <line x1="824" y1="128" x2="1004" y2="128" stroke="rgba(235,108,54,0.20)" stroke-width="0.8"/>
+      <text x="824" y="146" class="step-desc">• Perbaikan fasilitas sanitasi</text>
+      <text x="824" y="164" class="step-desc">• Penertiban pungutan &amp; parkir</text>
+      <text x="824" y="182" class="step-desc">• Alokasi anggaran BPODT</text>
+      <text x="824" y="200" class="step-desc">• Evaluasi dampak intervensi</text>
+      <rect x="824" y="222" width="180" height="38" rx="4" fill="rgba(235,108,54,0.06)" stroke="#eb6c36" stroke-width="0.8"/>
+      <text x="832" y="238" class="step-desc" font-weight="600" fill="#eb6c36">210 Isu Terverifikasi</text>
+      <text x="832" y="250" class="step-desc" fill="#eb6c36">pada 103 Destinasi Toba</text>
+
+
+      <!-- ================= SIKLUS UMPAN BALIK (FEEDBACK LOOP) ================= -->
+      <!-- Path returning from Step 3 & Step 4 to Model Retraining / Calibration -->
+      <path d="M 654 300 L 654 360 L 124 360 L 124 290" fill="none" stroke="#eb6c36" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#arrow-accent)"/>
+      <rect x="230" y="342" width="370" height="34" rx="17" fill="#fff" stroke="#eb6c36" stroke-width="1"/>
+      <text x="415" y="363" class="loop-text" text-anchor="middle">SIKLUS UMPAN BALIK: Kalibrasi Threshold, Gold Held-Out Baru, &amp; Retraining</text>
+
+      <!-- Bottom Reference Info -->
+      <line x1="24" y1="400" x2="1016" y2="400" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <text x="24" y="422" class="step-desc" font-weight="600" fill="#2d3142">PRINSIP HUMAN-IN-THE-LOOP:</text>
+      <text x="194" y="422" class="step-desc">Kecerdasan buatan menyaring ulasan menjadi sinyal awal; keputusan intervensi lapangan sepenuhnya di tangan verifikasi pengelola.</text>
+    </svg>
+  </main>
+</body>
+</html>

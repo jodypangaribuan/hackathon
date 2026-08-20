@@ -103,14 +103,21 @@ Keberhasilan intervensi pariwisata memerlukan pemahaman menyeluruh terhadap ekos
 
 Dua file *review* utama (`wisata-v2.csv` 12.691 + `resto-hotel-v2.csv` 9.611) adalah sumber bahasa. Tiga file *metadata* utama menyediakan identitas dan lokasi. File lain berfungsi *enrichment* (jam, fasilitas, transportasi, kuliner). Pemisahan peran mencegah artikel/field pendukung diperlakukan sebagai *ground truth* keliru.
 
-## 2.3 Temuan EDA
+## 2.3 Temuan EDA dan Corong Pemrosesan Data
 
-Eksplorasi data awal (*Exploratory Data Analysis*) dilakukan untuk memahami karakteristik teks, pola distribusi rating, dan kelengkapan metadata sebelum perancangan model. Temuan-temuan kunci dari analisis ini meliputi:
+Eksplorasi data awal (*Exploratory Data Analysis*) dilakukan untuk memahami karakteristik teks, pola distribusi rating, dan kelengkapan metadata sebelum perancangan model. Alur pembersihan ulasan dan penghubungan entitas dirangkum secara visual pada diagram corong pemrosesan data:
 
-- **Skala:** 22.302 *raw* → 22.169 *clean* (12.234 textual, 9.935 rating-only).
-- **Rating imbalance:** 15.595 dari 22.243 *rating* integer adalah bintang lima; model mayoritas bisa terlihat baik tanpa menemukan keluhan.
-- **Volume vs complaint:** persentase tinggi pada sample kecil tidak stabil → *Bayesian smoothing* + *minimum support*.
-- **Metadata:** nama/alamat/koordinat hampir lengkap; fasilitas & jam operasional tidak merata — *field* kosong diperlakukan sebagai "data belum cukup", bukan "tidak ada fasilitas".
+![Corong Pembersihan Data dan Resolusi Entitas](docs/figures/diagrams/data-funnel.png)
+
+**Gambar 1. Corong pembersihan data ulasan dan resolusi entitas destinasi.**
+
+**Interpretasi Gambar 1.** Diagram corong di atas merinci transformasi kuantitas data: dari 22.302 ulasan mentah multi-sumber, sistem mengeliminasi 89 duplikasi *hash* dan 44 baris kosong menjadi 22.169 ulasan bersih. Sebanyak 12.234 ulasan berteks (55,2%) diteruskan ke modul ekstraksi NLP, sedangkan 9.935 ulasan *rating-only* (44,8%) dipertahankan untuk menghitung eksposur volume destinasi. Pada bagian resolusi entitas, 810 relasi nama dipadatkan secara konservatif menjadi 388 ID Kanonikal (322 *anchor* terverifikasi + 66 *placeholder* terisolasi).
+
+Temuan-temuan kunci dari analisis eksplorasi data meliputi:
+- **Skala Data:** 22.302 *raw* → 22.169 *clean* (12.234 teks untuk NLP, 9.935 ulasan hanya angka *rating*).
+- **Ketimpangan Rating (*Rating Imbalance*):** Sebanyak 15.595 dari 22.243 ulasan ber-*rating* integer adalah bintang lima (70,1%), sehingga model mayoritas naif dapat tampak akurat tanpa mendeteksi satu pun keluhan penting.
+- **Hubungan Volume vs Keluhan:** Destinasi dengan sampel ulasan sedikit menunjukkan persentase keluhan yang tidak stabil, sehingga memerlukan *Bayesian smoothing* dan *minimum support threshold*.
+- **Kelengkapan Metadata:** Nama, alamat, dan koordinat relatif lengkap; namun fasilitas dan jam operasional memiliki banyak nilai kosong yang diperlakukan sebagai "data belum lengkap", bukan "tidak memiliki fasilitas".
 
 ## 2.4 Risiko dan Mitigasi
 
@@ -138,17 +145,25 @@ Arsitektur solusi SIPATURE dibangun sebagai rantai pemrosesan end-to-end yang me
 
 ![Rantai solusi SIPATURE](docs/figures/diagrams/solution-chain.png)
 
-**Gambar 1. Rantai solusi SIPATURE — dari ulasan menjadi tindak lanjut terverifikasi.**
+**Gambar 2. Rantai solusi SIPATURE — dari ulasan menjadi tindak lanjut terverifikasi.**
 
-**Interpretasi Gambar 1.** Tujuh tahap: ulasan mentah dibersihkan dan dihubungkan ke destinasi (*entity resolution*), diproses model deteksi aspek (TF-IDF + lexical polarity, ditandai *focal*), diagregasi menjadi sinyal dan bukti verbatim per destinasi, diprioritaskan secara *missing-aware*, diverifikasi manusia (`confirmed`/`rejected`/`uncertain`), lalu menjadi kandidat tindak lanjut. *Severity* tidak tersedia (support kelas `high` < 20) sehingga tidak diimputasi.
+**Interpretasi Gambar 2.** Tujuh tahap pemrosesan: ulasan mentah dibersihkan dan dihubungkan ke destinasi (*entity resolution*), diproses model deteksi aspek (TF-IDF + polaritas leksikal, ditandai *focal*), diagregasikan menjadi sinyal dan bukti verbatim per destinasi, diprioritaskan secara *missing-aware*, diverifikasi manusia (`confirmed`/`rejected`/`uncertain`), lalu menjadi rekomendasi tindak lanjut. Model *severity* tidak diimputasi spekulatif karena dukungan data kelas `high` < 20.
 
-## 3.2 Taxonomy
+## 3.2 Taksonomi 14 Aspek dan 4 Pilar Operasional
 
-Taksonomi aspek dirancang untuk menangkap spektrum permasalahan pariwisata secara terstruktur. Sebanyak 14 aspek dikelompokkan ke dalam empat pilar operasional:
-1. **Lingkungan:** `cleanliness` (kebersihan umum), `trash` (pengelolaan sampah), `sanitation` (kondisi toilet/sanitasi), dan `crowd` (kepadatan pengunjung).
-2. **Infrastruktur:** `access` (akses jalan/kemudahan tempuh), `parking` (ketersediaan & tarif parkir), serta `public_facility` (sarana ibadah, gazebo, penerangan).
-3. **Pengalaman:** `scenery` (daya tarik alam/keindahan visual), `comfort` (kenyamanan beraktivitas), `safety` (keamanan lingkungan), dan `price_transparency` (kewajaran harga, tarif tidak resmi/pungli).
-4. **Operasional:** `service` (keramahan & sikap staf), `maintenance` (perawatan sarana), dan `opening_hours` (kesesuaian jam operasional).
+Taksonomi aspek dirancang secara komprehensif untuk memetakan dinamika pariwisata Danau Toba ke dalam empat pilar tata kelola:
+
+![Struktur Taksonomi 14 Aspek Pariwisata](docs/figures/diagrams/taxonomy-pillars.png)
+
+**Gambar 3. Struktur taksonomi 14 aspek pariwisata dalam 4 pilar operasional.**
+
+**Interpretasi Gambar 3.** Sebanyak 14 aspek dikelompokkan secara hierarkis ke dalam empat pilar operasional:
+1. **Pilar 01 · Lingkungan & Sanitasi:** Mencakup kebersihan umum (`cleanliness`), pengelolaan sampah (`waste/trash`), kelayakan toilet & air (`sanitation`), serta kepadatan pengunjung (`crowding`).
+2. **Pilar 02 · Akses & Fasilitas Fisik:** Mencakup kondisi jalan & aksesibilitas (`access`), kapasitas lahan parkir (`parking`), dan sarana umum seperti musholla/gazebo (`public_facilities`).
+3. **Pilar 03 · Kenyamanan & Nilai:** Mencakup keindahan panorama alam (`scenery`), kesejukan suasana (`comfort`), keamanan wisatawan (`safety`), dan transparansi harga/pungli (`price_transparency`).
+4. **Pilar 04 · Tata Kelola & Layanan:** Mencakup keramahan pelayanan staf (`staff_service`), keterawatan fasilitas fisik (`maintenance`), serta jadwal operasional (`opening_hours`).
+
+Sistem menerapkan klasifikasi *multi-label* di mana satu teks ulasan dapat memicu beberapa aspek sekaligus.
 
 ## 3.3 Annotation dan Kesepakatan Anotator (Inter-Annotator Agreement)
 
@@ -239,17 +254,17 @@ Tumpukan teknologi (*tech stack*) dipilih untuk memastikan kinerja inferensi yan
 
 # 5. Implementasi Produk dan Deployment
 
-## 5.1 Arsitektur
+## 5.1 Arsitektur Deployment
 
 Sistem SIPATURE diimplementasikan dengan arsitektur multi-layanan mandiri (*self-contained*) yang siap dijalankan pada lingkungan komputasi terisolasi:
 
 ![Deployment tiga layanan di DGX B200](docs/figures/diagrams/deployment-dgx.png)
 
-**Gambar 2. Deployment tiga layanan di host DGX B200.**
+**Gambar 4. Deployment tiga layanan di host DGX B200.**
 
-**Interpretasi Gambar 2.** Komunikasi antar-layanan berlangsung efisien di dalam *bridge network* host DGX B200: peramban memanggil *web gateway* Next.js melalui protokol HTTPS, *web* membaca basis data PostgreSQL (`READ`), dan meneruskan permintaan analisis teks ulasan langsung ke engine FastAPI (`LIVE`). Seluruh model dan data terintegrasi ke dalam image Docker sehingga sistem beroperasi 100% luring.
+**Interpretasi Gambar 4.** Komunikasi antar-layanan berlangsung efisien di dalam *bridge network* host DGX B200: peramban memanggil *web gateway* Next.js melalui protokol HTTPS, *web* membaca basis data PostgreSQL (`READ`), dan meneruskan permintaan analisis teks ulasan langsung ke engine FastAPI (`LIVE`). Seluruh model dan data terintegrasi ke dalam image Docker sehingga sistem beroperasi 100% luring.
 
-## 5.2 Fitur
+## 5.2 Fitur Aplikasi dan Alur Verifikasi (Human-in-the-Loop)
 
 Aplikasi antarmuka SIPATURE menyediakan 7 modul fungsional utama yang saling terhubung untuk mendukung alur kerja pemantauan dan pengambilan keputusan:
 
@@ -260,6 +275,14 @@ Aplikasi antarmuka SIPATURE menyediakan 7 modul fungsional utama yang saling ter
 5. **Simulator** — Alat simulasi dampak intervensi berbasis asumsi eksplisit dengan peringatan permanen sifat non-kausal (*non-causal warning*).
 6. **Analyzer** — Pengujian teks ulasan interaktif secara *live* menggunakan model TF-IDF produksi.
 7. **Verification workflow** — Alur validasi sinyal lapangan bagi pengelola (opsi konfirmasi, tolak, atau tidak pasti beserta alasan penolakan).
+
+Proses verifikasi manusia dan siklus perbaikan model dirancang melalui alur terstruktur berikut:
+
+![Alur Kerja Verifikasi Sinyal](docs/figures/diagrams/verification-workflow.png)
+
+**Gambar 5. Alur kerja verifikasi sinyal dan siklus umpan balik human-in-the-loop.**
+
+**Interpretasi Gambar 5.** Alur kerja empat tahap: (1) Sistem mendeteksi 1.682 sinyal awal berstatus *unverified*; (2) Pengelola melakukan audit bukti ulasan dan tanggal kejadian; (3) Pengelola mengambil satu dari tiga keputusan (`Confirmed`, `Rejected` dengan alasan, atau `Uncertain`); (4) Keputusan `Confirmed` menghasilkan 210 isu terverifikasi pada 103 destinasi, sementara data penolakan dan konfirmasi dialirkan kembali melalui *feedback loop* untuk kalibrasi *threshold* dan penambahan sampel uji manusia di masa depan.
 
 ## 5.3 Deployment DGX B200
 
@@ -293,7 +316,7 @@ Evaluasi model dilakukan secara independen terhadap dataset uji terkunci *gold-v
 
 ![Benchmark deteksi aspek silver vs gold-v1](docs/figures/diagrams/benchmark-gold-v1.png)
 
-**Gambar 3. Perbandingan Macro F1 deteksi aspek pada silver (locked) vs gold-v1 (human).**
+**Gambar 6. Perbandingan Macro F1 deteksi aspek pada silver (locked) vs gold-v1 (human).**
 
 **Tabel 10. Perbandingan Macro F1 deteksi aspek dan polaritas pada silver (locked) vs gold-v1 (human).**
 
@@ -304,7 +327,7 @@ Evaluasi model dilakukan secara independen terhadap dataset uji terkunci *gold-v
 | **IndoBERT (Aspek)** | 0,5247 | 0,4254 | Ditolak (*underfit* data kecil) |
 | **IndoBERT (Polaritas)** | 0,7459 | 0,5077 (≈ *chance*) | Ditolak (akurasi tidak memadai) |
 
-**Interpretasi Tabel 10 & Gambar 3.** Skor *Keyword* pada silver (0,9768) terbukti bersifat sirkular karena aturan pembentukan silver identik dengan leksikon model; skornya turun drastis ke 0,7056 pada evaluasi manusia. TF-IDF mengalami penurunan wajar dari 0,7201 ke 0,5777 yang mencerminkan generalisasi jujur terhadap penilaian manusia. IndoBERT memperoleh skor terendah (0,4254 untuk aspek dan 0,5077 untuk polaritas) akibat keterbatasan ukuran data pelatihan.
+**Interpretasi Tabel 10 & Gambar 6.** Skor *Keyword* pada silver (0,9768) terbukti bersifat sirkular karena aturan pembentukan silver identik dengan leksikon model; skornya turun drastis ke 0,7056 pada evaluasi manusia. TF-IDF mengalami penurunan wajar dari 0,7201 ke 0,5777 yang mencerminkan generalisasi jujur terhadap penilaian manusia. IndoBERT memperoleh skor terendah (0,4254 untuk aspek dan 0,5077 untuk polaritas) akibat keterbatasan ukuran data pelatihan.
 
 ## 6.2 Keputusan Model — mengapa TF-IDF (dilatih silver) dipilih
 
@@ -335,14 +358,18 @@ Resolusi entitas diterapkan secara konservatif untuk menggabungkan variasi penam
 
 **Interpretasi Tabel 11.** Presisi tinggi (97,14%) dan *false-merge rate* yang sangat rendah (2,86%) membuktikan bahwa entitas destinasi dihubungkan secara akurat. Entitas yang belum terselesaikan (*unresolved*) diisolasi ke dalam 66 *placeholder* dan dikeluarkan dari antrean prioritas untuk mencegah kesalahan intervensi.
 
-## 6.4 Error Analysis
+## 6.4 Analisis Kesalahan dan Sebaran Performa per Aspek
 
-Analisis kualitatif terhadap kesalahan prediksi dilakukan untuk mengidentifikasi batasan linguistik model dan menyediakan konteks bagi alur verifikasi manusia:
+Analisis per-aspek secara terperinci mengungkapkan kekuatan dan batasan model TF-IDF produksi pada masing-masing domain permasalahan:
 
-- **Negasi:** "pungli tidak ada" dapat ter-flag *negative* (limitation *lexical polarity*).
-- **Klausa kontras:** "tempat bagus, tapi jalan jelek" → akses kadang `neutral`.
-- **Rare aspect:** `opening_hours` *support* kecil → F1 tidak stabil.
-- **False-positive case (didokumentasikan):** Danau Sidihoni `scenery` — empat *review* "negatif" ternyata pujian; di-*reject* lewat workflow.
+![Sebaran Performa F1 per Aspek](docs/figures/diagrams/per-aspect-f1.png)
+
+**Gambar 7. Sebaran performa F1 per 14 aspek pada benchmark evaluasi gold-v1.**
+
+**Interpretasi Gambar 7.** Performa deteksi menunjukkan korelasi kuat dengan volume data pendukung (*support*):
+- **Aspek Berperforma Tinggi (F1 > 0,70):** Aspek `scenery` (0,8105), `parking` (0,8000), `cleanliness` (0,7333), dan `sanitation` (0,7317) memiliki skor tinggi karena leksikon ulasannya sangat spesifik dan didukung sampel yang memadai.
+- **Aspek Berperforma Menengah (0,50 ≤ F1 < 0,70):** Aspek `comfort` (0,6935), `maintenance` (0,6923), `waste` (0,6667), `price_transparency` (0,6415), `crowding` (0,5333), dan `safety` (0,5000) mampu mendeteksi isu dengan baik namun sesekali terpengaruh klausa kontras.
+- **Aspek dengan Keterbatasan Khusus:** Aspek `staff_service` (0,4848) dan `access` (0,2667) menghadapi tantangan variasi kalimat tidak langsung. Aspek `opening_hours` memiliki F1 0,0000 karena sifatnya sangat langka (*rare support*, hanya $n=1$ pada set uji), dilaporkan secara transparan apa adanya tanpa manipulasi metrik.
 
 ---
 
@@ -393,9 +420,9 @@ Perlindungan privasi data diterapkan melalui pemisahan ketat antara lingkungan p
 
 ![Lapisan data dan kebijakan akses](docs/figures/diagrams/data-pipeline-restricted.png)
 
-**Gambar 4. Lima lapisan data — dari mentah (restricted) ke agregat aman (published).**
+**Gambar 8. Lima lapisan data — dari mentah (restricted) ke agregat aman (published).**
 
-**Interpretasi Gambar 4.** Data mengalir dari kiri ke kanan melalui empat transformasi, dengan **PRIVACY GATE** (ditandai aksen) sebagai batas kritis: hanya agregat aman yang menyeberang ke sisi publik. Identitas reviewer berangsur hilang — dari `reviewer-id`/`name` di lapisan *raw*, menjadi `review_id` hash, teks *review*, *evidence* verbatim, hingga **tidak ada sama sekali** di *bundle* produk. Dua jalur konsumsi (*batch* dan *live*) memakai data yang sama secara deterministik dan hash-verified.
+**Interpretasi Gambar 8.** Data mengalir dari kiri ke kanan melalui empat transformasi, dengan **PRIVACY GATE** (ditandai aksen) sebagai batas kritis: hanya agregat aman yang menyeberang ke sisi publik. Identitas reviewer berangsur hilang — dari `reviewer-id`/`name` di lapisan *raw*, menjadi `review_id` hash, teks *review*, *evidence* verbatim, hingga **tidak ada sama sekali** di *bundle* produk. Dua jalur konsumsi (*batch* dan *live*) memakai data yang sama secara deterministik dan hash-verified.
 
 Data SIPATURE dibagi lima lapisan dengan tingkat akses berbeda. Lapisan mentah hingga *evidence* hanya dapat diakses tim ML (`restricted`); hanya **agregat aman** yang dipublikasikan ke aplikasi tanpa identitas reviewer:
 
@@ -413,9 +440,16 @@ Data SIPATURE dibagi lima lapisan dengan tingkat akses berbeda. Lapisan mentah h
 
 ![Matriks akses data terbatas](docs/figures/diagrams/restricted-data-policy.png)
 
-**Gambar 5. Matriks akses tiga peran × lima komponen data.**
+**Gambar 9. Matriks akses tiga peran × lima komponen data.**
 
-**Interpretasi Gambar 5.** Empat komponen terbatas (`raw`, `clean`, *annotation*, *evidence*) hanya memiliki hak akses `Admin` bagi tim ML — publik dan pengelola berstatus `None`. Hanya **safe aggregate** yang dapat dibaca (`Read`) oleh publik (sel yang ditandai aksen = batas publikasi). Matriks ini membuktikan bahwa aplikasi publik tidak pernah menerima data identitas reviewer.
+**Interpretasi Gambar 9.** Empat komponen terbatas (`raw`, `clean`, *annotation*, *evidence*) hanya memiliki hak akses `Admin` bagi tim ML — publik dan pengelola berstatus `None`. Hanya **safe aggregate** yang dapat dibaca (`Read`) oleh publik (sel yang ditandai aksen = batas publikasi). Matriks ini membuktikan bahwa aplikasi publik tidak pernah menerima data identitas reviewer.
+
+Matriks izin akses antar peran pengguna diatur dengan batasan yang tegas:
+- **Publik / juri** → hanya agregat aman (*read*).
+- **Pengelola destinasi** → agregat aman + workflow verifikasi.
+- **Tim Data/ML** → seluruh artefak (*admin*), termasuk raw/annotation/evidence untuk audit.
+
+Prinsip inti: identitas reviewer, review ID, source file/row, teks *evidence*, dan prediksi tingkat *review* **tidak pernah** masuk *bundle* aplikasi publik. *Evidence* ditahan sampai pemeriksaan privasi dan hak akses selesai; generator ekspor memverifikasi *forbidden privacy keys* sebelum publikasi (lihat `docs/restricted-data-policy.md`).
 
 ---
 

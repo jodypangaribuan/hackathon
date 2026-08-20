@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1020 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tax-title tax-desc">
+      <title id="tax-title">Struktur Taksonomi 14 Aspek Pariwisata Toba</title>
+      <desc id="tax-desc">Diagram hierarki 4 pilar operasional yang memayungi 14 aspek deteksi ulasan wisata dengan kata kunci pemicu utama.</desc>
+      
+      <defs>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --paper: #f5f5f5;
+      --ink: #2d3142;
+      --muted: #4f5d75;
+      --soft: #7a8399;
+      --rule: rgba(45,49,66,0.12);
+      --accent: #eb6c36;
+      --accent-tint: rgba(235,108,54,0.08);
+      --sans: 'Geist', system-ui, sans-serif;
+      --serif: 'Instrument Serif', serif;
+      --mono: 'Geist Mono', ui-monospace, monospace;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1.5rem;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+    }
+    .frame {
+      width: 100%;
+      max-width: 1080px;
+    }
+    .eyebrow {
+      margin-bottom: 0.5rem;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 2vw + 0.75rem, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+    svg {
+      display: block;
+      width: 100%;
+      min-width: 960px;
+    }
+    .pillar-num {
+      font-family: var(--mono);
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      fill: #ffffff;
+      opacity: 0.85;
+    }
+    .pillar-title {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      fill: #ffffff;
+    }
+    .aspect-name {
+      font-family: var(--sans);
+      font-size: 10.5px;
+      font-weight: 600;
+      fill: var(--ink);
+    }
+    .aspect-slug {
+      font-family: var(--mono);
+      font-size: 7.5px;
+      fill: var(--soft);
+    }
+    .kw-tag-text {
+      font-family: var(--mono);
+      font-size: 7.5px;
+      fill: #4f5d75;
+    }
+    .footer-text {
+      font-family: var(--mono);
+      font-size: 8.5px;
+      fill: var(--muted);
+    }
+  
+</style>
+
+        <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="0.8" fill="rgba(45,49,66,0.10)"/>
+        </pattern>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#f5f5f5"/>
+      <rect width="100%" height="100%" fill="url(#dots)" opacity="0.45"/>
+
+      <!-- ================= PILAR 1: LINGKUNGAN (x=16, w=236) ================= -->
+      <rect x="16" y="20" width="236" height="366" rx="8" fill="#fff" stroke="rgba(45,49,66,0.18)" stroke-width="1"/>
+      <rect x="16" y="20" width="236" height="54" rx="8" fill="#2d3142"/>
+      <rect x="16" y="66" width="236" height="8" fill="#2d3142"/>
+      <text x="134" y="38" class="pillar-num" text-anchor="middle">PILAR 01 · 4 ASPEK</text>
+      <text x="134" y="56" class="pillar-title" text-anchor="middle">Lingkungan &amp; Sanitasi</text>
+
+      <!-- Aspect 1.1: cleanliness -->
+      <rect x="26" y="82" width="216" height="64" rx="5" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="36" y="99" class="aspect-name">Kebersihan Umum</text>
+      <text x="36" y="111" class="aspect-slug">cleanliness</text>
+      <rect x="36" y="119" width="46" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="59" y="131" class="kw-tag-text" text-anchor="middle">bersih</text>
+      <rect x="86" y="119" width="44" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="108" y="131" class="kw-tag-text" text-anchor="middle">kotor</text>
+      <rect x="134" y="119" width="40" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="154" y="131" class="kw-tag-text" text-anchor="middle">asri</text>
+
+      <!-- Aspect 1.2: trash -->
+      <rect x="26" y="154" width="216" height="64" rx="5" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="36" y="171" class="aspect-name">Pengelolaan Sampah</text>
+      <text x="36" y="183" class="aspect-slug">waste / trash</text>
+      <rect x="36" y="191" width="70" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="71" y="203" class="kw-tag-text" text-anchor="middle">tong sampah</text>
+      <rect x="110" y="191" width="48" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="134" y="203" class="kw-tag-text" text-anchor="middle">plastik</text>
+      <rect x="162" y="191" width="48" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="186" y="203" class="kw-tag-text" text-anchor="middle">buang</text>
+
+      <!-- Aspect 1.3: sanitation -->
+      <rect x="26" y="226" width="216" height="64" rx="5" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="36" y="243" class="aspect-name">Fasilitas Toilet &amp; Sanitasi</text>
+      <text x="36" y="255" class="aspect-slug">sanitation</text>
+      <rect x="36" y="263" width="34" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="53" y="275" class="kw-tag-text" text-anchor="middle">wc</text>
+      <rect x="74" y="263" width="44" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="96" y="275" class="kw-tag-text" text-anchor="middle">toilet</text>
+      <rect x="122" y="263" width="38" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="141" y="275" class="kw-tag-text" text-anchor="middle">bau</text>
+      <rect x="164" y="263" width="36" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="182" y="275" class="kw-tag-text" text-anchor="middle">air</text>
+
+      <!-- Aspect 1.4: crowding -->
+      <rect x="26" y="298" width="216" height="64" rx="5" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="36" y="315" class="aspect-name">Kepadatan Pengunjung</text>
+      <text x="36" y="327" class="aspect-slug">crowding</text>
+      <rect x="36" y="335" width="44" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="58" y="347" class="kw-tag-text" text-anchor="middle">padat</text>
+      <rect x="84" y="335" width="44" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="106" y="347" class="kw-tag-text" text-anchor="middle">antri</text>
+      <rect x="132" y="335" width="46" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="155" y="347" class="kw-tag-text" text-anchor="middle">ramai</text>
+
+
+      <!-- ================= PILAR 2: INFRASTRUKTUR (x=268, w=236) ================= -->
+      <rect x="268" y="20" width="236" height="366" rx="8" fill="#fff" stroke="rgba(45,49,66,0.18)" stroke-width="1"/>
+      <rect x="268" y="20" width="236" height="54" rx="8" fill="#2d3142"/>
+      <rect x="268" y="66" width="236" height="8" fill="#2d3142"/>
+      <text x="386" y="38" class="pillar-num" text-anchor="middle">PILAR 02 · 3 ASPEK</text>
+      <text x="386" y="56" class="pillar-title" text-anchor="middle">Akses &amp; Fasilitas Fisik</text>
+
+      <!-- Aspect 2.1: access -->
+      <rect x="278" y="82" width="216" height="86" rx="5" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="288" y="103" class="aspect-name">Aksesibilitas &amp; Jalan</text>
+      <text x="288" y="117" class="aspect-slug">access</text>
+      <rect x="288" y="129" width="70" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="323" y="143" class="kw-tag-text" text-anchor="middle">jalan rusak</text>
+      <rect x="362" y="129" width="46" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="385" y="143" class="kw-tag-text" text-anchor="middle">curam</text>
+      <rect x="412" y="129" width="48" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="436" y="143" class="kw-tag-text" text-anchor="middle">sempit</text>
+
+      <!-- Aspect 2.2: parking -->
+      <rect x="278" y="176" width="216" height="86" rx="5" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="288" y="197" class="aspect-name">Kapasitas Lahan Parkir</text>
+      <text x="288" y="211" class="aspect-slug">parking</text>
+      <rect x="288" y="223" width="74" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="325" y="237" class="kw-tag-text" text-anchor="middle">lahan parkir</text>
+      <rect x="366" y="223" width="46" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="389" y="237" class="kw-tag-text" text-anchor="middle">sempit</text>
+      <rect x="416" y="223" width="40" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="436" y="237" class="kw-tag-text" text-anchor="middle">liar</text>
+
+      <!-- Aspect 2.3: public_facilities -->
+      <rect x="278" y="270" width="216" height="92" rx="5" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="288" y="291" class="aspect-name">Sarana &amp; Fasilitas Umum</text>
+      <text x="288" y="305" class="aspect-slug">public_facilities</text>
+      <rect x="288" y="317" width="56" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="316" y="331" class="kw-tag-text" text-anchor="middle">musholla</text>
+      <rect x="348" y="317" width="50" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="373" y="331" class="kw-tag-text" text-anchor="middle">gazebo</text>
+      <rect x="402" y="317" width="46" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="425" y="331" class="kw-tag-text" text-anchor="middle">lampu</text>
+
+
+      <!-- ================= PILAR 3: PENGALAMAN (x=520, w=236) ================= -->
+      <rect x="520" y="20" width="236" height="366" rx="8" fill="#fff" stroke="rgba(45,49,66,0.18)" stroke-width="1"/>
+      <rect x="520" y="20" width="236" height="54" rx="8" fill="#2d3142"/>
+      <rect x="520" y="66" width="236" height="8" fill="#2d3142"/>
+      <text x="638" y="38" class="pillar-num" text-anchor="middle">PILAR 03 · 4 ASPEK</text>
+      <text x="638" y="56" class="pillar-title" text-anchor="middle">Kenyamanan &amp; Nilai</text>
+
+      <!-- Aspect 3.1: scenery -->
+      <rect x="530" y="82" width="216" height="64" rx="5" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="540" y="99" class="aspect-name">Pemandangan &amp; Panorama</text>
+      <text x="540" y="111" class="aspect-slug">scenery</text>
+      <rect x="540" y="119" width="44" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="562" y="131" class="kw-tag-text" text-anchor="middle">indah</text>
+      <rect x="588" y="119" width="40" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="608" y="131" class="kw-tag-text" text-anchor="middle">view</text>
+      <rect x="632" y="119" width="44" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="654" y="131" class="kw-tag-text" text-anchor="middle">danau</text>
+
+      <!-- Aspect 3.2: comfort -->
+      <rect x="530" y="154" width="216" height="64" rx="5" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="540" y="171" class="aspect-name">Kenyamanan &amp; Suasana</text>
+      <text x="540" y="183" class="aspect-slug">comfort</text>
+      <rect x="540" y="191" width="44" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="562" y="203" class="kw-tag-text" text-anchor="middle">sejuk</text>
+      <rect x="588" y="191" width="46" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="611" y="203" class="kw-tag-text" text-anchor="middle">tenang</text>
+      <rect x="638" y="191" width="44" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="660" y="203" class="kw-tag-text" text-anchor="middle">adem</text>
+
+      <!-- Aspect 3.3: safety -->
+      <rect x="530" y="226" width="216" height="64" rx="5" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="540" y="243" class="aspect-name">Keamanan Wisatawan</text>
+      <text x="540" y="255" class="aspect-slug">safety</text>
+      <rect x="540" y="263" width="46" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="563" y="275" class="kw-tag-text" text-anchor="middle">jurang</text>
+      <rect x="590" y="263" width="38" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="609" y="275" class="kw-tag-text" text-anchor="middle">licin</text>
+      <rect x="632" y="263" width="42" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="653" y="275" class="kw-tag-text" text-anchor="middle">pagar</text>
+
+      <!-- Aspect 3.4: price_transparency -->
+      <rect x="530" y="298" width="216" height="64" rx="5" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="540" y="315" class="aspect-name">Kewajaran Harga &amp; Tiket</text>
+      <text x="540" y="327" class="aspect-slug">price_transparency</text>
+      <rect x="540" y="335" width="44" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="562" y="347" class="kw-tag-text" text-anchor="middle">pungli</text>
+      <rect x="588" y="335" width="40" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="608" y="347" class="kw-tag-text" text-anchor="middle">tiket</text>
+      <rect x="632" y="335" width="44" height="18" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="654" y="347" class="kw-tag-text" text-anchor="middle">mahal</text>
+
+
+      <!-- ================= PILAR 4: OPERASIONAL (x=772, w=236) ================= -->
+      <rect x="772" y="20" width="236" height="366" rx="8" fill="#fff" stroke="rgba(45,49,66,0.18)" stroke-width="1"/>
+      <rect x="772" y="20" width="236" height="54" rx="8" fill="#2d3142"/>
+      <rect x="772" y="66" width="236" height="8" fill="#2d3142"/>
+      <text x="890" y="38" class="pillar-num" text-anchor="middle">PILAR 04 · 3 ASPEK</text>
+      <text x="890" y="56" class="pillar-title" text-anchor="middle">Tata Kelola &amp; Layanan</text>
+
+      <!-- Aspect 4.1: staff_service -->
+      <rect x="782" y="82" width="216" height="86" rx="5" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="792" y="103" class="aspect-name">Pelayanan Staf &amp; Warga</text>
+      <text x="792" y="117" class="aspect-slug">staff_service</text>
+      <rect x="792" y="129" width="48" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="816" y="143" class="kw-tag-text" text-anchor="middle">ramah</text>
+      <rect x="844" y="129" width="48" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="868" y="143" class="kw-tag-text" text-anchor="middle">sopan</text>
+      <rect x="896" y="129" width="46" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="919" y="143" class="kw-tag-text" text-anchor="middle">jutek</text>
+
+      <!-- Aspect 4.2: maintenance -->
+      <rect x="782" y="176" width="216" height="86" rx="5" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="792" y="197" class="aspect-name">Perawatan Fasilitas</text>
+      <text x="792" y="211" class="aspect-slug">maintenance</text>
+      <rect x="792" y="223" width="48" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="816" y="237" class="kw-tag-text" text-anchor="middle">rusak</text>
+      <rect x="844" y="223" width="48" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="868" y="237" class="kw-tag-text" text-anchor="middle">usang</text>
+      <rect x="896" y="223" width="38" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="915" y="237" class="kw-tag-text" text-anchor="middle">cat</text>
+
+      <!-- Aspect 4.3: opening_hours -->
+      <rect x="782" y="270" width="216" height="92" rx="5" fill="#f5f5f5" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="792" y="291" class="aspect-name">Jadwal &amp; Jam Operasional</text>
+      <text x="792" y="305" class="aspect-slug">opening_hours</text>
+      <rect x="792" y="317" width="46" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="815" y="331" class="kw-tag-text" text-anchor="middle">tutup</text>
+      <rect x="842" y="317" width="44" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="864" y="331" class="kw-tag-text" text-anchor="middle">buka</text>
+      <rect x="890" y="317" width="48" height="22" rx="3" fill="#fff" stroke="rgba(45,49,66,0.12)" stroke-width="0.6"/>
+      <text x="914" y="331" class="kw-tag-text" text-anchor="middle">malam</text>
+
+
+      <!-- ================= BOTTOM FOOTER BAR ================= -->
+      <line x1="16" y1="406" x2="1004" y2="406" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <text x="16" y="428" class="footer-text" font-weight="600">KLASIFIKASI MULTI-LABEL:</text>
+      <text x="176" y="428" class="footer-text">Satu teks ulasan dapat memicu beberapa aspek secara simultan berdasarkan kata kunci pemicu yang terdeteksi.</text>
+    </svg>
